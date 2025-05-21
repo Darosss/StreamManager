@@ -40,12 +40,6 @@ export interface OverlayChatStyleParsed extends StyleParsedBase {
   boxShadow: string;
   borderRadius: string;
 }
-export interface OverlayYoutubeMusicPlayerStyleParsed
-  extends StyleParsedBase,
-    BaseMusicStyles {
-  boxShadow: string;
-  borderRadius: string;
-}
 
 export interface BaseOverlayAchievementsRarity {
   usernameColor: BaseCssStyles["color"];
