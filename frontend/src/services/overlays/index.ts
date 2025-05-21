@@ -1,2 +1,2 @@
 export * from "./Overlays";
-export type * from "./types";
+export * from "./types";

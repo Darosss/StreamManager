@@ -1,2 +1,2 @@
 export * from "./Songs";
-export type * from "./types";
+export * from "./types";

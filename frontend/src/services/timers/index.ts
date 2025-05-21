@@ -1,2 +1,2 @@
 export * from "./Timers";
-export type * from "./types";
+export * from "./types";

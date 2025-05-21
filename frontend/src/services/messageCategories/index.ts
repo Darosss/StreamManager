@@ -1,2 +1,2 @@
 export * from "./MessageCategories";
-export type * from "./types";
+export * from "./types";

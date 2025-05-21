@@ -1,3 +1,3 @@
 export * from "./ChatCommands";
 
-export type * from "./types";
+export * from "./types";

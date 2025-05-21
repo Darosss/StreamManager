@@ -1,2 +1,2 @@
 export * from "./Redemptions";
-export type * from "./types";
+export * from "./types";

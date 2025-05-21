@@ -1,8 +1,6 @@
 export type {
   ServerToClientEvents,
   ClientToServerEvents,
-  AudioStreamDataInfo,
-  AudioYTDataInfo,
   EventAndUser,
   CustomRewardData,
   AudioStreamData,
@@ -13,4 +11,4 @@ export type {
   AddAchievementProgressToUserData,
 } from "@socketTypes";
 
-export type * from "./types";
+export * from "./types";

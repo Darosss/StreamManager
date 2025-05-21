@@ -16,7 +16,7 @@
       "@hooks/*": ["src/hooks/*"],
       "@redux": ["src/redux"],
       "@redux/*": ["src/redux/*"],
-      "@socketTypes": ["../server/src/socketIO"]
+      "@socketTypes": ["../server/src/socketIO/types/shared"]
     },
     "baseUrl": "./",
     "allowJs": true,
