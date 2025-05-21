@@ -1,6 +1,5 @@
 import {
   OverlayChatStyleParsed,
-  OverlayYoutubeMusicPlayerStyleParsed,
   OverlayAchievementsRarities,
   OverlayAchievementsStyleParsed,
   OverlayMusicPlayerStyleParsed,
@@ -18,21 +17,6 @@ const initialOverlayChatStyles: OverlayChatStyleParsed = {
   username: { color: "red", fontSize: "80%" },
   message: { color: "black", fontSize: "80%" },
 };
-
-const initialOverlayYoutubeMusicPlayerStyles: OverlayYoutubeMusicPlayerStyleParsed =
-  {
-    background: "lightblue",
-    opacity: 100,
-    boxShadow: "1px 2px 4px 4px lightblue",
-    borderRadius: "0.5rem",
-    currentSong: { color: "black", fontSize: "80%" },
-    progressBar: {
-      color: "orange",
-      fontSize: "80%",
-      background: "blue",
-      baseBackground: "white",
-    },
-  };
 
 const initialRaritiesStyles: OverlayAchievementsRarities = {
   rarity1: {
@@ -209,6 +193,5 @@ export const initialStylesState: OverlayKeysStylesParsedType = {
   overlayAchievements: initialOverlayAchievementsStyles,
   overlayMusicPlayer: initialOverlayMusicPlayerStyles,
   overlayRedemptions: initialOverlayRedemptionsStyles,
-  overlayYoutubeMusicPlayer: initialOverlayYoutubeMusicPlayerStyles,
   overlayChat: initialOverlayChatStyles,
 };
