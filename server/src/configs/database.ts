@@ -15,7 +15,7 @@ import {
   createAchievementStage,
   createAchievement
 } from "@services";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 import {
   getDefaultAchievementStagesData,
   getDefaultAchievementsData,
@@ -29,9 +29,7 @@ import { databaseConnectURL } from "./envVariables";
 export const initMongoDataBase = async () => {
   mongoose.set("strictQuery", false);
   try {
-    await mongoose.connect(databaseConnectURL, {
-      useNewUrlParser: true
-    } as ConnectOptions);
+    await mongoose.connect(databaseConnectURL);
   } catch (error) {
     console.error("Failed to connect to database:", error);
     process.exit(1);
