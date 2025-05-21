@@ -24,7 +24,7 @@ export const getTagsList = async (req: Request<{}, {}, {}, RequestSearch>, res: 
 
     const count = await getTagsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: tags,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -41,7 +41,7 @@ export const addNewTag = async (req: Request<{}, {}, TagCreateData, {}>, res: Re
   try {
     const newTag = await createTag({ name });
 
-    return res.status(200).send({ message: "Tag added successfully", data: newTag });
+    res.status(200).send({ message: "Tag added successfully", data: newTag });
   } catch (err) {
     next(err);
   }
@@ -59,7 +59,7 @@ export const editTagById = async (
   try {
     const updatedTag = await updateTagById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Tag updated successfully",
       data: updatedTag
     });
@@ -74,7 +74,7 @@ export const deleteTag = async (req: Request<RequestParams, {}, {}, {}>, res: Re
   try {
     await deleteTagById(id);
 
-    return res.status(200).send({ message: "Tag deleted successfully" });
+    res.status(200).send({ message: "Tag deleted successfully" });
   } catch (err) {
     next(err);
   }

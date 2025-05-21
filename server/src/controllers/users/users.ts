@@ -31,7 +31,7 @@ export const getUsersList = async (req: Request<{}, {}, {}, RequestQueryUser>, r
 
     const count = await getUserCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: users,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -53,7 +53,7 @@ export const getUsersByIds = async (req: Request<RequestParams, {}, {}, {}>, res
 
     const count = await getUserCount(usersByIdFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: users,
       count: count
     });
@@ -67,7 +67,7 @@ export const getUsersProfile = async (req: Request<RequestParams, {}, {}, {}>, r
   try {
     const user = await getUserById(id, { select: { __v: 0 } });
 
-    return res.status(200).send({ data: user });
+    res.status(200).send({ data: user });
   } catch (err) {
     next(err);
   }
@@ -83,7 +83,7 @@ export const editUserProfile = async (
 
   try {
     await updateUserById(id, { notes });
-    return res.status(200).send({ message: "User updated successfully" });
+    res.status(200).send({ message: "User updated successfully" });
   } catch (err) {
     next(err);
   }
@@ -108,7 +108,7 @@ export const getUserMessages = async (
     });
     const count = await getMessagesCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: messages,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -138,7 +138,7 @@ export const getUserRedemptions = async (
 
     const count = await getRedemptionsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: redemptions,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -175,7 +175,7 @@ export const getLatestEldestUserMessages = async (
       }
     );
 
-    return res.status(200).send({
+    res.status(200).send({
       data: { firstMessages: firstMessages, latestMessages: latestMessages }
     });
   } catch (err) {

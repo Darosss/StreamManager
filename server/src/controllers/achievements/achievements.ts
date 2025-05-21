@@ -36,7 +36,7 @@ export const getManyAchievements = async (
 
     const count = await getAchievementsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: achievements,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -59,7 +59,7 @@ export const getAchievementsProgressesByUserId = async (
   try {
     const achievements = await getAchievementsProgressesByUserIdService(id);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: achievements
     });
   } catch (err) {
@@ -80,7 +80,7 @@ export const editAchievementById = async (
     const updatedAchievement = await updateOneAchievement({ _id: id }, updateData);
 
     const foundAchievement = checkExistResource(updatedAchievement, "Achievement");
-    return res.status(200).send({
+    res.status(200).send({
       message: "Achievement updated successfully",
       data: foundAchievement
     });
@@ -111,7 +111,7 @@ export const addCustomAchievement = async (
     if (!custom) throw new AppError(400, `Custom options must be provided.`);
     const newCustomAchievement = await createCustomAchievement(createData);
 
-    return res.status(200).send({ message: "Custom achievement added successfully", data: newCustomAchievement });
+    res.status(200).send({ message: "Custom achievement added successfully", data: newCustomAchievement });
   } catch (err) {
     logger.error(`Error when trying to addCustomAchievement: ${err}`);
     next(err);
@@ -128,7 +128,7 @@ export const deleteCustomAchievementById = async (
   try {
     await deleteCustomAchievementByIdService(id);
 
-    return res.status(200).send({ message: "Achievement deleted successfully" });
+    res.status(200).send({ message: "Achievement deleted successfully" });
   } catch (err) {
     logger.error(`Error when trying to deleteCustomAchievementById by id: ${id}: ${err}`);
     next(err);
@@ -157,7 +157,7 @@ export const editCustomAchievementById = async (
     const updatedAchievement = await updateOneAchievement({ _id: id }, updateData);
 
     const foundAchievement = checkExistResource(updatedAchievement, "Achievement");
-    return res.status(200).send({
+    res.status(200).send({
       message: "Custom achievement updated successfully",
       data: foundAchievement
     });

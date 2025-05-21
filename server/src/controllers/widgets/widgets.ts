@@ -23,7 +23,7 @@ export const getWidgetsList = async (req: Request<{}, {}, {}, RequestSearch>, re
     });
 
     const count = await getWidgetsCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: widgets,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -40,7 +40,7 @@ export const getWidgetById = async (req: Request<RequestParams, {}, {}, {}>, res
   try {
     const widget = await getWidgetByIdService(id, {});
 
-    return res.status(200).send({
+    res.status(200).send({
       data: widget
     });
   } catch (err) {
@@ -59,7 +59,7 @@ export const addNewWidget = async (
   try {
     const newWidget = await createWidget(createData);
 
-    return res.status(201).send({ message: "Widget added successfully", data: newWidget });
+    res.status(201).send({ message: "Widget added successfully", data: newWidget });
   } catch (err) {
     next(err);
   }
@@ -77,7 +77,7 @@ export const editWidgetById = async (
   try {
     const updatedWidget = await updateWidgetById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Widget updated successfully",
       data: updatedWidget
     });
@@ -92,7 +92,7 @@ export const removeWidgetById = async (req: Request<RequestParams, {}, {}, {}>, 
   try {
     await deleteWidgetById(id);
 
-    return res.status(200).send({ message: "Widget deleted successfully" });
+    res.status(200).send({ message: "Widget deleted successfully" });
   } catch (err) {
     next(err);
   }

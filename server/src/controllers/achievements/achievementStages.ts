@@ -47,7 +47,7 @@ export const getManyAchievementStages = async (
 
     const count = await getAchievementStagesCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: stages,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -69,7 +69,7 @@ export const deleteAchievementStageById = async (
   try {
     await deleteAchievementStageByIdService(id);
 
-    return res.status(200).send({ message: "Achievement stage deleted successfully" });
+    res.status(200).send({ message: "Achievement stage deleted successfully" });
   } catch (err) {
     logger.error(`Error when trying to deleteAchievementStageById by id: ${id}: ${err}`);
     next(err);
@@ -86,7 +86,7 @@ export const getAchievementStageById = async (
     const achievementStage = await getAchievementStagesById(id, { select: { __v: 0 } }, { stageDataBadge: true });
 
     const foundAchievementStage = checkExistResource(achievementStage, "Achievement stage");
-    return res.status(200).send({ data: foundAchievementStage });
+    res.status(200).send({ data: foundAchievementStage });
   } catch (err) {
     logger.error(`Error when trying to getAchievementStageById by id: ${id}: ${err}`);
 
@@ -107,7 +107,7 @@ export const editAchievementStageById = async (
     const updatedAchievementStage = await updateOneAchievementStage({ _id: id }, updateData);
 
     const foundAchievementStage = checkExistResource(updatedAchievementStage, "Achievement stage");
-    return res.status(200).send({
+    res.status(200).send({
       message: "Badge updated successfully",
       data: foundAchievementStage
     });
@@ -118,7 +118,7 @@ export const editAchievementStageById = async (
 };
 
 export const getAchievementStageSoundsBaseUrl = (req: Request, res: Response) => {
-  return res.status(200).send({ data: path.relative(publicEndpointPath, achievementsStagesSoundsPath) });
+  res.status(200).send({ data: path.relative(publicEndpointPath, achievementsStagesSoundsPath) });
 };
 
 export const getAchievementStageSoundsList = (req: Request, res: Response, next: NextFunction) => {
@@ -127,7 +127,7 @@ export const getAchievementStageSoundsList = (req: Request, res: Response, next:
       achievementsStagesSoundsPath,
       ["mp3"],
       (soundsPaths) => {
-        return res.status(200).send({ data: soundsPaths });
+        res.status(200).send({ data: soundsPaths });
       },
       (errorMsg) => {
         return next(new AppError(400, errorMsg));
@@ -144,7 +144,7 @@ export const deleteAchievementStageSoundById = async (req: Request, res: Respons
 
   try {
     const message = await deleteAchievementSound(soundName);
-    return res.status(200).send({ message });
+    res.status(200).send({ message });
   } catch (err) {
     logger.error(`Error when trying to delete achievement sound ${soundName}: ${err}`);
     next(err);
@@ -159,7 +159,7 @@ export const uploadAchievementStageSounds = (req: Request, res: Response, next: 
         return next(err);
       }
 
-      return res.status(200).send({ message: "Achievement sounds files updated successfully" });
+      res.status(200).send({ message: "Achievement sounds files updated successfully" });
     });
   } catch (err) {
     logger.error(`Error when trying to uploadAchievementStageSounds files ${err}`);
@@ -178,7 +178,7 @@ export const addNewAchievementStage = async (
   try {
     const newBadge = await createAchievementStage(createData);
 
-    return res.status(200).send({ message: "Achievement stage added successfully", badge: newBadge });
+    res.status(200).send({ message: "Achievement stage added successfully", badge: newBadge });
   } catch (err) {
     logger.error(`Error when trying to addNewAchievementStage ${err}`);
     next(err);

@@ -15,7 +15,6 @@ import {
   getRedemptions,
   getRedemptionsCount
 } from "@services";
-import { AppError } from "@utils";
 import { RequestQuerySession } from "./types";
 
 export const getStreamSessionsList = async (
@@ -66,7 +65,7 @@ export const getSessionById = async (req: Request<RequestParams, {}, {}, {}>, re
   try {
     const streamSession = await getStreamSessionById(id, {});
 
-    return res.status(200).send({
+    res.status(200).send({
       data: streamSession
     });
   } catch (err) {
@@ -91,7 +90,7 @@ export const getSessionStatisticsById = async (
         limitViewers: 0
       });
 
-      return res.status(200).send({
+      res.status(200).send({
         data: sessionStatstics
       });
     }
@@ -131,7 +130,7 @@ export const getCurrentSessionMessages = async (
     });
 
     const count = await getMessagesCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: messages,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -172,7 +171,7 @@ export const getCurrentSessionRedemptions = async (
 
     const count = await getRedemptionsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: redemptions,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -189,13 +188,14 @@ export const getCurrentSessionStatistics = async (req: Request, res: Response, n
 
     if (streamSession) {
       const sessionStatstics = await getStreamSessionStatistics(streamSession, {});
-      return res.status(200).send({
+      res.status(200).send({
         data: sessionStatstics
       });
+    } else {
+      res.status(200).send({
+        data: null
+      });
     }
-    return res.status(200).send({
-      data: null
-    });
   } catch (err) {
     next(err);
   }
@@ -230,7 +230,7 @@ export const getSessionMessages = async (
     });
 
     const count = await getMessagesCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: messages,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -269,7 +269,7 @@ export const getSessionRedemptions = async (
 
     const count = await getRedemptionsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: redemptions,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,

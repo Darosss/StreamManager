@@ -21,7 +21,7 @@ export const getMessagesList = async (
     });
 
     const count = await getMessagesCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: messages,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,

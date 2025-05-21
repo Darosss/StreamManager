@@ -33,7 +33,7 @@ export const getTriggersList = async (
 
     const count = await getTriggersCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: triggers,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -54,7 +54,7 @@ export const addNewTrigger = async (
   try {
     const newTrigger = await createTrigger(createData);
 
-    return res.status(200).send({ message: "Trigger added successfully", data: newTrigger });
+    res.status(200).send({ message: "Trigger added successfully", data: newTrigger });
   } catch (err) {
     next(err);
   }
@@ -72,7 +72,7 @@ export const editTriggerById = async (
   try {
     const updatedTrigger = await updateTriggerById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Trigger updated successfully",
       data: updatedTrigger
     });
@@ -87,7 +87,7 @@ export const deleteTrigger = async (req: Request<RequestParams, {}, {}, {}>, res
   try {
     await deleteTriggerById(id);
 
-    return res.status(200).send({ message: "Trigger deleted successfully" });
+    res.status(200).send({ message: "Trigger deleted successfully" });
   } catch (err) {
     next(err);
   }

@@ -24,7 +24,7 @@ export const getMoodsList = async (req: Request<{}, {}, {}, RequestSearch>, res:
 
     const count = await getMoodsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: moods,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -41,7 +41,7 @@ export const addNewMood = async (req: Request<{}, {}, MoodCreateData, {}>, res: 
   try {
     const newMood = await createMood({ name });
 
-    return res.status(200).send({ message: "Mood added successfully", mood: newMood });
+    res.status(200).send({ message: "Mood added successfully", mood: newMood });
   } catch (err) {
     next(err);
   }
@@ -59,7 +59,7 @@ export const editMoodById = async (
   try {
     const updatedMood = await updateMoodById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Mood updated successfully",
       data: updatedMood
     });
@@ -74,7 +74,7 @@ export const deleteMood = async (req: Request<RequestParams, {}, {}, {}>, res: R
   try {
     await deleteMoodById(id);
 
-    return res.status(200).send({ message: "Mood deleted successfully" });
+    res.status(200).send({ message: "Mood deleted successfully" });
   } catch (err) {
     next(err);
   }

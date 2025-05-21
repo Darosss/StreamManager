@@ -23,7 +23,7 @@ export const getOverlaysList = async (req: Request<{}, {}, {}, RequestSearch>, r
     });
 
     const count = await getOverlaysCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: overlays,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -40,7 +40,7 @@ export const getOverlayById = async (req: Request<RequestParams, {}, {}, {}>, re
   try {
     const overlay = await getOverlayByIdService(id, {});
 
-    return res.status(200).send({
+    res.status(200).send({
       data: overlay
     });
   } catch (err) {
@@ -59,7 +59,7 @@ export const addNewOverlay = async (
   try {
     const newOverlay = await createOverlay(createData);
 
-    return res.status(201).send({ message: "Overlay added successfully", data: newOverlay });
+    res.status(201).send({ message: "Overlay added successfully", data: newOverlay });
   } catch (err) {
     next(err);
   }
@@ -77,7 +77,7 @@ export const editOverlayById = async (
   try {
     const updatedOverlay = await updateOverlayById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Overlay updated successfully",
       data: updatedOverlay
     });
@@ -92,7 +92,7 @@ export const removeOverlayById = async (req: Request<RequestParams, {}, {}, {}>,
   try {
     await deleteOverlayById(id);
 
-    return res.status(200).send({ message: "Overlay deleted successfully" });
+    res.status(200).send({ message: "Overlay deleted successfully" });
   } catch (err) {
     next(err);
   }

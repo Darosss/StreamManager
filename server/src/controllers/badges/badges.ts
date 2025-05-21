@@ -52,7 +52,7 @@ export const getManyBadges = async (req: Request<{}, {}, {}, RequestSearch>, res
     });
 
     const count = await getBadgesCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: badges,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -103,7 +103,7 @@ export const uploadBadgeImages = (req: Request, res: Response, next: NextFunctio
           );
           //if last file is resized return message
           if (index === files.length - 1)
-            return res.status(200).send({ message: "Badge images files resized and updated successfully" });
+            res.status(200).send({ message: "Badge images files resized and updated successfully" });
         });
       }
     });
@@ -121,7 +121,7 @@ export const deleteBadgeImageByName = async (req: Request, res: Response, next: 
   const deleteFilter = { name: fileName, extension, sizesToDelete: badgeModelIMagesUrlsSizesNumbers };
   try {
     const message = await deleteBadgeImages(deleteFilter);
-    return res.status(200).send({ message });
+    res.status(200).send({ message });
   } catch (err) {
     logger.error(`Error when trying to delete badge image ${badgeName}: ${err}`);
     next(err);
@@ -129,7 +129,7 @@ export const deleteBadgeImageByName = async (req: Request, res: Response, next: 
 };
 
 export const getBadgesBaseUrl = (req: Request, res: Response) => {
-  return res.status(200).send({ data: path.relative(publicEndpointPath, badgesPath) });
+  res.status(200).send({ data: path.relative(publicEndpointPath, badgesPath) });
 };
 
 export const getBadgesImagesList = (req: Request, res: Response, next: NextFunction) => {
@@ -145,7 +145,7 @@ export const getBadgesImagesList = (req: Request, res: Response, next: NextFunct
             return [fileName, extension];
           });
 
-        return res.status(200).send({
+        res.status(200).send({
           data: {
             //thats for show for user only x128px
             imagesPaths: onlyOriginalImagesPaths,
@@ -176,7 +176,7 @@ export const editBadgeById = async (
   try {
     const updatedBadge = await updateBadgeById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Badge updated successfully",
       data: updatedBadge
     });
@@ -193,7 +193,7 @@ export const addNewBadge = async (req: Request<{}, {}, BadgeCreateData, {}>, res
   try {
     const newBadge = await createBadge(createData);
 
-    return res.status(200).send({ message: "Badge added successfully", data: newBadge });
+    res.status(200).send({ message: "Badge added successfully", data: newBadge });
   } catch (err) {
     logger.error(`Error when trying to addNewBadge ${err}`);
     next(err);
@@ -206,7 +206,7 @@ export const deleteBadgeById = async (req: Request<RequestParams, {}, {}, {}>, r
   try {
     await deleteBadgeByIdService(id);
 
-    return res.status(200).send({ message: "Badge deleted successfully" });
+    res.status(200).send({ message: "Badge deleted successfully" });
   } catch (err) {
     logger.error(`Error when trying to deleteBadgeById: ${id} ${err}`);
     next(err);
@@ -219,7 +219,7 @@ export const getBadgeById = async (req: Request<RequestParams, {}, {}, {}>, res:
     const badge = await getBadgeByIdService(id, { select: { __v: 0 } });
 
     const foundBadge = checkExistResource(badge, "Badge");
-    return res.status(200).send({ data: foundBadge });
+    res.status(200).send({ data: foundBadge });
   } catch (err) {
     logger.error(`Error when trying to getBadgeById by id: ${id}: ${err}`);
     next(err);

@@ -25,7 +25,7 @@ export const getSongsList = async (req: Request<{}, {}, {}, RequestSongsQuery>, 
     });
 
     const count = await getSongsCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: songs,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -40,7 +40,7 @@ export const addNewSong = async (req: Request<{}, {}, SongsCreateData, {}>, res:
   try {
     const newSong = await createSong(req.body);
 
-    return res.status(201).send({ message: "Song added successfully", song: newSong });
+    res.status(201).send({ message: "Song added successfully", song: newSong });
   } catch (err) {
     next(err);
   }
@@ -86,7 +86,7 @@ export const editSongById = async (
   try {
     const updatedSong = await updateSongById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Song updated successfully",
       data: updatedSong
     });
@@ -101,7 +101,7 @@ export const deleteSongById = async (req: Request<RequestParams, {}, {}, {}>, re
   try {
     await deleteSongByIdService(id);
 
-    return res.status(200).send({ message: "Song deleted successfully" });
+    res.status(200).send({ message: "Song deleted successfully" });
   } catch (err) {
     next(err);
   }
