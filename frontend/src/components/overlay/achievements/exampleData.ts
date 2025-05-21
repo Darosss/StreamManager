@@ -2,6 +2,7 @@ import { randomWithMax } from "@utils";
 import moment from "moment";
 import { commonData } from "../commonExampleData";
 import { ObtainAchievementDataWithCollectedAchievement } from "@socket";
+import { StageDataRarity } from "@services";
 const simpleAchievementsNames = [
   "Masters of Multitasking",
   "Eternal Explorer",
@@ -56,15 +57,20 @@ const generateRandomObtainedAchievementData = (
         stage: Math.floor(Math.random() * 20),
         goal: Math.floor(Math.random() * 1000000),
         badge: {
-          id: Math.random(),
+          _id: Math.random().toString(),
           name: "badge name",
           description: "badge description",
           imagesUrls: {
             x64: "\\achievements\\badges\\chat-message-100-xSize-64.png",
+            x32: "",
+            x96: "",
+            x128: "",
           },
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
         showTimeMs: 2500,
-        rarity: index % 9,
+        rarity: (index % 9) as StageDataRarity,
       },
     },
     username:
