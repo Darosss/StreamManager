@@ -19,19 +19,15 @@ const SongsSchema: Schema<SongsDocument> = new Schema(
     downloadedData: {
       fileName: { type: String },
       folderName: { type: String },
-      publicPath: { type: String },
-      required: false
+      publicPath: { type: String }
     },
     customTitle: {
       band: {
-        type: String,
-        required: false
+        type: String
       },
       title: {
-        type: String,
-        required: false
-      },
-      required: false
+        type: String
+      }
     },
     uses: {
       type: Number,
@@ -59,8 +55,7 @@ const SongsSchema: Schema<SongsDocument> = new Schema(
       default: 0
     },
     customId: {
-      type: String,
-      required: false
+      type: String
     },
     whoAdded: { type: Schema.Types.ObjectId, required: true, ref: "User" },
     likes: {

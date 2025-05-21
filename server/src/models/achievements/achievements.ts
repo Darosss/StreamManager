@@ -17,8 +17,8 @@ const AchievementStageSchema = new Schema<AchievementStageDocument>(
         stage: { type: Number, required: true },
         goal: { type: Number, required: true },
         badge: { type: Schema.Types.ObjectId, required: true, ref: "Badge" },
-        sound: { type: String, required: false },
-        rarity: { type: Number, required: false },
+        sound: { type: String },
+        rarity: { type: Number },
         showTimeMs: { type: Number, required: true }
       }
     ]
@@ -27,9 +27,9 @@ const AchievementStageSchema = new Schema<AchievementStageDocument>(
 );
 
 const AchievementCustomSchema: Schema<AchievementCustomModel> = new Schema({
-  stringValues: { type: [String], required: false },
-  numberValue: { type: Number, required: false },
-  caseSensitive: { type: Boolean, required: false },
+  stringValues: { type: [String] },
+  numberValue: { type: Number },
+  caseSensitive: { type: Boolean },
   action: {
     type: String,
     default: CustomAchievementAction.INCLUDES,
@@ -45,7 +45,7 @@ const AchivementSchema: Schema<AchievementDocument> = new Schema(
     isTime: { type: Boolean, required: true, default: false },
     ...tagModeField,
     ...enabledField,
-    custom: { type: AchievementCustomSchema, required: false },
+    custom: { type: AchievementCustomSchema },
     hidden: { type: Boolean },
     showProgress: { type: Boolean }
   },

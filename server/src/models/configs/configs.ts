@@ -155,7 +155,6 @@ const ConfigSchema: Schema<ConfigDocument> = new Schema(
     achievementsConfigs: {
       obtainedAchievementsChannelId: {
         type: String,
-        required: false,
         default: achievementsConfigs.obtainedAchievementsChannelId
       }
     }
