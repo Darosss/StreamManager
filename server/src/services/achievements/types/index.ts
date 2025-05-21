@@ -1,4 +1,5 @@
 import { SortQuery, SelectQuery } from "@services";
+export * from "./shared";
 import {
   AchievementModel,
   AchievementStageModel,
@@ -79,12 +80,6 @@ export interface GetDataForObtainAchievementEmitReturnData {
   achievement: ObtainAchievementBaseData["achievement"];
   stages: ObtainAchievementDataWithCollectedAchievement["stage"][];
   gainedProgress: ObtainAchievementDataWithProgressOnly["progressData"] | null;
-}
-
-export interface UpdateAchievementUserProgressProgressesArgs {
-  achievementName: string;
-  userId: string;
-  progress: { increment?: boolean; value: number };
 }
 
 export interface AchievementUserProgressesPopulateOptions {
