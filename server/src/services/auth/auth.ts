@@ -27,7 +27,7 @@ export const createNewAuth = async (createData: AuthCreateData) => {
 
 export const removeAuthToken = async () => {
   try {
-    const deletedAuthToken = await AuthToken.findOneAndRemove();
+    const deletedAuthToken = await AuthToken.findOneAndDelete();
 
     const authToken = checkExistResource(deletedAuthToken, `Auth token not found`);
 
