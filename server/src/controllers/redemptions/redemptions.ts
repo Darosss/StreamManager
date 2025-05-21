@@ -20,7 +20,7 @@ export const getRedemptionsList = async (
 
     const count = await getRedemptionsCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: redemptions,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,

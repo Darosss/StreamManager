@@ -32,7 +32,7 @@ export const getChatCommandsList = async (
     });
 
     const count = await getChatCommandsCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: chatCommands,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -54,7 +54,7 @@ export const addNewCommand = async (
   try {
     const newChatCommand = await createChatCommand(createData);
 
-    return res.status(201).send({ message: "Chat command added successfully", data: newChatCommand });
+    res.status(201).send({ message: "Chat command added successfully", data: newChatCommand });
   } catch (err) {
     next(err);
   }
@@ -73,7 +73,7 @@ export const editChatCommandById = async (
   try {
     const updatedChatCommand = await updateChatCommandById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Chat command updated successfully",
       chatCommand: updatedChatCommand
     });
@@ -88,7 +88,7 @@ export const deleteCommandById = async (req: Request<RequestParams, {}, {}, {}>,
   try {
     await deleteChatCommandById(id);
 
-    return res.status(200).send({ message: "Chat command deleted successfully" });
+    res.status(200).send({ message: "Chat command deleted successfully" });
   } catch (err) {
     next(err);
   }

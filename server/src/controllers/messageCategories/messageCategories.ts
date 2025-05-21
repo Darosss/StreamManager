@@ -33,7 +33,7 @@ export const getMessageCategoriesList = async (
     });
 
     const count = await getMessageCategoriesCount(searchFilter);
-    return res.status(200).send({
+    res.status(200).send({
       data: categories,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -56,7 +56,7 @@ export const editMessageCategoryById = async (
   try {
     const updatedCategoryMessage = await updateMessageCategoryById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Message category updated successfully",
       data: updatedCategoryMessage
     });
@@ -77,7 +77,7 @@ export const updateUsesCategoryById = async (
       $inc: { uses: 1 }
     });
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Message category updated successfully",
       data: updatedCategoryMessage
     });
@@ -97,7 +97,7 @@ export const addNewCategory = async (
   try {
     const newMessageCategory = await createMessageCategories(createData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Message category added successfully",
       data: newMessageCategory
     });
@@ -116,7 +116,7 @@ export const deleteMessageCategoryById = async (
   try {
     await deleteMessageCategory(id);
 
-    return res.status(200).send({ message: "Message category deleted successfully" });
+    res.status(200).send({ message: "Message category deleted successfully" });
   } catch (err) {
     next(err);
   }

@@ -6,7 +6,7 @@ export const getConfigsList = async (req: Request, res: Response, next: NextFunc
   try {
     const configs = await getConfigs();
 
-    return res.status(200).send({ data: configs });
+    res.status(200).send({ data: configs });
   } catch (err) {
     next(err);
   }
@@ -36,7 +36,7 @@ export const editConfigs = async (req: Request<{}, {}, ConfigUpdateData, {}>, re
   };
   try {
     await updateConfigs(updateData);
-    return res.status(200).send({ message: "Configs updated successfully" });
+    res.status(200).send({ message: "Configs updated successfully" });
   } catch (err) {
     next(err);
   }
@@ -46,7 +46,7 @@ export const resetConfigsToDefaults = async (req: Request, res: Response, next: 
   try {
     await updateConfigs(configDefaults);
 
-    return res.status(200).send({ message: "Configs reset to default successfully" });
+    res.status(200).send({ message: "Configs reset to default successfully" });
   } catch (err) {
     next(err);
   }

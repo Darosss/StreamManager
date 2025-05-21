@@ -29,7 +29,7 @@ export const getTimersList = async (req: Request<{}, {}, {}, RequestTimerQuery>,
 
     const count = await getTimersCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: timers,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -59,7 +59,7 @@ export const addNewTimer = async (req: Request<{}, {}, TimerCreateData, {}>, res
   try {
     const newTimer = await createTimer(createData);
 
-    return res.status(200).send({ message: "Timmer added successfully", data: newTimer });
+    res.status(200).send({ message: "Timmer added successfully", data: newTimer });
   } catch (err) {
     next(err);
   }
@@ -87,7 +87,7 @@ export const editTimerById = async (
   try {
     const updatedTimer = await updateTimerById(id, updateData);
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Timmer updated successfully",
       data: updatedTimer
     });
@@ -102,7 +102,7 @@ export const deleteTimer = async (req: Request<RequestParams, {}, {}, {}>, res: 
   try {
     await deleteTimerById(id);
 
-    return res.status(200).send({ message: "Timmer deleted successfully" });
+    res.status(200).send({ message: "Timmer deleted successfully" });
   } catch (err) {
     next(err);
   }

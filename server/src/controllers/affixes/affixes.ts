@@ -24,7 +24,7 @@ export const getAffixesList = async (req: Request<{}, {}, {}, RequestSearch>, re
 
     const count = await getAffixesCount(searchFilter);
 
-    return res.status(200).send({
+    res.status(200).send({
       data: affixes,
       totalPages: Math.ceil(count / Number(limit)),
       count: count,
@@ -40,7 +40,7 @@ export const addNewAffix = async (req: Request<{}, {}, AffixCreateData, {}>, res
   try {
     const newAffix = await createAffix({ name, enabled, prefixChance, prefixes, suffixChance, suffixes });
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Affix added successfully",
       data: newAffix
     });
@@ -60,7 +60,7 @@ export const editAffixById = async (
   try {
     const updatedAffix = await updateAffixById(id, { name, enabled, prefixes, suffixes, prefixChance, suffixChance });
 
-    return res.status(200).send({
+    res.status(200).send({
       message: "Affix updated successfully",
       data: updatedAffix
     });
@@ -75,7 +75,7 @@ export const deleteAffix = async (req: Request<RequestParams, {}, {}, {}>, res: 
   try {
     await deleteAffixById(id);
 
-    return res.status(200).send({ message: "Affix deleted successfully" });
+    res.status(200).send({ message: "Affix deleted successfully" });
   } catch (err) {
     next(err);
   }
