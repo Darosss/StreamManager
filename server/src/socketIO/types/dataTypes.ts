@@ -1,8 +1,9 @@
 //TODO: I do not use tsconfig @paths here for one reason. These types right now are imported in /frontend @SocketTypes path
 // When using /server paths it does not know the proper path. So use ../../ paths instead for now.
-import { DownloadedData } from "../../models/songs";
-import { AchievementModel, StageDataWithBadgePopulated, UserModel } from "../../models";
-import { UpdateAchievementUserProgressProgressesArgs } from "../../services";
+import { DownloadedData } from "../../models/songs/types";
+import { AchievementModel, StageDataWithBadgePopulated } from "../../models/achievements/types";
+import { UserModel } from "../../models/users/types";
+import { UpdateAchievementUserProgressProgressesArgs } from "../../services/achievements/types/shared";
 import { CommonUserstate, DeleteUserstate } from "tmi.js";
 
 export type SongType = "yt" | "local";
