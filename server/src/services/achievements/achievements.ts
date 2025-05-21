@@ -86,17 +86,18 @@ export const getOneAchievement = async (
 ) => {
   const { select = { __v: 0 } } = findOptions;
   try {
-    const foundAchievement: AchievementWithBadgePopulated | null = await Achievement.findOne(filter)
-      .select(select)
-      .populate([
-        {
-          path: "stages",
-          populate: {
-            path: "stageData.badge"
-          }
-        },
-        ...(populateTag ? [{ path: "tag" }] : [])
-      ]);
+    const foundAchievement: AchievementWithBadgePopulated | null =
+      await Achievement.findOne<AchievementWithBadgePopulated>(filter)
+        .select(select)
+        .populate([
+          {
+            path: "stages",
+            populate: {
+              path: "stageData.badge"
+            }
+          },
+          ...(populateTag ? [{ path: "tag" }] : [])
+        ]);
 
     return foundAchievement;
   } catch (err) {
