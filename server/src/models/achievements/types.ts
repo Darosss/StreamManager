@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
 import { BaseModel } from "../types";
-import { BadgeModel } from "../badges";
-import { UserModel } from "../users";
-import { TagModel } from "../tags";
+import { BadgeModel } from "../badges/types";
+import { UserModel } from "../users/types";
+import { TagModel } from "../tags/types";
 import { CustomAchievementAction } from "./enums";
 
 export type StageDataRarity = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
