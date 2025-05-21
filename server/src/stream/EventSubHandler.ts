@@ -280,6 +280,10 @@ class EventSubHandler extends HeadHandler {
         { twitchId: userId },
         { twitchId: userId, username: userDisplayName, twitchName: userName }
       );
+      if (!user) {
+        eventsubLogger.info(`Couldn't save redemption no user found ${userId}`);
+        return;
+      }
 
       const reward = await e.getReward();
 
