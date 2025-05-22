@@ -11,7 +11,8 @@ export const useTimer = ({
   duration,
   isPlaying,
 }: UseTimerProps) => {
-  const [progressTimer, setProgressTimer] = useState<NodeJS.Timeout>();
+  const [progressTimer, setProgressTimer] =
+    useState<ReturnType<typeof setTimeout>>();
   const [timer, setTimer] = useState(0);
 
   const countTime = (newDuration: number) =>

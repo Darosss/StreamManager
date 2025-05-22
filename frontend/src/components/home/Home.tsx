@@ -51,7 +51,7 @@ function ChatBackground() {
   const [messages, setMessages] = useState<MessageProps[]>([]);
 
   useEffect(() => {
-    let chatTimeout: NodeJS.Timeout;
+    let chatTimeout: ReturnType<typeof setTimeout>;
     let chatMessageIndex = 1;
 
     const getRandomDelay = () => {
