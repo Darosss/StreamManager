@@ -44,7 +44,8 @@ export default function Redemptions() {
       setShowRedemption(true);
 
       const audioCtx = new AudioContext();
-      audioCtx.decodeAudioData(audioBuffer, (buffer) => {
+      //TODO: replace any later.
+      audioCtx.decodeAudioData(audioBuffer as any, (buffer) => {
         if (source) {
           source.stop();
         }
