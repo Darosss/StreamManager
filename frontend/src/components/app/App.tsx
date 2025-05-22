@@ -2,7 +2,6 @@ import "react-notifications-component/dist/theme.css";
 import { SocketContextProvider } from "@socket";
 import { RouterProvider } from "react-router-dom";
 import { ReactNotifications } from "react-notifications-component";
-import { HelmetProvider } from "react-helmet-async";
 import { allRoutes } from "@routes";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
@@ -14,12 +13,10 @@ function App() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <SocketContextProvider>
-          <HelmetProvider>
-            <div className="main">
-              <ReactNotifications />
-              <RouterProvider router={allRoutes} />
-            </div>
-          </HelmetProvider>
+          <div className="main">
+            <ReactNotifications />
+            <RouterProvider router={allRoutes} />
+          </div>
         </SocketContextProvider>
       </QueryClientProvider>
     </Provider>
