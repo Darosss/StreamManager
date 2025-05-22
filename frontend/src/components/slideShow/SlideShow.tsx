@@ -16,7 +16,7 @@ export default function Slideshow({
   const arrayChildren = Children.toArray(children);
 
   const [index, setIndex] = useState(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [slideShowOn, setSlideShowOn] = useState(true);
 
