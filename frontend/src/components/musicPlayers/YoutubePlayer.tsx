@@ -12,7 +12,7 @@ export default function YoutubePlayer({
   isPlaying,
 }: YoutubePlayerProps) {
   const socket = useSocketContext();
-  const audioPlayer = useRef<any>();
+  const audioPlayer = useRef<any>(null);
 
   const handleYTChangeVolume = useCallback(
     (volume: number) => {
