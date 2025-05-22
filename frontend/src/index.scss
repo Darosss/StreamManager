@@ -1,28 +1,52 @@
+@use "sass:color";
+
 :root {
   --background-color: #{$background-color-light};
-  --background-color-opposite: #{lighten($background-color-dark, 5%)};
-  --background-color-darker: #{darken($background-color-light, 15%)};
-  --background-color-lighter: #{lighten($background-color-light, 30%)};
-  --revert-background-color: #{lighten($background-color-dark, 40%)};
+  --background-color-opposite: #{color.scale(
+      $background-color-dark,
+      $lightness: 5%
+    )};
+  --background-color-darker: #{color.scale(
+      $background-color-light,
+      $lightness: -15%
+    )};
+  --background-color-lighter: #{color.scale(
+      $background-color-light,
+      $lightness: 30%
+    )};
+  --revert-background-color: #{color.scale(
+      $background-color-dark,
+      $lightness: 40%
+    )};
   --font-color: #{$font-color-light};
-  --info-bg-color: #{darken($info-color, 25%)};
-  --time-color: #{(darken($info-color, 50%))};
+  --info-bg-color: #{color.scale($info-color, $lightness: -25%)};
+  --time-color: #{color.scale($info-color, $lightness: -50%)};
   --message-username-color: #{$danger-color};
 }
 
-// Use dark mode
 [data-theme="dark"] {
   --background-color: #{$background-color-dark};
-  --background-color-opposite: #{darken($background-color-light, 30%)};
-  --background-color-darker: #{darken($background-color-dark, 15%)};
-  --background-color-lighter: #{lighten($background-color-dark, 30%)};
+  --background-color-opposite: #{color.scale(
+      $background-color-light,
+      $lightness: -30%
+    )};
+  --background-color-darker: #{color.scale(
+      $background-color-dark,
+      $lightness: -15%
+    )};
+  --background-color-lighter: #{color.scale(
+      $background-color-dark,
+      $lightness: 30%
+    )};
   --font-color: #{$font-color-dark};
-  --revert-background-color: #{darken($background-color-light, 40%)};
-  --info-bg-color: #{adjust-hue($info-color, -30deg)};
-  --time-color: #{(lighten($info-color, 30%))};
+  --revert-background-color: #{color.scale(
+      $background-color-light,
+      $lightness: -40%
+    )};
+  --info-bg-color: #{color.adjust($info-color, $hue: -30deg)};
+  --time-color: #{color.scale($info-color, $lightness: 30%)};
   --message-username-color: #{$success-color};
 }
-
 #root {
   height: 100vh;
 }
@@ -252,14 +276,14 @@ div {
     background-color: $success-color;
 
     &:hover {
-      background-color: lighten($success-color, 20%) !important;
+      background-color: #{color.scale($success-color, $lightness: 20%)} !important;
     }
   }
 
   &.disabled {
     background-color: $danger-color;
     &:hover {
-      background-color: lighten($danger-color, 20%) !important;
+      background-color: #{color.scale($danger-color, $lightness: 20%)} !important;
     }
   }
 }

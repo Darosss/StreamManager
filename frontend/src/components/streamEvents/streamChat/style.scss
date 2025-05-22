@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .stream-chat {
   background-color: var(--background-color-darker);
   height: 100%;
@@ -49,7 +51,7 @@
     overflow: hidden;
 
     &:active {
-      background-color: lighten($tertiary-color, 10%);
+      background-color: #{color.scale($tertiary-color, $lightness: 10%)};
     }
   }
 }
