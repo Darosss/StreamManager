@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { JSX, useContext, useEffect, useMemo } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   ServerToClientEvents,

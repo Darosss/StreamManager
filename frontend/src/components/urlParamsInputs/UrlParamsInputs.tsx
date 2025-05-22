@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { JSX, useEffect, useRef } from "react";
 
 import { useSearchParams } from "react-router-dom";
 
