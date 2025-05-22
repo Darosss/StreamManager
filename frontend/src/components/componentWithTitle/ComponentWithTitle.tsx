@@ -1,12 +1,11 @@
-import React from "react";
-import { Helmet } from "react-helmet-async";
+import { JSX } from "react";
 
 interface ComponentWithTitleProps {
   title: string;
   component: JSX.Element;
 }
 
-type HemletTitleProps = Pick<ComponentWithTitleProps, "title">;
+type CustomTitleProps = Pick<ComponentWithTitleProps, "title">;
 
 export default function ComponentWithTitle({
   title,
@@ -14,12 +13,12 @@ export default function ComponentWithTitle({
 }: ComponentWithTitleProps) {
   return (
     <>
-      <HelmetTitle title={title} />
+      <title>{title}</title>
       {component}
     </>
   );
 }
 
-export function HelmetTitle({ title }: HemletTitleProps) {
-  return <Helmet title={title + " | Stream Manager"}></Helmet>;
+export function CustomTitle({ title }: CustomTitleProps) {
+  return <title>{title + " | Stream Manager"} </title>;
 }
