@@ -48,7 +48,7 @@ export interface EventAndUser {
 }
 
 export interface AudioChunkData {
-  chunk: string | Buffer;
+  chunk: string | BufferSource;
 }
 
 export type MessageServerDataBadgesPathsType = [string, string, string];
