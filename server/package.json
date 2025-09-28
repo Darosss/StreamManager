@@ -19,7 +19,7 @@
   "author": "Darosss",
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.8",
+    "@distube/ytdl-core": "^4.16.12",
     "@twurple/api": "^7.0.3",
     "@twurple/eventsub-http": "^7.0.3",
     "@twurple/eventsub-ws": "^7.0.3",
