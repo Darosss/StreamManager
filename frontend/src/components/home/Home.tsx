@@ -21,14 +21,18 @@ export default function Home() {
     <div className="home-wrapper">
       <HelmetTitle title="Home" />
       <div className="home-nav">
-        <h1> Stream Manager </h1>
         <ChangeTheme />
       </div>
       <div className="home-content">
         <div className="home-content-tiles">
           {routes.map((route, index) => (
             <div key={index}>
-              <Link to={route.path} className="common-button primary-button">
+              <Link
+                to={route.path}
+                className={`common-button primary-button ${
+                  route.path === "/" ? "disabled" : "enabled"
+                }`}
+              >
                 {route.label}
               </Link>
             </div>

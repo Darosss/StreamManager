@@ -1,11 +1,27 @@
 .home-wrapper {
   display: flex;
   flex-direction: column;
+  padding: 0.2rem;
+
+  .home-change-theme {
+    position: absolute;
+    right: 0;
+    padding: 0.1rem;
+  }
 
   .home-nav {
-    height: 10vh;
+    height: 3vh;
     text-align: center;
+    display: flex;
+    justify-content: end;
+    align-items: start;
+    gap: 1rem;
+
     border-bottom: 0.1rem solid var(--background-color-darker);
+    button {
+      min-width: 2rem;
+      max-width: 2rem;
+    }
   }
 
   .home-content {
@@ -15,14 +31,16 @@
 
     .home-content-tiles {
       position: relative;
-      opacity: 0.7;
+      opacity: 0.9;
       z-index: 100;
       display: flex;
       flex-wrap: wrap;
+      height: 100%;
+      gap: 1rem;
 
       & > div {
         flex: 1 0 30%;
-        height: 12vh;
+        height: 8vh;
         padding: 0.5rem;
         a {
           font-size: 2.5vmin;
@@ -34,8 +52,12 @@
           border-radius: 1rem;
           border: 0.1rem solid $secondary-color;
 
-          &:hover {
-            opacity: 0.7;
+          &.disabled {
+            filter: grayscale(100);
+            cursor: default;
+          }
+
+          &.enabled:hover {
             font-size: 3vmin;
             z-index: 100;
           }
