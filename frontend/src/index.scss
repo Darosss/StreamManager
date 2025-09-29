@@ -73,10 +73,6 @@ a {
   text-decoration: none;
   color: $link-color;
 
-  &:hover {
-    color: var(--revert-background-color) !important;
-  }
-
   &:visited {
     color: $link-color;
   }
@@ -194,8 +190,12 @@ select {
     align-items: center;
     justify-content: center;
 
+    transition: all;
+    transition-duration: 300ms;
     &:hover {
-      transform: rotate(2deg);
+      filter: brightness(115%);
+      filter: hue-rotate(15deg);
+      cursor: pointer;
     }
   }
 
@@ -205,14 +205,6 @@ select {
 
   &.primary-button {
     background: linear-gradient(40deg, $primary-color 0, $secondary-color 100%);
-
-    &:hover {
-      background: linear-gradient(
-        125deg,
-        $secondary-color 0,
-        $primary-color 100%
-      );
-    }
   }
 
   &.secondary-button {
@@ -221,14 +213,6 @@ select {
       $secondary-color 0,
       var(--background-color-darker) 100%
     );
-
-    &:hover {
-      background: linear-gradient(
-        40deg,
-        var(--background-color-darker) 0,
-        $secondary-color 100%
-      );
-    }
   }
 
   &.tertiary-button {
@@ -237,14 +221,6 @@ select {
       $tertiary-color 0,
       $secondary-color 100%
     );
-
-    &:hover {
-      background: linear-gradient(
-        125deg,
-        $secondary-color 0,
-        $tertiary-color 100%
-      );
-    }
   }
 
   &.danger-button {
@@ -253,14 +229,6 @@ select {
       $danger-color 30%,
       $secondary-color 100%
     );
-
-    &:hover {
-      background: linear-gradient(
-        125deg,
-        $secondary-color 0,
-        $danger-color 100%
-      );
-    }
   }
 }
 
