@@ -1,5 +1,5 @@
 export const routes = [
-  { path: "/", label: "Home" },
+  { path: "/", label: "Stream Manager" },
   { path: "/achievements", label: "Achievements" },
   { path: "/overlay", label: "Overlay" },
   { path: "/messages", label: "Messages" },
