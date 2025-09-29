@@ -23,13 +23,8 @@ export default function ChangeTheme() {
   };
 
   return (
-    <button
-      className={`common-button ${
-        theme === "light" ? "secondary-button" : "primary-button"
-      }`}
-      onClick={handleThemeChange}
-    >
-      {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+    <button className={`common-button`} onClick={handleThemeChange}>
+      {theme === "light" ? "🔆" : "🌑"}
     </button>
   );
 }
