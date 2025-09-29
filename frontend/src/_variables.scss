@@ -1,29 +1,27 @@
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$tertiary-color: #9147ff;
-$success-color: #28a745;
-$warning-color: #ffc107;
-$danger-color: #dc3545;
-$info-color: #fffd97;
+$primary-color: #3b82f6; // tailwind blue-500
+$secondary-color: #6b7280; // tailwind gray-500
+$tertiary-color: #8b5cf6; // tailwind violet-500
+$success-color: #22c55e; // tailwind green-500
+$warning-color: #facc15; // tailwind yellow-400
+$danger-color: #ef4444; // tailwind red-500
+$info-color: #fef08a; // tailwind yellow-200
 
-$link-color: #afa241;
+$link-color: #a3a3a3; // tailwind gray-400
 
-// Light mode colors
-$background-color-light: #dcdcdc;
-$font-color-light: #2d2d2d;
+// Light mode
+$background-color-light: #e5e7eb; // tailwind gray-200
+$font-color-light: #374151; // tailwind gray-700
 
-// Dark mode colors
-$background-color-dark: #393939;
-$font-color-dark: #ffffff;
+// Dark mode
+$background-color-dark: #1f2937; // tailwind gray-800
+$font-color-dark: #f9fafb; // tailwind gray-50
 
-//Stream events variables
-$bg-color-popup: rgba(128, 128, 128, 0.131);
-$color-user-warn: rgb(127, 127, 11);
-$color-user-usual: rgb(40, 18, 182);
-$color-user-new-user: rgb(18, 114, 20);
-$color-user-blacklist: rgb(71, 17, 17);
-$color-user-danger: rgba(99, 52, 52, 0.2);
-//Stream events variables
+$bg-color-popup: rgba(107, 114, 128, 0.15); // gray-500 with opacity
+$color-user-warn: #a16207; // yellow-700
+$color-user-usual: #4338ca; // indigo-700
+$color-user-new-user: #15803d; // green-700
+$color-user-blacklist: #7f1d1d; // red-900
+$color-user-danger: rgba(220, 38, 38, 0.2); // red-600 with opacity
 
 $screen-xs: 320px; /* Px for media queries for smallest screens */
 $screen-sm: 480px; /* Px for media queries for small screens */
