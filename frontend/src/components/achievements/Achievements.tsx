@@ -1,10 +1,10 @@
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { Link } from "react-router-dom";
 
 export default function Achievements() {
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <div className="achievements-links-wrapper">
         <div>
           <Link to="list"> Achievements </Link>

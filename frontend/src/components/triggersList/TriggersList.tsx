@@ -1,6 +1,6 @@
 import Pagination from "@components/pagination";
 import Modal from "@components/modal";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import FilterBarTriggers from "./filterBarTriggers";
 import {
   useGetTriggers,
@@ -59,7 +59,7 @@ export default function TriggersList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarTriggers />
       <TriggersData data={triggers.data} />
       <div className="table-list-pagination">

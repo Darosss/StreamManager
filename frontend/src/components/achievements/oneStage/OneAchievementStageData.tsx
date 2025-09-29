@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { TableListWrapper } from "@components/tableWrapper";
 import Modal from "@components/modal";
 import ModalBadgesList from "../badges/ModalBadgesList";
@@ -37,7 +37,7 @@ export default function OneAchievementStageData() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <div className="one-achievement-stage-data">
         <div className="default-data">
           {id ? (

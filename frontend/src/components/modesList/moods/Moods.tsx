@@ -2,7 +2,7 @@ import { Error, Loading } from "@components/axiosHelper";
 import CardboxWrapper from "@components/cardboxWrapper";
 import Modal from "@components/modal";
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   fetchMoodsDefaultParams,
   useGetMoods,
@@ -54,7 +54,7 @@ export default function Moods() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarModes />
       <CardboxWrapper title={"Moods list"}>
         <MoodsData data={moods.data} />

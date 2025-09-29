@@ -1,5 +1,5 @@
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import BadgesListData from "./BadgesListData";
 import FilterBarBadges from "./FilterBarBadges";
 import { useGetBadges } from "@services";
@@ -12,7 +12,7 @@ export default function BadgesList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarBadges />
       <BadgesListData badges={badges.data} />
       <div className="table-list-pagination">

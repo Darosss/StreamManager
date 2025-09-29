@@ -1,5 +1,5 @@
 import DrawerBar from "@components/drawer";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { addSuccessNotification } from "@utils";
 
 interface LayoutDrawerBarProps {
@@ -67,7 +67,7 @@ export default function LayoutDrawerBar({
         </div>
         <div>
           <div className="grid-header-drawer">
-            <PreviousPage /> <span>{layoutName}</span> grid
+            <NavigateButton /> <span>{layoutName}</span> grid
           </div>
 
           <div className="grid-edit-save">

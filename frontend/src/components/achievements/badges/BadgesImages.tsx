@@ -1,4 +1,4 @@
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import AvailableBadgeImages from "./AvailableBadgeImages";
 import { useState } from "react";
 import { useDeleteBadgeImage, useGetBadgesImages } from "@services";
@@ -53,7 +53,7 @@ export default function BadgesImages() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <AvailableBadgeImages
         onClickBadge={(data) => {
           handleOnClickBadgeImage(data);

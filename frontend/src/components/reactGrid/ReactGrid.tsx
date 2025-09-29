@@ -1,7 +1,7 @@
 import DrawerBar from "@components/drawer";
 import React, { JSX, useEffect, useMemo, useState } from "react";
 import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
 
 type CurrentBreakpointState = [
@@ -238,7 +238,7 @@ function LayoutDrawerBar(props: {
         </div>
         <div>
           <div className="grid-header-drawer">
-            <PreviousPage /> <span>{layoutName}</span> grid
+            <NavigateButton /> <span>{layoutName}</span> grid
           </div>
 
           <div className="grid-edit-save">

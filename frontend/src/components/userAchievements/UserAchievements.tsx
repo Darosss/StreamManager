@@ -1,4 +1,4 @@
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { useGetAchievements } from "@services";
 import AchievementStageLists from "./AchievementStagesList";
 import Pagination from "@components/pagination";
@@ -19,7 +19,7 @@ export default function UserAchievements() {
   const { data, count, currentPage } = achievementsData;
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <div className="user-achievements-header">
         <div>User achievements</div>
         <button

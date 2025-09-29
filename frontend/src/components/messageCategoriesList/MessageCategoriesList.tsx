@@ -1,5 +1,5 @@
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   useCreateMessageCategory,
   useGetMessageCategories,
@@ -67,7 +67,7 @@ export default function MessageCategoriesList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarCategories />
       <CategoriesData data={messageCategories.data} />
 

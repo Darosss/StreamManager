@@ -1,6 +1,6 @@
 import Pagination from "@components/pagination";
 import Modal from "@components/modal";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import FilterBarTimers from "./filterBarTimers";
 import {
   useGetTimers,
@@ -54,7 +54,7 @@ export default function TimersList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarTimers />
       <TimersData data={timers.data} />
       <div className="table-list-pagination">

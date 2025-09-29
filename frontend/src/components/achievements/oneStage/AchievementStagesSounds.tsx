@@ -1,5 +1,5 @@
 import Modal from "@components/modal";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   useDeleteAchievementStageSound,
   useGetAchievementStagesSounds,
@@ -45,7 +45,7 @@ export default function AchievementStagesSounds() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <AvailableAchievementSounds
         soundPaths={stagesSoundResponseData.data}
         onClickRefresh={refetch}

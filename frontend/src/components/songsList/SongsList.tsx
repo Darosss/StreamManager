@@ -1,7 +1,7 @@
 import { Loading, Error } from "@components/axiosHelper";
 import Modal from "@components/modal";
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   fetchSongsDefaultParams,
   useGetSongs,
@@ -52,7 +52,7 @@ export default function SongsList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarSongs />
       <SongsData data={songs.data} />
       <div className="table-list-pagination">

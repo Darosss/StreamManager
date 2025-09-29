@@ -1,6 +1,6 @@
 import React from "react";
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { fetchUsersDefaultParams, useGetUsers } from "@services";
 import FilterBarUsers from "./filterBarUsers";
 import UsersDetails from "./UsersDetails";
@@ -17,7 +17,7 @@ export default function Users() {
   const { data, count, currentPage } = usersData;
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarUsers />
       <div id="users-list" className="table-list-wrapper">
         <UsersDetails users={data} />

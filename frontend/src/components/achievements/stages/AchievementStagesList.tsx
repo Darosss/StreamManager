@@ -1,5 +1,5 @@
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import AchievementStagesData from "./AchievementStagesData";
 import FilterBarStages from "./FilterBarStages";
 import { useGetAchievementStages } from "@services";
@@ -13,7 +13,7 @@ export default function AchievementStagesList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarStages />
       <AchievementStagesData data={stagesData.data} />
       <Pagination

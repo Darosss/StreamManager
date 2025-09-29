@@ -1,6 +1,6 @@
 import Pagination from "@components/pagination";
 import { Link } from "react-router-dom";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import FilterBarSessions from "./filterBarSessions";
 import { fetchStreamSessionsDefaultParams, useGetSessions } from "@services";
 import { DateDifference, DateTooltip } from "@components/dateTooltip";
@@ -19,7 +19,7 @@ export default function StreamSessions() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarSessions />
       <div id="stream-session-list" className="table-list-wrapper">
         <table id="table-stream-session-list">

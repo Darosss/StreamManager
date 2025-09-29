@@ -2,7 +2,7 @@ import { Error, Loading } from "@components/axiosHelper";
 import CardboxWrapper from "@components/cardboxWrapper";
 import Modal from "@components/modal";
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   fetchTagsDefaultParams,
   useGetTags,
@@ -54,7 +54,7 @@ export default function Tags() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarModes />
       <CardboxWrapper title={"Tags list"}>
         <TagsData data={tags.data} />

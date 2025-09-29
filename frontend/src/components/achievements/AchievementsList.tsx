@@ -1,5 +1,5 @@
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 
 import AchievementsListData from "./AchievementsListData";
 import FilterBarAchievements from "./FilterBarAchievements";
@@ -21,7 +21,7 @@ export default function AchievementsList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarAchievements />
       <AchievementsListData achievements={achievementsData.data} />
       <div className="table-list-pagination">

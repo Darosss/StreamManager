@@ -1,6 +1,6 @@
 import Pagination from "@components/pagination";
 import { Link, useParams } from "react-router-dom";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import FilterBarRedemptions from "./filterBarRedemptions";
 import {
   useGetRedemptions,
@@ -147,7 +147,7 @@ const Redemptions = ({
 }: RedemptionsProps) => {
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarRedemptions />
 
       <div id="redemptions-list" className="table-list-wrapper">

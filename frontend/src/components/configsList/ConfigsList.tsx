@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import { useGetConfigs } from "@services";
 import CommandsConfigsWrapper from "./CommandsConfigs";
 import TimersConfigsWrapper from "./TimersConfigs";
@@ -67,7 +67,7 @@ export default function ConfigsList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <EditConfigs />
 
       <div className="configs-list-tab-list-wrapper">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import Message from "@components/message";
 import { DateTooltip } from "@components/dateTooltip";
 import { HelmetTitle } from "@components/componentWithTitle";
@@ -47,7 +47,7 @@ export default function UserProfile() {
   return (
     <>
       <HelmetTitle title={data.username + " profile" || "User profile"} />
-      <PreviousPage />
+      <NavigateButton />
       <div className="profile-details-wrapper">
         <div className="detail-section-wrapper">
           <div>

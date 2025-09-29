@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import LineChart from "@components/lineChart";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import SlideShow from "@components/slideShow";
 import { useGetSessionById } from "@services";
 import { DateTooltip } from "@components/dateTooltip";
@@ -31,7 +31,7 @@ export default function StreamSessionDetail() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <div className="stream-session-details-wrapper">
         <div className="detail-section-wrapper">
           <div>

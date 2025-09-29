@@ -1,6 +1,6 @@
 import Pagination from "@components/pagination";
 import { Link, useParams } from "react-router-dom";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import FilterBarMessages from "./filterBarMessages";
 import {
   PaginationData,
@@ -140,7 +140,7 @@ const Messages = ({
 }: MessagesProps) => {
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarMessages />
       <div id="messages-list" className="table-list-wrapper">
         <MessagesDetails messages={data} />

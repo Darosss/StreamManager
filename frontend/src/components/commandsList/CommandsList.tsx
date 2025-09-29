@@ -1,6 +1,6 @@
 import Modal from "@components/modal";
 import Pagination from "@components/pagination";
-import PreviousPage from "@components/previousPage";
+import NavigateButton from "@components/navigateButton";
 import {
   fetchChatCommandsDefaultParams,
   useCreateChatCommand,
@@ -64,7 +64,7 @@ export default function CommandsList() {
 
   return (
     <>
-      <PreviousPage />
+      <NavigateButton />
       <FilterBarCommands />
       <CommandsData commands={commandsData.data} />
       <div className="table-list-pagination">
