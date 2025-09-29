@@ -74,14 +74,13 @@
       overflow: hidden;
       top: 0;
       z-index: 0;
-      //   width: 50%;
 
       .typewriter {
-        overflow: hidden; /* Hide the text until the animation starts */
+        overflow: hidden;
         width: 0;
         font-family: monospace;
-        border-right: 0.15em solid #666; /* Add a blinking cursor effect */
-        white-space: nowrap; /* Prevent the text from wrapping */
+        border-right: 0.15em solid #666;
+        white-space: nowrap;
         animation: typing 4s steps(120) 1s forwards;
       }
 
@@ -105,8 +104,8 @@
 @keyframes typing {
   from {
     width: 0;
-  } /* Start with 0 width */
+  }
   to {
     width: 100%;
-  } /* End with full width */
+  }
 }
