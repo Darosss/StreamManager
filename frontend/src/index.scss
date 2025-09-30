@@ -226,7 +226,9 @@ select {
       $secondary-color 100%
     );
   }
-
+  &.success-button {
+    background: linear-gradient(40deg, $warning-color 0, $success-color 100%);
+  }
   &.danger-button {
     background: linear-gradient(
       40deg,
