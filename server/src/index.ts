@@ -4,6 +4,7 @@ import { initMongoDataBase, backendPort } from "@configs";
 import expressApp from "./app";
 import { logger } from "@utils";
 import init from "./stream/initializeHandlers";
+import { getAuthToken } from "@services";
 
 const startServer = async () => {
   await initMongoDataBase();
@@ -11,7 +12,9 @@ const startServer = async () => {
   const server = expressApp();
 
   try {
-    await init();
+    //TODO: note, this will be refactored later, now when its for LAN it'll work i guess ;o
+    const foundTokenDB = await getAuthToken();
+    if (foundTokenDB) await init(foundTokenDB);
   } catch (err) {
     console.log("Error occured while trying to init handlers", err);
   }

@@ -13,6 +13,7 @@ export interface ClientToServerEvents extends ClientToServerMusicEvents, ClientT
   refreshTimers: () => void;
   changeModes: () => void;
   logout: () => void;
+  getLoggedUserInfo: (cb: (username: string | null) => void) => void;
   emulateAchievement: (data: ObtainAchievementDataWithCollectedAchievement) => void;
   addAchievementProgressToUser: (data: AddAchievementProgressToUserData, cb: (error: string | null) => void) => void;
   refreshOverlayLayout: (overlayId: string) => void;

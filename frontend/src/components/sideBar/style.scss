@@ -18,13 +18,6 @@
       height: 100%;
     }
   }
-  .logged-button {
-    font-size: 1.3vmin;
-    letter-spacing: 0.1rem;
-    span {
-      color: $info-color;
-    }
-  }
 }
 
 @media screen and (max-width: $screen-md) {

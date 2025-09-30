@@ -1,10 +1,10 @@
 import { botUsername, botPassword, clientId, clientSecret, encryptionKey } from "@configs";
-import { createNewAuth, getAuthToken, getConfigs, removeAuthToken } from "@services";
+import { createNewAuth, createUserIfNotExist, getConfigs, removeAuthToken, updateAuthUserId } from "@services";
 import { SocketHandler } from "@socket";
 import { ApiClient } from "@twurple/api";
 import { RefreshingAuthProvider, getTokenInfo } from "@twurple/auth";
-import { ConfigModel } from "@models";
-import { decryptToken } from "@utils";
+import { AuthModel, ConfigModel } from "@models";
+import { decryptToken, sleep } from "@utils";
 import { AuthorizedUserData, HandlersList } from "./types";
 import LoyaltyHandler from "./LoyaltyHandler";
 import StreamHandler from "./StreamHandler";
@@ -94,8 +94,8 @@ const updateHandlers = async ({ configs, twitchApi, authorizedUser }: CreateHand
   });
 };
 
-const init = async () => {
-  const authData = await initializeAuthToken();
+const init = async (token: AuthModel) => {
+  const authData = await initializeAuthToken(token);
   if (!authData) return;
   const tokeninfo = await getTokenInfo(authData.decryptedAccessToken);
   const authorizedUser: AuthorizedUserData = { id: tokeninfo.userId!, name: tokeninfo.userName! };
@@ -104,18 +104,27 @@ const init = async () => {
   if (!authorizedUser.id || !authorizedUser.name) {
     throw Error("Something went wrong, try login again");
   }
-  await initializeHandlers({ twitchApi, authorizedUser });
+
+  try {
+    if (!token.userId) await updateAuthUserId(token._id, authorizedUser.id);
+    const userData = { username: authorizedUser.name, twitchId: authorizedUser.id, twitchName: authorizedUser.name };
+
+    await createUserIfNotExist({ twitchId: authorizedUser.id }, userData);
+    await initializeHandlers({ twitchApi, authorizedUser });
+  } catch (err) {
+    throw err;
+  }
 
   AchievementsHandler.getInstance();
   SocketHandler.getInstance().getIO().emit("forceReconnect");
+
+  await sleep(500); //Note: temporary solution
+  SocketHandler.getInstance().getIO().emit("sendLoggedUserInfo", authorizedUser.name);
 };
 
-const initializeAuthToken = async () => {
-  const tokenDB = await getAuthToken();
-  if (!tokenDB) return;
-
-  const decryptedAccessToken = decryptToken(tokenDB.accessToken, tokenDB.ivAccessToken, encryptionKey);
-  const decryptedRefreshToken = decryptToken(tokenDB.refreshToken, tokenDB.ivRefreshToken, encryptionKey);
+const initializeAuthToken = async (token: AuthModel) => {
+  const decryptedAccessToken = decryptToken(token.accessToken, token.ivAccessToken, encryptionKey);
+  const decryptedRefreshToken = decryptToken(token.refreshToken, token.ivRefreshToken, encryptionKey);
 
   const authProvider = new RefreshingAuthProvider({
     clientId,
@@ -137,8 +146,8 @@ const initializeAuthToken = async () => {
     await authProvider.addUserForToken({
       accessToken: decryptedAccessToken,
       refreshToken: decryptedRefreshToken,
-      expiresIn: tokenDB.expiresIn,
-      obtainmentTimestamp: tokenDB.obtainmentTimestamp
+      expiresIn: token.expiresIn,
+      obtainmentTimestamp: token.obtainmentTimestamp
     });
   } catch (err) {
     if (err instanceof Error) {

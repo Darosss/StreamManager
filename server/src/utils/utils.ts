@@ -5,6 +5,10 @@ export const shuffleArray = <T = unknown>(array: Array<T>) => {
   return array.sort(() => 0.5 - Math.random());
 };
 
+export const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export const removeDifferenceFromSet = (originalSet: Set<string>, toBeRemovedSet: Set<string>) => {
   [...toBeRemovedSet].forEach(function (v) {
     originalSet.delete(v);

@@ -13,6 +13,9 @@ export const getSocketEmitsFunctions = (
     refreshTriggers: () => {
       socketConnection.emit("refreshTriggers");
     },
+    getLoggedUserInfo: (cb) => {
+      socketConnection.emit("getLoggedUserInfo", cb);
+    },
     refreshTimers: () => {
       socketConnection.emit("refreshTimers");
     },
