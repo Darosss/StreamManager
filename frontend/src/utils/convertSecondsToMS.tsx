@@ -1,7 +1,7 @@
-import moment from "moment";
+import dayjs from "./utils";
 
 export const convertSecondsToMS = (secondsConvert: number) => {
-  const duration = moment.duration(secondsConvert, "seconds");
+  const duration = dayjs.duration(secondsConvert, "seconds");
   const minutes = Math.floor(duration.asMinutes());
   const seconds = (Math.floor(duration.asSeconds()) % 60)
     .toString()

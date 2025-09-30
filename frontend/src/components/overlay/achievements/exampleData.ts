@@ -1,8 +1,8 @@
 import { randomWithMax } from "@utils";
-import moment from "moment";
 import { commonData } from "../commonExampleData";
 import { ObtainAchievementDataWithCollectedAchievement } from "@socket";
 import { StageDataRarity } from "@services";
+import dayjs from "src/utils/utils";
 const simpleAchievementsNames = [
   "Masters of Multitasking",
   "Eternal Explorer",
@@ -51,7 +51,7 @@ const generateRandomObtainedAchievementData = (
       ],
     },
     stage: {
-      timestamp: moment().add(index, "second").toDate().getTime(),
+      timestamp: dayjs().add(index, "second").toDate().getTime(),
       data: {
         name: simpleStageNames[randomWithMax(simpleStageNames.length - 1)],
         stage: Math.floor(Math.random() * 20),

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import moment from "moment";
 import { useSelector } from "react-redux";
 import { useSocketContext } from "@socket";
 import { RootStore } from "@redux/store";
@@ -7,6 +6,7 @@ import SongProgress from "../songProgress";
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import { RequestSongData } from "@socketTypes";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
+import dayjs from "dayjs";
 
 export default function MusicPlayer() {
   const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
@@ -127,10 +127,11 @@ function RequestedSongsAnimation() {
     if (!isEditor) return;
 
     setInterval(() => {
+      const currentTime = dayjs().toDate().getTime();
       setRequestedSongs((prevState) => [
         {
-          songName: `Random song ${moment.now()}`,
-          username: `random username ${moment.now()}`,
+          songName: `Random song ${currentTime}`,
+          username: `random username ${currentTime}`,
         },
         ...prevState,
       ]);

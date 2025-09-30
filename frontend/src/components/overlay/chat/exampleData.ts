@@ -1,7 +1,7 @@
 import { MessageServerData } from "@socketTypes";
 import { randomWithMax } from "@utils";
-import moment from "moment";
 import { commonData } from "../commonExampleData";
+import dayjs from "src/utils/utils";
 
 const simpleMessageData = [
   "hi there, how are you doing? hey, want to grab coffee later?",
@@ -27,7 +27,7 @@ const generateRandomMessageServerData = (index: number): MessageServerData => {
       emotes: undefined,
       id: Math.random().toString(),
       message: simpleMessageData[randomWithMax(simpleMessageData.length - 1)],
-      timestamp: moment().add(index, "second").toDate().getTime(),
+      timestamp: dayjs().add(index, "second").toDate().getTime(),
     },
     user: {
       _id: Math.random().toString(),

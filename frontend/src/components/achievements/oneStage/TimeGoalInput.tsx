@@ -1,6 +1,6 @@
 import { getDateFromSecondsToYMDHMS } from "@utils";
-import moment from "moment";
 import { useState, useCallback } from "react";
+import dayjs from "src/utils/utils";
 
 interface TimeGoalInputProps {
   goal: number;
@@ -22,29 +22,29 @@ export function TimeGoalInput({ goal, onChangeCallback }: TimeGoalInputProps) {
   const [localGoalValue, setLocalGoalValue] = useState(goal);
   const onChangeFn = useCallback(
     (value: number) => {
-      let time: moment.Moment | null = null;
+      let time: dayjs.Dayjs | null = dayjs();
       switch (currentInput) {
         case CurrentInputEnum.MINUTES:
-          time = moment().add(value, "minute");
+          time = dayjs().add(value, "minute");
           break;
         case CurrentInputEnum.HOURS:
-          time = moment().add(value, "hour");
+          time = dayjs().add(value, "hour");
           break;
         case CurrentInputEnum.DAYS:
-          time = moment().add(value, "day");
+          time = dayjs().add(value, "day");
           break;
         case CurrentInputEnum.MONTHS:
-          time = moment().add(value, "month");
+          time = dayjs().add(value, "month");
           break;
         case CurrentInputEnum.YEARS:
-          time = moment().add(value, "year");
+          time = dayjs().add(value, "year");
           break;
         default:
         case CurrentInputEnum.SECONDS:
           break;
       }
 
-      return time ? Math.round(time.diff(moment()) / 1000) : value;
+      return time ? Math.round(time.diff(dayjs()) / 1000) : value;
     },
     [currentInput]
   );

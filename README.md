@@ -43,7 +43,6 @@ It **SHOULD NOT** be on online hosting
 - MongoDB
 - Socket.IO
 - twurple
-- moment
 - tmi.js
 - winston
 - multer

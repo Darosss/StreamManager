@@ -1,7 +1,7 @@
-import moment from "moment";
+import dayjs from "./utils";
 
 export const getDateFromSecondsToYMDHMS = (time: number, separator = " ") => {
-  const duration = moment.duration(time, "seconds");
+  const duration = dayjs.duration(time, "seconds");
 
   const seconds = Math.floor(duration.seconds());
   const minutes = Math.floor(duration.minutes());

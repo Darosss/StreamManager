@@ -4,13 +4,13 @@ import {
   ObtainAchievementDataWithCollectedAchievement,
   ObtainAchievementDataWithProgressOnly,
 } from "@socketTypes";
-import moment from "moment";
 import { CSSProperties } from "react";
 import { useSelector } from "react-redux";
 import {
   useObtainedAchievementContentData,
   useProgressContentData,
 } from "./data-hooks";
+import dayjs from "src/utils/utils";
 
 interface AchievementDataBlockProps {
   achievement: ObtainAchievementDataWithCollectedAchievement | null;
@@ -61,7 +61,7 @@ export function AchievementDataBlock({
           fontSize: styles.timestampFontSize,
         }}
       >
-        {moment(
+        {dayjs(
           achievement?.stage.timestamp || progress?.progressData.timestamp
         ).format("HH:mm")}
       </div>

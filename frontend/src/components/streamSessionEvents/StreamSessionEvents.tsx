@@ -1,7 +1,7 @@
 import { DateTooltip } from "@components/dateTooltip/DateTooltip";
-import moment from "moment";
 import { Link } from "react-router-dom";
 import { SessionEvents } from "@services";
+import dayjs from "src/utils/utils";
 
 interface StreamSessionProps {
   sessionEvents: SessionEvents[];
@@ -35,7 +35,7 @@ export default function StreamSessionEvents({
             </div>
             <div className="user-info-event">{event.name}</div>
             <div className="user-info-date">
-              {moment(event.createdAt).fromNow()}
+              {dayjs(event.createdAt).fromNow()}
             </div>
           </div>
 

@@ -1,10 +1,10 @@
 import React, { CSSProperties, useMemo } from "react";
 
 import { DateTimeTooltip } from "@components/dateTooltip/DateTooltip";
-import moment from "moment";
 import { MessageServerData, MessageServerDataBadgesPathsType } from "@socket";
 import { viteBackendUrl } from "@configs/envVariables";
 import { getMessagesWithEmotes, getTwitchEmoteUrl } from "@utils";
+import dayjs from "src/utils/utils";
 
 type MessageStylesBadges = Partial<
   Pick<CSSProperties, "maxWidth" | "minWidth">
@@ -60,7 +60,7 @@ export default function Message({
           {tooltip ? (
             <DateTimeTooltip date={date} />
           ) : (
-            moment(date).format("HH:mm:ss")
+            dayjs(date).format("HH:mm:ss")
           )}
         </div>
 
