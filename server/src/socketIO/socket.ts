@@ -8,6 +8,8 @@ import {
 import { Server } from "http";
 import { hostFrontendURL, localFrontendURL } from "@configs";
 import { ConfigManager } from "../stream/ConfigManager";
+import { getAuthToken, getOneUser } from "@services";
+import { AppError } from "@utils";
 
 //TODO: duplicate function is in frontend utils
 export const isObtainedAchievement = (
@@ -66,6 +68,27 @@ class SocketHandler {
       });
 
       this.handleSubscriptionsFromClient(socket);
+
+      socket.on("getLoggedUserInfo", (cb) => {
+        getAuthToken().then(async (token) => {
+          if (!token) return;
+
+          const loggedUser = await getOneUser({ twitchId: token.userId }, { select: { id: 1, username: 1 } }).catch(
+            (err) => {
+              if (err instanceof AppError) {
+                console.error(`${err.name} ${err.message} ${err.statusCode}`);
+              } else {
+                console.error(err);
+              }
+              cb(null);
+            }
+          );
+          if (loggedUser) {
+            cb(loggedUser.username);
+          }
+          cb(null);
+        });
+      });
     });
   }
 
