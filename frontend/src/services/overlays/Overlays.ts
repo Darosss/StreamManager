@@ -17,6 +17,7 @@ import {
   OverlaysUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
+import { addNotification } from "@utils";
 
 export const fetchOverlaysDefaultParams: Required<FetchOverlaysParams> = {
   limit: 10,
@@ -100,6 +101,11 @@ export const useEditOverlay = () => {
     onSuccess: (_, params) => {
       refetchOverlays().then(() => {
         socketConn.emit("refreshOverlayLayout", params.id);
+        addNotification(
+          "Successfully edited",
+          "Overlay is successfully edited",
+          "success"
+        );
       });
     },
     onError: (error) => {
