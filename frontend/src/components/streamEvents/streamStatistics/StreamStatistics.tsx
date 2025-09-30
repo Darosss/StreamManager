@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect } from "react";
 
 import {
   useGetCurrentSessionStatistics,
@@ -6,9 +6,9 @@ import {
   TopRedemptionsUsers,
   TopUsedWords,
 } from "@services";
-import LineChart from "@components/lineChart";
 import SlideShow from "@components/slideShow";
 import { Error, Loading } from "@components/axiosHelper";
+const LineChart = lazy(() => import("@components/lineChart"));
 
 interface SessionMessagesProps {
   count: number;

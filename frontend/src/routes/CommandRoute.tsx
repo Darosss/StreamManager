@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import CommandsList from "@components/commandsList";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function CommandRoutes() {
+export default function CommandRoutes() {
   return (
     <Routes>
       <Route

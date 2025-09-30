@@ -1,4 +1,6 @@
 import "./style.scss";
-import OverlayList from "./OverlaysList";
+import { lazy } from "react";
+
+const OverlayList = lazy(() => import("./OverlaysList"));
 
 export default OverlayList;

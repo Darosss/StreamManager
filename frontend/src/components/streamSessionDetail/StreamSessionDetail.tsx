@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
-import LineChart from "@components/lineChart";
 import NavigateButton from "@components/navigateButton";
 import SlideShow from "@components/slideShow";
 import { useGetSessionById } from "@services";
 import { DateTooltip } from "@components/dateTooltip";
 import StreamSessionEvents from "@components/streamSessionEvents";
 import { Error, Loading } from "@components/axiosHelper";
+import { lazy } from "react";
+const LineChart = lazy(() => import("@components/lineChart"));
 
 export default function StreamSessionDetail() {
   const { sessionId } = useParams();

@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import MessagesList from "@components/messagesList";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function MessageRoutes() {
+export default function MessageRoutes() {
   return (
     <Routes>
       <Route

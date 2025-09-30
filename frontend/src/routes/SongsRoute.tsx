@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import ComponentWithTitle from "@components/componentWithTitle";
 import SongsList from "@components/songsList";
 
-export function SongsRoutes() {
+export default function SongsRoutes() {
   return (
     <Routes>
       <Route

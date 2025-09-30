@@ -1,5 +1,6 @@
 import "./style.scss";
 
-import CardboxWrapper from "./CardboxWrapper";
+import CardboxWrapper, { CardboxItem } from "./CardboxWrapper";
 
+export { CardboxItem };
 export default CardboxWrapper;

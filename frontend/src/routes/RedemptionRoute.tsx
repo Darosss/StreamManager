@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import RedemptionsList from "@components/redemptionsList";
 import ComponentWithTitle from "@components/componentWithTitle";
-export function RedemptionRoutes() {
+export default function RedemptionRoutes() {
   return (
     <Routes>
       <Route

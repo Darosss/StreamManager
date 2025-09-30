@@ -4,7 +4,7 @@ import Moods from "@components/modesList/moods";
 import Affixes from "@components/modesList/affixes";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function ModesRoutes() {
+export default function ModesRoutes() {
   return (
     <Routes>
       <Route

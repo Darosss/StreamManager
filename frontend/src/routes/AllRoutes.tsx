@@ -1,27 +1,31 @@
+import { lazy } from "react";
 import {
   Outlet,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { MessageRoutes } from "./MessageRoute";
-import SideBar from "@components/sideBar";
-import ComponentWithTitle from "@components/componentWithTitle";
+
 import OverlayList from "@components/overlay/overlaysList";
-import { CommandRoutes } from "./CommandRoute";
-import { ConfigRoutes } from "./ConfigsRoute";
-import { EventRoutes } from "./EventsRoute";
-import { MessageCategoriesRoute } from "./MessageCategoriesRoute";
-import { ModesRoutes } from "./ModeRoute";
-import { RedemptionRoutes } from "./RedemptionRoute";
-import { SongsRoutes } from "./SongsRoute";
-import { StreamSessionRoutes } from "./StreamSessionRoute";
-import { TimersRoute } from "./TimersRoute";
-import { TriggerRoutes } from "./TriggerRoute";
-import { UserRoutes } from "./UserRoute";
-import { OverlayRoutes } from "./OverlayRoute";
-import Home from "@components/home";
-import { AchievementsRoutes } from "./AchievementsRoute";
+const Home = lazy(() => import("@components/home"));
+const SideBar = lazy(() => import("@components/sideBar"));
+const ComponentWithTitle = lazy(() => import("@components/componentWithTitle"));
+
+// Routes
+const MessageRoutes = lazy(() => import("./MessageRoute"));
+const CommandRoutes = lazy(() => import("./CommandRoute"));
+const ConfigRoutes = lazy(() => import("./ConfigsRoute"));
+const EventRoutes = lazy(() => import("./EventsRoute"));
+const MessageCategoriesRoute = lazy(() => import("./MessageCategoriesRoute"));
+const ModesRoutes = lazy(() => import("./ModeRoute"));
+const RedemptionRoutes = lazy(() => import("./RedemptionRoute"));
+const SongsRoutes = lazy(() => import("./SongsRoute"));
+const StreamSessionRoutes = lazy(() => import("./StreamSessionRoute"));
+const TimersRoute = lazy(() => import("./TimersRoute"));
+const TriggerRoutes = lazy(() => import("./TriggerRoute"));
+const UserRoutes = lazy(() => import("./UserRoute"));
+const OverlayRoutes = lazy(() => import("./OverlayRoute"));
+const AchievementsRoutes = lazy(() => import("./AchievementsRoute"));
 
 const DefaultRouteLayout = () => {
   return (

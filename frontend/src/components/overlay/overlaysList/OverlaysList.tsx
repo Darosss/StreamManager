@@ -7,9 +7,7 @@ import {
   useDeleteOverlay,
   useGetOverlays,
 } from "@services";
-import CardboxWrapper, {
-  CardboxItem,
-} from "@components/cardboxWrapper/CardboxWrapper";
+import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { initialLayoutOverlays, initialToolboxOverlays } from "@layout";

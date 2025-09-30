@@ -9,7 +9,7 @@ import Achievements, {
   AchievementStagesSounds,
 } from "@components/achievements";
 
-export function AchievementsRoutes() {
+export default function AchievementsRoutes() {
   return (
     <Routes>
       <Route

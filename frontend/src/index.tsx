@@ -1,9 +1,9 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.scss";
-import App from "./components/app";
 import reportWebVitals from "./reportWebVitals";
 
+const App = lazy(() => import("./components/app"));
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

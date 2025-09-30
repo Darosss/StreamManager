@@ -1,4 +1,4 @@
-import { CardboxItem } from "@components/cardboxWrapper/CardboxWrapper";
+import { CardboxItem } from "@components/cardboxWrapper";
 import { HandleShowModalParams } from "@components/types";
 import {
   openModal,

@@ -6,7 +6,7 @@ import RedemptionsList from "@components/redemptionsList";
 import ComponentWithTitle from "@components/componentWithTitle";
 import UserAchievements from "@components/userAchievements";
 
-export function UserRoutes() {
+export default function UserRoutes() {
   return (
     <Routes>
       <Route

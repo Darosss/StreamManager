@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Overlay from "@components/overlay";
 
-export function OverlayRoutes() {
+export default function OverlayRoutes() {
   return (
     <Routes>
       <Route path=":overlayId">

@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import TimersList from "@components/timersList";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function TimersRoute() {
+export default function TimersRoute() {
   return (
     <Routes>
       <Route

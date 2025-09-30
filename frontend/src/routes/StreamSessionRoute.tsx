@@ -6,7 +6,7 @@ import MessagesList from "@components/messagesList";
 import RedemptionsList from "@components/redemptionsList";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function StreamSessionRoutes() {
+export default function StreamSessionRoutes() {
   return (
     <Routes>
       <Route

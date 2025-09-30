@@ -3,7 +3,7 @@ import StreamEvents from "@components/streamEvents";
 import StreamEventsLayouts from "@components/streamEvents/streamEventsLayouts";
 import ComponentWithTitle from "@components/componentWithTitle";
 
-export function EventRoutes() {
+export default function EventRoutes() {
   return (
     <Routes>
       <Route
