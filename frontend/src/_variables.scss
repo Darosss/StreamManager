@@ -8,6 +8,26 @@ $info-color: #fef08a; // tailwind yellow-200
 
 $link-color: #a3a3a3; // tailwind gray-400
 
+$color-border: rgba(255, 255, 255, 0.08);
+$color-border-hover: rgba(99, 179, 237, 0.3);
+
+$color-accent-glow: rgba(59, 130, 246, 0.2);
+
+$spacing-xs: 0.5rem;
+$spacing-sm: 0.75rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+$spacing-3xl: 4rem;
+
+$border-radius-sm: 0.5rem;
+$border-radius-md: 0.75rem;
+$border-radius-lg: 1rem;
+
+$transition-fast: 0.15s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
 // Light mode
 $background-color-light: #e5e7eb; // tailwind gray-200
 $font-color-light: #374151; // tailwind gray-700
