@@ -4,7 +4,7 @@ import { SocketHandler } from "@socket";
 import { ApiClient } from "@twurple/api";
 import { RefreshingAuthProvider, getTokenInfo } from "@twurple/auth";
 import { AuthModel, ConfigModel } from "@models";
-import { decryptToken } from "@utils";
+import { decryptToken, sleep } from "@utils";
 import { AuthorizedUserData, HandlersList } from "./types";
 import LoyaltyHandler from "./LoyaltyHandler";
 import StreamHandler from "./StreamHandler";
@@ -109,7 +109,7 @@ const init = async (token: AuthModel) => {
     if (!token.userId) await updateAuthUserId(token._id, authorizedUser.id);
     const userData = { username: authorizedUser.name, twitchId: authorizedUser.id, twitchName: authorizedUser.name };
 
-    const userDB = await createUserIfNotExist({ twitchId: authorizedUser.id }, userData);
+    await createUserIfNotExist({ twitchId: authorizedUser.id }, userData);
     await initializeHandlers({ twitchApi, authorizedUser });
   } catch (err) {
     throw err;
@@ -117,6 +117,9 @@ const init = async (token: AuthModel) => {
 
   AchievementsHandler.getInstance();
   SocketHandler.getInstance().getIO().emit("forceReconnect");
+
+  await sleep(500); //Note: temporary solution
+  SocketHandler.getInstance().getIO().emit("sendLoggedUserInfo", authorizedUser.name);
 };
 
 const initializeAuthToken = async (token: AuthModel) => {
