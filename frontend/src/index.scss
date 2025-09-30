@@ -125,19 +125,18 @@ input:focus {
 
 input {
   &::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: var(--font-color);
-    opacity: 1; /* Firefox */
+    opacity: 0.4;
   }
 
   &:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
     color: var(--font-color);
+    opacity: 0.4;
   }
 
   &::-ms-input-placeholder {
-    /* Microsoft Edge */
     color: var(--font-color);
+    opacity: 0.4;
   }
 }
 
