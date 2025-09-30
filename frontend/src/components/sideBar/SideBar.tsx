@@ -48,9 +48,12 @@ export default function SideBar() {
         <li>
           <ChangeTheme />
         </li>
-        {routes.map((route, index) => (
-          <NavLink key={index} to={route.path} label={route.label} />
-        ))}
+        {routes
+          .map((r) => r.routes.map((r) => ({ ...r })))
+          .flat()
+          .map((route, index) => (
+            <NavLink key={index} to={route.path} label={route.label} />
+          ))}
 
         {loggedUser ? (
           <>

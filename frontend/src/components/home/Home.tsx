@@ -2,7 +2,8 @@ import ChangeTheme from "@components/changeTheme";
 import { HelmetTitle } from "@components/componentWithTitle";
 import Message, { MessageProps } from "@components/message";
 import { routes } from "@routes";
-import React, { useEffect, useState } from "react";
+import { useGetMessages } from "@services";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const chatMessages = [
@@ -17,42 +18,120 @@ const chatMessages = [
 ];
 
 export default function Home() {
+  const homeWrapper = useRef<HTMLDivElement>(null);
+  const scrollToTop = () =>
+    homeWrapper.current?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   return (
-    <div className="home-wrapper">
+    <div ref={homeWrapper} className="home-wrapper">
       <HelmetTitle title="Home" />
-      <div className="home-nav">
-        <ChangeTheme />
-      </div>
-      <div className="home-content">
-        <div className="home-content-tiles">
-          {routes.map((route, index) => (
-            <div key={index}>
-              <Link
-                to={route.path}
-                className={`common-button primary-button ${
-                  route.path === "/" ? "disabled" : "enabled"
-                }`}
+
+      <ChatBackground />
+
+      <div className="home-container">
+        <header className="home-header">
+          <div className="home-header-content">
+            <button className="home-logo" onClick={scrollToTop}>
+              Stream manager
+            </button>
+            <ChangeTheme />
+          </div>
+        </header>
+
+        <main className="home-main">
+          <section className="home-hero">
+            <h2 className="home-hero-title">Welcome Back</h2>
+            <p className="home-hero-subtitle">
+              Manage your stream with powerful tools and automation
+            </p>
+          </section>
+
+          <section className="home-navigation">
+            {routes.map((category, categoryIndex) => (
+              <div key={categoryIndex} className="nav-category">
+                <div className="nav-category-header">
+                  <h3 className="nav-category-title">{category.title}</h3>
+                  <p className="nav-category-description">
+                    {category.description}
+                  </p>
+                </div>
+                <div className="nav-category-grid">
+                  {category.routes.map((route, routeIndex) => (
+                    <Link
+                      key={routeIndex}
+                      to={route.path}
+                      className={`nav-card ${
+                        route.path === "/" ? "nav-card-disabled" : ""
+                      }`}
+                    >
+                      <span className="nav-card-icon">{route.icon}</span>
+                      <span className="nav-card-label">{route.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </section>
+        </main>
+
+        <footer className="home-footer">
+          <div className="home-footer-content">
+            <div className="home-footer-links">
+              <a
+                href="https://github.com/Darosss"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-footer-link"
               >
-                {route.label}
-              </Link>
+                Created by Darosss
+              </a>
+              <span className="home-footer-separator">•</span>
+              <a
+                href="https://github.com/Darosss/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="home-footer-link"
+              >
+                View my github
+              </a>
+              <span className="home-footer-separator">•</span>
+              <button
+                className="home-footer-link home-footer-button"
+                onClick={scrollToTop}
+              >
+                Back to top
+              </button>
             </div>
-          ))}
-        </div>
-        <ChatBackground />
-      </div>
-      <div className="home-footer">
-        <div>
-          <Link to="https://github.com/Darosss" target="_blank">
-            GH: Darosss 2022-2025
-          </Link>
-        </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
 }
 
 function ChatBackground() {
+  const { data } = useGetMessages();
+  const [messagesToShow, setMessagesToShow] = useState<
+    { username: string; message: string }[]
+  >(chatMessages.map((message) => ({ username: "chat bot", message })));
+
   const [messages, setMessages] = useState<MessageProps[]>([]);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  useEffect(() => {
+    if (!data) return;
+    if (data.data.length > chatMessages.length) setMessagesToShow([]);
+
+    data.data.forEach((msg) =>
+      messagesToShow.push({
+        message: msg.message,
+        username: msg.ownerUsername,
+      })
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     let chatTimeout: ReturnType<typeof setTimeout>;
@@ -66,7 +145,7 @@ function ChatBackground() {
     };
 
     const getRandomFromChatMessages = () => {
-      return chatMessages[Math.floor(Math.random() * chatMessages.length)];
+      return messagesToShow[Math.floor(Math.random() * messagesToShow.length)];
     };
 
     const timeoutChatMessage = () => {
@@ -74,13 +153,15 @@ function ChatBackground() {
         if (chatMessageIndex > 100) return;
         chatMessageIndex++;
         setMessages((prevState) => {
+          const { username, message } = getRandomFromChatMessages();
           prevState.push({
             date: new Date(),
-            username: `Chat bot`,
-            message: getRandomFromChatMessages(),
+            username,
+            message,
           });
-          return [...prevState];
+          return prevState;
         });
+        forceUpdate();
         timeoutChatMessage();
       }, chatMessageIndex * getRandomDelay());
     };
@@ -88,20 +169,23 @@ function ChatBackground() {
     timeoutChatMessage();
 
     return () => clearTimeout(chatTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="home-chat-bg prevent-select">
-      {messages.map((message, index) => (
-        <div key={index} className="typewriter">
-          <Message
-            date={message.date}
-            username={message.username}
-            message={message.message}
-            tooltip={false}
-          />
-        </div>
-      ))}
+      {messages.map((message, index) => {
+        return (
+          <div key={index} className="typewriter">
+            <Message
+              date={message.date}
+              username={message.username}
+              message={message.message}
+              tooltip={false}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
