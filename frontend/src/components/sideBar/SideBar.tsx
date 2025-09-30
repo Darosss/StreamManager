@@ -27,9 +27,7 @@ export default function SideBar() {
           ))}
 
         <li>
-          <li>
-            <SignupButton />
-          </li>
+          <SignupButton />
         </li>
         <li>
           <DiscordInviteButton />
