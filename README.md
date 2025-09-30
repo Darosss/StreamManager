@@ -31,7 +31,7 @@
 </details>
 <br>
 
-<img src="./images/home.png" width=500px alt="Create trigger">
+<img src="./images/home.webp" width=500px alt="Create trigger">
 
 Twitch stream manager is under **development** and for now designed to be deployed on localhost and home LAN only.
 It **SHOULD NOT** be on online hosting
