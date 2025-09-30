@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import { initialLayoutWidgets, initialToolboxWidgets } from "@layout";
 import { addNotification } from "@utils";
 import CardboxWrapper from "@components/cardboxWrapper";
-import {
-  CardboxInput,
-  CardboxItem,
-} from "@components/cardboxWrapper/CardboxWrapper";
+import { CardboxItem } from "@components/cardboxWrapper/CardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { fetchWidgetsDefaultParams } from "@services";
@@ -53,20 +50,20 @@ export default function StreamNotifications() {
   return (
     <>
       <CardboxWrapper title={"Events widgets list"}>
-        <CardboxInput title="Create widgets layout">
+        <CardboxItem title="Create widgets layout">
           <input
             type="text"
             placeholder="Name"
             value={layoutName}
             onChange={(e) => setLayoutName(e.target.value)}
-          ></input>
+          />
           <button
             onClick={handleCreateWidget}
             className="common-button primary-button"
           >
             Create
           </button>
-        </CardboxInput>
+        </CardboxItem>
         {layouts.map((layout, index) => (
           <CardboxItem
             title={layout.name}

@@ -8,7 +8,6 @@ import {
   useGetOverlays,
 } from "@services";
 import CardboxWrapper, {
-  CardboxInput,
   CardboxItem,
 } from "@components/cardboxWrapper/CardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
@@ -56,20 +55,20 @@ export default function OverlaysList() {
   return (
     <>
       <CardboxWrapper title={"Overlays list"}>
-        <CardboxInput title="Create overlay">
+        <CardboxItem title="Create overlay">
           <input
             type="text"
             placeholder="Name"
             value={overlayName}
             onChange={(e) => setLayoutName(e.target.value)}
-          ></input>
+          />
           <button
             onClick={handleCreateOverlay}
             className="common-button primary-button"
           >
             Create
           </button>
-        </CardboxInput>
+        </CardboxItem>
         {overlays.map((overlay, index) => (
           <CardboxItem
             title={overlay.name}
