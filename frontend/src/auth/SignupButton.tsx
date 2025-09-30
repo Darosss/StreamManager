@@ -1,6 +1,6 @@
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function SignupButton() {
   const {
@@ -19,6 +19,13 @@ export default function SignupButton() {
     emitLogout();
   };
 
+  const handleSetLoggedUserInfo = useCallback(() => {
+    getLoggedUserInfo((username) => {
+      if (!username) return;
+      setLoggedUser(username);
+    });
+  }, [getLoggedUserInfo]);
+
   useEffect(() => {
     sendLoggedUserInfo.on((username) => {
       setLoggedUser(username);
@@ -29,11 +36,8 @@ export default function SignupButton() {
   }, [sendLoggedUserInfo]);
 
   useEffect(() => {
-    getLoggedUserInfo((username) => {
-      if (!username) return;
-      setLoggedUser(username);
-    });
-  }, [getLoggedUserInfo]);
+    handleSetLoggedUserInfo();
+  }, [handleSetLoggedUserInfo]);
 
   if (loggedUser) {
     return (
