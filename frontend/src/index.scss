@@ -157,7 +157,12 @@ table {
   }
 
   tr {
-    border-bottom: 0.1rem solid var(--info-bg-color);
+    filter: brightness(95%);
+
+    background-color: var(--background-color);
+    &:nth-child(even) {
+      background-color: var(--background-color-lighter);
+    }
   }
 
   tbody {
