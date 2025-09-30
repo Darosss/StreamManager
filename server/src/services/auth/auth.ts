@@ -1,4 +1,4 @@
-import { AuthToken } from "@models";
+import { AuthModel, AuthToken } from "@models";
 import { AuthCreateData } from "./types";
 import { AppError, handleAppError, logger, checkExistResource } from "@utils";
 
@@ -11,7 +11,7 @@ export const getAuthToken = async () => {
     handleAppError(err);
   }
 };
-export const createNewAuth = async (createData: AuthCreateData) => {
+export const createNewAuth = async (createData: AuthCreateData): Promise<AuthModel | undefined> => {
   try {
     const newAuth = await AuthToken.create(createData);
 
@@ -23,6 +23,11 @@ export const createNewAuth = async (createData: AuthCreateData) => {
     logger.error(`Failed to create new auth:  ${err}`);
     handleAppError(err);
   }
+};
+
+export const updateAuthUserId = async (tokenId: string, userId: string) => {
+  const updatedAuthToken = await AuthToken.findByIdAndUpdate(tokenId, { userId }, { new: true });
+  return updatedAuthToken;
 };
 
 export const removeAuthToken = async () => {
