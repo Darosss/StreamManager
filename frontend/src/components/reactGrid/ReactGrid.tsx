@@ -1,5 +1,5 @@
 import DrawerBar from "@components/drawer";
-import React, { JSX, useEffect, useMemo, useState } from "react";
+import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
@@ -35,6 +35,45 @@ export default function ReactGrid({
   const [toolbox, setToolbox] = useState(toolboxState);
   const [currentBreakpoint, setCurrentBreakpoint] = currentBreakpointState;
   const [isEdit, setIsEdit] = useState(false);
+  const setEditableInLayout = useCallback(
+    (editable: boolean) => {
+      setLayout((prevLayout) => ({
+        ...prevLayout,
+        [currentBreakpoint]: prevLayout[currentBreakpoint].map((item) => ({
+          ...item,
+          isDraggable: !editable,
+          isResizable: !editable,
+        })),
+      }));
+    },
+    [currentBreakpoint]
+  );
+  const toggleEdit = useCallback(() => {
+    setEditableInLayout(isEdit);
+
+    setIsEdit((prevState) => {
+      return !prevState;
+    });
+  }, [isEdit, setEditableInLayout]);
+  useEffect(() => {
+    const keyboardSave = (e: KeyboardEvent) => {
+      console.log(e, e.ctrlKey, e.code);
+
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      if (e.code === "KeyS") {
+        onEdit(layout, toolbox);
+      }
+      if (e.code === "KeyE") {
+        toggleEdit();
+      }
+    };
+    window.addEventListener("keydown", keyboardSave);
+
+    return () => {
+      window.removeEventListener("keydown", keyboardSave);
+    };
+  }, [layout, onEdit, toggleEdit, toolbox]);
 
   useEffect(() => {
     setLayout({ ...layoutState });
@@ -127,8 +166,8 @@ export default function ReactGrid({
           toolbox={toolbox}
           currentBreakpoint={currentBreakpoint}
           onTakeItem={onTakeItem}
-          setLayout={setLayout}
-          isEditState={[isEdit, setIsEdit]}
+          isEdit={isEdit}
+          toggleEdit={toggleEdit}
           editFn={() => onEdit(layout, toolbox)}
         />
       ) : null}
@@ -194,8 +233,8 @@ function LayoutDrawerBar(props: {
   toolbox: ReactGridLayout.Layouts;
   currentBreakpoint: string;
   onTakeItem: (item: ReactGridLayout.Layout) => void;
-  setLayout: React.Dispatch<React.SetStateAction<ReactGridLayout.Layouts>>;
-  isEditState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  isEdit: boolean;
+  toggleEdit: () => void;
   editFn: () => void;
 }) {
   const {
@@ -203,29 +242,10 @@ function LayoutDrawerBar(props: {
     toolbox,
     currentBreakpoint,
     onTakeItem,
-    setLayout,
-    isEditState,
+    toggleEdit,
     editFn,
+    isEdit,
   } = props;
-  const [isEdit, setIsEdit] = isEditState;
-  const toggleEditMode = () => {
-    setEditableInLayout(isEdit);
-
-    setIsEdit((prevState) => {
-      return !prevState;
-    });
-  };
-
-  const setEditableInLayout = (editable: boolean) => {
-    setLayout((prevLayout) => ({
-      ...prevLayout,
-      [currentBreakpoint]: prevLayout[currentBreakpoint].map((item) => ({
-        ...item,
-        isDraggable: !editable,
-        isResizable: !editable,
-      })),
-    }));
-  };
 
   return (
     <DrawerBar direction={"top"} size={120} sticky={true} overlay={false}>
@@ -243,31 +263,21 @@ function LayoutDrawerBar(props: {
 
           <div className="grid-edit-save">
             <div> Breakpoint: {currentBreakpoint}</div>
-            <div>
-              Is edit:
-              <span style={{ color: !isEdit ? "red" : "green" }}>
-                {" " + isEdit.toString()}
-              </span>
-            </div>
+
             <div>
               <button
                 className={`common-button ${
                   isEdit ? "danger-button" : "primary-button"
                 }`}
-                onClick={toggleEditMode}
+                onClick={toggleEdit}
               >
-                Toggle Edit
+                Turn edit {isEdit ? "off" : "on"}
               </button>
             </div>
             <div>
-              {!isEdit ? (
-                <button
-                  className="common-button primary-button"
-                  onClick={editFn}
-                >
-                  Save
-                </button>
-              ) : null}
+              <button className="common-button primary-button" onClick={editFn}>
+                Save
+              </button>
             </div>
           </div>
         </div>
