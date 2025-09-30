@@ -1,5 +1,5 @@
 import { RequestQueryAuthorizationTwitch, AuthorizationTwitch } from "@controllers";
-import { retryWithCatch } from "@utils";
+import { AppError, retryWithCatch } from "@utils";
 import { NextFunction, Request, Response } from "express";
 import { createNewAuth } from "@services";
 import { clientId, clientSecret, redirectUrl } from "@configs";
@@ -25,7 +25,7 @@ export const authorizationTwitch = async (req: Request, res: Response, next: Nex
 
   if (authRes) {
     const authTwitchJson = (await authRes.json()) as AuthorizationTwitch;
-    await createNewAuth({
+    const token = await createNewAuth({
       accessToken: authTwitchJson.access_token,
       refreshToken: authTwitchJson.refresh_token,
       expiresIn: authTwitchJson.expires_in,
@@ -33,7 +33,8 @@ export const authorizationTwitch = async (req: Request, res: Response, next: Nex
       scope: authTwitchJson.scope
     });
 
-    await init();
+    if (!token) return next(new AppError(400, "Token not found, try again"));
+    await init(token);
 
     return next();
   }
