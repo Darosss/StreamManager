@@ -5,6 +5,7 @@ import { routes } from "@routes";
 import { useGetMessages } from "@services";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import SignupButton from "src/auth";
 
 const chatMessages = [
   "WELCOME HOME!",
@@ -36,6 +37,7 @@ export default function Home() {
             <button className="home-logo" onClick={scrollToTop}>
               Stream manager
             </button>
+            <SignupButton />
             <ChangeTheme />
           </div>
         </header>
