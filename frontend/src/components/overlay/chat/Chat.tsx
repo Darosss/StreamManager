@@ -77,36 +77,39 @@ export default function Chat() {
         }}
       ></div>
       <div className="chat-overlay-messages-wrapper">
-        {messagesData.map(({ user, messageData }) => (
-          <Message
-            key={messageData.id}
-            date={messageData.timestamp}
-            username={user.username}
-            message={messageData.message}
-            emotes={messageData.emotes}
-            badgesPaths={user.badgesPaths}
-            tooltip={false}
-            styles={{
-              time: {
-                color: styles.time.color,
-                fontSize: styles.time.fontSize,
-              },
-              message: {
-                color: styles.message.color,
-                fontSize: styles.message.fontSize,
-              },
-              username: {
-                color: styles.username.color,
-                fontSize: styles.username.fontSize,
-              },
-              badges: {
-                boxShadow: styles.badges.boxShadow,
-                maxWidth: styles.badges.badgeSize,
-                minWidth: styles.badges.badgeSize,
-              },
-            }}
-          />
-        ))}
+        {messagesData.map(
+          ({ user, messageData }) =>
+            messageData && (
+              <Message
+                key={messageData.id}
+                date={messageData.timestamp}
+                username={user.username}
+                message={messageData.message}
+                emotes={messageData.emotes}
+                badgesPaths={user.badgesPaths}
+                tooltip={false}
+                styles={{
+                  time: {
+                    color: styles.time.color,
+                    fontSize: styles.time.fontSize,
+                  },
+                  message: {
+                    color: styles.message.color,
+                    fontSize: styles.message.fontSize,
+                  },
+                  username: {
+                    color: styles.username.color,
+                    fontSize: styles.username.fontSize,
+                  },
+                  badges: {
+                    boxShadow: styles.badges.boxShadow,
+                    maxWidth: styles.badges.badgeSize,
+                    minWidth: styles.badges.badgeSize,
+                  },
+                }}
+              />
+            )
+        )}
       </div>
     </div>
   );
