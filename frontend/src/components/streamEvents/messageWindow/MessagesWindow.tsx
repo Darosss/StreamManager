@@ -8,6 +8,7 @@ import { addNotification } from "@utils";
 
 import { useSocketContext } from "@socket";
 import { Error, Loading } from "@components/axiosHelper";
+import { Button } from "@components/ui";
 
 export default function MessagesWindow() {
   const socket = useSocketContext();
@@ -70,10 +71,8 @@ export default function MessagesWindow() {
             return (
               <div key={index} className="message-section-btn-wrapper">
                 <div>
-                  <button
-                    className={`${
-                      category.enabled ? "primary-button" : "danger-button"
-                    } common-button`}
+                  <Button
+                    variant={category.enabled ? "primary" : "danger"}
                     onClick={() => {
                       handleOnClickRandomMessage(category._id);
                     }}
@@ -82,13 +81,11 @@ export default function MessagesWindow() {
                     <span className="button-category-name">
                       {category.name}
                     </span>
-                  </button>
+                  </Button>
                 </div>
                 <div>
-                  <button
-                    className={`${
-                      category.enabled ? "primary-button" : "danger-button"
-                    } common-button`}
+                  <Button
+                    variant={category.enabled ? "primary" : "danger"}
                     onClick={() => {
                       handleOnClickCategory(category._id);
                     }}
@@ -97,7 +94,7 @@ export default function MessagesWindow() {
                     <span className="button-category-name">
                       {category.name}
                     </span>
-                  </button>
+                  </Button>
                 </div>
               </div>
             );
@@ -117,15 +114,14 @@ export default function MessagesWindow() {
         <div className="modal-prepared-messages">
           {currentMessages.map((message, index) => {
             return (
-              <button
-                className="primary-button common-button"
+              <Button
                 key={index}
                 onClick={() => {
                   sendMessage(message);
                 }}
               >
                 {message}
-              </button>
+              </Button>
             );
           })}
         </div>

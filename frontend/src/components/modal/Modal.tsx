@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import React from "react";
 
 import { createPortal } from "react-dom";
@@ -27,19 +28,17 @@ export default function Modal({
         <div className="modal-body">{children}</div>
 
         <div className="modal-footer">
-          <button
-            onClick={onClose}
-            className="modal-button common-button danger-button"
-          >
+          <Button onClick={onClose} variant="danger" className="modal-button">
             Close
-          </button>
+          </Button>
           {onSubmit ? (
-            <button
+            <Button
+              variant="success"
               onClick={onSubmit}
-              className="modal-button common-button primary-button"
+              className="modal-button"
             >
               Submit
-            </button>
+            </Button>
           ) : null}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import React, { Children, useEffect, useRef, useState } from "react";
 
 const SLIDE_DELAY = 9999;
@@ -84,14 +85,13 @@ export default function Slideshow({
             ></div>
           ))}
           <div className="slideshow-button-wrapper">
-            <button
-              className="common-button primary-button"
+            <Button
               onClick={(e) => {
                 toggleSlideShow(e);
               }}
             >
               &#9654;
-            </button>
+            </Button>
           </div>
         </div>
       </div>

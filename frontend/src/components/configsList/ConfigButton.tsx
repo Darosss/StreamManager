@@ -1,3 +1,5 @@
+import { Button } from "@components/ui";
+
 interface ConfigButtonProps {
   optionName: string;
   setState: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -13,14 +15,12 @@ export default function ConfigButton({
 }: ConfigButtonProps) {
   const button = () => {
     return (
-      <button
-        className={`common-button ${
-          value ? "primary-button" : "danger-button"
-        }`}
+      <Button
+        variant={value ? "primary" : "danger"}
         onClick={(e) => setState(e)}
       >
         {String(value)}
-      </button>
+      </Button>
     );
   };
 

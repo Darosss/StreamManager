@@ -15,6 +15,7 @@ import {
   setTimerState,
 } from "@redux/timersSlice";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 
 interface TimersDataProps {
   data: Timer[];
@@ -59,12 +60,9 @@ export default function TimersData({ data }: TimersDataProps) {
           <tr>
             <th>
               Actions
-              <button
-                className="common-button primary-button"
-                onClick={() => handleShowModal({ type: "create" })}
-              >
+              <Button onClick={() => handleShowModal({ type: "create" })}>
                 New
-              </button>
+              </Button>
             </th>
             <th>
               <div>
@@ -97,28 +95,26 @@ export default function TimersData({ data }: TimersDataProps) {
             <tr key={index}>
               <td>
                 <div>
-                  <button
-                    className="common-button primary-button"
+                  <Button
                     onClick={() =>
                       handleShowModal({ type: "duplicate", data: timer })
                     }
                   >
                     Duplicate
-                  </button>
-                  <button
-                    className="common-button primary-button"
+                  </Button>
+                  <Button
                     onClick={() =>
                       handleShowModal({ type: "edit", data: timer })
                     }
                   >
                     Edit
-                  </button>
-                  <button
-                    className="common-button danger-button"
+                  </Button>
+                  <Button
+                    variant="danger"
                     onClick={() => handleDeleteTimer(timer._id)}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </td>
               <td>

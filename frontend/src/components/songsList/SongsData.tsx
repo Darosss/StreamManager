@@ -13,6 +13,7 @@ import {
 } from "@redux/songsSlice";
 import { useDispatch } from "react-redux";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 
 interface SongsDataProps {
   data: Song[];
@@ -51,12 +52,12 @@ export default function SongsData({ data }: SongsDataProps) {
           <tr>
             <th>
               Actions
-              <button
+              <Button
                 className="common-button primary-button"
                 onClick={() => handleShowModal({ type: "create" })}
               >
                 New
-              </button>
+              </Button>
             </th>
             <th>
               <SortByParamsButton buttonText="Title" sortBy="title" />
@@ -99,24 +100,23 @@ export default function SongsData({ data }: SongsDataProps) {
             >
               <td>
                 <div className="songs-data-table-actions">
-                  <button
-                    className="common-button primary-button"
+                  <Button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleShowModal({ type: "edit", data: song });
                     }}
                   >
                     Edit
-                  </button>
-                  <button
-                    className="common-button danger-button"
+                  </Button>
+                  <Button
+                    variant="danger"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteSong(song._id);
                     }}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </td>
               <td>{song.title}</td>

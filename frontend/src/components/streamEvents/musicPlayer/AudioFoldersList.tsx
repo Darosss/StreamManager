@@ -8,6 +8,7 @@ import {
   useRefetchFoldersFilesAudioData,
 } from "@services";
 import { useSocketContext } from "@socket";
+import { Button } from "@components/ui";
 
 export default function AudioFoldersList() {
   const socket = useSocketContext();
@@ -58,41 +59,39 @@ export default function AudioFoldersList() {
       <div className="audio-folders-list-wrapper">
         {folders.map((folder, index) => {
           return (
-            <button
+            <Button
               key={index}
               onClick={() => handleOnClickChangeFolder(folder)}
-              className={`common-button ${
-                folder === folderName ? "primary-button" : "danger-button"
-              }`}
+              variant={folder === folderName ? "primary" : "danger"}
             >
               {folder}
-            </button>
+            </Button>
           );
         })}
       </div>
       {folderName ? (
-        <button
+        <Button
           onClick={() => {
             emitLoadSongs();
           }}
-          className="load-folder-btn common-button primary-button"
+          className="load-folder-btn"
         >
           Load {folderName}
-        </button>
+        </Button>
       ) : null}
       <div className="mp3-files-wrapper">
         {mp3Data?.data.map((mp3, index) => {
           return (
             <div key={index} className="mp3-file list-with-x-buttons">
               <div>
-                <button
+                <Button
                   onClick={() =>
                     handleDeleteMp3File({ folderName, fileName: mp3 })
                   }
-                  className="common-button danger-button"
+                  variant="danger"
                 >
                   x
-                </button>
+                </Button>
               </div>
               <div> {mp3} </div>
             </div>

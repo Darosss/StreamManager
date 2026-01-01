@@ -7,6 +7,7 @@ import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { fetchWidgetsDefaultParams } from "@services";
+import { Button } from "@components/ui";
 
 export default function StreamNotifications() {
   const queryParams = useQueryParams(fetchWidgetsDefaultParams);
@@ -56,12 +57,7 @@ export default function StreamNotifications() {
             value={layoutName}
             onChange={(e) => setLayoutName(e.target.value)}
           />
-          <button
-            onClick={handleCreateWidget}
-            className="common-button primary-button"
-          >
-            Create
-          </button>
+          <Button onClick={handleCreateWidget}>Create</Button>
         </CardboxItem>
         {layouts.map((layout, index) => (
           <CardboxItem

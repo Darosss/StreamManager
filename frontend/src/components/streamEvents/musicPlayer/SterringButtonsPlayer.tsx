@@ -1,3 +1,5 @@
+import { Button } from "@components/ui";
+
 interface SterringButtonsProps {
   playing: boolean;
   playFn: () => void;
@@ -8,17 +10,13 @@ export default function SterringButtons(props: SterringButtonsProps) {
   const { playing, playFn, pauseFn, onNextSongFn } = props;
   return (
     <div className="music-player-sterring-wrapper">
-      <button
-        className={`common-button ${
-          playing ? "danger-button" : "primary-button"
-        }`}
+      <Button
+        variant={playing ? "danger" : "primary"}
         onClick={() => (playing ? pauseFn() : playFn())}
       >
         {playing ? "PAUSE" : "PLAY"}
-      </button>
-      <button className="common-button primary-button" onClick={onNextSongFn}>
-        NEXT &#8594;
-      </button>
+      </Button>
+      <Button onClick={onNextSongFn}>NEXT &#8594;</Button>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import ChangeTheme from "@components/changeTheme";
 import { HelmetTitle } from "@components/componentWithTitle";
 import Message, { MessageProps } from "@components/message";
+import { Button } from "@components/ui";
 import { routes } from "@routes";
 import { useGetMessages } from "@services";
 import { useEffect, useReducer, useRef, useState } from "react";
@@ -34,9 +35,9 @@ export default function Home() {
       <div className="home-container">
         <header className="home-header">
           <div className="home-header-content">
-            <button className="home-logo" onClick={scrollToTop}>
+            <Button className="home-logo" onClick={scrollToTop}>
               Stream manager
-            </button>
+            </Button>
             <SignupButton />
             <ChangeTheme />
           </div>
@@ -99,12 +100,12 @@ export default function Home() {
                 View my github
               </a>
               <span className="home-footer-separator">•</span>
-              <button
+              <Button
                 className="home-footer-link home-footer-button"
                 onClick={scrollToTop}
               >
                 Back to top
-              </button>
+              </Button>
             </div>
           </div>
         </footer>

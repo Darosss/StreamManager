@@ -6,6 +6,7 @@ import { DateTooltip } from "@components/dateTooltip";
 import { HelmetTitle } from "@components/componentWithTitle";
 import { useEditUser, useGetLatestEldestMsgs, useGetUser } from "@services";
 import { Error, Loading } from "@components/axiosHelper";
+import { Button } from "@components/ui";
 
 export default function UserProfile() {
   //Note: userId should be as it is taken from route
@@ -86,19 +87,17 @@ export default function UserProfile() {
         <div className="detail-section-wrapper-big">
           <div>
             <div>
-              <button
-                onClick={showEdit}
-                className="common-button primary-button profile-button"
-              >
+              <Button onClick={showEdit} className="profile-button">
                 Edit
-              </button>
+              </Button>
               {isEditingNotes ? (
-                <button
-                  className="common-button danger-button profile-button"
+                <Button
+                  variant="danger"
+                  className="profile-button"
                   onClick={handleSaveNote}
                 >
                   Save
-                </button>
+                </Button>
               ) : null}
             </div>
             <div>

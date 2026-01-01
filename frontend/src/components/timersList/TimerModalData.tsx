@@ -14,6 +14,7 @@ import {
   setRequirementPoints,
   setName,
 } from "@redux/timersSlice";
+import { Button } from "@components/ui";
 
 export default function TimerModalData() {
   const modes = useGetAllModes();
@@ -34,38 +35,32 @@ export default function TimerModalData() {
       </div>
       <div> Enabled </div>
       <div>
-        <button
+        <Button
           onClick={() => dispatch(setEnabled(!timerState.enabled))}
-          className={`common-button ${
-            timerState.enabled ? "primary-button" : "danger-button"
-          }`}
+          variant={timerState.enabled ? "primary" : "danger"}
         >
           {timerState.enabled.toString()}
-        </button>
+        </Button>
       </div>
       <div>Non follow multi </div>
       <div>
-        <button
+        <Button
           onClick={() =>
             dispatch(setNonFollowMultiplier(!timerState.nonFollowMulti))
           }
-          className={`common-button ${
-            timerState.nonFollowMulti ? "primary-button" : "danger-button"
-          }`}
+          variant={timerState.nonFollowMulti ? "primary" : "danger"}
         >
           {timerState.nonFollowMulti.toString()}
-        </button>
+        </Button>
       </div>
       <div>Non sub multi </div>
       <div>
-        <button
+        <Button
           onClick={() => dispatch(setNonSubMultiplier(!timerState.nonSubMulti))}
-          className={`common-button ${
-            timerState.nonSubMulti ? "primary-button" : "danger-button"
-          }`}
+          variant={timerState.nonSubMulti ? "primary" : "danger"}
         >
           {timerState.nonSubMulti.toString()}
-        </button>
+        </Button>
       </div>
       <div>Tag</div>
       <div>

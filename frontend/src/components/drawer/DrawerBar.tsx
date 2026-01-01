@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import React, { useEffect } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -57,13 +58,13 @@ export default function DrawerBar({
 
   return (
     <div className="btn-drawer-wrapper" style={wrapperStyle}>
-      <button
-        className="common-button primary-button btn-drawer"
-        style={btnStyle}
+      <Button
+        className="btn-drawer"
+        props={{ style: btnStyle }}
         onClick={toggleDrawer}
       >
         {btnText}
-      </button>
+      </Button>
       <Drawer
         direction={direction ? direction : "right"}
         open={isOpen}
@@ -79,13 +80,14 @@ export default function DrawerBar({
         }}
       >
         <div className="drawer-children-wrapper">
-          <button
-            className="btn-drawer-close common-button danger-button"
-            style={btnStyle}
+          <Button
+            variant="danger"
+            className="btn-drawer-close"
+            props={{ style: btnStyle }}
             onClick={toggleDrawer}
           >
             X
-          </button>
+          </Button>
           {children}
         </div>
       </Drawer>

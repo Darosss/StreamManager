@@ -10,6 +10,7 @@ import {
 import { addErrorNotification, addSuccessNotification } from "@utils";
 import { viteBackendUrl } from "@configs/envVariables";
 import { OnClickBadgeType } from "./types";
+import { Button } from "@components/ui";
 
 interface AvailableBadgeImagesProps {
   badgesData: GetBagesImagesResponseData;
@@ -38,12 +39,9 @@ export default function AvailableBadgeImages({
 
       <div className="action-items-wrapper">
         <UploadBadgeImageButtons onSuccessCallback={refetchBadges} />
-        <button
-          className="common-button tertiary-button"
-          onClick={refetchBadges}
-        >
+        <Button variant="tertiary" onClick={refetchBadges}>
           Refresh
-        </button>
+        </Button>
         <input
           type="text"
           placeholder="search"
@@ -115,12 +113,9 @@ function UploadBadgeImageButtons({
 
   return (
     <>
-      <button
-        className="common-button primary-button"
-        onClick={() => setShowUploadImages(!showUploadImages)}
-      >
+      <Button onClick={() => setShowUploadImages(!showUploadImages)}>
         {showUploadImages ? "Hide upload" : "New"}
-      </button>
+      </Button>
 
       {showUploadImages ? (
         <div>

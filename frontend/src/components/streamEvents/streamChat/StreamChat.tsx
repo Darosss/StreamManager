@@ -7,6 +7,7 @@ import {
 import Message from "@components/message";
 import { MessageServerData, useSocketContext } from "@socket";
 import { addSuccessNotification } from "@utils";
+import { Button } from "@components/ui";
 
 export default function StreamChat() {
   const socketContext = useSocketContext();
@@ -91,12 +92,13 @@ export default function StreamChat() {
         />
       </div>
       <div className="stream-chat-send-message-btn">
-        <button
-          onClick={() => sendMessage()}
+        <Button
+          onClick={sendMessage}
+          variant="success"
           className="stream-chat-btn-send-message"
         >
           SEND
-        </button>
+        </Button>
       </div>
     </div>
   );

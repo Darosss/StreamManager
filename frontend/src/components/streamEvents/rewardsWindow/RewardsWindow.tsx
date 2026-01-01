@@ -10,6 +10,7 @@ import {
   setRewardState,
 } from "@redux/rewardsSlice";
 import { RewardsModal } from "./RewardsModal";
+import { Button } from "@components/ui";
 
 export default function MessagesWindow() {
   const socketContext = useSocketContext();
@@ -79,12 +80,7 @@ export default function MessagesWindow() {
       <div className="widget-header"> Stream alert sounds </div>
       <div className="custom-rewards-window">
         <div>
-          <button
-            onClick={() => dispatch(openModal())}
-            className="common-button primary-button"
-          >
-            New alert sound
-          </button>
+          <Button onClick={() => dispatch(openModal())}>New alert sound</Button>
         </div>
         {alertSounds?.map((reward, index) => (
           <div
@@ -98,25 +94,24 @@ export default function MessagesWindow() {
             <div>{reward.title}</div>
             <div>{reward.cost}</div>
             <div>
-              <button
+              <Button
                 onClick={() => {
                   dispatch(setEditingAlertSound(reward.id));
                   dispatch(setRewardState(reward));
                 }}
-                className="common-button primary-button"
               >
                 Edit
-              </button>
+              </Button>
             </div>
             <div>
-              <button
+              <Button
                 onClick={() =>
                   emitRemoveAlertSoundReward(reward.id, reward.title)
                 }
-                className="common-button danger-button"
+                variant="danger"
               >
                 X
-              </button>
+              </Button>
             </div>
           </div>
         ))}

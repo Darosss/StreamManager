@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { useLocalStorage } from "@hooks";
 import React, { ChangeEvent } from "react";
 
@@ -24,12 +25,13 @@ function PreviewImageSelector() {
     <div className="react-grid-image-select-wrapper">
       {selectedImage ? (
         <div className="react-grid-image-select-background">
-          <button
-            className="common-button danger-button react-grid-image-select-background-remove"
+          <Button
+            variant="danger"
+            className="react-grid-image-select-background-remove"
             onClick={() => setSelectedImage(null)}
           >
             Remove image
-          </button>
+          </Button>
           <img src={selectedImage.toString()} alt="Selected" />
         </div>
       ) : (

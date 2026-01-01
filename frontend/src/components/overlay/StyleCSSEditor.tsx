@@ -7,6 +7,7 @@ import { RootStore } from "@redux/store";
 import { useEditOverlay } from "@services";
 import { addNotification } from "@utils";
 import { setStyles } from "@redux/overlaysSlice";
+import { Button } from "@components/ui";
 
 type OverlayKeysType =
   OverlayKeysStylesParsedType[keyof OverlayKeysStylesParsedType];
@@ -35,12 +36,7 @@ function StyleCSSEditor() {
   };
   return (
     <div className="style-css-editor">
-      <button
-        className="common-button primary-button"
-        onClick={() => setShowModal(true)}
-      >
-        Css Settings
-      </button>
+      <Button onClick={() => setShowModal(true)}>Css Settings</Button>
       <Modal
         title="Overlay widgets style css editor"
         show={showModal}
@@ -76,16 +72,16 @@ function StyleCssEditorModalData() {
               const value = styles?.[keyAsserted];
               return (
                 <React.Fragment key={index}>
-                  <button
-                    className={`common-button ${
+                  <Button
+                    variant={
                       choosenOverlayEdit[0] === keyAsserted
-                        ? " primary-button"
-                        : "secondary-button"
-                    } `}
+                        ? "primary"
+                        : "secondary"
+                    }
                     onClick={() => setChoosenOverlayEdit([keyAsserted, value])}
                   >
                     {key}
-                  </button>
+                  </Button>
                 </React.Fragment>
               );
             })

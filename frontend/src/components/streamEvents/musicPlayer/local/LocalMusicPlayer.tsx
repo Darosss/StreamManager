@@ -3,6 +3,7 @@ import AudioFolderCreate from "./AudioFolderCreate";
 import AudioFoldersList from "./AudioFoldersList";
 import UploadMp3Form from "./UploadMp3Form";
 import Modal from "@components/modal";
+import { Button } from "@components/ui";
 
 enum AvailableTabs {
   UPLOAD = "upload",
@@ -25,27 +26,25 @@ export default function LocalMusicPlayer() {
     }
   };
 
-  const ytButtons = useCallback(
-    () =>
-      Object.values(AvailableTabs).map((tab) =>
-        tab !== AvailableTabs.NONE ? (
-          <button
-            key={tab}
-            className={`common-button switch-players-button ${
-              activeTab === tab ? "primary-button" : "tertiary-button"
-            }`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ) : null
-      ),
-    [activeTab]
-  );
+  const TabsButtons = () =>
+    Object.values(AvailableTabs).map((tab) =>
+      tab !== AvailableTabs.NONE ? (
+        <Button
+          key={tab}
+          variant={activeTab === tab ? "primary" : "tertiary"}
+          className="switch-players-button"
+          onClick={() => setActiveTab(tab)}
+        >
+          {tab}
+        </Button>
+      ) : null
+    );
 
   return (
     <div>
-      <div className="music-player-tabs-wrapper">{ytButtons()}</div>
+      <div className="music-player-tabs-wrapper">
+        <TabsButtons />
+      </div>
       <Modal
         title={activeTab}
         onClose={() => setActiveTab(AvailableTabs.NONE)}

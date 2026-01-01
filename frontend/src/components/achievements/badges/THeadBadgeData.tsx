@@ -2,6 +2,7 @@ import SortByParamsButton from "@components/SortByParamsButton";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { openModal } from "@redux/badgesSlice";
+import { Button } from "@components/ui";
 
 export default function THeadBadgeData() {
   const dispatch = useDispatch();
@@ -9,12 +10,7 @@ export default function THeadBadgeData() {
     <tr>
       <th>
         Actions
-        <button
-          className="common-button primary-button"
-          onClick={() => dispatch(openModal())}
-        >
-          New
-        </button>
+        <Button onClick={() => dispatch(openModal())}>New</Button>
       </th>
       <th>
         <SortByParamsButton buttonText="Name" sortBy="name" />

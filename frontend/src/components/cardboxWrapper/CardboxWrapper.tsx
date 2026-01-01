@@ -1,3 +1,5 @@
+import { Button } from "@components/ui";
+
 interface CardboxCommonProps {
   title: string;
   children: React.ReactNode;
@@ -27,12 +29,13 @@ export function CardboxItem({ title, children, onClickX }: CardboxItemProps) {
         <div className="cardbox-content">
           {children}
           {onClickX ? (
-            <button
+            <Button
               onClick={onClickX}
-              className="common-button danger-button remove-cardbox-btn"
+              variant="danger"
+              className="remove-cardbox-btn"
             >
               X
-            </button>
+            </Button>
           ) : null}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
@@ -44,13 +45,10 @@ export default function Error({ error }: ErrorsProps) {
           We have problem with connecting to our servers.
           <br />
           {isActiveCountdown ? (
-            <button
-              onClick={stopRefresh}
-              className="common-button primary-button"
-            >
+            <Button onClick={stopRefresh}>
               We will automatically try again in {countdown} seconds.
               <div className="hidrr">Stop refreshing</div>
-            </button>
+            </Button>
           ) : (
             "Try again later."
           )}

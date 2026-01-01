@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { usePagination } from "@hooks";
 import { ChangeEvent, useState } from "react";
 
@@ -85,11 +86,9 @@ function SelectPagination({
     <div className="select-pagination-wrapper">
       <div className="select-pagination-pages">
         {paginationRange?.map((val, index) => (
-          <button
+          <Button
             key={index}
-            className={`common-button ${
-              val === page ? "primary-button" : "secondary-button"
-            }  `}
+            variant={val === page ? "primary" : "secondary"}
             onClick={() => {
               const valAsNumber = Number(val);
               if (!isNaN(valAsNumber)) {
@@ -99,7 +98,7 @@ function SelectPagination({
             }}
           >
             {val}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="select-pagination-page-size">

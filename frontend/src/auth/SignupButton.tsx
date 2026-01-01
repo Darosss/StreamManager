@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
 import { useState, useEffect, useCallback } from "react";
@@ -42,37 +43,40 @@ export default function SignupButton() {
   if (loggedUser) {
     return (
       <>
-        <button className="common-button primary-button signup-button">
+        <Button variant="primary" className="signup-button">
           Logged as: <span>{loggedUser}</span>
-        </button>
-        <button
-          className="common-button danger-button signup-button"
+        </Button>
+        <Button
+          variant="danger"
+          className="signup-button"
           onClick={() => handleOnLogoutButton()}
         >
           Logout
-        </button>
+        </Button>
       </>
     );
   } else if (error || !authData) {
     return (
-      <button
-        className="common-button tertiary-button signup-button"
+      <Button
+        variant="tertiary"
+        className="signup-button"
         onClick={() => {
           refetchAuthorizeUrl();
         }}
       >
         Refresh Link
-      </button>
+      </Button>
     );
   }
   return (
-    <a
-      className="common-button tertiary-button signup-button"
-      href={authData ? authData.data : "_blank"}
-      target="_blank"
-      rel="noreferrer"
-    >
-      Connect with twitch
-    </a>
+    <Button variant="primary" className="signup-button">
+      <a
+        href={authData ? authData.data : "_blank"}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Connect with twitch
+      </a>
+    </Button>
   );
 }

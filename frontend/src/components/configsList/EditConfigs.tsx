@@ -9,6 +9,7 @@ import {
 } from "@redux/configsSlice";
 import { RootStore } from "@redux/store";
 import Error from "@components/axiosHelper/errors";
+import { Button } from "@components/ui";
 
 export default function EditConfigs() {
   const dispatch = useDispatch();
@@ -42,28 +43,21 @@ export default function EditConfigs() {
 
   return (
     <div className="edit-configs-wrapper">
-      <button
-        className="common-button primary-button"
+      <Button
         onClick={() => {
           dispatch(isUpdateMode ? closeEditMode() : openEditMode());
         }}
       >
         Edit
-      </button>
+      </Button>
       {isUpdateMode ? (
         <>
-          <button
-            className="common-button danger-button"
-            onClick={handleUpdateConfigs}
-          >
+          <Button variant="danger" onClick={handleUpdateConfigs}>
             Save
-          </button>
-          <button
-            className="common-button danger-button"
-            onClick={handleResetConfigs}
-          >
+          </Button>
+          <Button variant="danger" onClick={handleResetConfigs}>
             Reset to defaults
-          </button>
+          </Button>
         </>
       ) : null}
     </div>

@@ -8,6 +8,7 @@ import {
   setCurrentAction,
   setEditingId,
 } from "@redux/achievementsSlice";
+import { Button } from "@components/ui";
 
 const initialAchievementData: Required<AchievementSliceDataType> = {
   name: "",
@@ -24,8 +25,7 @@ export function CreateCustomAchievementButton() {
   const dispatch = useDispatch();
   return (
     <div>
-      <button
-        className="common-button primary-button"
+      <Button
         onClick={() => {
           dispatch(openModal());
 
@@ -37,7 +37,7 @@ export function CreateCustomAchievementButton() {
         }}
       >
         Create custom
-      </button>
+      </Button>
     </div>
   );
 }

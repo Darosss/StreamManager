@@ -4,6 +4,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { uploadMp3Data, useGetFoldersList } from "@services";
 import "./upload-mp3-form-style.scss";
 import { useFileUpload } from "@hooks";
+import { Button } from "@components/ui";
 
 export default function UploadMp3Form() {
   const [fileList, setFileList] = useState<FileList | null>(null);
@@ -35,15 +36,13 @@ export default function UploadMp3Form() {
           <div className="upload-folder-buttons">
             {folders.map((folder, index) => {
               return (
-                <button
-                  className={`common-button ${
-                    folderName === folder ? "primary-button" : "danger-button"
-                  }`}
+                <Button
+                  variant={folderName === folder ? "primary" : "danger"}
                   key={index}
                   onClick={() => setFolderName(folder)}
                 >
                   {folder}
-                </button>
+                </Button>
               );
             })}
           </div>

@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { setCustom, setIsTime, setName } from "@redux/achievementsSlice";
+import { Button } from "@components/ui";
 
 export default function CustomAchievementModalInputs() {
   const dispatch = useDispatch();
@@ -21,14 +22,12 @@ export default function CustomAchievementModalInputs() {
           <>
             <div>Is time (is achievement designed for time check) </div>
             <div>
-              <button
-                className={`common-button ${
-                  achievement.isTime ? "primary-button" : "danger-button"
-                }`}
+              <Button
+                variant={achievement.isTime ? "primary" : "danger"}
                 onClick={() => dispatch(setIsTime(!achievement.isTime))}
               >
                 {String(achievement.isTime)}
-              </button>
+              </Button>
             </div>
           </>
         );
@@ -53,12 +52,10 @@ export default function CustomAchievementModalInputs() {
             </div>
             <div> Case sensitive </div>
             <div>
-              <button
-                className={`common-button ${
-                  achievement.custom.caseSensitive
-                    ? "primary-button"
-                    : "danger-button"
-                }`}
+              <Button
+                variant={
+                  achievement.custom.caseSensitive ? "primary" : "danger"
+                }
                 onClick={() =>
                   dispatch(
                     setCustom({
@@ -69,7 +66,7 @@ export default function CustomAchievementModalInputs() {
                 }
               >
                 {String(achievement.custom.caseSensitive) || "False"}
-              </button>
+              </Button>
             </div>
           </>
         );

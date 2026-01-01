@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { User, useGetUsers } from "@services";
 import { useState } from "react";
 
@@ -22,9 +23,9 @@ export default function SearchUsers({
       {whoAdded ? (
         <div className="who-added-wrapper">
           {whoAdded.username}
-          <button className="danger-button" onClick={() => setWhoAdded(null)}>
+          <Button variant="danger" onClick={() => setWhoAdded(null)}>
             x
-          </button>
+          </Button>
         </div>
       ) : (
         <div>Search users</div>
@@ -43,20 +44,16 @@ export default function SearchUsers({
           <div> Users: </div>
           <div className="users-list">
             {data?.data?.map((user, index) => (
-              <button
+              <Button
                 key={index}
-                className={`${
-                  currentUserId === user._id
-                    ? "primary-button"
-                    : "tertiary-button"
-                }`}
+                variant={currentUserId === user._id ? "primary" : "tertiary"}
                 onClick={() => {
                   onClickUser(user);
                   setWhoAdded(user);
                 }}
               >
                 {user.username}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

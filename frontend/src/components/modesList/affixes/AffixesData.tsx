@@ -1,5 +1,6 @@
 import { CardboxItem } from "@components/cardboxWrapper";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 import {
   openModal,
   resetAffixState,
@@ -40,12 +41,9 @@ export default function AffixesData({ data }: AffixesDataProps) {
   return (
     <>
       <CardboxItem title="Create affix">
-        <button
-          onClick={() => handleShowModal({ type: "create" })}
-          className="common-button primary-button"
-        >
+        <Button onClick={() => handleShowModal({ type: "create" })}>
           Create
-        </button>
+        </Button>
       </CardboxItem>
       {data.map((affix, index) => {
         return (
@@ -56,12 +54,12 @@ export default function AffixesData({ data }: AffixesDataProps) {
             }}
             key={index}
           >
-            <button
+            <Button
               onClick={() => handleShowModal({ type: "edit", data: affix })}
-              className="common-button primary-button edit-mode-button"
+              className="edit-mode-button"
             >
               Edit
-            </button>
+            </Button>
           </CardboxItem>
         );
       })}

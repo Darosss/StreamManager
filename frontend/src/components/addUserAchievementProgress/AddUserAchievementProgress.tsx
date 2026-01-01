@@ -1,6 +1,7 @@
 import { Error, Loading } from "@components/axiosHelper";
 import Modal from "@components/modal";
 import SelectWithData from "@components/selectWithData";
+import { Button } from "@components/ui";
 import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
 import { AddAchievementProgressToUserData, useSocketContext } from "@socket";
 import { addErrorNotification, addSuccessNotification } from "@utils";
@@ -77,12 +78,9 @@ export default function UserAchievementProgress({
   const { currentPage, count, totalPages, data } = achievementsData;
   return (
     <>
-      <button
-        className="common-button primary-button"
-        onClick={() => setShowModal(true)}
-      >
+      <Button onClick={() => setShowModal(true)}>
         Add achievement progress
-      </button>
+      </Button>
       <Modal
         title="Add user achievement progress"
         onClose={() => setShowModal(false)}
@@ -152,12 +150,9 @@ function UserAchievementProgressValue({
       <div>
         <div>
           <label>
-            <button
-              className="common-button primary-button"
-              onClick={(e) => onChange(values.value, !values.increment)}
-            >
+            <Button onClick={(e) => onChange(values.value, !values.increment)}>
               {values.increment ? "Increment" : "Set"}
-            </button>{" "}
+            </Button>{" "}
             values {values.increment ? "by" : "to"}
           </label>
         </div>

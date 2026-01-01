@@ -11,6 +11,7 @@ import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { initialLayoutOverlays, initialToolboxOverlays } from "@layout";
+import { Button } from "@components/ui";
 
 export default function OverlaysList() {
   const queryParams = useQueryParams(fetchOverlaysDefaultParams);
@@ -60,12 +61,7 @@ export default function OverlaysList() {
             value={overlayName}
             onChange={(e) => setLayoutName(e.target.value)}
           />
-          <button
-            onClick={handleCreateOverlay}
-            className="common-button primary-button"
-          >
-            Create
-          </button>
+          <Button onClick={handleCreateOverlay}>Create</Button>
         </CardboxItem>
         {overlays.map((overlay, index) => (
           <CardboxItem

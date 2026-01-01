@@ -12,6 +12,7 @@ import {
   setMessages,
 } from "@redux/commandsSlice";
 import { RootStore } from "@redux/store";
+import { Button } from "@components/ui";
 
 export default function CommandModalData() {
   const dispatch = useDispatch();
@@ -33,14 +34,12 @@ export default function CommandModalData() {
 
       <div> Enabled </div>
       <div>
-        <button
+        <Button
           onClick={() => dispatch(setEnabled(!commandState.enabled))}
-          className={`${
-            commandState.enabled ? "primary-button" : "danger-button"
-          } common-button`}
+          variant={commandState.enabled ? "primary" : "danger"}
         >
           {commandState.enabled.toString()}
-        </button>
+        </Button>
       </div>
       <div>Tag</div>
       <div>

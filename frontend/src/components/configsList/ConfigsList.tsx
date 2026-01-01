@@ -15,6 +15,7 @@ import Error from "@components/axiosHelper/errors";
 import { Loading } from "@components/axiosHelper";
 import { useDispatch } from "react-redux";
 import { setConfigState } from "@redux/configsSlice";
+import { Button } from "@components/ui";
 
 enum ConfigsListTabNames {
   HEAD = "Head options",
@@ -72,15 +73,13 @@ export default function ConfigsList() {
 
       <div className="configs-list-tab-list-wrapper">
         {Object.values(ConfigsListTabNames).map((tabName, index) => (
-          <button
+          <Button
             key={index}
-            className={`${
-              currentTab === tabName ? "primary-button" : "danger-button"
-            }`}
+            variant={currentTab === tabName ? "primary" : "danger"}
             onClick={() => setCurrentTab(tabName)}
           >
             {tabName}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="configs-list-wrapper">

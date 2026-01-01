@@ -10,6 +10,7 @@ import AvailableAchievementSounds from "./AvailableAchievementSounds";
 import { viteBackendUrl } from "@configs/envVariables";
 import { Error, Loading } from "@components/axiosHelper";
 import { useAxiosWithConfirmation } from "@hooks";
+import { Button } from "@components/ui";
 
 export default function AchievementStagesSounds() {
   const [showModal, setShowModal] = useState(false);
@@ -72,12 +73,12 @@ export default function AchievementStagesSounds() {
           <div>
             Replace sound: soon(for now you need to delete and upload again)
           </div>
-          <button
-            className="danger-button common-button"
+          <Button
+            variant="danger"
             onClick={() => setSoundNameToDelete(choosenSound)}
           >
             Delete
-          </button>
+          </Button>
         </div>
       </Modal>
     </>
