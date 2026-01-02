@@ -3,7 +3,6 @@ import { DateTooltip } from "@components/dateTooltip";
 import SortByParamsButton from "@components/SortByParamsButton";
 import { TableListWrapper } from "@components/tableWrapper";
 import { Song, useDeleteSong } from "@services";
-import { generateEnabledDisabledDiv } from "@utils";
 import PreviewSongModal from "./PreviewSongModal";
 import {
   openModal,
@@ -14,6 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface SongsDataProps {
   data: Song[];
@@ -126,10 +126,9 @@ export default function SongsData({ data }: SongsDataProps) {
                 {song.uses} - {song.botUses} - {song.songRequestUses}
               </td>
               <td>
-                {generateEnabledDisabledDiv(
-                  song.enabled,
-                  song.enabled.toString()
-                )}
+                <StatusLabel enabled={song.enabled}>
+                  {song.enabled.toString()}
+                </StatusLabel>
                 ~~~~~~~~~
                 <br />
                 {song.duration}s

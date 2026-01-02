@@ -249,7 +249,7 @@ select {
 div {
   &.enabled {
     background-color: var(--success-color);
-
+    color: var(--font-color) !important;
     &:hover {
       filter: brightness(120%) !important;
     }
@@ -257,6 +257,7 @@ div {
 
   &.disabled {
     background-color: var(--danger-color);
+    color: var(--font-color) !important;
     &:hover {
       filter: brightness(120%) !important;
     }

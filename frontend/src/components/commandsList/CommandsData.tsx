@@ -1,4 +1,3 @@
-import { generateEnabledDisabledDiv } from "@utils";
 import { DateTooltip } from "@components/dateTooltip";
 import {
   TableDataWrapper,
@@ -16,6 +15,7 @@ import {
 } from "@redux/commandsSlice";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface CommandsDataProps {
   commands: ChatCommand[];
@@ -117,16 +117,16 @@ export default function CommandsData({ commands }: CommandsDataProps) {
                   <div>Uses: </div>
                   <div>{command.uses}</div>
                   <div>Enabled: </div>
-                  {generateEnabledDisabledDiv(
-                    command.enabled,
-                    command.enabled.toString().toUpperCase()
-                  )}
+                  <StatusLabel enabled={command.enabled}>
+                    {command.enabled.toString().toUpperCase()}
+                  </StatusLabel>
                   <div>Privilege: </div>
                   <div>{command.privilege}</div>
                   <div>Tag:</div>
-                  {generateEnabledDisabledDiv(tag.enabled, tag.name)}
+                  <StatusLabel enabled={tag.enabled}>{tag.name}</StatusLabel>
                   <div>Mood:</div>
-                  {generateEnabledDisabledDiv(mood.enabled, mood.name)}
+                  <StatusLabel enabled={mood.enabled}>{mood.name}</StatusLabel>
+
                   <div>Created at: </div>
                   <div>
                     <DateTooltip date={command.createdAt} />

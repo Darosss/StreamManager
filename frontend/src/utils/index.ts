@@ -1,5 +1,4 @@
 export * from "./convertSecondsToMS";
-export * from "./generateEnabledDisabledDiv";
 export * from "./getListModes";
 export * from "./getNotificationValues";
 export * from "./layoutBreakpoints";

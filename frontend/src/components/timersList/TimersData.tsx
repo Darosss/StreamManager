@@ -1,5 +1,4 @@
 import { Timer, TimerCreateData, useDeleteTimer } from "@services";
-import { generateEnabledDisabledDiv } from "@utils";
 import { DateTooltip } from "@components/dateTooltip";
 import {
   TableDataWrapper,
@@ -16,6 +15,7 @@ import {
 } from "@redux/timersSlice";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface TimersDataProps {
   data: Timer[];
@@ -128,10 +128,9 @@ export default function TimersData({ data }: TimersDataProps) {
                   <div>Required points: </div>
                   <div>{timer.reqPoints}</div>
                   <div>Enabled: </div>
-                  {generateEnabledDisabledDiv(
-                    timer.enabled,
-                    timer.enabled.toString().toUpperCase()
-                  )}
+                  <StatusLabel enabled={timer.enabled}>
+                    {timer.enabled.toString()}
+                  </StatusLabel>
                   <div>Uses: </div>
                   <div>{timer.uses}</div>
                   <div>Non follow multi: </div>
@@ -139,9 +138,9 @@ export default function TimersData({ data }: TimersDataProps) {
                   <div>Non sub multi:</div>
                   <div>{timer.nonSubMulti.toString()}</div>
                   <div>Tag:</div>
-                  {generateEnabledDisabledDiv(tag.enabled, tag.name)}
+                  <StatusLabel enabled={tag.enabled}>{tag.name}</StatusLabel>
                   <div>Mood:</div>
-                  {generateEnabledDisabledDiv(mood.enabled, mood.name)}
+                  <StatusLabel enabled={mood.enabled}>{mood.name}</StatusLabel>
                   <div>Description:</div>
                   <div>{timer.description}</div>
                   <div>Created at:</div>

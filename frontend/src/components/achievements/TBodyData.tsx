@@ -1,6 +1,5 @@
 import { DateTooltip } from "@components/dateTooltip";
 import { TableDataWrapper } from "@components/tableWrapper";
-import { generateEnabledDisabledDiv } from "@utils";
 import { Achievement, useDeleteCustomAchievement } from "@services";
 import { useDispatch } from "react-redux";
 import {
@@ -12,6 +11,7 @@ import {
   setEditingId,
 } from "@redux/achievementsSlice";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface TBodyDataProps {
   data: Achievement[];
@@ -66,15 +66,13 @@ export default function TBodyData({ data }: TBodyDataProps) {
                 <div>Name </div>
                 <div>{achievement.name}</div>
                 <div>Enabled</div>
-                {generateEnabledDisabledDiv(
-                  achievement.enabled,
-                  achievement.enabled.toString().toUpperCase()
-                )}
+                <StatusLabel enabled={achievement.enabled}>
+                  {achievement.enabled.toString().toUpperCase()}
+                </StatusLabel>
                 <div>Is time</div>
-                {generateEnabledDisabledDiv(
-                  achievement.isTime,
-                  achievement.isTime.toString().toUpperCase()
-                )}
+                <StatusLabel enabled={achievement.isTime}>
+                  {achievement.isTime.toString().toUpperCase()}
+                </StatusLabel>
               </TableDataWrapper>
             </td>
 
@@ -83,17 +81,16 @@ export default function TBodyData({ data }: TBodyDataProps) {
                 <div>Stages </div>
                 <div>{achievement.stages.name}</div>
                 <div>Tag</div>
-                {generateEnabledDisabledDiv(
-                  achievement.tag.enabled,
-                  achievement.tag.name
-                )}
+                <StatusLabel enabled={achievement.tag.enabled}>
+                  {achievement.tag.name}
+                </StatusLabel>
+
                 {achievement.hidden ? (
                   <>
                     <div>Hidden</div>
-                    {generateEnabledDisabledDiv(
-                      achievement.hidden,
-                      String(achievement.hidden).toUpperCase() || "FALSE"
-                    )}
+                    <StatusLabel enabled={achievement.hidden}>
+                      {achievement.hidden.toString().toUpperCase() || "FALSE"}
+                    </StatusLabel>
                   </>
                 ) : null}
                 {achievement.custom ? (
@@ -101,12 +98,11 @@ export default function TBodyData({ data }: TBodyDataProps) {
                     <div>Custom action</div>
                     <div>{achievement.custom.action}</div>
                     <div>Case sensitive?</div>
-                    {generateEnabledDisabledDiv(
-                      achievement.custom.caseSensitive || false,
-                      achievement.custom.caseSensitive
+                    <StatusLabel enabled={!!achievement.custom.caseSensitive}>
+                      {achievement.custom.caseSensitive
                         ?.toString()
-                        .toUpperCase() || "FALSE"
-                    )}
+                        .toUpperCase() || "FALSE"}
+                    </StatusLabel>
                   </>
                 ) : null}
               </TableDataWrapper>

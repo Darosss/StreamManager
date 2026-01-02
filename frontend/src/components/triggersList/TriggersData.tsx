@@ -1,5 +1,4 @@
 import { Trigger, TriggerCreateData, useDeleteTrigger } from "@services";
-import { generateEnabledDisabledDiv } from "@utils";
 import { DateTooltip } from "@components/dateTooltip";
 import {
   TableDataWrapper,
@@ -16,6 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface TriggersDataProps {
   data: Trigger[];
@@ -116,10 +116,9 @@ export default function TriggersData({ data }: TriggersDataProps) {
                   <div>Chance: </div>
                   <div>{trigger.chance}</div>
                   <div>Enabled: </div>
-                  {generateEnabledDisabledDiv(
-                    trigger.enabled,
-                    trigger.enabled.toString().toUpperCase()
-                  )}
+                  <StatusLabel enabled={trigger.enabled}>
+                    {trigger.enabled.toString()}
+                  </StatusLabel>
                   <div>Delay: </div>
                   <div>{trigger.delay}</div>
                   <div>Uses: </div>
@@ -127,9 +126,9 @@ export default function TriggersData({ data }: TriggersDataProps) {
                   <div>Mode:</div>
                   <div>{trigger.mode}</div>
                   <div>Tag:</div>
-                  {generateEnabledDisabledDiv(tag.enabled, tag.name)}
+                  <StatusLabel enabled={tag.enabled}>{tag.name}</StatusLabel>
                   <div>Mood:</div>
-                  {generateEnabledDisabledDiv(mood.enabled, mood.name)}
+                  <StatusLabel enabled={mood.enabled}>{mood.name}</StatusLabel>
                   <div>Created at:</div>
                   <div>
                     <DateTooltip date={trigger.createdAt} />

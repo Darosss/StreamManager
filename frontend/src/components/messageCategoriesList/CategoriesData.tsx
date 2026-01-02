@@ -1,4 +1,3 @@
-import { generateEnabledDisabledDiv } from "@utils";
 import {
   TableDataWrapper,
   TableItemsListWrapper,
@@ -19,6 +18,7 @@ import {
 } from "@redux/messageCategoriesSlice";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui";
+import { StatusLabel } from "@components/common/StatusLabel";
 
 interface CategoriesDataProps {
   data: MessageCategory[];
@@ -113,16 +113,16 @@ export default function CategoriesData({ data }: CategoriesDataProps) {
                   <div>Name</div>
                   <div>{category.name}</div>
                   <div>Enabled</div>
-                  {generateEnabledDisabledDiv(
-                    category.enabled,
-                    category.enabled.toString().toUpperCase()
-                  )}
+                  <StatusLabel enabled={category.enabled}>
+                    {category.enabled.toString().toUpperCase()}
+                  </StatusLabel>
                   <div>Uses</div>
                   <div>{category.uses}</div>
                   <div>Tag:</div>
-                  {generateEnabledDisabledDiv(tag.enabled, tag.name)}
+                  <StatusLabel enabled={tag.enabled}>{tag.name}</StatusLabel>
                   <div>Mood:</div>
-                  {generateEnabledDisabledDiv(mood.enabled, mood.name)}
+
+                  <StatusLabel enabled={mood.enabled}>{mood.name}</StatusLabel>
                 </TableDataWrapper>
               </td>
               <td>
