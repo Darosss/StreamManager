@@ -1,5 +1,5 @@
 import path from "path";
-import { ensureDirectoryExists } from "@utils";
+import { ensureDirectoryExists } from "../utils/filesManipulate";
 
 export const musicFolderName = "music";
 export const rootFolder = path.resolve(__dirname, "../");
