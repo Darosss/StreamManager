@@ -26,7 +26,7 @@ export const uploadMp3Data = {
 };
 
 export const fetchFoldersList = async (): PromiseBackendData<string[]> => {
-  const response = await customAxios.get(`/${baseEndpointName}/folder-list`);
+  const response = await customAxios.get(`/${baseEndpointName}/folder-list/`);
   return response.data;
 };
 export const fetchFoldersMp3FilesList = async (
