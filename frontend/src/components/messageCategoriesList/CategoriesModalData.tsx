@@ -9,6 +9,7 @@ import {
   setTag,
   toggleEnabled,
 } from "@redux/messageCategoriesSlice";
+import { Button } from "@components/ui";
 
 export default function CategoriesModalData() {
   const modes = useGetAllModes();
@@ -30,14 +31,12 @@ export default function CategoriesModalData() {
       </div>
       <div> Enabled </div>
       <div>
-        <button
+        <Button
           onClick={() => dispatch(toggleEnabled())}
-          className={`${
-            !messageCategoryState.enabled ? "danger-button" : "primary-button"
-          } common-button`}
+          variant={messageCategoryState.enabled ? "primary" : "danger"}
         >
           {messageCategoryState.enabled.toString()}
-        </button>
+        </Button>
       </div>
       <div>Tag</div>
       <div>

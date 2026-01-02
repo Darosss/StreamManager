@@ -185,16 +185,45 @@ table {
 button,
 a,
 select {
+  &.small-button {
+    & > div {
+      padding: 0.2rem;
+      font-size: calc(0.3rem + 1vmin);
+    }
+  }
+
+  &.medium-button {
+    & > div {
+      padding: 0.5rem;
+      font-size: calc(0.5rem + 1vmin);
+    }
+  }
+
+  &.large-button {
+    & > div {
+      padding: 1rem;
+      font-size: calc(0.7rem + 1vmin);
+    }
+  }
+
   &.common-button {
     transition: transform 1s;
-    font-size: calc(0.5rem + 1vmin);
     overflow: hidden;
     border-radius: 0.2rem;
-    align-items: center;
+    display: flex;
     justify-content: center;
-
+    align-items: center;
+    padding: 0;
     transition: all;
     transition-duration: 300ms;
+
+    & > div {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+
     &:hover {
       filter: brightness(115%);
       filter: hue-rotate(15deg);

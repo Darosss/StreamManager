@@ -15,6 +15,7 @@ import {
 } from "@redux/triggersSlice";
 import { useDispatch } from "react-redux";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 
 interface TriggersDataProps {
   data: Trigger[];
@@ -59,12 +60,9 @@ export default function TriggersData({ data }: TriggersDataProps) {
           <tr>
             <th>
               Actions
-              <button
-                className="common-button primary-button"
-                onClick={() => handleShowModal({ type: "create" })}
-              >
+              <Button onClick={() => handleShowModal({ type: "create" })}>
                 New
-              </button>
+              </Button>
             </th>
             <th colSpan={5}>
               <div>
@@ -89,28 +87,26 @@ export default function TriggersData({ data }: TriggersDataProps) {
             <tr key={trigger._id}>
               <td>
                 <div>
-                  <button
-                    className="common-button primary-button"
+                  <Button
                     onClick={() =>
                       handleShowModal({ type: "duplicate", data: trigger })
                     }
                   >
                     Duplicate
-                  </button>
-                  <button
-                    className="common-button primary-button"
+                  </Button>
+                  <Button
                     onClick={() =>
                       handleShowModal({ type: "edit", data: trigger })
                     }
                   >
                     Edit
-                  </button>
-                  <button
-                    className="common-button danger-button"
+                  </Button>
+                  <Button
+                    variant="danger"
                     onClick={() => handleDeleteTrigger(trigger._id)}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </td>
               <td colSpan={5}>

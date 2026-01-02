@@ -1,5 +1,6 @@
 import DrawerBar from "@components/drawer";
 import NavigateButton from "@components/navigateButton";
+import { Button } from "@components/ui";
 import { addSuccessNotification } from "@utils";
 
 interface LayoutDrawerBarProps {
@@ -79,23 +80,18 @@ export default function LayoutDrawerBar({
               </span>
             </div>
             <div>
-              <button
-                className={`common-button ${
-                  isEdit ? "danger-button" : "primary-button"
-                }`}
+              <Button
+                variant={isEdit ? "danger" : "primary"}
                 onClick={toggleEditMode}
               >
                 Toggle Edit
-              </button>
+              </Button>
             </div>
             <div>
               {!isEdit ? (
-                <button
-                  className="common-button primary-button"
-                  onClick={handleOnSave}
-                >
+                <Button variant="success" onClick={handleOnSave}>
                   Save
-                </button>
+                </Button>
               ) : null}
             </div>
           </div>

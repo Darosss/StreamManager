@@ -1,4 +1,5 @@
 import { Loading } from "@components/axiosHelper";
+import { Button } from "@components/ui";
 import { useEditTag, useEditMood, useEditAffix } from "@services";
 import { useGetAllModes, addNotification } from "@utils";
 
@@ -21,15 +22,13 @@ export default function StreamModes() {
         <div className="stream-modes-section-wrapper">
           <div className="stream-modes-section">
             <div className="stream-modes-section-name">
-              <button className="common-button secondary-button">Tags </button>
+              <Button variant="secondary">Tags </Button>
             </div>
             {tags?.map((tag, index) => {
               return (
                 <div key={index}>
-                  <button
-                    className={`common-button ${
-                      tag.enabled ? "primary-button" : "danger-button"
-                    }`}
+                  <Button
+                    variant={tag.enabled ? "primary" : "danger"}
                     onClick={() => {
                       editTagMutation.mutate({
                         id: tag._id,
@@ -38,15 +37,16 @@ export default function StreamModes() {
                     }}
                   >
                     {tag.name}
-                  </button>
+                  </Button>
                 </div>
               );
             })}
           </div>
           <div className="stream-modes-section">
             <div className="stream-modes-section-name">
-              <button
-                className="common-button secondary-button"
+              {/* TODO: REFACTOR UNDER */}
+              <Button
+                variant="secondary"
                 onClick={(e) => {
                   let prefixes: string[] = [];
                   let suffixes: string[] = [];
@@ -71,16 +71,14 @@ export default function StreamModes() {
                 }}
               >
                 Affixes
-              </button>
+              </Button>
             </div>
 
             {affixes?.map((affix, index) => {
               return (
                 <div key={index}>
-                  <button
-                    className={`common-button ${
-                      affix.enabled ? "primary-button" : "danger-button"
-                    }`}
+                  <Button
+                    variant={affix.enabled ? "primary" : "danger"}
                     onClick={() => {
                       editAffixMutation.mutate({
                         id: affix._id,
@@ -89,23 +87,21 @@ export default function StreamModes() {
                     }}
                   >
                     {affix.name}
-                  </button>
+                  </Button>
                 </div>
               );
             })}
           </div>
           <div className="stream-modes-section">
             <div className="stream-modes-section-name">
-              <button className="common-button secondary-button">Moods</button>
+              <Button variant="secondary">Moods</Button>
             </div>
 
             {moods?.map((mood, index) => {
               return (
                 <div key={index}>
-                  <button
-                    className={`common-button ${
-                      mood.enabled ? "primary-button" : "danger-button"
-                    }`}
+                  <Button
+                    variant={mood.enabled ? "primary" : "danger"}
                     onClick={() => {
                       editMoodMutation.mutate({
                         id: mood._id,
@@ -114,7 +110,7 @@ export default function StreamModes() {
                     }}
                   >
                     {mood.name}
-                  </button>
+                  </Button>
                 </div>
               );
             })}

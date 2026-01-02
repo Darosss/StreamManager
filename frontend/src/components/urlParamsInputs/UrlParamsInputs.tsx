@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import React, { JSX, useEffect, useRef } from "react";
 
 import { useSearchParams } from "react-router-dom";
@@ -76,14 +77,9 @@ export default function UrlParamsInput({
 
   return (
     <div className="filter-wrapper">
-      <button
-        className="filter-clear-btn common-button danger-button"
-        onClick={(e) => {
-          clearFilters(e);
-        }}
-      >
+      <Button className="filter-clear-btn" onClick={clearFilters}>
         Clear filters
-      </button>
+      </Button>
       <div className="filter-inputs" ref={inputsWrapper}>
         {children}
       </div>

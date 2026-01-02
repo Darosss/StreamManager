@@ -15,6 +15,7 @@ import {
   setCommandState,
 } from "@redux/commandsSlice";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 
 interface CommandsDataProps {
   commands: ChatCommand[];
@@ -59,14 +60,13 @@ export default function CommandsData({ commands }: CommandsDataProps) {
           <tr>
             <th>
               Actions
-              <button
-                className="common-button primary-button"
+              <Button
                 onClick={() => {
                   handleShowModal({ type: "create" });
                 }}
               >
                 New
-              </button>
+              </Button>
             </th>
             <th colSpan={5}>
               <div>
@@ -89,28 +89,26 @@ export default function CommandsData({ commands }: CommandsDataProps) {
           return (
             <tr key={command._id}>
               <td>
-                <button
-                  className="common-button primary-button"
+                <Button
                   onClick={() => {
                     handleShowModal({ type: "duplicate", data: command });
                   }}
                 >
                   Duplicate
-                </button>
-                <button
-                  className="common-button primary-button"
+                </Button>
+                <Button
                   onClick={() =>
                     handleShowModal({ type: "edit", data: command })
                   }
                 >
                   Edit
-                </button>
-                <button
-                  className="common-button danger-button"
+                </Button>
+                <Button
+                  variant="danger"
                   onClick={() => handleDeleteCommand(command._id)}
                 >
                   Delete
-                </button>
+                </Button>
               </td>
               <td colSpan={5}>
                 <TableDataWrapper>

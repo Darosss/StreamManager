@@ -11,6 +11,7 @@ import { OnClickBadgeType } from "./types";
 import { closeModal, openModal } from "@redux/badgesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
+import { Button } from "@components/ui";
 
 export default function BadgesImages() {
   const dispatch = useDispatch();
@@ -89,12 +90,9 @@ export default function BadgesImages() {
                 )}
             </div>
             <div>
-              <button
-                className="danger-button common-button"
-                onClick={handleDeleteBadge}
-              >
+              <Button variant="danger" onClick={handleDeleteBadge}>
                 Delete
-              </button>
+              </Button>
             </div>
           </ModalDataWrapper>
         </div>

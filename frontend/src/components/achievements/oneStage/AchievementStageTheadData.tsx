@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { setIsGoalTime } from "@redux/stagesSlice";
+import { Button } from "@components/ui";
 interface AchievementStageTheadDataProps {
   editing: boolean;
 }
@@ -21,14 +22,16 @@ export default function AchievementStageTheadData({
       <th>Goal {editing ? <ToggleGoalIsTimeBtn /> : null}</th>
       <th>Show Time (sec)</th>
       <th>
-        <Link to="../../badges" className="common-button primary-button">
-          Badge
-        </Link>
+        <Button>
+          <Link to="../../badges">Badge</Link>
+        </Button>
       </th>
       <th>
-        <Link to="../sounds" className="common-button primary-button">
-          Sounds
-        </Link>
+        <Button>
+          <Link to="../sounds" className="common-button primary-button">
+            Sounds
+          </Link>
+        </Button>
       </th>
     </tr>
   );
@@ -38,13 +41,11 @@ function ToggleGoalIsTimeBtn() {
   const { isGoalTime } = useSelector((root: RootStore) => root.stages);
   const dispatch = useDispatch();
   return (
-    <button
-      className={`common-button ${
-        isGoalTime ? "primary-button" : "danger-button"
-      }`}
+    <Button
+      variant={isGoalTime ? "primary" : "danger"}
       onClick={() => dispatch(setIsGoalTime(!isGoalTime))}
     >
       {isGoalTime ? "Time" : "Points"}
-    </button>
+    </Button>
   );
 }

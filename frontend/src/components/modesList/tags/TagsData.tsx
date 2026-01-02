@@ -1,5 +1,6 @@
 import { CardboxItem } from "@components/cardboxWrapper";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 import {
   openModal,
   resetTagState,
@@ -37,12 +38,9 @@ export default function TagsData({ data }: TagsDataProps) {
   return (
     <>
       <CardboxItem title="Create tag">
-        <button
-          onClick={() => handleShowModal({ type: "create" })}
-          className="common-button primary-button"
-        >
+        <Button onClick={() => handleShowModal({ type: "create" })}>
           Create
-        </button>
+        </Button>
       </CardboxItem>
       {data.map((tag, index) => {
         return (
@@ -53,12 +51,12 @@ export default function TagsData({ data }: TagsDataProps) {
             }}
             key={index}
           >
-            <button
+            <Button
               onClick={() => handleShowModal({ type: "edit", data: tag })}
-              className="common-button primary-button edit-mode-button"
+              className="edit-mode-button"
             >
               Edit
-            </button>
+            </Button>
           </CardboxItem>
         );
       })}

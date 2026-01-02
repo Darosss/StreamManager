@@ -1,4 +1,5 @@
 import Modal from "@components/modal";
+import { Button } from "@components/ui";
 import { useCreateAchievementStage } from "@services";
 import { useState } from "react";
 
@@ -16,12 +17,7 @@ export default function CreateStages() {
   };
   return (
     <>
-      <button
-        className="common-button primary-button"
-        onClick={(e) => setShowModal(true)}
-      >
-        New
-      </button>
+      <Button onClick={(e) => setShowModal(true)}>New</Button>
 
       <Modal
         title="Create new achievement stage"

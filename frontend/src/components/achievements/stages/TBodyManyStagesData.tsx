@@ -1,4 +1,5 @@
 import { DateTooltip } from "@components/dateTooltip";
+import { Button } from "@components/ui";
 import { AchievementStage, useDeleteAchievementStage } from "@services";
 import { Link } from "react-router-dom";
 
@@ -49,15 +50,15 @@ function TBodyStageData({ stage, onClickDelete }: TBodyStageDataProps) {
           >
             Show
           </Link>
-          <button
-            className="common-button danger-button"
+          <Button
+            variant="danger"
             onClick={(e) => {
               e.stopPropagation();
               onClickDelete(stage._id);
             }}
           >
             Delete
-          </button>
+          </Button>
         </div>
       </td>
       <td>{stage.name}</td>

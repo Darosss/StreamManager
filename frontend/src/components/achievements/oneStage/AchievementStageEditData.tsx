@@ -13,6 +13,7 @@ import {
 } from "@redux/stagesSlice";
 import { closeSoundModal, openSoundModal } from "@redux/stagesSlice";
 import { TimeGoalInput } from "./TimeGoalInput";
+import { Button } from "@components/ui";
 
 interface AchievementStageEditDataProps {
   onClickBadge: (indexOfStage: number) => void;
@@ -50,12 +51,12 @@ export default function AchievementStageEditData({
         <tr key={index} className="stage-data-content stage-data-edit">
           <td className="stage-data-content-nr-delete-td">
             {index + 1}
-            <button
-              className="danger-button common-button"
+            <Button
+              variant="danger"
               onClick={() => handleOnClickRemoveStage(index)}
             >
               X
-            </button>
+            </Button>
           </td>
           <td>
             <TableDataWrapper>

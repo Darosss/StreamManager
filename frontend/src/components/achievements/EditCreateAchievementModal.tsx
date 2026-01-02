@@ -20,6 +20,7 @@ import {
   setTagId,
 } from "@redux/achievementsSlice";
 import { SelectAchievementStages } from "./stages/SelectAchievementStages";
+import { Button } from "@components/ui";
 
 export default function EditCreateAchievementModal() {
   const dispatch = useDispatch();
@@ -79,14 +80,12 @@ export default function EditCreateAchievementModal() {
         </div>
         <div>Enabled </div>
         <div>
-          <button
-            className={`common-button ${
-              achievement.enabled ? "primary-button" : "danger-button"
-            }`}
+          <Button
+            variant={achievement.enabled ? "primary" : "danger"}
             onClick={() => dispatch(setEnabled(!achievement.enabled))}
           >
             {String(achievement.enabled)}
-          </button>
+          </Button>
         </div>
 
         <div>Stages </div>
@@ -108,14 +107,12 @@ export default function EditCreateAchievementModal() {
         </div>
         <div>Hidden(used to hide it from displaying fe. discord, site) </div>
         <div>
-          <button
-            className={`common-button ${
-              achievement.hidden ? "primary-button" : "danger-button"
-            }`}
+          <Button
+            variant={achievement.hidden ? "primary" : "danger"}
             onClick={() => dispatch(setHidden(!achievement.hidden))}
           >
             {String(achievement.hidden)}
-          </button>
+          </Button>
         </div>
 
         {achievement.custom ? <CustomAchievementModalInputs /> : null}

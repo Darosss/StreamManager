@@ -4,6 +4,7 @@ import { useGetAchievementStagesSoundsBasePath } from "@services";
 import { addErrorNotification, addSuccessNotification } from "@utils";
 import { useEffect, useState } from "react";
 import { viteBackendUrl } from "@configs/envVariables";
+import { Button } from "@components/ui";
 
 interface OnClickSoundType {
   basePath: string;
@@ -35,12 +36,13 @@ export default function AvailableAchievementSounds({
         <UploadAchievementStageSoundButtons
           onSuccessCallback={onClickRefresh}
         />
-        <button
-          className="common-button tertiary-button"
+        <Button
+          variant="tertiary"
+          className="common-button"
           onClick={onClickRefresh}
         >
           Refresh
-        </button>
+        </Button>
         <input
           type="text"
           placeholder="search"
@@ -105,12 +107,9 @@ function UploadAchievementStageSoundButtons({
 
   return (
     <>
-      <button
-        className="common-button primary-button"
-        onClick={() => setShowUploadSound(!showUploadSound)}
-      >
+      <Button onClick={() => setShowUploadSound(!showUploadSound)}>
         {showUploadSound ? "Hide upload" : "New"}
-      </button>
+      </Button>
 
       {showUploadSound ? (
         <div>

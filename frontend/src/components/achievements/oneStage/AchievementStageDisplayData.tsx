@@ -3,6 +3,7 @@ import { TableDataWrapper } from "@components/tableWrapper";
 import { getDateFromSecondsToYMDHMS } from "@utils";
 import { useSocketContext } from "@socket";
 import { AchievementStageData } from "@services";
+import { Button } from "@components/ui";
 
 interface AchievementStageDisplayDataProps {
   stageData: AchievementStageData[];
@@ -93,18 +94,12 @@ function EmulateStageButton({ stageData }: EmulateStageButtonProps) {
   return (
     <>
       <div>
-        <button
-          className="common-button tertiary-button"
-          onClick={() => handleOnClickEmulate()}
-        >
+        <Button variant="tertiary" onClick={() => handleOnClickEmulate()}>
           Emulate
-        </button>
-        <button
-          className="common-button tertiary-button"
-          onClick={() => handleOnClickEmulate(true)}
-        >
+        </Button>
+        <Button variant="tertiary" onClick={() => handleOnClickEmulate(true)}>
           Emulate as time
-        </button>
+        </Button>
       </div>
     </>
   );

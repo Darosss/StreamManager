@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -58,19 +59,20 @@ export default function SortByParamsButton({
   return (
     <div className="sort-by-params-button-wrapper">
       <div>
-        <button
-          className="common-button sort-by-params-button"
+        <Button
+          className="sort-by-params-button"
           onClick={handleOnClickSortBtn}
         >
           {buttonText}
           <span>{currentSearch}</span>
-        </button>
-        <button
-          className="sort-by-params-remove-sort danger-button"
+        </Button>
+        <Button
+          className="sort-by-params-remove-sort"
+          variant="danger"
           onClick={removeSortParams}
         >
           X
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { addErrorNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { pushToStageData } from "@redux/stagesSlice";
+import { Button } from "@components/ui";
 
 interface ActionButtonsProps {
   stageId: string;
@@ -88,32 +89,22 @@ export default function ActionButtons({
     <>
       {editing ? (
         <>
-          <button
-            className="common-button danger-button"
+          <Button
+            variant="danger"
             onClick={() => {
               onCancelEdit();
               refetchAchievementStageById(stageId);
             }}
           >
             Cancel edit
-          </button>
-          <button
-            className="common-button primary-button"
-            onClick={handleOnClickSave}
-          >
+          </Button>
+          <Button variant="success" onClick={handleOnClickSave}>
             Save
-          </button>
-          <button
-            className="common-button primary-button"
-            onClick={handleOnClickAddStage}
-          >
-            Add stage
-          </button>
+          </Button>
+          <Button onClick={handleOnClickAddStage}>Add stage</Button>
         </>
       ) : (
-        <button className="common-button primary-button" onClick={onClickEdit}>
-          Edit
-        </button>
+        <Button onClick={onClickEdit}>Edit</Button>
       )}
     </>
   );

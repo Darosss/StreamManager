@@ -12,6 +12,7 @@ import {
   setCustomId,
   setWhoAdded,
 } from "@redux/songsSlice";
+import { Button } from "@components/ui";
 
 export default function SongModalData() {
   const dispatch = useDispatch();
@@ -52,14 +53,12 @@ export default function SongModalData() {
       </div>
       <div>Enabled</div>
       <div>
-        <button
-          className={`common-button ${
-            songState.enabled ? "primary-button" : "danger-button"
-          }`}
+        <Button
+          variant={songState.enabled ? "primary" : "danger"}
           onClick={() => dispatch(setEnabled(!songState.enabled))}
         >
           {songState.enabled ? "TRUE" : "FALSE"}
-        </button>
+        </Button>
       </div>
       <div>Custom title</div>
       <div>

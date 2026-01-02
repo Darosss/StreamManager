@@ -3,6 +3,7 @@ import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
+import { Button } from "@components/ui";
 
 type CurrentBreakpointState = [
   string,
@@ -265,19 +266,17 @@ function LayoutDrawerBar(props: {
             <div> Breakpoint: {currentBreakpoint}</div>
 
             <div>
-              <button
-                className={`common-button ${
-                  isEdit ? "danger-button" : "primary-button"
-                }`}
+              <Button
+                variant={isEdit ? "danger" : "primary"}
                 onClick={toggleEdit}
               >
                 Turn edit {isEdit ? "off" : "on"}
-              </button>
+              </Button>
             </div>
             <div>
-              <button className="common-button primary-button" onClick={editFn}>
+              <Button variant="success" onClick={editFn}>
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </div>

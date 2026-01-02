@@ -4,6 +4,7 @@ import AchievementStageLists from "./AchievementStagesList";
 import Pagination from "@components/pagination";
 import { useLocalStorage } from "@hooks";
 import { Error, Loading } from "@components/axiosHelper";
+import { Button } from "@components/ui";
 
 export default function UserAchievements() {
   const { data: achievementsData, isLoading, error } = useGetAchievements();
@@ -22,12 +23,13 @@ export default function UserAchievements() {
       <NavigateButton />
       <div className="user-achievements-header">
         <div>User achievements</div>
-        <button
-          className="common-button primary-button"
+
+        <Button
+          variant={expandAllSections ? "danger" : "primary"}
           onClick={() => setExpandAllSections(!expandAllSections)}
         >
-          {expandAllSections ? "Expanded" : "Expand all"}
-        </button>
+          {expandAllSections ? "Hide all" : "Show all"}
+        </Button>
       </div>
 
       <div className="achievements-list-header-wrapper">

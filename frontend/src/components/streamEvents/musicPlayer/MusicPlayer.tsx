@@ -8,6 +8,7 @@ import { AddSong } from "./addSong/AddSong";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import PlayerOptions from "./PlayerOptions";
+import { Button } from "@components/ui";
 
 enum AvailableWindowsEnum {
   LOCAL = "local",
@@ -36,15 +37,14 @@ export default function MusicPlayer() {
   const playersButtons = useCallback(
     () =>
       Object.values(AvailableWindowsEnum).map((window) => (
-        <button
+        <Button
           key={window}
-          className={`common-button switch-players-button ${
-            currentWindow === window ? "primary-button" : "tertiary-button"
-          }`}
+          variant={currentWindow === window ? "primary" : "tertiary"}
+          className="switch-players-button"
           onClick={() => setCurrentWindow(window)}
         >
           {window}
-        </button>
+        </Button>
       )),
     [currentWindow]
   );

@@ -11,6 +11,7 @@ import {
   setCurrentAction,
   setEditingId,
 } from "@redux/achievementsSlice";
+import { Button } from "@components/ui";
 
 interface TBodyDataProps {
   data: Achievement[];
@@ -47,8 +48,8 @@ export default function TBodyData({ data }: TBodyDataProps) {
               )}
               <EditAchievementButton achievement={achievement} />
               {achievement.custom ? (
-                <button
-                  className="common-button danger-button"
+                <Button
+                  variant="danger"
                   onClick={() =>
                     handleDeleteCustomAchievement(
                       achievement._id,
@@ -57,7 +58,7 @@ export default function TBodyData({ data }: TBodyDataProps) {
                   }
                 >
                   Delete
-                </button>
+                </Button>
               ) : null}
             </td>
             <td>
@@ -129,8 +130,7 @@ function EditAchievementButton({ achievement }: EditAchievementButtonProps) {
   const dispatch = useDispatch();
 
   return (
-    <button
-      className="common-button primary-button"
+    <Button
       onClick={() => {
         dispatch(setEditingId(achievement._id));
         dispatch(
@@ -148,6 +148,6 @@ function EditAchievementButton({ achievement }: EditAchievementButtonProps) {
       }}
     >
       Edit
-    </button>
+    </Button>
   );
 }

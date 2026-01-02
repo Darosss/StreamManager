@@ -1,5 +1,6 @@
 import { CardboxItem } from "@components/cardboxWrapper";
 import { HandleShowModalParams } from "@components/types";
+import { Button } from "@components/ui";
 import {
   openModal,
   resetMoodState,
@@ -40,12 +41,9 @@ export default function MoodsData({ data }: MoodsDataProps) {
   return (
     <>
       <CardboxItem title="Create mood">
-        <button
-          onClick={() => handleShowModal({ type: "create" })}
-          className="common-button primary-button"
-        >
+        <Button onClick={() => handleShowModal({ type: "create" })}>
           Create
-        </button>
+        </Button>
       </CardboxItem>
       {data.map((mood, index) => {
         return (
@@ -56,12 +54,12 @@ export default function MoodsData({ data }: MoodsDataProps) {
             }}
             key={index}
           >
-            <button
+            <Button
               onClick={() => handleShowModal({ type: "edit", data: mood })}
-              className="common-button primary-button edit-mode-button"
+              className="edit-mode-button"
             >
               Edit
-            </button>
+            </Button>
           </CardboxItem>
         );
       })}

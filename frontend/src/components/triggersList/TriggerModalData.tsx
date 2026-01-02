@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalDataWrapper from "@components/modalDataWrapper";
 import { TriggerMode } from "@services";
 import { useGetAllModes, generateSelectModes } from "@utils";
-import { setEnabled } from "@redux/songsSlice";
 import { RootStore } from "@redux/store";
 import {
   setChance,
   setDelay,
+  setEnabled,
   setMessages,
   setMode,
   setMood,
@@ -15,6 +15,7 @@ import {
   setTag,
   setWords,
 } from "@redux/triggersSlice";
+import { Button } from "@components/ui";
 
 export default function TriggerModalData() {
   const modes = useGetAllModes();
@@ -37,14 +38,12 @@ export default function TriggerModalData() {
       </div>
       <div> Enabled </div>
       <div>
-        <button
+        <Button
           onClick={() => dispatch(setEnabled(!triggerState.enabled))}
-          className={`common-button ${
-            triggerState.enabled ? "primary-button" : "danger-button"
-          } `}
+          variant={triggerState.enabled ? "success" : "danger"}
         >
           {triggerState.enabled.toString()}
-        </button>
+        </Button>
       </div>
       <div>Chance </div>
       <div>

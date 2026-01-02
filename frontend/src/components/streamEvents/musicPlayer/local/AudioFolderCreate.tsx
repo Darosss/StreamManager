@@ -5,6 +5,7 @@ import {
   useGetFoldersList,
 } from "@services";
 import "./audio-folder-create-style.scss";
+import { Button } from "@components/ui";
 
 export default function AudioFolderCreate() {
   const [folderName, setFolderName] = useState("");
@@ -32,24 +33,22 @@ export default function AudioFolderCreate() {
     <div className="folders-create-wrapper">
       <div className="folders-create-actions">
         <input type="text" onChange={(e) => setFolderName(e.target.value)} />
-        <button
-          className="primary-button common-button"
-          onClick={() => handleCreateFolder(folderName)}
-        >
+        <Button onClick={() => handleCreateFolder(folderName)}>
           Create folder
-        </button>
+        </Button>
       </div>
       <div className="folders-create-list">
         {foldersData?.data.map((folder, index) => {
           return (
             <div key={index} className="folder-file list-with-x-buttons">
               <div>
-                <button
+                <Button
+                  variant="danger"
                   onClick={() => handleDeleteFolder(folder)}
                   className="common-button danger-button"
                 >
                   x
-                </button>
+                </Button>
               </div>
               <div> {folder} </div>
             </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import "./yt-playlist.style.scss";
 import { useSocketContext } from "@socket";
+import { Button } from "@components/ui";
 
 export default function YTPlaylist() {
   const socket = useSocketContext();
@@ -14,9 +15,7 @@ export default function YTPlaylist() {
 
   return (
     <div className="yt-playlist-list-wrapper">
-      <button className="common-button primary-button" onClick={emitLoadSongs}>
-        Load playlist
-      </button>
+      <Button onClick={emitLoadSongs}>Load playlist</Button>
       <input type="text" onChange={(e) => setPlaylist(e.target.value)} />
     </div>
   );

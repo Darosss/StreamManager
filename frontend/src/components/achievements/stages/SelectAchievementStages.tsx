@@ -1,3 +1,4 @@
+import { Button } from "@components/ui";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { AchievementStage, useGetAchievementStages } from "@services";
 import { useEffect, useState } from "react";
@@ -68,12 +69,9 @@ export const SelectAchievementStages = ({
         onChange={(value) => (value ? onChangeSelect(value) : null)}
       />
       <div className="stages-actions">
-        <button
-          className="common-button secondary-button"
-          onClick={() => refetchAchievementStages()}
-        >
+        <Button variant="secondary" onClick={() => refetchAchievementStages()}>
           🔃
-        </button>
+        </Button>
         <Link
           to="/achievements/stages"
           target="_blank"

@@ -2,6 +2,7 @@ import Modal from "@components/modal";
 import { useCallback, useState } from "react";
 import "./style.scss";
 import { useSocketContext } from "@socket";
+import { Button } from "@components/ui";
 
 export function AddSong() {
   const socket = useSocketContext();
@@ -16,12 +17,12 @@ export function AddSong() {
   return (
     <div>
       <div className="music-player-tabs-wrapper">
-        <button
-          className={`common-button switch-players-button`}
+        <Button
+          className="switch-players-button"
           onClick={() => setShowModal(true)}
         >
           Add song
-        </button>
+        </Button>
       </div>
       <Modal
         title={"Add song"}
@@ -36,12 +37,7 @@ export function AddSong() {
             onChange={(e) => setSongData(e.currentTarget.value)}
           />
 
-          <button
-            className="common-button primary-button"
-            onClick={handleOnAddSong}
-          >
-            Add to player
-          </button>
+          <Button onClick={handleOnAddSong}>Add to player</Button>
         </div>
       </Modal>
     </div>

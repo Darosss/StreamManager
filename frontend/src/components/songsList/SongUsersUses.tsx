@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Song, useGetUsersByIds } from "@services";
 import { Link } from "react-router-dom";
+import { Button } from "@components/ui";
 
 interface UsersUsesProps {
   uses: Song["usersUses"];
@@ -39,12 +40,9 @@ export default function SongUsersUses({ uses }: UsersUsesProps) {
     <div className="preview-song-modal-song-users-data">
       <div className="sort-wrapper">
         <div>Sort: </div>
-        <button
-          className="primary-button"
-          onClick={() => setSortDescending(!sortDescending)}
-        >
+        <Button onClick={() => setSortDescending(!sortDescending)}>
           {sortDescending ? "↑" : "↓"}
-        </button>
+        </Button>
       </div>
       {mappedUsersUses
         ?.sort((a, b) => {

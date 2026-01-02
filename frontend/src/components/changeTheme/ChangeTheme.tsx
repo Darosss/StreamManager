@@ -1,5 +1,6 @@
+import { Button } from "@components/ui";
 import { useLocalStorage } from "@hooks";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export default function ChangeTheme() {
   const [theme, setTheme] = useLocalStorage("theme", "");
@@ -23,8 +24,8 @@ export default function ChangeTheme() {
   };
 
   return (
-    <button className={`common-button`} onClick={handleThemeChange}>
+    <Button onClick={handleThemeChange}>
       {theme === "light" ? "🔆" : "🌑"}
-    </button>
+    </Button>
   );
 }

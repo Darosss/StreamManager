@@ -3,6 +3,7 @@ import { viteBackendUrl } from "@configs/envVariables";
 import { useDispatch } from "react-redux";
 import { openModal, setBadgeState, setEditingId } from "@redux/badgesSlice";
 import { Badge, useDeleteBadge } from "@services";
+import { Button } from "@components/ui";
 
 interface TBodyManyBadgesDataProps {
   badges: Badge[];
@@ -28,8 +29,7 @@ export default function TBodyManyBadgesData({
           <tr key={index} className="badges-list-data-tbody">
             <td>
               <div className="badge-data-table-actions">
-                <button
-                  className="common-button primary-button"
+                <Button
                   onClick={(e) => {
                     e.stopPropagation();
                     dispatch(setEditingId(badge._id));
@@ -38,16 +38,16 @@ export default function TBodyManyBadgesData({
                   }}
                 >
                   Edit
-                </button>
-                <button
-                  className="common-button danger-button"
+                </Button>
+                <Button
+                  variant="danger"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteBadge(badge._id);
                   }}
                 >
                   Delete
-                </button>
+                </Button>
               </div>
             </td>
             <td>{badge.name}</td>
