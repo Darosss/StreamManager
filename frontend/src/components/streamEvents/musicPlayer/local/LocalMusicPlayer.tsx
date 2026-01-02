@@ -26,20 +26,22 @@ export default function LocalMusicPlayer() {
     }
   };
 
-  const TabsButtons = () =>
-    Object.values(AvailableTabs).map((tab) =>
-      tab !== AvailableTabs.NONE ? (
-        <Button
-          key={tab}
-          variant={activeTab === tab ? "primary" : "tertiary"}
-          className="switch-players-button"
-          onClick={() => setActiveTab(tab)}
-        >
-          {tab}
-        </Button>
-      ) : null
-    );
-
+  const TabsButtons = () => (
+    <>
+      {Object.values(AvailableTabs)
+        .filter((tab) => tab !== AvailableTabs.NONE)
+        .map((tab) => (
+          <Button
+            key={tab}
+            variant={activeTab === tab ? "primary" : "tertiary"}
+            className="switch-players-button"
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </Button>
+        ))}
+    </>
+  );
   return (
     <div>
       <div className="music-player-tabs-wrapper">
