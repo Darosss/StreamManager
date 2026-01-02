@@ -185,9 +185,29 @@ table {
 button,
 a,
 select {
+  &.small-button {
+    & > div {
+      padding: 0.2rem;
+      font-size: calc(0.3rem + 1vmin);
+    }
+  }
+
+  &.medium-button {
+    & > div {
+      padding: 0.5rem;
+      font-size: calc(0.5rem + 1vmin);
+    }
+  }
+
+  &.large-button {
+    & > div {
+      padding: 1rem;
+      font-size: calc(0.7rem + 1vmin);
+    }
+  }
+
   &.common-button {
     transition: transform 1s;
-    font-size: calc(0.5rem + 1vmin);
     overflow: hidden;
     border-radius: 0.2rem;
     display: flex;
@@ -199,7 +219,6 @@ select {
 
     & > div {
       width: 100%;
-      padding: 0.5rem;
       justify-content: center;
       align-items: center;
       display: flex;

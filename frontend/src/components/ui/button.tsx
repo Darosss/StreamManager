@@ -6,9 +6,12 @@ type ButtonVariant =
   | "danger"
   | "success";
 
+type ButtonSize = "small" | "medium" | "large";
+
 interface ButtonProps {
   variant?: ButtonVariant;
   disabled?: boolean;
+  size?: ButtonSize;
   className?: string | { overrideAll?: true; value: string };
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   children: React.ReactNode;
@@ -18,7 +21,7 @@ interface ButtonProps {
     HTMLButtonElement
   >;
 }
-const getButtonClassNames = (variant: ButtonVariant = "primary") => {
+const getButtonClassNames = (variant: ButtonVariant) => {
   switch (variant) {
     case "secondary":
       return "secondary-button";
@@ -34,10 +37,23 @@ const getButtonClassNames = (variant: ButtonVariant = "primary") => {
   }
 };
 
+const getButtonSizeNames = (size: ButtonSize) => {
+  switch (size) {
+    case "medium":
+      return "medium-button";
+    case "large":
+      return "large-button";
+
+    default:
+      return "small-button";
+  }
+};
+
 export function Button({
-  variant,
+  variant = "primary",
   className,
   disabled,
+  size = "medium",
   onClick,
   children,
   props,
@@ -49,7 +65,7 @@ export function Button({
       : className?.value;
   return (
     <button
-      className={`${classNameValue || ""}`}
+      className={`${classNameValue || ""} ${getButtonSizeNames(size)}`}
       disabled={disabled}
       onClick={onClick}
       {...props}
