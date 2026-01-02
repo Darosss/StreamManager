@@ -18,8 +18,8 @@ $themes: (
     accent: variables.$accent-light,
   ),
   dark: (
-    primary: color.scale(palette.$blue-500, $lightness: -50%),
-    secondary: color.scale(palette.$gray-500, $lightness: 2%),
+    primary: color.scale(palette.$blue-500, $lightness: -30%),
+    secondary: color.scale(palette.$gray-500, $lightness: -20%),
     tertiary: color.scale(palette.$violet-500, $lightness: 2%),
     success: color.scale(palette.$green-500, $lightness: 2%),
     warning: color.scale(palette.$yellow-400, $lightness: -10%),
