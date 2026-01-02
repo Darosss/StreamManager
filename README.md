@@ -54,11 +54,12 @@ It **SHOULD NOT** be on online hosting
 
 ### Prerequisites
 
-To use this you need to have:
+It should work on most version on below list, tho it is most tested on versions mentioned
 
-- MongoDB(`v6.0.4^`) Community Server installed and running on your local machine - `<https://www.mongodb.com/try/download/community>
+- MongoDB (`v8.0+`)
 
-- NodeJS(`v18.14.0^`)
+- NodeJS(`v24.0+`)
+
 - npm
 
 ```sh
@@ -125,6 +126,12 @@ BOT_ID=123456789
 
 # Must be same as backend localhost:port if app isn't hosted or ip:port if app is hosted through LAN network
 VITE_BACKEND_URL=http://192.168.0.100:5000
+
+#Optionals - for discord integration
+# discord client token
+DISCORD_CLIENT_TOKEN=
+# discord client id
+DISCORD_CLIENT_ID=
 ```
 
 <sub> `CLIENT_ID` and `CLIENT_SECRET` - both can be obtained from twitch apllication: Read it here: <https://dev.twitch.tv/docs/authentication/register-app/> <br>
@@ -135,6 +142,8 @@ VITE_BACKEND_URL=http://192.168.0.100:5000
 `REDIRECT_URL` - must be same as **OAuth Redirect URLs** from app registered above <br>
 `BOT_PASSWORD` - can be obtained by accesing Implicit grant flow. More information: https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow<br>
 `BOT_ID` - can be obtained from twitch api or any external site
+
+`DISCORD_CLIENT_TOKEN` and `DISCORD_CLIENT_ID` - both can be obtained from discord developer portal: https://discord.com/developers/applications
 </sub>
 
 ### How to start
