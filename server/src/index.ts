@@ -5,10 +5,11 @@ import expressApp from "./app";
 import { logger } from "@utils";
 import init from "./stream/initializeHandlers";
 import { getAuthToken } from "@services";
+import { initialize as initializeDiscord } from "./discord";
 
 const startServer = async () => {
   await initMongoDataBase();
-
+  await initializeDiscord();
   const server = expressApp();
 
   try {

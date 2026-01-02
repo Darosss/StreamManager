@@ -3,12 +3,9 @@ import { discordClientToken } from "@configs";
 import { registerUpdateSlashCommands } from "./deployCommands";
 import { commands } from "./commands";
 import { events } from "./events";
-
-registerUpdateSlashCommands();
+import { logger } from "@utils";
 
 export const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-client.login(discordClientToken);
 
 client.commands = new Collection();
 
@@ -23,3 +20,12 @@ for (const key of Object.keys(events)) {
     ? client.once(event.name, (...args) => event.execute(...args))
     : client.on(event.name, (...args) => event.execute(...args));
 }
+
+export const initialize = async () => {
+  if (!discordClientToken) {
+    return logger.info("Discord client token is not provided. Discord client will not be initialized");
+  }
+
+  await registerUpdateSlashCommands();
+  await client.login();
+};
