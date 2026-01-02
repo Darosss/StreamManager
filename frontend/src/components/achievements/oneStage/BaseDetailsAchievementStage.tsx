@@ -31,10 +31,10 @@ export default function BaseDetailsAchievementStage({
       <div>
         <div>Created / updated</div>
         <div>
-          <DateTooltip date={stage.createdAt} />
+          <DateTooltip date={new Date(stage.createdAt)} />
         </div>
         <div>
-          <DateTooltip date={stage.updatedAt} />
+          <DateTooltip date={new Date(stage.updatedAt)} />
         </div>
       </div>
     </>
