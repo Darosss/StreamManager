@@ -19,7 +19,7 @@ $tr-height: 30vh;
 }
 
 .table-list td:not(:first-child) {
-  border-left: 0.1rem solid var(--revert-background-color);
+  border-left: 0.1rem solid var(--primary-color);
   text-align: center;
 }
 
@@ -53,11 +53,11 @@ $tr-height: 30vh;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    border-bottom: 0.1rem solid var(--revert-background-color);
+    border-bottom: 0.1rem solid var(--primary-color);
 
     &:nth-child(even) {
       color: var(--info-bg-color);
-      border-left: 0.1rem solid var(--revert-background-color);
+      border-left: 0.1rem solid var(--primary-color);
     }
 
     &:nth-child(odd) {
@@ -65,7 +65,7 @@ $tr-height: 30vh;
     }
 
     &:hover {
-      background-color: var(--revert-background-color);
+      background-color: var(--primary-color);
     }
   }
 }
@@ -85,10 +85,10 @@ $tr-height: 30vh;
     max-height: 25%;
     overflow: auto;
 
-    border: 1px solid var(--revert-background-color);
+    border: 1px solid var(--primary-color);
 
     &:hover {
-      background-color: var(--revert-background-color);
+      background-color: var(--primary-color);
     }
   }
 }

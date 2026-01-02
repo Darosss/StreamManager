@@ -13,12 +13,12 @@
 .modal-data-wrapper > div {
   max-width: 48%;
   min-width: 48%;
-  border-bottom: 0.1rem solid var(--revert-background-color);
+  border-bottom: 0.1rem solid var(--primary-color);
   margin-top: 0.1rem;
 }
 
 .modal-data-wrapper > div:hover {
-  background: var(--revert-background-color);
+  background: var(--primary-color);
 }
 
 .modal-data-wrapper > div > * {

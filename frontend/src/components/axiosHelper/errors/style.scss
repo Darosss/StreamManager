@@ -7,7 +7,7 @@
   height: 100%;
 
   font-size: 1.5rem;
-  color: $info-color;
+  color: var(--info-color);
 
   button {
     padding: 1rem;
@@ -28,7 +28,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: $danger-color;
+      background-color: var(--danger-color);
     }
   }
 }

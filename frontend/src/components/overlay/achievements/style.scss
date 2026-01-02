@@ -39,10 +39,10 @@
 }
 
 @include animation-mixin(achievement-animation, pink);
-@include animation-mixin(achievement-animation-1, $secondary-color);
-@include animation-mixin(achievement-animation-2, $success-color);
-@include animation-mixin(achievement-animation-3, $primary-color);
-@include animation-mixin(achievement-animation-4, $info-color);
+@include animation-mixin(achievement-animation-1, var(--secondary-color));
+@include animation-mixin(achievement-animation-2, var(--success-color));
+@include animation-mixin(achievement-animation-3, var(--primary-color));
+@include animation-mixin(achievement-animation-4, var(--info-color));
 @include animation-mixin(achievement-animation-5, orange);
 
 .achievements-overlay-wrapper {
@@ -171,7 +171,7 @@
 
       img {
         filter: opacity(80%);
-        box-shadow: 1px 2px 3px 4px $secondary-color;
+        box-shadow: 1px 2px 3px 4px var(--secondary-color);
         border-radius: 0.3rem;
         aspect-ratio: 1;
         margin: 0.3rem;

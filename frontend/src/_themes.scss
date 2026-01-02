@@ -1,0 +1,58 @@
+@use "palette";
+@use "variables";
+@use "sass:color";
+@use "sass:map";
+
+$themes: (
+  light: (
+    primary: palette.$blue-500,
+    secondary: palette.$gray-500,
+    tertiary: palette.$violet-500,
+    success: palette.$green-500,
+    warning: palette.$yellow-400,
+    danger: palette.$red-500,
+    info: palette.$yellow-200,
+    username: color.scale(palette.$green-500, $lightness: 75%),
+    bg: variables.$background-color-light,
+    font: variables.$font-color-light,
+    accent: variables.$accent-light,
+  ),
+  dark: (
+    primary: color.scale(palette.$blue-500, $lightness: -50%),
+    secondary: color.scale(palette.$gray-500, $lightness: 2%),
+    tertiary: color.scale(palette.$violet-500, $lightness: 2%),
+    success: color.scale(palette.$green-500, $lightness: 2%),
+    warning: color.scale(palette.$yellow-400, $lightness: -10%),
+    danger: color.scale(palette.$red-500, $lightness: 2%),
+    info: color.scale(palette.$yellow-200, $lightness: -25%),
+    username: color.scale(palette.$green-500, $lightness: 25%),
+    bg: variables.$background-color-dark,
+    font: variables.$font-color-dark,
+    accent: variables.$accent-dark,
+  ),
+);
+
+@mixin semantic-colors($theme) {
+  --primary-color: #{map.get($theme, primary)};
+  --secondary-color: #{map.get($theme, secondary)};
+  --tertiary-color: #{map.get($theme, tertiary)};
+  --success-color: #{map.get($theme, success)};
+  --warning-color: #{map.get($theme, warning)};
+  --danger-color: #{map.get($theme, danger)};
+  --info-color: #{map.get($theme, info)};
+}
+
+@mixin theme-vars($theme) {
+  $bg: map.get($theme, bg);
+  $font: map.get($theme, font);
+  $accent: map.get($theme, accent);
+
+  --background-color: #{$bg};
+  --background-color-darker: #{color.scale($bg, $lightness: -20%)};
+  --background-color-lighter: #{color.scale($bg, $lightness: 10%)};
+  --background-color-opposite: #{color.scale($bg, $lightness: 40%)};
+  --font-color: #{$font};
+  --info-bg-color: #{color.scale($accent, $lightness: -25%)};
+  --time-color: #{color.scale($accent, $lightness: -50%)};
+  --message-username-color: #{map.get($theme, username)};
+}

@@ -1,6 +1,6 @@
 .react-grid-item {
   &.react-grid-item-edit {
-    border: 0.1rem solid $danger-color;
+    border: 0.1rem solid var(--danger-color);
   }
 
   .grid-hide-button {
@@ -10,7 +10,7 @@
     width: 2vw;
     text-align: center;
     z-index: 100;
-    border: 0.1rem solid var(--revert-background-color);
+    border: 0.1rem solid var(--primary-color);
     background-color: rgba(28, 28, 15, 0.645); // add
     font-size: 1vmin;
   }
@@ -37,7 +37,7 @@
     display: flex;
     align-items: center;
     font-size: 2vmin;
-    color: $primary-color;
+    color: var(--primary-color);
 
     & > div {
       flex: 1 1 30%;
@@ -91,7 +91,7 @@
 
         &:hover {
           cursor: pointer;
-          background-color: $primary-color;
+          background-color: var(--primary-color);
         }
       }
     }

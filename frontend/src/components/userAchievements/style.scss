@@ -12,7 +12,7 @@
   border-radius: 0.5rem;
   font-size: 1.7vw;
   margin: 0px 5rem;
-  box-shadow: 3px 2px 1px 3px $primary-color;
+  box-shadow: 3px 2px 1px 3px var(--primary-color);
   padding: 1rem;
   img {
     border-radius: 0.2rem;
@@ -26,12 +26,12 @@
   font-size: 2vw;
   font-weight: 800;
   & > div:hover {
-    color: $info-color;
+    color: var(--info-color);
   }
 }
 
 .achievements-list-wrapper {
-  color: $info-color;
+  color: var(--info-color);
   font-size: 1.2dvw;
   font-weight: 800;
   flex-direction: column;
@@ -41,13 +41,13 @@
     justify-content: space-between;
     padding: 1rem 0rem;
     &:hover {
-      color: $success-color;
+      color: var(--success-color);
       text-decoration: underline;
       cursor: pointer;
     }
 
     div.achievement-secret {
-      color: $danger-color;
+      color: var(--danger-color);
     }
   }
 
@@ -62,13 +62,13 @@
       filter: grayscale(100%);
     }
     .current-progress {
-      color: $secondary-color;
+      color: var(--secondary-color);
     }
   }
 
   .achieved {
     .current-progress {
-      color: $success-color;
+      color: var(--success-color);
     }
   }
 
@@ -76,10 +76,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: $primary-color;
+    color: var(--primary-color);
     font-weight: 800;
     letter-spacing: 0.2rem;
-    border-bottom: 1px solid $secondary-color;
+    border-bottom: 1px solid var(--secondary-color);
 
     & > div {
       width: 25%;

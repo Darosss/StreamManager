@@ -4,7 +4,7 @@
 }
 
 .user-info {
-  background-color: $bg-color-popup;
+  background-color: rgba(var(--secondary-color), 0.1);
   font-size: 1vmin;
   height: 12vh;
   max-height: 12vh;
@@ -15,30 +15,30 @@
   flex-direction: column;
 
   &.warn {
-    border: 0.1rem solid $color-user-warn;
+    border: 0.1rem solid rgba(var(--warning-color), 0.3);
   }
 
   &.left-chat {
-    background-color: $color-user-danger;
+    background-color: var(--danger-color);
   }
 
   &.new-user {
-    border: 0.2rem solid $color-user-new-user;
+    border: 0.2rem solid rgba(var(--tertiary-color), 0.3);
   }
 
   &.usual {
-    border: 0.1rem solid $color-user-usual;
+    border: 0.1rem solid rgba(var(--secondary-color), 0.3);
   }
 
   &.blacklist {
-    border: 0.1rem solid $color-user-blacklist;
+    border: 0.1rem solid rgba(var(--danger-color), 1);
   }
 
   & > div {
     display: flex;
-    border-top: 0.1rem solid $primary-color;
-    border-left: 0.1rem solid $primary-color;
-    border-right: 0.1rem solid $primary-color;
+    border-top: 0.1rem solid var(--primary-color);
+    border-left: 0.1rem solid var(--primary-color);
+    border-right: 0.1rem solid var(--primary-color);
     overflow-y: hidden;
     padding-top: 0.5rem;
     height: 100%;

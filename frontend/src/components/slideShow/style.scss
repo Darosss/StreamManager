@@ -27,10 +27,10 @@
         border-radius: 50%;
         cursor: pointer;
         margin: 0px 7px 0px;
-        background-color: $tertiary-color;
+        background-color: var(--tertiary-color);
 
         &.active {
-          background-color: #6a0dad;
+          filter: brightness(120%) !important;
         }
       }
       .slideshow-button-wrapper {

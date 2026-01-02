@@ -1,6 +1,6 @@
 .react-grid-image-select-wrapper {
   .react-grid-image-input-wrapper {
-    background-color: $secondary-color;
+    background-color: var(--secondary-color);
     z-index: 100;
     position: absolute;
   }
@@ -49,7 +49,7 @@
     flex-direction: column;
     .style-css-editor-edit-inputs-wrapper {
       padding-top: 0.5rem;
-      border-top: 0.1rem solid $secondary-color;
+      border-top: 0.1rem solid var(--secondary-color);
       display: flex;
       justify-content: space-between;
 

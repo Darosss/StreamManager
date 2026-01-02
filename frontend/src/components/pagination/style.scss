@@ -83,7 +83,7 @@ ul.pagination-container {
 }
 
 .page-size {
-  background-color: $primary-color;
+  background-color: var(--primary-color);
   text-align: center;
   border-radius: 0.5rem;
   appearance: none;

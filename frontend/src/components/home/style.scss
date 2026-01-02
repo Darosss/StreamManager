@@ -1,7 +1,7 @@
 @mixin glass-effect {
   background: rgba(26, 31, 53, 0.6);
   backdrop-filter: blur(12px);
-  border: 1px solid $color-border;
+  border: 1px solid var(--background-color-darker);
 }
 
 @mixin hover-lift {
@@ -9,7 +9,7 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px $color-accent-glow;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-color);
   }
 }
 
@@ -107,7 +107,11 @@
   .home-logo {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    background: linear-gradient(
+      135deg,
+      var(--primary-color),
+      var(--secondary-color)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -134,24 +138,20 @@
   .home-hero-title {
     font-size: 3.5rem;
     font-weight: 800;
-    color: $primary-color;
+    color: var(--primary-color);
+
     margin-bottom: $spacing-md;
     letter-spacing: -0.03em;
     line-height: 1.1;
 
-    background: linear-gradient(
-      135deg,
-      var(--font-color) 0%,
-      rgba(248, 250, 252, 0.7) 100%
-    );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: $primary-color;
+    -webkit-text-fill-color: var(--primary-color);
     background-clip: text;
   }
 
   .home-hero-subtitle {
     font-size: 1.25rem;
-    color: $secondary-color;
+    color: var(--secondary-color);
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
@@ -185,7 +185,7 @@
 
     .nav-category-description {
       font-size: 0.95rem;
-      color: $secondary-color;
+      color: var(--secondary-color);
     }
   }
 
@@ -222,7 +222,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      $primary-color,
+      var(--primary-color),
       transparent
     );
     opacity: 0;
@@ -230,7 +230,7 @@
   }
 
   &:hover {
-    border-color: $color-border-hover;
+    filter: brightness(120%) !important;
     background: rgba(26, 31, 53, 0.8);
 
     &::before {
@@ -242,7 +242,7 @@
     }
 
     .nav-card-label {
-      color: $secondary-color;
+      color: var(--info-color);
     }
   }
 
@@ -271,7 +271,7 @@
 .home-footer {
   margin-top: $spacing-3xl;
   padding: $spacing-xl 0;
-  border-top: 1px solid $color-border;
+  border-top: 1px solid var(--background-color);
   background: linear-gradient(
     135deg,
     var(--background-color) 0%,
@@ -298,18 +298,18 @@
   }
 
   .home-footer-link {
-    color: $primary-color;
+    color: var(--primary-color);
     text-decoration: none;
     font-size: 0.9rem;
     transition: color $transition-fast;
 
     &:hover {
-      color: $secondary-color;
+      color: var(--secondary-color);
     }
   }
 
   .home-footer-separator {
-    color: $secondary-color;
+    color: var(--secondary-color);
     opacity: 0.5;
   }
 }

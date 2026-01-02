@@ -4,17 +4,18 @@
 
   & > div {
     &:not(:first-child) {
-      border: 0.1rem solid $color-user-usual;
+      border: 0.1rem solid rgba(var(--secondary-color), 0.3);
     }
   }
 
   .stream-last-chatters .limit {
-    border: 0.1rem solid $color-user-warn !important;
+    border: 0.1rem solid rgba(var(--warning-color), 0.3) !important;
   }
 
   .user-chatter {
     display: flex;
-    background-color: $bg-color-popup;
+    background-color: rgba(var(--secondary-color), 0.1);
+
     min-height: 8%;
     align-items: center;
     margin: 0.5rem;

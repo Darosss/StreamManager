@@ -13,7 +13,7 @@
   height: 100%;
 
   & > div {
-    border: 0.1rem solid var(--revert-background-color);
+    border: 0.1rem solid var(--primary-color);
     flex: 0 0 25%;
   }
 
@@ -23,20 +23,20 @@
       width: 100%;
       font-weight: 700;
       color: var(--info-bg-color);
-      background-color: $bg-color-popup;
+      background-color: rgba(var(--secondary-color), 0.1);
     }
 
     .stats-wrapper {
       display: flex;
-      border-top: 0.1rem solid var(--revert-background-color);
-      border-bottom: 0.1rem solid var(--revert-background-color);
+      border-top: 0.1rem solid var(--primary-color);
+      border-bottom: 0.1rem solid var(--primary-color);
     }
 
     .stats-header {
       color: var(--info-bg-color);
       text-align: center;
       justify-content: center;
-      background-color: $bg-color-popup;
+      background-color: rgba(var(--secondary-color), 0.1);
     }
 
     .statistic-long {

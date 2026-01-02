@@ -1,51 +1,15 @@
 @use "sass:color";
+@use "sass:map";
+@use "./themes";
 
 :root {
-  --background-color: #{$background-color-light};
-  --background-color-opposite: #{color.scale(
-      $background-color-dark,
-      $lightness: 5%
-    )};
-  --background-color-darker: #{color.scale(
-      $background-color-light,
-      $lightness: -15%
-    )};
-  --background-color-lighter: #{color.scale(
-      $background-color-light,
-      $lightness: 30%
-    )};
-  --revert-background-color: #{color.scale(
-      $background-color-dark,
-      $lightness: 40%
-    )};
-  --font-color: #{$font-color-light};
-  --info-bg-color: #{color.scale($info-color, $lightness: -25%)};
-  --time-color: #{color.scale($info-color, $lightness: -50%)};
-  --message-username-color: #{$danger-color};
+  @include themes.semantic-colors(map.get(themes.$themes, light));
+  @include themes.theme-vars(map.get(themes.$themes, light));
 }
 
 [data-theme="dark"] {
-  --background-color: #{$background-color-dark};
-  --background-color-opposite: #{color.scale(
-      $background-color-light,
-      $lightness: -30%
-    )};
-  --background-color-darker: #{color.scale(
-      $background-color-dark,
-      $lightness: -15%
-    )};
-  --background-color-lighter: #{color.scale(
-      $background-color-dark,
-      $lightness: 30%
-    )};
-  --font-color: #{$font-color-dark};
-  --revert-background-color: #{color.scale(
-      $background-color-light,
-      $lightness: -40%
-    )};
-  --info-bg-color: #{color.adjust($info-color, $hue: -30deg)};
-  --time-color: #{color.scale($info-color, $lightness: 30%)};
-  --message-username-color: #{$success-color};
+  @include themes.semantic-colors(map.get(themes.$themes, dark));
+  @include themes.theme-vars(map.get(themes.$themes, dark));
 }
 #root {
   height: 100vh;
@@ -70,10 +34,10 @@ h1 {
 
 a {
   text-decoration: none;
-  color: $link-color;
+  color: var(--info-color);
 
   &:visited {
-    color: $link-color;
+    color: var(--info-color);
   }
 }
 
@@ -110,9 +74,9 @@ input,
 button {
   border: 0;
   background: linear-gradient(
-    0deg,
-    var(--background-color),
-    var(--revert-background-color)
+    20deg,
+    var(--background-color-darker),
+    var(--background-color-lighter)
   );
   color: var(--font-color);
 }
@@ -177,7 +141,8 @@ table {
 /* DEFAULTS TABLES */
 
 .table-list-pagination {
-  border-top: 0.3rem solid var(--revert-background-color);
+  opacity: 0.8;
+  border-top: 0.1rem solid var(--secondary-color);
 }
 
 /* BUTTONS */
@@ -236,32 +201,40 @@ select {
   }
 
   &.primary-button {
-    background: linear-gradient(40deg, $primary-color 0, $secondary-color 100%);
+    background: linear-gradient(
+      40deg,
+      var(--primary-color) 0,
+      var(--secondary-color) 100%
+    );
   }
 
   &.secondary-button {
     background: linear-gradient(
       40deg,
-      $secondary-color 0,
-      var(--background-color-darker) 100%
+      var(--secondary-color) 0,
+      var(--background-color) 100%
     );
   }
 
   &.tertiary-button {
     background: linear-gradient(
       40deg,
-      $tertiary-color 0,
-      $secondary-color 100%
+      var(--tertiary-color) 0,
+      var(--secondary-color) 100%
     );
   }
   &.success-button {
-    background: linear-gradient(40deg, $warning-color 0, $success-color 100%);
+    background: linear-gradient(
+      40deg,
+      var(--warning-color) 0,
+      var(--success-color) 100%
+    );
   }
   &.danger-button {
     background: linear-gradient(
       40deg,
-      $danger-color 30%,
-      $secondary-color 100%
+      var(--danger-color) 0,
+      var(--secondary-color) 100%
     );
   }
 }
@@ -270,22 +243,22 @@ select {
 
 select {
   color: var(--font-color);
-  background-color: var(--revert-background-color);
+  background-color: var(--primary-color);
 }
 
 div {
   &.enabled {
-    background-color: $success-color;
+    background-color: var(--success-color);
 
     &:hover {
-      background-color: #{color.scale($success-color, $lightness: 20%)} !important;
+      filter: brightness(120%) !important;
     }
   }
 
   &.disabled {
-    background-color: $danger-color;
+    background-color: var(--danger-color);
     &:hover {
-      background-color: #{color.scale($danger-color, $lightness: 20%)} !important;
+      filter: brightness(120%) !important;
     }
   }
 }

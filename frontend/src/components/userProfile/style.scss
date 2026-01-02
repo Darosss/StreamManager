@@ -6,7 +6,7 @@
 
   & > div.detail-section-wrapper {
     flex: 1 1 50%;
-    border-bottom: 1px solid var(--revert-background-color);
+    border-bottom: 1px solid var(--primary-color);
 
     & > div {
       display: flex;
@@ -16,13 +16,13 @@
       & > div {
         flex: 0 1 20%;
         text-align: center;
-        border: 0.1rem solid var(--revert-background-color);
+        border: 0.1rem solid var(--primary-color);
         margin-bottom: 0.1rem;
 
         &:nth-child(odd) {
           border-right: 0.2rem solid var(--background-color-darker);
           border-left: 0.2rem solid var(--background-color-darker);
-          color: $info-color;
+          color: var(--info-color);
         }
       }
     }
@@ -44,7 +44,7 @@
 
     .profile-messages {
       .profile-messages-header {
-        color: $info-color;
+        color: var(--info-color);
         background-color: var(--background-color);
         text-align: center;
         position: sticky;

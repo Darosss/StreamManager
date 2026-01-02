@@ -49,7 +49,7 @@
     overflow: hidden;
 
     &:active {
-      background-color: #{color.scale($tertiary-color, $lightness: 10%)};
+      filter: brightness(120%) !important;
     }
   }
 }

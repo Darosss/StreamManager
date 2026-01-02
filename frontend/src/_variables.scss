@@ -1,17 +1,12 @@
-$primary-color: #3b82f6; // tailwind blue-500
-$secondary-color: #6b7280; // tailwind gray-500
-$tertiary-color: #8b5cf6; // tailwind violet-500
-$success-color: #22c55e; // tailwind green-500
-$warning-color: #facc15; // tailwind yellow-400
-$danger-color: #ef4444; // tailwind red-500
-$info-color: #fef08a; // tailwind yellow-200
+// Light mode
+$background-color-light: #e5e7eb; // tailwind gray-200
+$font-color-light: #374151; // tailwind gray-700
+$accent-light: #061a35; // tailwind blue-950
 
-$link-color: #a3a3a3; // tailwind gray-400
-
-$color-border: rgba(255, 255, 255, 0.08);
-$color-border-hover: rgba(99, 179, 237, 0.3);
-
-$color-accent-glow: rgba(59, 130, 246, 0.2);
+// Dark mode
+$background-color-dark: #1f2937; // tailwind gray-800
+$font-color-dark: #f9fafb; // tailwind gray-50
+$accent-dark: #f9fafb; // tailwind-gray-200
 
 $spacing-xs: 0.5rem;
 $spacing-sm: 0.75rem;
@@ -28,20 +23,6 @@ $border-radius-lg: 1rem;
 $transition-fast: 0.15s ease;
 $transition-normal: 0.3s ease;
 $transition-slow: 0.5s ease;
-// Light mode
-$background-color-light: #e5e7eb; // tailwind gray-200
-$font-color-light: #374151; // tailwind gray-700
-
-// Dark mode
-$background-color-dark: #1f2937; // tailwind gray-800
-$font-color-dark: #f9fafb; // tailwind gray-50
-
-$bg-color-popup: rgba(107, 114, 128, 0.15); // gray-500 with opacity
-$color-user-warn: #a16207; // yellow-700
-$color-user-usual: #4338ca; // indigo-700
-$color-user-new-user: #15803d; // green-700
-$color-user-blacklist: #7f1d1d; // red-900
-$color-user-danger: rgba(220, 38, 38, 0.2); // red-600 with opacity
 
 $screen-xs: 320px; /* Px for media queries for smallest screens */
 $screen-sm: 480px; /* Px for media queries for small screens */
@@ -51,7 +32,7 @@ $screen-ulg: 1200px; /* Px for media queries for ultra large screens */
 
 $width-without-drawer: 98vw;
 
-$default-overlay-box-shadow: 1px 2px 7px 4px $secondary-color;
+$default-overlay-box-shadow: 1px 2px 7px 4px var(--secondary-color);
 $default-overlay-filter-opacity: opacity(70%);
 $default-overlay-background-color: rgba(170, 196, 230, 0.7);
-$default-overlay-text-color: $success-color;
+$default-overlay-text-color: var(--success-color);

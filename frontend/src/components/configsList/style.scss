@@ -7,7 +7,7 @@
   input {
     text-align: center;
     background-color: var(--background-color);
-    border: 0.1rem solid var(--revert-background-color);
+    border: 0.1rem solid var(--primary-color);
     max-width: 100%;
   }
 
@@ -31,8 +31,8 @@
       text-align: center;
       font-size: 1.5vw;
       font-weight: 700;
-      border-top: 0.1rem solid var(--revert-background-color);
-      border-bottom: 0.1rem solid var(--revert-background-color);
+      border-top: 0.1rem solid var(--primary-color);
+      border-bottom: 0.1rem solid var(--primary-color);
     }
   }
 }

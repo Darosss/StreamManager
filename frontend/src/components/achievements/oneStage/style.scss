@@ -6,7 +6,7 @@
   max-height: $maxHeightStageData;
 
   & > div {
-    box-shadow: 1px 2px 2px 4px $primary-color;
+    box-shadow: 1px 2px 2px 4px var(--primary-color);
     padding: 0.5rem;
   }
 
@@ -16,7 +16,7 @@
     text-align: center;
     justify-content: space-around;
     & > div:first-line {
-      color: $info-color;
+      color: var(--info-color);
     }
 
     .base-details-achievement-stage-wrapper {
@@ -37,7 +37,7 @@
 
   .stage-data-wrapper {
     th {
-      color: $info-color;
+      color: var(--info-color);
     }
     .stage-data-content {
       &.stage-data-edit {
@@ -124,7 +124,7 @@
           }
           &:hover {
             cursor: pointer;
-            color: $info-color;
+            color: var(--info-color);
           }
         }
       }
@@ -133,13 +133,13 @@
         width: 50%;
         aspect-ratio: 1;
         border-radius: 0.2rem;
-        box-shadow: 1px 2px 3px 2px $secondary-color;
+        box-shadow: 1px 2px 3px 2px var(--secondary-color);
       }
       audio {
         height: 100%;
 
         &::-webkit-media-controls-panel {
-          background-color: $secondary-color;
+          background-color: var(--secondary-color);
         }
       }
     }
@@ -169,7 +169,7 @@
   .action-items-wrapper {
     display: flex;
     justify-content: center;
-    border-bottom: 0.1rem solid $secondary-color;
+    border-bottom: 0.1rem solid var(--secondary-color);
 
     padding: 0.5rem;
     & > * {
@@ -187,7 +187,7 @@
     padding: 0 0.5rem;
     max-height: 75dvh;
     min-height: 75dvh;
-    border-bottom: 0.1rem solid $secondary-color;
+    border-bottom: 0.1rem solid var(--secondary-color);
 
     & > div {
       overflow-x: hidden;
@@ -208,17 +208,17 @@
     overflow-x: hidden;
 
     .one-achievement-stage-sounds-wrapper {
-      box-shadow: 1px 1px 3px 2px $secondary-color;
+      box-shadow: 1px 1px 3px 2px var(--secondary-color);
       padding: 1rem 1rem;
 
       &:hover {
-        box-shadow: 1px 1px 3px 2px $primary-color;
+        box-shadow: 1px 1px 3px 2px var(--primary-color);
         filter: brightness(180%);
         cursor: pointer;
       }
     }
     .current-sound {
-      box-shadow: 1px 1px 4px 5px $success-color;
+      box-shadow: 1px 1px 4px 5px var(--success-color);
       border-radius: 1rem;
     }
   }

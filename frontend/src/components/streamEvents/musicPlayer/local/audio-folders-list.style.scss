@@ -7,7 +7,7 @@
     position: sticky;
     top: 0;
     background-color: var(--background-color);
-    border-bottom: 0.1rem solid $primary-color;
+    border-bottom: 0.1rem solid var(--primary-color);
     padding: 0.2rem;
     display: flex;
     flex-wrap: wrap;
@@ -32,7 +32,7 @@
     min-height: 50dvh;
 
     .mp3-file {
-      border-bottom: 0.1rem solid $primary-color;
+      border-bottom: 0.1rem solid var(--primary-color);
     }
   }
 }
