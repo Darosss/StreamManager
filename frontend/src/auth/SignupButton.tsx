@@ -2,7 +2,6 @@ import { Button } from "@components/ui";
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
 import { useState, useEffect, useCallback } from "react";
-
 export default function SignupButton() {
   const {
     data: authData,
@@ -43,7 +42,7 @@ export default function SignupButton() {
   if (loggedUser) {
     return (
       <>
-        <Button variant="primary" className="signup-button">
+        <Button variant="primary" size="small" className="signup-button">
           Logged as: <span>{loggedUser}</span>
         </Button>
         <Button
