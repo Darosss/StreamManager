@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import Modal from "@components/modal";
 import NavigateButton from "@components/navigateButton";
 import FilterBarTriggers from "./filterBarTriggers";
@@ -21,6 +20,7 @@ import {
   resetTriggerState,
   setEditingId,
 } from "@redux/triggersSlice";
+import { TableList } from "@components/tableWrapper";
 
 export default function TriggersList() {
   const queryParams = useQueryParams(fetchTriggersDefaultParams);
@@ -61,16 +61,16 @@ export default function TriggersList() {
     <>
       <NavigateButton />
       <FilterBarTriggers />
-      <TriggersData data={triggers.data} />
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="triggersListPageSize"
-          currentPage={triggers.currentPage}
-          totalCount={triggers.count}
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "triggersListPageSize",
+          currentPage: triggers.currentPage,
+          totalCount: triggers.count,
+          siblingCount: 1,
+        }}
+      >
+        <TriggersData data={triggers.data} />
+      </TableList>
       <Modal
         title={`${editingId ? "Edit" : "Create"} trigger`}
         onClose={() => dispatch(closeModal())}

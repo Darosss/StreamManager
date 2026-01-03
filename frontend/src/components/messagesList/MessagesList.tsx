@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import { Link, useParams } from "react-router-dom";
 import NavigateButton from "@components/navigateButton";
 import FilterBarMessages from "./filterBarMessages";
@@ -16,6 +15,7 @@ import ErrorHelper from "@components/axiosHelper/errors";
 import Loading from "@components/axiosHelper/loading";
 
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList, TableListWrapper } from "@components/tableWrapper";
 
 interface MessagesDetailsProp {
   messages: Message[];
@@ -100,8 +100,9 @@ const MessagesAll = () => {
 };
 
 const MessagesDetails = ({ messages }: MessagesDetailsProp) => (
-  <table className="table-messages-list">
-    <thead>
+  <TableListWrapper
+    className="table-messages-list"
+    theadChildren={
       <tr>
         <th>
           <SortByParamsButton buttonText="Date" sortBy="date" />
@@ -111,29 +112,24 @@ const MessagesDetails = ({ messages }: MessagesDetailsProp) => (
           <SortByParamsButton buttonText="Message" sortBy="message" />
         </th>
       </tr>
-    </thead>
+    }
+    tbodyChildren={messages.map((message, index) => (
+      <tr key={index}>
+        <td className="message-time">
+          <DateTooltip date={message.date} />
+        </td>
 
-    <tbody>
-      {messages.map((message, index) => (
-        <tr key={index}>
-          <td className="message-time">
-            <div className="message-time-div">
-              <DateTooltip date={message.date} />
-            </div>
-          </td>
-
-          <td className="message-username">
-            <Link to={`/users/${message.owner._id}`}>
-              <div>{message.owner.username}</div>
-            </Link>
-          </td>
-          <td className="message" colSpan={4}>
-            <div> {message.message}</div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+        <td className="message-username">
+          <Link to={`/users/${message.owner._id}`}>
+            {message.owner.username}
+          </Link>
+        </td>
+        <td className="message" colSpan={4}>
+          {message.message}
+        </td>
+      </tr>
+    ))}
+  />
 );
 const Messages = ({
   messagesData: { data, currentPage, count },
@@ -142,18 +138,16 @@ const Messages = ({
     <>
       <NavigateButton />
       <FilterBarMessages />
-      <div id="messages-list" className="table-list-wrapper">
+      <TableList
+        paginationProps={{
+          currentPage: currentPage,
+          totalCount: count,
+          localStorageName: "messagesListPageSize",
+          siblingCount: 1,
+        }}
+      >
         <MessagesDetails messages={data} />
-      </div>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={count}
-          localStorageName="messagesListPageSize"
-          siblingCount={1}
-        />
-      </div>
+      </TableList>
     </>
   );
 };

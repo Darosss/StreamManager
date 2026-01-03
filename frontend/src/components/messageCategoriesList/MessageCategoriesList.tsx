@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   useCreateMessageCategory,
@@ -20,6 +19,7 @@ import {
 import { RootStore } from "@redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 export default function MessageCategoriesList() {
   const queryParams = useQueryParams(fetchMessageCategoriesDefaultParams);
@@ -69,17 +69,17 @@ export default function MessageCategoriesList() {
     <>
       <NavigateButton />
       <FilterBarCategories />
-      <CategoriesData data={messageCategories.data} />
 
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          currentPage={messageCategories.currentPage}
-          totalCount={messageCategories.count}
-          localStorageName="messageCategoriesPageSize"
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "messageCategoriesPageSize",
+          currentPage: messageCategories.currentPage,
+          totalCount: messageCategories.count,
+          siblingCount: 1,
+        }}
+      >
+        <CategoriesData data={messageCategories.data} />
+      </TableList>
       <Modal
         title={`${editingId ? "Edit" : "Create"} message category`}
         onClose={() => dispatch(closeModal())}

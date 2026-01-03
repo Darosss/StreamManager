@@ -1,7 +1,6 @@
 import { Error, Loading } from "@components/axiosHelper";
 import CardboxWrapper from "@components/cardboxWrapper";
 import Modal from "@components/modal";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   fetchAffixesDefaultParams,
@@ -56,18 +55,18 @@ export default function Affixes() {
     <>
       <NavigateButton />
       <FilterBarModes />
-      <CardboxWrapper title={"Affixes list"}>
+      <CardboxWrapper
+        title={"Affixes list"}
+        paginationProps={{
+          localStorageName: "affixesListPageSize",
+          currentPage: affixes.currentPage,
+          totalCount: affixes.count,
+          siblingCount: 1,
+        }}
+      >
         <AffixesData data={affixes.data} />
       </CardboxWrapper>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="affixesListPageSize"
-          currentPage={affixes.currentPage}
-          totalCount={affixes.count}
-          siblingCount={1}
-        />
-      </div>
+
       <Modal
         title={`${editingId ? "Edit" : "Create"} affix`}
         onClose={() => dispatch(closeModal())}

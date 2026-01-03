@@ -1,9 +1,16 @@
+$cardbox-height: 95vh;
 .cardbox-wrapper {
-  background-color: var(--background-color);
-  height: 100vh;
   overflow-y: auto;
+  max-height: $cardbox-height;
 
+  .cardbox-list {
+    max-height: $cardbox-height;
+    min-height: $cardbox-height;
+  }
   .cardbox-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
     text-align: center;
     font-size: xx-large;
 
@@ -13,6 +20,13 @@
       var(--background-color)
     );
     border-bottom: 1px solid var(--secondary-color);
+  }
+
+  .cardbox-pagination {
+    position: sticky;
+    background-color: var(--background-color);
+    padding: 1rem 0;
+    bottom: 0;
   }
 }
 

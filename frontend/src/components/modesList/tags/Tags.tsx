@@ -1,7 +1,6 @@
 import { Error, Loading } from "@components/axiosHelper";
 import CardboxWrapper from "@components/cardboxWrapper";
 import Modal from "@components/modal";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   fetchTagsDefaultParams,
@@ -56,18 +55,18 @@ export default function Tags() {
     <>
       <NavigateButton />
       <FilterBarModes />
-      <CardboxWrapper title={"Tags list"}>
+      <CardboxWrapper
+        title={"Tags list"}
+        paginationProps={{
+          localStorageName: "tagsListPageSize",
+          currentPage: tags.currentPage,
+          totalCount: tags.count,
+          siblingCount: 1,
+        }}
+      >
         <TagsData data={tags.data} />
       </CardboxWrapper>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="tagsListPageSize"
-          currentPage={tags.currentPage}
-          totalCount={tags.count}
-          siblingCount={1}
-        />
-      </div>
+
       <Modal
         title={`${editingId ? "Edit" : "Create"} tag`}
         onClose={() => dispatch(closeModal())}

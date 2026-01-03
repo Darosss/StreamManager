@@ -1,6 +1,5 @@
 import { Loading, Error } from "@components/axiosHelper";
 import Modal from "@components/modal";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   fetchSongsDefaultParams,
@@ -16,6 +15,7 @@ import { RootStore } from "@redux/store";
 import FilterBarSongs from "./filterBarSongs";
 import SongModalData from "./SongModalData";
 import SongsData from "./SongsData";
+import { TableList } from "@components/tableWrapper";
 
 export default function SongsList() {
   const queryParams = useQueryParams(fetchSongsDefaultParams);
@@ -54,16 +54,16 @@ export default function SongsList() {
     <>
       <NavigateButton />
       <FilterBarSongs />
-      <SongsData data={songs.data} />
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="songsListPageSize"
-          currentPage={songs.currentPage}
-          totalCount={songs.count}
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "songsListPageSize",
+          currentPage: songs.currentPage,
+          totalCount: songs.count,
+          siblingCount: 1,
+        }}
+      >
+        <SongsData data={songs.data} />
+      </TableList>
       <Modal
         title={`${editingId ? "Edit" : "Create"} song`}
         onClose={() => dispatch(closeModal())}

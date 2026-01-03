@@ -19,7 +19,7 @@ export default function UserAchievements() {
 
   const { data, count, currentPage } = achievementsData;
   return (
-    <>
+    <div className="user-achievements-wrapper">
       <NavigateButton />
       <div className="user-achievements-header">
         <div>User achievements</div>
@@ -38,7 +38,7 @@ export default function UserAchievements() {
         <div>Obtained at </div>
         <div>Badge</div>
       </div>
-      <div className="table-list-wrapper">
+      <div className="achievements-list-data-wrapper">
         {data.map((achievement, index) => (
           <AchievementStageLists
             key={index}
@@ -47,15 +47,14 @@ export default function UserAchievements() {
           />
         ))}
       </div>
-      <div className="table-list-pagination">
+      <div className="achievements-list-pagination">
         <Pagination
-          className="pagination-bar"
           localStorageName="userAchievementsPageSize"
           currentPage={currentPage}
           totalCount={count}
           siblingCount={1}
         />
       </div>
-    </>
+    </div>
   );
 }

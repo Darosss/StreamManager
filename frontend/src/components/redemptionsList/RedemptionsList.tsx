@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import { Link, useParams } from "react-router-dom";
 import NavigateButton from "@components/navigateButton";
 import FilterBarRedemptions from "./filterBarRedemptions";
@@ -14,6 +13,7 @@ import { DateTooltip } from "@components/dateTooltip";
 import SortByParamsButton from "@components/SortByParamsButton";
 import { Error as ErrorHelper, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 interface RedemptionsListProps {
   redemptions: "all" | "session" | "user";
@@ -149,19 +149,16 @@ const Redemptions = ({
     <>
       <NavigateButton />
       <FilterBarRedemptions />
-
-      <div id="redemptions-list" className="table-list-wrapper">
+      <TableList
+        paginationProps={{
+          localStorageName: "redemptionsListPageSize",
+          currentPage: currentPage,
+          totalCount: count,
+          siblingCount: 1,
+        }}
+      >
         <RedemptionsDetails redemptions={data} />
-      </div>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={count}
-          localStorageName="redemptionsListPageSize"
-          siblingCount={1}
-        />
-      </div>
+      </TableList>
     </>
   );
 };

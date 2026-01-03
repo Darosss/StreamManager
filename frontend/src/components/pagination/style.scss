@@ -1,10 +1,12 @@
-ul.pagination-container {
-  border-top: 0.2rem solid black;
-  padding-top: 0.2rem;
+.pagination-wrapper {
   display: flex;
-  bottom: 0;
-
-  font-size: 2vmin;
+  justify-content: center;
+}
+ul.pagination-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   list-style-type: none;
 
   li.pagination-item {
@@ -97,6 +99,7 @@ ul.pagination-container {
 }
 
 .page-size-single {
+  display: flex;
   margin-left: 3vw;
   margin-top: 0.2rem;
   font-size: 2.5vmin;

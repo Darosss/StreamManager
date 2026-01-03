@@ -1,5 +1,4 @@
 import Modal from "@components/modal";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   fetchChatCommandsDefaultParams,
@@ -20,6 +19,7 @@ import CommandsData from "./CommandsData";
 import FilterBarCommands from "./filterBarCommands";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 export default function CommandsList() {
   const dispatch = useDispatch();
@@ -66,16 +66,17 @@ export default function CommandsList() {
     <>
       <NavigateButton />
       <FilterBarCommands />
-      <CommandsData commands={commandsData.data} />
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="commandsListPageSize"
-          currentPage={commandsData.currentPage}
-          totalCount={commandsData.count}
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "commandsListPageSize",
+          currentPage: commandsData.currentPage,
+          totalCount: commandsData.count,
+          siblingCount: 1,
+        }}
+      >
+        <CommandsData commands={commandsData.data} />
+      </TableList>
+
       <Modal
         title={`${editingId ? "Edit" : "Create"} command`}
         onClose={() => dispatch(closeModal())}

@@ -1,3 +1,11 @@
+.user-achievements-wrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
 .user-achievements-header {
   font-size: 2.5dvw;
   font-weight: 800;
@@ -28,6 +36,10 @@
   & > div:hover {
     color: var(--info-color);
   }
+}
+.achievements-list-data-wrapper {
+  overflow-x: hidden;
+  padding-bottom: 0.2rem;
 }
 
 .achievements-list-wrapper {

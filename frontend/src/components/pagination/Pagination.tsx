@@ -97,22 +97,22 @@ export default function Pagination({
 
   if (!paginationRange) {
     return (
-      <>
+      <div className="pagination-wrapper">
         Page size
         <PageSizeSelect />
-      </>
+      </div>
     );
   }
 
   if (currentPage === 0 || paginationRange.length < 2) {
     return (
-      <>
+      <div className="pagination-wrapper">
         <TotalResults />
         <div className="page-size-single">
           <label>Page size</label>
           <PageSizeSelect />
         </div>
-      </>
+      </div>
     );
   }
 

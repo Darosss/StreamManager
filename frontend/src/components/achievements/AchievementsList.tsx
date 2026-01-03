@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 
 import AchievementsListData from "./AchievementsListData";
@@ -7,6 +6,7 @@ import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
 import { Error, Loading } from "@components/axiosHelper";
 import EditCreateAchievementModal from "./EditCreateAchievementModal";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 export default function AchievementsList() {
   const queryParams = useQueryParams(fetchAchievementsDefaultParams);
@@ -23,16 +23,16 @@ export default function AchievementsList() {
     <>
       <NavigateButton />
       <FilterBarAchievements />
-      <AchievementsListData achievements={achievementsData.data} />
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="achievementsListPageSize"
-          currentPage={achievementsData.currentPage}
-          totalCount={achievementsData.count}
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "achievementsListPageSize",
+          currentPage: achievementsData.currentPage,
+          totalCount: achievementsData.count,
+          siblingCount: 1,
+        }}
+      >
+        <AchievementsListData achievements={achievementsData.data} />
+      </TableList>
       <EditCreateAchievementModal />
     </>
   );

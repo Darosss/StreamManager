@@ -1,8 +1,10 @@
+import Pagination, { PaginationProps } from "@components/pagination/Pagination";
 import { Button } from "@components/ui";
 
 interface CardboxCommonProps {
   title: string;
   children: React.ReactNode;
+  paginationProps?: PaginationProps;
 }
 
 interface CardboxItemProps extends CardboxCommonProps {
@@ -12,11 +14,23 @@ interface CardboxItemProps extends CardboxCommonProps {
 export default function CardboxWrapper({
   title,
   children,
+  paginationProps,
 }: CardboxCommonProps) {
   return (
     <div className="cardbox-wrapper">
       <div className="cardbox-header">{title}</div>
       <div className="cardbox-list">{children}</div>
+      {paginationProps && (
+        <div className="cardbox-pagination">
+          <Pagination
+            className={`${paginationProps.className || ""} "pagination-bar"`}
+            localStorageName={paginationProps.localStorageName}
+            currentPage={paginationProps.currentPage}
+            totalCount={paginationProps.totalCount}
+            siblingCount={paginationProps.siblingCount}
+          />
+        </div>
+      )}
     </div>
   );
 }

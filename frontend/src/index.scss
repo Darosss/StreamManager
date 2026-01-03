@@ -15,6 +15,10 @@
   height: 100vh;
 }
 
+* {
+  color: var(--font-color);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -85,7 +89,6 @@ textarea:focus,
 input:focus {
   filter: brightness(150%);
 }
-
 input {
   &::placeholder {
     color: var(--font-color);
@@ -108,8 +111,10 @@ table {
   width: 97vw;
   border-collapse: collapse;
 
-  thead th {
-    background-color: var(--background-color-opposite);
+  thead {
+    th {
+      background-color: var(--background-color-opposite);
+    }
     position: sticky;
     z-index: 1;
     top: 0;
@@ -129,23 +134,38 @@ table {
   }
 
   tbody {
-    border: 2px solid black;
+    border: 0.1rem solid var(--background-color-darker);
   }
 }
 
 .table-list-wrapper {
-  font-size: 1.5vmin;
-  height: 80vh;
-  overflow-y: scroll;
-}
-/* DEFAULTS TABLES */
-
-.table-list-pagination {
-  opacity: 0.8;
-  border-top: 0.1rem solid var(--secondary-color);
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  min-height: 90vh;
+  & > div.table-list-data {
+    font-size: 1.5vmin;
+    height: 80vh;
+    max-height: 80vh;
+    min-height: 80vh;
+    overflow-y: scroll;
+  }
+  & > div.table-list-footer {
+    position: absolute;
+    display: flex;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 
 /* BUTTONS */
+
+a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 button,
 a,

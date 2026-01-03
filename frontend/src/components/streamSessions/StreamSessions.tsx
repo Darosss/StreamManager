@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import { Link } from "react-router-dom";
 import NavigateButton from "@components/navigateButton";
 import FilterBarSessions from "./filterBarSessions";
@@ -7,6 +6,7 @@ import { DateDifference, DateTooltip } from "@components/dateTooltip";
 import SortByParamsButton from "@components/SortByParamsButton";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 export default function StreamSessions() {
   const searchParams = useQueryParams(fetchStreamSessionsDefaultParams);
@@ -21,8 +21,15 @@ export default function StreamSessions() {
     <>
       <NavigateButton />
       <FilterBarSessions />
-      <div id="stream-session-list" className="table-list-wrapper">
-        <table id="table-stream-session-list">
+      <TableList
+        paginationProps={{
+          localStorageName: "streamSessionPageSize",
+          currentPage: currentPage,
+          totalCount: count,
+          siblingCount: 1,
+        }}
+      >
+        <table className="stream-session-list">
           <thead>
             <tr>
               <th colSpan={3}>Action </th>
@@ -90,16 +97,7 @@ export default function StreamSessions() {
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={count}
-          localStorageName="streamSessionPageSize"
-          siblingCount={1}
-        />
-      </div>
+      </TableList>
     </>
   );
 }

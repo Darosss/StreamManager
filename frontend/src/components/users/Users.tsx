@@ -1,11 +1,10 @@
-import React from "react";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import { fetchUsersDefaultParams, useGetUsers } from "@services";
 import FilterBarUsers from "./filterBarUsers";
 import UsersDetails from "./UsersDetails";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
+import { TableList } from "@components/tableWrapper";
 
 export default function Users() {
   const searchParams = useQueryParams(fetchUsersDefaultParams);
@@ -19,18 +18,16 @@ export default function Users() {
     <>
       <NavigateButton />
       <FilterBarUsers />
-      <div id="users-list" className="table-list-wrapper">
+      <TableList
+        paginationProps={{
+          localStorageName: "usersPageSize",
+          currentPage: currentPage,
+          totalCount: count,
+          siblingCount: 1,
+        }}
+      >
         <UsersDetails users={data} />
-      </div>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          currentPage={currentPage}
-          totalCount={count}
-          localStorageName="usersPageSize"
-          siblingCount={1}
-        />
-      </div>
+      </TableList>
     </>
   );
 }

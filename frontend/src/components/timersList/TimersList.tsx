@@ -1,4 +1,3 @@
-import Pagination from "@components/pagination";
 import Modal from "@components/modal";
 import NavigateButton from "@components/navigateButton";
 import FilterBarTimers from "./filterBarTimers";
@@ -16,6 +15,7 @@ import { closeModal, resetTimerState, setEditingId } from "@redux/timersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Error, Loading } from "@components/axiosHelper";
 import { addNotification } from "@utils";
+import { TableList } from "@components/tableWrapper";
 
 export default function TimersList() {
   const queryParams = useQueryParams(fetchTimersDefaultParams);
@@ -56,16 +56,16 @@ export default function TimersList() {
     <>
       <NavigateButton />
       <FilterBarTimers />
-      <TimersData data={timers.data} />
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="timersListPageSize"
-          currentPage={timers.currentPage}
-          totalCount={timers.count}
-          siblingCount={1}
-        />
-      </div>
+      <TableList
+        paginationProps={{
+          localStorageName: "timersListPageSize",
+          currentPage: timers.currentPage,
+          totalCount: timers.count,
+          siblingCount: 1,
+        }}
+      >
+        <TimersData data={timers.data} />
+      </TableList>
       <Modal
         title={`${editingId ? "Edit" : "Create"} timer`}
         onClose={() => dispatch(closeModal())}

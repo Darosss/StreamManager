@@ -1,7 +1,6 @@
 import { Error, Loading } from "@components/axiosHelper";
 import CardboxWrapper from "@components/cardboxWrapper";
 import Modal from "@components/modal";
-import Pagination from "@components/pagination";
 import NavigateButton from "@components/navigateButton";
 import {
   fetchMoodsDefaultParams,
@@ -56,17 +55,18 @@ export default function Moods() {
     <>
       <NavigateButton />
       <FilterBarModes />
-      <CardboxWrapper title={"Moods list"}>
-        <MoodsData data={moods.data} />
-      </CardboxWrapper>
-      <div className="table-list-pagination">
-        <Pagination
-          className="pagination-bar"
-          localStorageName="moodsListPageSize"
-          currentPage={moods.currentPage}
-          totalCount={moods.count}
-          siblingCount={1}
-        />
+      <div className="moods-data-wrapper">
+        <CardboxWrapper
+          title={"Moods list"}
+          paginationProps={{
+            localStorageName: "moodsListPageSize",
+            currentPage: moods.currentPage,
+            totalCount: moods.count,
+            siblingCount: 1,
+          }}
+        >
+          <MoodsData data={moods.data} />
+        </CardboxWrapper>
       </div>
       <Modal
         title={`${editingId ? "Edit" : "Create"} mood`}
