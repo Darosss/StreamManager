@@ -5,41 +5,94 @@
 
 $themes: (
   light: (
-    primary: palette.$blue-500,
-    secondary: palette.$gray-500,
-    tertiary: palette.$violet-500,
-    success: palette.$green-500,
-    warning: palette.$yellow-400,
-    danger: palette.$red-500,
-    info: palette.$yellow-200,
-    username: color.scale(palette.$green-500, $lightness: 75%),
-    bg: variables.$background-color-light,
-    font: variables.$font-color-light,
-    accent: variables.$accent-light,
+    semantic: (
+      primary-bg: palette.$blue-500,
+      primary-text: palette.$blue-300,
+
+      secondary-bg: palette.$gray-500,
+      secondary-text: palette.$gray-300,
+
+      tertiary-bg: palette.$violet-500,
+      tertiary-text: palette.$violet-300,
+
+      success-bg: palette.$green-500,
+      success-text: palette.$green-300,
+
+      warning-bg: palette.$yellow-400,
+      warning-text: palette.$yellow-700,
+
+      danger-bg: palette.$red-500,
+      danger-text: palette.$red-300,
+
+      info-bg: palette.$yellow-700,
+      info-text: palette.$yellow-200,
+
+      username: color.scale(palette.$green-500, $lightness: 75%),
+      link-color: palette.$blue-500,
+      head-color: palette.$blue-500,
+    ),
+
+    surface: (
+      bg: variables.$background-color-light,
+      font: variables.$font-color-light,
+      accent: variables.$accent-light,
+    ),
   ),
+
   dark: (
-    primary: color.scale(palette.$blue-500, $lightness: -30%),
-    secondary: color.scale(palette.$gray-500, $lightness: -20%),
-    tertiary: color.scale(palette.$violet-500, $lightness: 2%),
-    success: color.scale(palette.$green-500, $lightness: 2%),
-    warning: color.scale(palette.$yellow-400, $lightness: -10%),
-    danger: color.scale(palette.$red-500, $lightness: 2%),
-    info: color.scale(palette.$yellow-200, $lightness: -25%),
-    username: color.scale(palette.$green-500, $lightness: 25%),
-    bg: variables.$background-color-dark,
-    font: variables.$font-color-dark,
-    accent: variables.$accent-dark,
+    semantic: (
+      primary-bg: color.scale(palette.$blue-500, $lightness: -30%),
+      primary-text: color.scale(palette.$blue-300, $lightness: -30%),
+      secondary-bg: color.scale(palette.$gray-500, $lightness: -20%),
+      secondary-text: color.scale(palette.$gray-300, $lightness: -30%),
+      tertiary-bg: palette.$violet-700,
+      tertiary-text: color.scale(palette.$violet-300, $lightness: -30%),
+      success-bg: palette.$green-700,
+      success-text: color.scale(palette.$green-300, $lightness: -30%),
+      warning-bg: color.scale(palette.$yellow-400, $lightness: -10%),
+      warning-text: color.scale(palette.$yellow-200, $lightness: -30%),
+      danger-bg: palette.$red-700,
+      danger-text: color.scale(palette.$red-300, $lightness: -30%),
+      info-bg: color.scale(palette.$yellow-200, $lightness: -25%),
+      info-text: color.scale(palette.$yellow-200, $lightness: -30%),
+      username: color.scale(palette.$green-500, $lightness: 25%),
+      link-color: color.scale(palette.$yellow-400, $lightness: 25%),
+      head-color: color.scale(palette.$yellow-400, $lightness: 25%),
+    ),
+
+    surface: (
+      bg: variables.$background-color-dark,
+      font: variables.$font-color-dark,
+      accent: variables.$accent-dark,
+    ),
   ),
 );
 
-@mixin semantic-colors($theme) {
-  --primary-color: #{map.get($theme, primary)};
-  --secondary-color: #{map.get($theme, secondary)};
-  --tertiary-color: #{map.get($theme, tertiary)};
-  --success-color: #{map.get($theme, success)};
-  --warning-color: #{map.get($theme, warning)};
-  --danger-color: #{map.get($theme, danger)};
-  --info-color: #{map.get($theme, info)};
+@mixin semantic-colors($semantic) {
+  --primary-color: #{map.get($semantic, primary-bg)};
+  --primary-text-color: #{map.get($semantic, primary-text)};
+
+  --secondary-color: #{map.get($semantic, secondary-bg)};
+  --secondary-text-color: #{map.get($semantic, secondary-text)};
+
+  --tertiary-color: #{map.get($semantic, tertiary-bg)};
+  --tertiary-text-color: #{map.get($semantic, tertiary-text)};
+
+  --success-color: #{map.get($semantic, success-bg)};
+  --success-text-color: #{map.get($semantic, success-text)};
+
+  --warning-color: #{map.get($semantic, warning-bg)};
+  --warning-text-color: #{map.get($semantic, warning-text)};
+
+  --danger-color: #{map.get($semantic, danger-bg)};
+  --danger-text-color: #{map.get($semantic, danger-text)};
+
+  --info-color: #{map.get($semantic, info-bg)};
+  --info-text-color: #{map.get($semantic, info-text)};
+
+  --message-username-color: #{map.get($semantic, username)};
+  --link-color: #{map.get($semantic, link-color)};
+  --head-color: #{map.get($semantic, head-color)};
 }
 
 @mixin theme-vars($theme) {
@@ -52,7 +105,8 @@ $themes: (
   --background-color-lighter: #{color.scale($bg, $lightness: 10%)};
   --background-color-opposite: #{color.scale($bg, $lightness: 40%)};
   --font-color: #{$font};
-  --info-bg-color: #{color.scale($accent, $lightness: -25%)};
+  --primary-font-color: #{color.scale($font, $lightness: -30%)};
+  --revert-background-color: #{color.scale($bg, $lightness: 50%)};
+  --accent-color: #{$accent};
   --time-color: #{color.scale($accent, $lightness: -50%)};
-  --message-username-color: #{map.get($theme, username)};
 }

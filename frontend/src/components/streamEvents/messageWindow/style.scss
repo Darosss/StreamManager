@@ -6,7 +6,7 @@
 
     &:hover {
       font-weight: 900;
-      color: red;
+      color: var(--danger-text-color);
       border-radius: 0.5rem;
     }
   }
@@ -17,7 +17,7 @@
       font-size: 1vmin;
       margin: 0.1rem;
       .button-category-name {
-        color: var(--info-bg-color);
+        color: var(--info-color);
       }
     }
     .message-section-btn-wrapper {

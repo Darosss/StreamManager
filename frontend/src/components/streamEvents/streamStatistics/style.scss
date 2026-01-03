@@ -1,7 +1,7 @@
 .no-session-found {
   display: flex;
   justify-content: center;
-  border: 1px solid var(--info-bg-color);
+  border: 1px solid var(--info-color);
   height: 100%;
 }
 
@@ -22,7 +22,7 @@
       text-align: center;
       width: 100%;
       font-weight: 700;
-      color: var(--info-bg-color);
+      color: var(--info-color);
       background-color: rgba(var(--secondary-color), 0.1);
     }
 
@@ -33,7 +33,7 @@
     }
 
     .stats-header {
-      color: var(--info-bg-color);
+      color: var(--info-color);
       text-align: center;
       justify-content: center;
       background-color: rgba(var(--secondary-color), 0.1);

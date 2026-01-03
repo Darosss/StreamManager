@@ -26,7 +26,7 @@
 
   &:hover .tooltip-text {
     opacity: 1;
-    color: var(--info-bg-color);
+    color: var(--warning-text-color);
     height: 100%;
     width: 100%;
     overflow: auto;
@@ -37,7 +37,7 @@
     height: 0;
     width: 0;
     overflow: hidden;
-    color: var(--info-bg-color);
+    color: var(--secondary-text-color) !important;
     border-radius: 0.5rem;
   }
 }

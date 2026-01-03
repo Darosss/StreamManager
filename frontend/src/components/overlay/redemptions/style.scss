@@ -41,15 +41,15 @@
 
 @keyframes change-colors {
   0% {
-    color: red;
+    color: var(--danger-color);
   }
   25% {
-    color: yellow;
+    color: var(--info-color);
   }
   50% {
-    color: blue;
+    color: var(--primary-color);
   }
   100% {
-    color: green;
+    color: var(--success-color);
   }
 }

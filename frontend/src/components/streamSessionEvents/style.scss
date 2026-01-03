@@ -49,7 +49,7 @@
   }
 
   span {
-    color: var(--info-bg-color);
+    color: var(--info-color);
     font-weight: 400;
   }
 
@@ -64,7 +64,7 @@
     }
 
     .user-info-event {
-      color: var(--info-bg-color);
+      color: var(--info-color);
       font-size: 1rem;
     }
 
@@ -73,7 +73,7 @@
       text-align: center;
     }
     .user-info-date {
-      color: var(--info-bg-color);
+      color: var(--info-color);
     }
   }
 

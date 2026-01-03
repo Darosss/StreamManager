@@ -15,9 +15,6 @@
     align-items: center;
     text-align: center;
     justify-content: space-around;
-    & > div:first-line {
-      color: var(--info-color);
-    }
 
     .base-details-achievement-stage-wrapper {
       display: flex;
@@ -25,19 +22,12 @@
       & > div {
         padding-left: 2rem;
       }
-      input {
-        width: 20dvw;
-      }
-    }
-
-    button {
-      padding: 1rem;
     }
   }
 
   .stage-data-wrapper {
     th {
-      color: var(--info-color);
+      color: var(--head-color);
     }
     .stage-data-content {
       &.stage-data-edit {
@@ -122,9 +112,11 @@
               height: 10%;
             }
           }
+
           &:hover {
             cursor: pointer;
-            color: var(--info-color);
+            color: var(--warning-text-color);
+            text-decoration: underline;
           }
         }
       }

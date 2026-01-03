@@ -3,13 +3,13 @@
 @use "./themes";
 
 :root {
-  @include themes.semantic-colors(map.get(themes.$themes, light));
-  @include themes.theme-vars(map.get(themes.$themes, light));
+  @include themes.semantic-colors(map.get(themes.$themes, light, semantic));
+  @include themes.theme-vars(map.get(themes.$themes, light, surface));
 }
 
 [data-theme="dark"] {
-  @include themes.semantic-colors(map.get(themes.$themes, dark));
-  @include themes.theme-vars(map.get(themes.$themes, dark));
+  @include themes.semantic-colors(map.get(themes.$themes, dark, semantic));
+  @include themes.theme-vars(map.get(themes.$themes, dark, surface));
 }
 #root {
   height: 100vh;
@@ -34,10 +34,10 @@ h1 {
 
 a {
   text-decoration: none;
-  color: var(--info-color);
+  color: var(--link-color);
 
   &:visited {
-    color: var(--info-color);
+    color: var(--link-color);
   }
 }
 
@@ -75,15 +75,15 @@ button {
   border: 0;
   background: linear-gradient(
     20deg,
-    var(--background-color-darker),
-    var(--background-color-lighter)
+    var(--secondary-color),
+    var(--background-color-darker)
   );
   color: var(--font-color);
 }
 
 textarea:focus,
 input:focus {
-  background-color: rgba(75, 72, 72, 0.446);
+  filter: brightness(150%);
 }
 
 input {
@@ -206,6 +206,7 @@ select {
       var(--primary-color) 0,
       var(--secondary-color) 100%
     );
+    color: var(--font-color);
   }
 
   &.secondary-button {
@@ -214,6 +215,7 @@ select {
       var(--secondary-color) 0,
       var(--background-color) 100%
     );
+    color: var(--font-color);
   }
 
   &.tertiary-button {
@@ -222,6 +224,7 @@ select {
       var(--tertiary-color) 0,
       var(--secondary-color) 100%
     );
+    color: var(--font-color);
   }
   &.success-button {
     background: linear-gradient(
@@ -229,6 +232,7 @@ select {
       var(--warning-color) 0,
       var(--success-color) 100%
     );
+    color: var(--font-color);
   }
   &.danger-button {
     background: linear-gradient(
@@ -236,6 +240,7 @@ select {
       var(--danger-color) 0,
       var(--secondary-color) 100%
     );
+    color: var(--font-color);
   }
 }
 
