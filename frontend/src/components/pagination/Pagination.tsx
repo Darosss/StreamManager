@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePagination, DOTS, useLocalStorage } from "@hooks";
-import classnames from "classnames";
 import { useSearchParams } from "react-router-dom";
 
-interface PaginationProps {
+export interface PaginationProps {
   totalCount: number;
   siblingCount: number;
   currentPage: number;
   localStorageName: string;
-  className: string;
+  className?: string;
 }
 
 export default function Pagination({
@@ -96,7 +95,6 @@ export default function Pagination({
     );
   };
 
-  // If no range = return;
   if (!paginationRange) {
     return (
       <>
@@ -106,7 +104,6 @@ export default function Pagination({
     );
   }
 
-  // If there are less than 2 times in pagination range we shall not render the component
   if (currentPage === 0 || paginationRange.length < 2) {
     return (
       <>
@@ -130,23 +127,15 @@ export default function Pagination({
   let lastPage = paginationRange[paginationRange.length - 1];
 
   return (
-    <>
-      <ul
-        className={classnames("pagination-container", {
-          [className]: className,
-        })}
-      >
-        {/* Left navigation arrow */}
+    <div className="pagination-wrapper">
+      <ul className={`pagination-container ${className || ""}`}>
         <li
-          className={classnames("pagination-item", {
-            disabled: currentPage === 1,
-          })}
+          className={`pagination-item ${currentPage === 1 ? "disabled" : ""}`}
           onClick={() => (currentPage > 1 ? onPrevious() : "")}
         >
           <div className="arrow left" />
         </li>
         {paginationRange.map((pageNumber, index) => {
-          // If the pageItem is a DOT, render the DOTS unicode character
           if (pageNumber === DOTS) {
             return (
               <li key={pageNumber + index} className="pagination-item dots">
@@ -154,13 +143,12 @@ export default function Pagination({
               </li>
             );
           }
-          // Render our Page Pills
           return (
             <li
               key={index}
-              className={classnames("pagination-item", {
-                selected: pageNumber === currentPage,
-              })}
+              className={`pagination-item ${
+                pageNumber === currentPage ? "selected" : ""
+              }`}
               onClick={() => {
                 onPageChangeSearchParam(String(pageNumber));
               }}
@@ -170,11 +158,10 @@ export default function Pagination({
           );
         })}
 
-        {/*  Right Navigation arrow */}
         <li
-          className={classnames("pagination-item", {
-            disabled: currentPage === lastPage,
-          })}
+          className={`pagination-item ${
+            currentPage === lastPage ? "disabled" : ""
+          }`}
           onClick={() => (currentPage < Number(lastPage) ? onNext() : "")}
         >
           <div className="arrow right" />
@@ -182,6 +169,6 @@ export default function Pagination({
         <PageSizeSelect />
         <TotalResults />
       </ul>
-    </>
+    </div>
   );
 }
