@@ -11,6 +11,7 @@ import { percentChance, randomWithMax, timerLogger } from "@utils";
 import { ConfigModel, TimerModel, UserModel } from "@models";
 import { ConfigManager } from "./ConfigManager";
 import { minDelayTimer } from "@configs";
+import { SocketHandler } from "@socket";
 
 type OnTimerExecute = (message: string) => void;
 
@@ -23,6 +24,10 @@ class TimersHandler {
 
   constructor(onTimerExecute: OnTimerExecute) {
     ConfigManager.getInstance().registerObserver(this.handleConfigUpdate.bind(this));
+    const socketInst = SocketHandler.getInstance();
+    socketInst.subscribe("refreshTimers", this.refreshTimers.bind(this));
+    socketInst.subscribe("changeModes", this.refreshTimers.bind(this));
+
     this._onTimerExecute = onTimerExecute;
     this.init();
   }
