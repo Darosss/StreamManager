@@ -16,6 +16,10 @@ import {
 import { Button } from "@components/ui";
 import { useGetAllModes } from "@hooks";
 import { SelectModes } from "@components/modesList";
+import { useDebouncedValue } from "@hooks/useDebouncedValue";
+import { useEffect, useState } from "react";
+
+const MIN_TIMER_DELAY = 60000;
 
 export default function TimerModalData() {
   const modes = useGetAllModes();
@@ -23,6 +27,15 @@ export default function TimerModalData() {
 
   const dispatch = useDispatch();
   const timerState = useSelector((state: RootStore) => state.timers.timer);
+  const [localDelay, setLocalDelay] = useState(timerState.delay);
+  const debouncedDelay = useDebouncedValue(localDelay, 500);
+
+  useEffect(() => {
+    if (Number.isNaN(debouncedDelay)) return;
+
+    const val = Math.max(debouncedDelay, MIN_TIMER_DELAY);
+    dispatch(setDelay(val));
+  }, [debouncedDelay, dispatch]);
 
   return (
     <ModalDataWrapper>
@@ -83,8 +96,11 @@ export default function TimerModalData() {
       <div>
         <input
           type="number"
-          value={timerState.delay}
-          onChange={(e) => dispatch(setDelay(e.currentTarget.valueAsNumber))}
+          value={localDelay}
+          onChange={(e) => setLocalDelay(e.currentTarget.valueAsNumber)}
+          onBlur={() => {
+            if (localDelay < MIN_TIMER_DELAY) setLocalDelay(MIN_TIMER_DELAY);
+          }}
         />
       </div>
       <div>Req points</div>
