@@ -54,7 +54,7 @@ It **SHOULD NOT** be on online hosting
 
 ### Prerequisites
 
-It should work on most version on below list, tho it is most tested on versions mentioned
+It can work on most versions, tho it is most tested on versions mentioned
 
 - MongoDB (`v8.0+`)
 
