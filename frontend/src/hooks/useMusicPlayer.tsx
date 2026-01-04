@@ -1,9 +1,8 @@
-import { useSocketContext } from "@socket";
+import { SocketContexType } from "@socket";
 import { AudioStreamData, AudioStreamDataEmitCb } from "@socketTypes";
 import { useCallback, useEffect, useState } from "react";
 
-const useMusicPlayer = () => {
-  const socket = useSocketContext();
+const useMusicPlayer = (socket: Required<SocketContexType>) => {
   const [audioData, setAudioData] = useState<AudioStreamData>({
     name: "",
     duration: 0,

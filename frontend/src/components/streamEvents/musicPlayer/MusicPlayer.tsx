@@ -9,6 +9,7 @@ import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import PlayerOptions from "./PlayerOptions";
 import { Button } from "@components/ui";
+import { useSocketContext } from "@socket";
 
 enum AvailableWindowsEnum {
   LOCAL = "local",
@@ -22,7 +23,7 @@ export default function MusicPlayer() {
     AvailableWindowsEnum.YT
   );
   const [audioMonitor, setAudioMonitor] = useState(false);
-
+  const socket = useSocketContext();
   const {
     audioData,
     isPlaying,
@@ -32,7 +33,7 @@ export default function MusicPlayer() {
     emitPause,
     emitNext,
     emitChangeVolume,
-  } = useMusicPlayer();
+  } = useMusicPlayer(socket);
 
   const playersButtons = useCallback(
     () =>

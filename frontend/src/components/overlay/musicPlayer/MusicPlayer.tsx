@@ -17,7 +17,9 @@ export default function MusicPlayer() {
     },
   } = overlaysStateRedux;
 
-  const { audioData, isPlaying, songsInQue, setAudioData } = useMusicPlayer();
+  const socket = useSocketContext();
+  const { audioData, isPlaying, songsInQue, setAudioData } =
+    useMusicPlayer(socket);
 
   useEffect(() => {
     if (!isEditor || audioData.id) return;
