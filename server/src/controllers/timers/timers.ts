@@ -11,6 +11,7 @@ import {
   TimerCreateData,
   TimerUpdateData
 } from "@services";
+import { minDelayTimer } from "@configs";
 
 export const getTimersList = async (req: Request<{}, {}, {}, RequestTimerQuery>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50, sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -54,7 +55,18 @@ export const addNewTimer = async (req: Request<{}, {}, TimerCreateData, {}>, res
     description
   } = req.body;
 
-  const createData = { name, messages, enabled, reqPoints, description, delay, tag, mood, nonFollowMulti, nonSubMulti };
+  const createData = {
+    name,
+    messages,
+    enabled,
+    reqPoints,
+    description,
+    delay: delay && delay > minDelayTimer ? delay : minDelayTimer,
+    tag,
+    mood,
+    nonFollowMulti,
+    nonSubMulti
+  };
 
   try {
     const newTimer = await createTimer(createData);
@@ -83,7 +95,18 @@ export const editTimerById = async (
     reqPoints,
     description
   } = req.body;
-  const updateData = { name, enabled, delay, messages, nonFollowMulti, nonSubMulti, reqPoints, description, tag, mood };
+  const updateData = {
+    name,
+    enabled,
+    delay: delay && delay > minDelayTimer ? delay : minDelayTimer,
+    messages,
+    nonFollowMulti,
+    nonSubMulti,
+    reqPoints,
+    description,
+    tag,
+    mood
+  };
   try {
     const updatedTimer = await updateTimerById(id, updateData);
 

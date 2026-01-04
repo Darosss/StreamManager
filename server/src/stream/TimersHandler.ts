@@ -10,6 +10,7 @@ import {
 import { percentChance, randomWithMax, timerLogger } from "@utils";
 import { ConfigModel, TimerModel, UserModel } from "@models";
 import { ConfigManager } from "./ConfigManager";
+import { minDelayTimer } from "@configs";
 
 type OnTimerExecute = (message: string) => void;
 
@@ -69,6 +70,7 @@ class TimersHandler {
   }
 
   private setTimerTimeout(id: string, name: string, delay: number) {
+    const timerDelay = delay >= minDelayTimer ? delay : minDelayTimer;
     this.timersTimeouts.set(
       id,
       setTimeout(async () => {
@@ -78,8 +80,8 @@ class TimersHandler {
         if (this._onTimerExecute) this._onTimerExecute(timerMessage);
         else timerLogger.warn("In order to execute timer message provide and set _onTimerExecute in TimersHandler");
         await this.updateTimerAfterUsage(id);
-        this.setTimerTimeout(id, name, delay);
-      }, delay * 1000)
+        this.setTimerTimeout(id, name, timerDelay);
+      }, timerDelay)
     );
   }
 
