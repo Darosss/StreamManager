@@ -36,26 +36,3 @@ export const useGetAllModes = (): AllModesReturn => {
     refetchMoods: refetchMoods,
   };
 };
-
-export const generateSelectModes = (
-  value: string,
-  onChangeSelect: (value: string) => void,
-  data?: Tag[] | Affix[] | Mood[]
-) => {
-  return (
-    <select value={value} onChange={(e) => onChangeSelect(e.target.value)}>
-      <option value=""></option>
-      {data?.map((item, index) => {
-        return (
-          <option
-            style={{ backgroundColor: `${item.enabled ? "green" : "red"}` }}
-            key={index}
-            value={item._id}
-          >
-            {item.name}
-          </option>
-        );
-      })}
-    </select>
-  );
-};

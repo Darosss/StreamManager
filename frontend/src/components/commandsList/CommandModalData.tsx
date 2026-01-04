@@ -1,5 +1,5 @@
 import ModalDataWrapper from "@components/modalDataWrapper/ModalDataWrapper";
-import { useGetAllModes, generateSelectModes } from "@utils";
+import { useGetAllModes } from "@hooks";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setName,
@@ -13,6 +13,7 @@ import {
 } from "@redux/commandsSlice";
 import { RootStore } from "@redux/store";
 import { Button } from "@components/ui";
+import { SelectModes } from "@components/modesList";
 
 export default function CommandModalData() {
   const dispatch = useDispatch();
@@ -43,23 +44,19 @@ export default function CommandModalData() {
       </div>
       <div>Tag</div>
       <div>
-        {generateSelectModes(
-          commandState.tag,
-          (e) => {
-            dispatch(setTag(e));
-          },
-          tags
-        )}
+        <SelectModes
+          value={commandState.tag}
+          onChange={(e) => dispatch(setTag(e))}
+          data={tags}
+        />
       </div>
       <div>Mood</div>
       <div>
-        {generateSelectModes(
-          commandState.mood,
-          (e) => {
-            dispatch(setMood(e));
-          },
-          moods
-        )}
+        <SelectModes
+          value={commandState.mood}
+          onChange={(e) => dispatch(setMood(e))}
+          data={moods}
+        />
       </div>
       <div>Privilege</div>
       <div>

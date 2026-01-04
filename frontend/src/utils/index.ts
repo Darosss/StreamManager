@@ -1,5 +1,4 @@
 export * from "./dateUtils";
-export * from "./getListModes";
 export * from "./getNotificationValues";
 export * from "./layoutBreakpoints";
 export * from "./resetScroll";

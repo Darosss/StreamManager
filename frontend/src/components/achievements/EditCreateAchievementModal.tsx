@@ -6,7 +6,6 @@ import {
   useGetTags,
   useUpdateCustomAchievement,
 } from "@services";
-import { generateSelectModes } from "@utils";
 import CustomAchievementModalInputs from "./CustomAchievementModalInputs";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
@@ -21,6 +20,7 @@ import {
 } from "@redux/achievementsSlice";
 import { SelectAchievementStages } from "./stages/SelectAchievementStages";
 import { Button } from "@components/ui";
+import { SelectModes } from "@components/modesList";
 
 export default function EditCreateAchievementModal() {
   const dispatch = useDispatch();
@@ -99,11 +99,11 @@ export default function EditCreateAchievementModal() {
         </div>
         <div>Tag </div>
         <div>
-          {generateSelectModes(
-            achievement.tag,
-            (e) => dispatch(setTagId(e)),
-            tags?.data
-          )}
+          <SelectModes
+            value={achievement.tag}
+            onChange={(e) => dispatch(setTagId(e))}
+            data={tags?.data}
+          />
         </div>
         <div>Hidden(used to hide it from displaying fe. discord, site) </div>
         <div>

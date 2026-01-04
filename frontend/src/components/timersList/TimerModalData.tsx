@@ -1,5 +1,4 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
-import { useGetAllModes, generateSelectModes } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import {
@@ -15,6 +14,8 @@ import {
   setName,
 } from "@redux/timersSlice";
 import { Button } from "@components/ui";
+import { useGetAllModes } from "@hooks";
+import { SelectModes } from "@components/modesList";
 
 export default function TimerModalData() {
   const modes = useGetAllModes();
@@ -64,15 +65,19 @@ export default function TimerModalData() {
       </div>
       <div>Tag</div>
       <div>
-        {generateSelectModes(timerState.tag, (e) => dispatch(setTag(e)), tags)}
+        <SelectModes
+          value={timerState.tag}
+          onChange={(e) => dispatch(setTag(e))}
+          data={tags}
+        />
       </div>
       <div>Mood</div>
       <div>
-        {generateSelectModes(
-          timerState.mood,
-          (e) => dispatch(setMood(e)),
-          moods
-        )}
+        <SelectModes
+          value={timerState.mood}
+          onChange={(e) => dispatch(setMood(e))}
+          data={moods}
+        />
       </div>
       <div>Delay</div>
       <div>

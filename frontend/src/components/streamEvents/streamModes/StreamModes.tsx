@@ -1,7 +1,8 @@
 import { Loading } from "@components/axiosHelper";
 import { Button } from "@components/ui";
+import { useGetAllModes } from "@hooks";
 import { useEditTag, useEditMood, useEditAffix } from "@services";
-import { useGetAllModes, addNotification } from "@utils";
+import { addNotification } from "@utils";
 
 export default function StreamModes() {
   const editTagMutation = useEditTag();

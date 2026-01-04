@@ -1,5 +1,5 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
-import { generateSelectModes, useGetAllModes } from "@utils";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import {
@@ -10,6 +10,8 @@ import {
   toggleEnabled,
 } from "@redux/messageCategoriesSlice";
 import { Button } from "@components/ui";
+import { SelectModes } from "@components/modesList";
+import { useGetAllModes } from "@hooks";
 
 export default function CategoriesModalData() {
   const modes = useGetAllModes();
@@ -40,19 +42,19 @@ export default function CategoriesModalData() {
       </div>
       <div>Tag</div>
       <div>
-        {generateSelectModes(
-          messageCategoryState.tag,
-          (e) => dispatch(setTag(e)),
-          tags
-        )}
+        <SelectModes
+          value={messageCategoryState.tag}
+          onChange={(e) => dispatch(setTag(e))}
+          data={tags}
+        />
       </div>
       <div>Mood</div>
       <div>
-        {generateSelectModes(
-          messageCategoryState.mood,
-          (e) => dispatch(setMood(e)),
-          moods
-        )}
+        <SelectModes
+          value={messageCategoryState.mood}
+          onChange={(e) => dispatch(setMood(e))}
+          data={moods}
+        />
       </div>
       <div>Messages</div>
       <div>

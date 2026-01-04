@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-
 import ModalDataWrapper from "@components/modalDataWrapper";
 import { TriggerMode } from "@services";
-import { useGetAllModes, generateSelectModes } from "@utils";
 import { RootStore } from "@redux/store";
 import {
   setChance,
@@ -16,6 +14,8 @@ import {
   setWords,
 } from "@redux/triggersSlice";
 import { Button } from "@components/ui";
+import { SelectModes } from "@components/modesList";
+import { useGetAllModes } from "@hooks";
 
 export default function TriggerModalData() {
   const modes = useGetAllModes();
@@ -74,20 +74,19 @@ export default function TriggerModalData() {
       </div>
       <div>Tag</div>
       <div>
-        {generateSelectModes(
-          triggerState.tag,
-          (e) => dispatch(setTag(e)),
-          tags
-        )}
+        <SelectModes
+          value={triggerState.tag}
+          onChange={(e) => dispatch(setTag(e))}
+          data={tags}
+        />
       </div>
       <div>Mood</div>
       <div>
-        {generateSelectModes(
-          triggerState.mood,
-          (e) => dispatch(setMood(e)),
-
-          moods
-        )}
+        <SelectModes
+          value={triggerState.mood}
+          onChange={(e) => dispatch(setMood(e))}
+          data={moods}
+        />
       </div>
 
       <div>Delay</div>
