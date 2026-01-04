@@ -10,7 +10,7 @@ import {
   useObtainedAchievementContentData,
   useProgressContentData,
 } from "./data-hooks";
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 
 interface AchievementDataBlockProps {
   achievement: ObtainAchievementDataWithCollectedAchievement | null;

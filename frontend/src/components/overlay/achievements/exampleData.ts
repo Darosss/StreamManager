@@ -2,7 +2,7 @@ import { randomWithMax } from "@utils";
 import { commonData } from "../commonExampleData";
 import { ObtainAchievementDataWithCollectedAchievement } from "@socket";
 import { StageDataRarity } from "@services";
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 const simpleAchievementsNames = [
   "Masters of Multitasking",
   "Eternal Explorer",

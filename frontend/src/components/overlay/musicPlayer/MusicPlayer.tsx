@@ -6,7 +6,7 @@ import SongProgress from "../songProgress";
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import { RequestSongData } from "@socketTypes";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
-import dayjs from "dayjs";
+import { dayjs } from "@utils";
 
 export default function MusicPlayer() {
   const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);

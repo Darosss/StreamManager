@@ -1,7 +1,7 @@
 import { DateTooltip } from "@components/dateTooltip/DateTooltip";
 import { Link } from "react-router-dom";
 import { SessionEvents } from "@services";
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 
 interface StreamSessionProps {
   sessionEvents: SessionEvents[];

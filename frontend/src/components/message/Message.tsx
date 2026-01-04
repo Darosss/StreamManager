@@ -4,7 +4,7 @@ import { DateTimeTooltip } from "@components/dateTooltip/DateTooltip";
 import { MessageServerData, MessageServerDataBadgesPathsType } from "@socket";
 import { viteBackendUrl } from "@configs/envVariables";
 import { getMessagesWithEmotes, getTwitchEmoteUrl } from "@utils";
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 
 type MessageStylesBadges = Partial<
   Pick<CSSProperties, "maxWidth" | "minWidth">

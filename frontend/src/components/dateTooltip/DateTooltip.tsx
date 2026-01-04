@@ -1,4 +1,4 @@
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 
 interface DateTooltipCommonProps {
   date: Date | number;

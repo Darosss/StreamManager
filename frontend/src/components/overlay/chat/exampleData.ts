@@ -1,7 +1,7 @@
 import { MessageServerData } from "@socketTypes";
 import { randomWithMax } from "@utils";
 import { commonData } from "../commonExampleData";
-import dayjs from "src/utils/utils";
+import { dayjs } from "@utils";
 
 const simpleMessageData = [
   "hi there, how are you doing? hey, want to grab coffee later?",

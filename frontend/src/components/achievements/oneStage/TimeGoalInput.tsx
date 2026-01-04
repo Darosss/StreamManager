@@ -1,6 +1,5 @@
-import { getDateFromSecondsToYMDHMS } from "@utils";
+import { getDateFromSecondsToYMDHMS, dayjs } from "@utils";
 import { useState, useCallback } from "react";
-import dayjs from "src/utils/utils";
 
 interface TimeGoalInputProps {
   goal: number;

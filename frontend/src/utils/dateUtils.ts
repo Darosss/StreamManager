@@ -1,4 +1,8 @@
-import dayjs from "./utils";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(relativeTime);
+dayjs.extend(duration);
 
 export const convertSecondsToMS = (secondsConvert: number) => {
   const duration = dayjs.duration(secondsConvert, "seconds");
@@ -28,3 +32,4 @@ export const getDateFromSecondsToYMDHMS = (time: number, separator = " ") => {
   ].filter(Boolean);
   return timeArray.join("");
 };
+export { dayjs };
