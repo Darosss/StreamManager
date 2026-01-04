@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
 import { Link, LinkProps, useLocation } from "react-router-dom";
-import { resetWindowScroll } from "@utils";
 import DrawerBar from "@components/drawer";
 import { routes } from "@routes";
 import ChangeTheme from "@components/changeTheme";
@@ -10,6 +9,10 @@ import SignupButton from "src/auth";
 
 interface NavLinkProps extends LinkProps {
   label: string;
+}
+
+function resetWindowScroll() {
+  window.scroll(0, 0);
 }
 
 export default function SideBar() {
