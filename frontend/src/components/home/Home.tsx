@@ -6,7 +6,7 @@ import { routes } from "@routes";
 import { useGetMessages } from "@services";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import SignupButton from "src/auth";
+import SignupButton from "@components/auth";
 
 const chatMessages = [
   "WELCOME HOME!",

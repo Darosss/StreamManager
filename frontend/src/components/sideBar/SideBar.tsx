@@ -5,7 +5,7 @@ import DrawerBar from "@components/drawer";
 import { routes } from "@routes";
 import ChangeTheme from "@components/changeTheme";
 import DiscordInviteButton from "./DiscordInviteButton";
-import SignupButton from "src/auth";
+import SignupButton from "@components/auth";
 
 interface NavLinkProps extends LinkProps {
   label: string;
