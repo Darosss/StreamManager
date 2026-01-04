@@ -75,7 +75,7 @@ class TimersHandler {
   }
 
   private setTimerTimeout(id: string, name: string, delay: number) {
-    const timerDelay = delay >= minDelayTimer ? delay : minDelayTimer;
+    const timerDelay = delay >= minDelayTimer ? delay : minDelayTimer * 1000;
     this.timersTimeouts.set(
       id,
       setTimeout(async () => {
