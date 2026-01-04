@@ -1,5 +1,5 @@
 export * from "./dateUtils";
-export * from "./getNotificationValues";
+export * from "./notifications";
 export * from "./layoutBreakpoints";
 export * from "./resetScroll";
 export * from "./socketData";
