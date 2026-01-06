@@ -1,6 +1,6 @@
 import "module-alias/register";
 import "./discord";
-import { initMongoDataBase, backendPort } from "@configs";
+import { initMongoDataBase, backendPort, databaseConnectURL } from "@configs";
 import expressApp from "./app";
 import { logger } from "@utils";
 import init from "./stream/initializeHandlers";
@@ -8,7 +8,7 @@ import { getAuthToken } from "@services";
 import { initialize as initializeDiscord } from "./discord";
 
 const startServer = async () => {
-  await initMongoDataBase();
+  await initMongoDataBase(databaseConnectURL);
   await initializeDiscord();
   const server = expressApp();
 
