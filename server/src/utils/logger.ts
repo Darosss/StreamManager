@@ -2,7 +2,6 @@ import winston, { format } from "winston";
 import path from "path";
 import DailyRotateFile from "winston-daily-rotate-file";
 import { nodeEnv } from "@configs";
-const isProduction = nodeEnv === "production";
 const { combine, timestamp, printf } = format;
 
 const loggerFormat = printf(({ level, message, timestamp }) => {
@@ -11,18 +10,20 @@ const loggerFormat = printf(({ level, message, timestamp }) => {
 
 export const logger = winston.createLogger({
   level: "error",
-  format: combine(timestamp(), loggerFormat),
-  transports: [
-    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-    new winston.transports.File({ filename: "logs/combined.log" })
-  ]
+  format: combine(timestamp(), loggerFormat)
 });
 
-if (!isProduction) {
+if (nodeEnv !== "production") {
   logger.add(
     new winston.transports.Console({
       format: loggerFormat
     })
+  );
+}
+if (nodeEnv === "development") {
+  logger.transports.push(
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/combined.log" })
   );
 }
 
@@ -47,17 +48,21 @@ const optionsLoggers = (fileName: string) => {
     ),
     level: "debug",
     transports: [
-      new DailyRotateFile({
-        filename: path.join(__dirname, `${streamLoggerDefaults.folder}/%DATE%/${fileName}.log`),
-        datePattern: streamLoggerDefaults.datePattern,
-        level: "info"
-      }),
-      new DailyRotateFile({
-        filename: path.join(__dirname, `${streamLoggerDefaults.folder}/%DATE%/${fileName}-debug.log`),
-        datePattern: streamLoggerDefaults.datePattern,
-        level: "debug"
-      }),
-      ...(!isProduction
+      ...(nodeEnv !== "test"
+        ? [
+            new DailyRotateFile({
+              filename: path.join(__dirname, `${streamLoggerDefaults.folder}/%DATE%/${fileName}.log`),
+              datePattern: streamLoggerDefaults.datePattern,
+              level: "info"
+            }),
+            new DailyRotateFile({
+              filename: path.join(__dirname, `${streamLoggerDefaults.folder}/%DATE%/${fileName}-debug.log`),
+              datePattern: streamLoggerDefaults.datePattern,
+              level: "debug"
+            })
+          ]
+        : []),
+      ...(nodeEnv !== "production"
         ? [
             new winston.transports.Console({
               format: streamLoggerFormat
