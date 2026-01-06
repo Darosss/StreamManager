@@ -1,7 +1,7 @@
 import { Model, model, Schema } from "mongoose";
-import { ConfigDocument } from "./types";
 import { configDefaults } from "@defaults";
 import { prefixChanceField, suffixChanceField } from "@utils";
+import { ConfigDocument } from "./types";
 const {
   commandsConfigs,
   timersConfigs,
@@ -14,7 +14,7 @@ const {
   achievementsConfigs
 } = configDefaults;
 
-const ConfigSchema: Schema<ConfigDocument> = new Schema(
+const ConfigSchema = new Schema<ConfigDocument>(
   {
     commandsConfigs: {
       commandsPrefix: {

@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { getConfigs, updateConfigs, ConfigUpdateData } from "@services";
+import { getConfigs, updateConfigs } from "@services";
 import { configDefaults } from "@defaults";
+import { ConfigUpdateData } from "@models";
+import { flattenObject } from "@utils";
 
 export const getConfigsList = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,8 +37,8 @@ export const editConfigs = async (req: Request<{}, {}, ConfigUpdateData, {}>, re
     headConfigs
   };
   try {
-    await updateConfigs(updateData);
-    res.status(200).send({ message: "Configs updated successfully" });
+    const configs = await updateConfigs(flattenObject(updateData));
+    res.status(200).send({ message: "Configs updated successfully", data: configs });
   } catch (err) {
     next(err);
   }
@@ -44,9 +46,9 @@ export const editConfigs = async (req: Request<{}, {}, ConfigUpdateData, {}>, re
 
 export const resetConfigsToDefaults = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await updateConfigs(configDefaults);
+    const configs = await updateConfigs(flattenObject(configDefaults));
 
-    res.status(200).send({ message: "Configs reset to default successfully" });
+    res.status(200).send({ message: "Configs reset to default successfully", data: configs });
   } catch (err) {
     next(err);
   }

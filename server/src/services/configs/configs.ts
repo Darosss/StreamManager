@@ -1,16 +1,12 @@
-import { Config } from "@models";
-import { AppError, handleAppError, logger, checkExistResource } from "@utils";
+import { Config, ConfigUpdateData } from "@models";
+import { handleAppError, logger } from "@utils";
 import { UpdateQuery } from "mongoose";
-import { ConfigUpdateData } from "./types";
 
 export const getConfigs = async () => {
   try {
     const configs = await Config.findOne({}).select({ __v: 0 });
     if (!configs) {
-      await createNewConfig();
-      logger.error(`Could not get configs: No configs found. Create default one`);
-
-      throw new AppError(400, "Couldn't get configs. Default configs should be accessible after refresh.");
+      return await createNewConfig();
     }
 
     return configs;
@@ -35,13 +31,12 @@ export const createNewConfig = async () => {
 
 export const updateConfigs = async (updateData: UpdateQuery<ConfigUpdateData>) => {
   try {
-    const foundConfig = await Config.findOneAndUpdate({}, updateData, {
-      new: true
+    const config = await Config.findOneAndUpdate({}, updateData, {
+      new: true,
+      upsert: true
     });
 
-    const updatedConfigs = checkExistResource(foundConfig, "Configs");
-
-    return updatedConfigs;
+    return config;
   } catch (err) {
     logger.error(`Error occured while updating configs. ${err}`);
     handleAppError(err);
