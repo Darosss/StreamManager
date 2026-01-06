@@ -38,15 +38,25 @@ It **SHOULD NOT** be on online hosting
 
 ## Built with
 
-- React.js (Redux + Tanstack)
+### SERVER:
+
 - Express.js
-- MongoDB
+- MongoDB (mongoose)
 - Socket.IO
 - twurple
 - tmi.js
 - winston
 - multer
+- discord.js
+- sharp
+- zod
+
+### FRONTEND
+
+- React.js (Redux + Tanstack)
+- Socket.IO-client
 - React grid layout
+- dayjs
 
 ## Getting started
 
