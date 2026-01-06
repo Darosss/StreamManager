@@ -12,12 +12,14 @@ declare global {
       ENCRYPTION_KEY: string;
       REDIRECT_URL: string;
       DATABASE_CONNECT_URL: string;
+      TEST_DB_URL?: string;
+
       BOT_USERNAME: string;
       BOT_PASSWORD: string;
       BOT_ID: string;
       DISCORD_CLIENT_TOKEN: string;
       DISCORD_CLIENT_ID: string;
-      NODE_ENV: "development" | "production";
+      NODE_ENV: "development" | "production" | "test";
     }
   }
 }
