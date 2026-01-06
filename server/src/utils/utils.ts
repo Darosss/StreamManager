@@ -80,3 +80,20 @@ export const getFileNameAndExtension = (fileNameWithExt: string) => {
 
   return { fileName, extension };
 };
+
+/**
+ * converts { a: { b: 1 } } into { "a.b": 1 } and so on
+ *  prevents mongodb from overwriting whole nested objects
+ */
+export const flattenObject = (obj: any, prefix = ""): Record<string, any> => {
+  return Object.keys(obj).reduce((acc: any, k) => {
+    const pre = prefix.length ? prefix + "." : "";
+    if (obj[k] === undefined) return acc;
+    if (obj[k] !== null && typeof obj[k] === "object" && !Array.isArray(obj[k])) {
+      Object.assign(acc, flattenObject(obj[k], pre + k));
+    } else {
+      acc[pre + k] = obj[k];
+    }
+    return acc;
+  }, {});
+};
