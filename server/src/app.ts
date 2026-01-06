@@ -6,9 +6,12 @@ import { errorResponder, invalidPathHandler } from "@middlewares";
 import { hostFrontendURL, localFrontendURL } from "@configs";
 import path from "path";
 import { SocketHandler } from "@socket";
+let instance: http.Server | null = null;
 
 const expressApp = () => {
   const app = express();
+  if (instance) return instance;
+
   const server = http.createServer(app);
 
   app.use(express.json());
@@ -29,7 +32,8 @@ const expressApp = () => {
 
   app.use(errorResponder);
   app.use(invalidPathHandler);
-  return server;
+  instance = server;
+  return instance;
 };
 
 export default expressApp;
