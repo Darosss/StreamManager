@@ -12,6 +12,7 @@ export const {
   ENCRYPTION_KEY: encryptionKey,
   REDIRECT_URL: redirectUrl,
   DATABASE_CONNECT_URL: databaseConnectURL,
+  TEST_DB_URL: testDbURL,
   BOT_USERNAME: botUsername,
   BOT_PASSWORD: botPassword,
   BOT_ID: botId,

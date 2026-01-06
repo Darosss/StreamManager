@@ -24,12 +24,12 @@ import {
   getDefaultMood,
   getDefaultTag
 } from "@defaults";
-import { databaseConnectURL } from "./envVariables";
 
-export const initMongoDataBase = async () => {
+export const initMongoDataBase = async (uri: string) => {
   mongoose.set("strictQuery", false);
+  if (!uri) throw new Error(`initMongoDataBase -> uri must be provided in order to connect to database`);
   try {
-    await mongoose.connect(databaseConnectURL);
+    await mongoose.connect(uri);
   } catch (error) {
     console.error("Failed to connect to database:", error);
     process.exit(1);
