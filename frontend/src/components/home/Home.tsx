@@ -59,6 +59,7 @@ export default function Home() {
                   <p className="nav-category-description">
                     {category.description}
                   </p>
+                  <div className="nav-category-bg"></div>
                 </div>
                 <div className="nav-category-grid">
                   {category.routes.map((route, routeIndex) => (
