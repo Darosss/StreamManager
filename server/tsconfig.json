@@ -8,6 +8,7 @@
       "@services": ["services"],
       "@utils": ["utils"],
       "@defaults": ["defaults"],
+      "@tests": ["tests"],
       "@socket": ["socketIO"]
     },
     "target": "es2017",
