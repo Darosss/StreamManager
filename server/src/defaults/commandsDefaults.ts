@@ -1,7 +1,7 @@
-import { ChatCommandCreateData } from "@services";
+import { ChatCommandCreateData } from "@models";
 
 export const getDefaultChatCommands = () => {
-  const defaultCommands: ChatCommandCreateData[] = [
+  const defaultCommands: Omit<ChatCommandCreateData, "tag" | "mood">[] = [
     {
       name: "messages",
       messages: ["@$user{username}, your messages: $user{messageCount}"],

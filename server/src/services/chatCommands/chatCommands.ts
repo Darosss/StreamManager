@@ -1,12 +1,7 @@
-import { ChatCommand, ChatCommandDocument } from "@models";
+import { ChatCommand, ChatCommandCreateData, ChatCommandDocument, ChatCommandUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
-import {
-  ChatCommandCreateData,
-  ChatCommandsFindOptions,
-  ChatCommandUpdateData,
-  ManyChatCommandsFindOptions
-} from "./types";
+import { ChatCommandsFindOptions, ManyChatCommandsFindOptions } from "./types";
 import { modesPipeline } from "../aggregations";
 
 export const getChatCommands = async (
@@ -58,7 +53,7 @@ export const getChatCommandsCount = async (filter: FilterQuery<ChatCommandDocume
   return await ChatCommand.countDocuments(filter);
 };
 
-export const createChatCommand = async (createData: ChatCommandCreateData | ChatCommandCreateData[]) => {
+export const createChatCommand = async (createData: UpdateQuery<ChatCommandCreateData>) => {
   try {
     const createdCommand = await ChatCommand.create(createData);
 

@@ -1,4 +1,4 @@
-import { MoodCreateData, TagCreateData } from "@services";
+import { MoodCreateData, TagCreateData } from "@models";
 
 export const getDefaultTag = () => {
   const defaultTag: TagCreateData = {

@@ -2,7 +2,7 @@ import { baseChatFeaturesFields, commonChatFeaturesFields, descriptionField } fr
 import { Model, model, Schema } from "mongoose";
 import { ChatCommandDocument } from "./types";
 
-const ChatCommandSchema: Schema<ChatCommandDocument> = new Schema(
+const ChatCommandSchema = new Schema<ChatCommandDocument>(
   {
     ...baseChatFeaturesFields,
     ...commonChatFeaturesFields,

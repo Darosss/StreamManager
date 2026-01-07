@@ -11,7 +11,3 @@ export interface ManyTagsFindOptions extends TagFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type TagCreateData = Pick<TagModel, "name">;
-
-export type TagUpdateData = Partial<Pick<TagModel, "name" | "enabled">>;

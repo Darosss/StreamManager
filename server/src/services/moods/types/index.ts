@@ -11,6 +11,3 @@ export interface ManyMoodsFindOptions extends MoodFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type MoodCreateData = Pick<MoodModel, "name">;
-export type MoodUpdateData = Partial<Pick<MoodModel, "name" | "enabled">>;

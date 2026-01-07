@@ -7,10 +7,10 @@ import {
   deleteChatCommandById,
   getChatCommands,
   getChatCommandsCount,
-  updateChatCommandById,
-  ChatCommandCreateData,
-  ChatCommandUpdateData
+  updateChatCommandById
 } from "@services";
+import { ChatCommandCreateData, ChatCommandUpdateData } from "@models";
+import { flattenObject } from "@utils";
 
 export const getChatCommandsList = async (
   req: Request<{}, {}, {}, RequestCommandsQuery>,
@@ -52,7 +52,7 @@ export const addNewCommand = async (
 
   const createData = { name, description, enabled, aliases, tag, mood, messages, privilege };
   try {
-    const newChatCommand = await createChatCommand(createData);
+    const newChatCommand = await createChatCommand(flattenObject(createData));
 
     res.status(201).send({ message: "Chat command added successfully", data: newChatCommand });
   } catch (err) {
@@ -71,11 +71,11 @@ export const editChatCommandById = async (
   const updateData = { name, description, enabled, aliases, tag, mood, messages, privilege };
 
   try {
-    const updatedChatCommand = await updateChatCommandById(id, updateData);
+    const updatedChatCommand = await updateChatCommandById(id, flattenObject(updateData));
 
     res.status(200).send({
       message: "Chat command updated successfully",
-      chatCommand: updatedChatCommand
+      data: updatedChatCommand
     });
   } catch (err) {
     next(err);

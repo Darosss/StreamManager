@@ -1,15 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { RequestParams, RequestSearch } from "../types";
 import { filterTagsByUrlParams } from "./filters";
-import {
-  createTag,
-  deleteTagById,
-  getTags,
-  getTagsCount,
-  updateTagById,
-  TagCreateData,
-  TagUpdateData
-} from "@services";
+import { createTag, deleteTagById, getTags, getTagsCount, updateTagById } from "@services";
+import { TagCreateData, TagUpdateData } from "@models";
 
 export const getTagsList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50 } = req.query;
