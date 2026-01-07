@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 import request from "supertest";
 import app from "../../app";
 import { Config } from "@models";
-import { beforeEach, describe, it, expect, afterAll, test } from "@jest/globals";
+import { beforeEach, describe, it, expect, afterAll, test, beforeAll } from "@jest/globals";
 import { initMongoDataBase } from "@configs";
 
 const appInstance = app();
+if (!process.env.TEST_DB_URL) throw new Error("Please, provide environment variable for TEST_DB_URL");
 
 beforeAll(async () => {
-  await initMongoDataBase(process.env.TEST_DB_URL);
+  await initMongoDataBase(process.env.TEST_DB_URL!);
 });
 
 afterAll(async () => {
@@ -66,7 +67,7 @@ describe("Configs API", () => {
 
         expect(res.statusCode).toEqual(200);
 
-        const rootKey = Object.keys(payload)[0];
+        const rootKey = Object.keys(payload)[0] as keyof typeof payload;
         const subKey = Object.keys(payload[rootKey])[0];
 
         expect(res.body.data[rootKey][subKey]).toEqual(payload[rootKey][subKey]);
@@ -85,7 +86,7 @@ describe("Configs API", () => {
         const res = await request(appInstance).patch("/configs/edit").send(payload);
 
         expect(res.error).toBeDefined();
-        expect(res.error.status).toEqual(400);
+        expect(res.error && res.error.status).toEqual(400);
       });
     });
   });
