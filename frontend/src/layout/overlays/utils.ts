@@ -27,9 +27,19 @@ export const stringifyOverlayKeysType = (
 export const parseOverlayKeysType = (
   data: OverlayKeysType
 ): OverlayKeysStylesParsedType => {
-  return Object.keys(data).reduce<OverlayKeysStylesParsedType>((acc, key) => {
-    const keyAsOverlayKeysType = key as keyof OverlayKeysStylesParsedType;
-    acc[keyAsOverlayKeysType] = JSON.parse(data[keyAsOverlayKeysType]);
-    return acc;
-  }, initialStylesState);
+  return Object.keys(data).reduce<OverlayKeysStylesParsedType>(
+    (acc, key) => {
+      const keyAsOverlayKeysType = key as keyof OverlayKeysStylesParsedType;
+
+      try {
+        acc[keyAsOverlayKeysType] = JSON.parse(data[keyAsOverlayKeysType]);
+        return acc;
+      } catch (err) {
+        console.error(err);
+        //TODO: look at this erro later
+        return acc;
+      }
+    },
+    { ...initialStylesState }
+  );
 };
