@@ -36,7 +36,7 @@ export const getSongsCount = async (filter: FilterQuery<SongsDocument> = {}) => 
 };
 
 export const createSong = async (createData: SongsCreateData): Promise<CreateSongReturn | undefined> => {
-  const { youtubeId, sunoId, downloadedData } = createData;
+  const { youtubeId, sunoId, downloadedData, whoAdded, ...rest } = createData;
   const foundSong = await getOneSong(
     {
       $and: [
@@ -56,11 +56,17 @@ export const createSong = async (createData: SongsCreateData): Promise<CreateSon
     return { isNew: false, song: updatedSong! };
   }
 
-  const { whoAdded, ...rest } = createData;
   try {
     const foundCreator = checkExistResource(await getUserById(whoAdded, {}), "Creator of song");
 
-    const modifiedCreateData = { ...rest, whoAdded: foundCreator as UserModel };
+    const modifiedCreateData = {
+      ...rest,
+      whoAdded: foundCreator as UserModel,
+      ...(sunoId ? { sunoId: sunoId } : {}),
+      ...(youtubeId ? { youtubeId: youtubeId } : {}),
+      ...(!sunoId && !youtubeId && downloadedData ? { downloadedData } : {})
+    };
+
     const createdSong = await Songs.create(modifiedCreateData);
 
     if (!createdSong) {
