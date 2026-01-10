@@ -1,6 +1,6 @@
 import { QueueHandler } from "../QueueHandler";
 import youtubeMusic from "./YoutubeMusic";
-import { isValidUrl, isADirectory, musicLogger } from "@utils";
+import { isValidUrl, isADirectory, musicLogger, logger } from "@utils";
 import localMusic from "./LocalMusic";
 import { botId, musicFolderName, musicPath, ytMusicFolderName } from "@configs";
 import path from "path";
@@ -170,6 +170,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
 
   public async loadFromLocalFolder(folderName: string) {
     const loadedFolder = path.join(musicPath, folderName);
+
     if (!isADirectory(loadedFolder)) return;
 
     try {
@@ -183,7 +184,9 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
       };
 
       this.setSongs(songNamesToLoad);
-    } catch (err) {}
+    } catch (err) {
+      logger.error(`Error occured in loadFromLocalFolder ->`, err);
+    }
   }
 
   public getPlaylistDetails() {
