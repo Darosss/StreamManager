@@ -161,7 +161,7 @@ const initialOverlayAchievementsStyles: OverlayAchievementsStyleParsed = {
 };
 const initialOverlayMusicPlayerStyles: OverlayMusicPlayerStyleParsed = {
   background: "lightblue",
-  boxShadow: "1px 2px 4px 4px lightblue",
+  boxShadow: "none",
   opacity: 100,
   borderRadius: "0.5rem",
   currentSong: { color: "black", fontSize: "80%" },
@@ -172,7 +172,7 @@ const initialOverlayMusicPlayerStyles: OverlayMusicPlayerStyleParsed = {
     baseBackground: "white",
   },
   requests: {
-    boxShadow: "1px 2px 3px 4px lightblue",
+    boxShadow: "none",
     headerFontSize: "1rem",
     nicknameColor: "green",
     fontSize: "1rem",
