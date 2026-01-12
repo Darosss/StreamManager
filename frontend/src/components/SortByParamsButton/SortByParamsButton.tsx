@@ -64,7 +64,7 @@ export default function SortByParamsButton({
           onClick={handleOnClickSortBtn}
         >
           {buttonText}
-          <span>{currentSearch}</span>
+          {currentSearch && <span>{currentSearch}</span>}
         </Button>
         <Button
           className="sort-by-params-remove-sort"
