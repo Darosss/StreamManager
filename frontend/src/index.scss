@@ -90,6 +90,7 @@ input:focus {
   filter: brightness(150%);
 }
 input {
+  border-radius: 0.2rem;
   &::placeholder {
     color: var(--font-color);
     opacity: 0.4;
@@ -171,23 +172,39 @@ button,
 a,
 select {
   &.small-button {
-    & > div {
-      padding: 0.2rem;
-      font-size: calc(0.3rem + 1vmin);
+    font-size: calc(0.3rem + 1vmin);
+
+    & > div:not(:has(div)) {
+      padding: 0.2rem 0.5rem;
+    }
+    & > div:has(div) {
+      & > * {
+        padding: 0.2rem 0.5rem;
+      }
     }
   }
 
   &.medium-button {
-    & > div {
+    font-size: calc(0.5rem + 1vmin);
+    & > div:not(:has(div)) {
       padding: 0.5rem;
-      font-size: calc(0.5rem + 1vmin);
+    }
+    & > div:has(div) {
+      & > * {
+        padding: 0.5rem;
+      }
     }
   }
 
   &.large-button {
-    & > div {
+    font-size: calc(0.7rem + 1vmin);
+    & > div:not(:has(div)) {
       padding: 1rem;
-      font-size: calc(0.7rem + 1vmin);
+    }
+    & > div:has(div) {
+      & > * {
+        padding: 1rem;
+      }
     }
   }
 
@@ -207,6 +224,7 @@ select {
       justify-content: center;
       align-items: center;
       display: flex;
+      padding: 0;
     }
 
     &:hover {
