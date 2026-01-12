@@ -1,58 +1,29 @@
-.filter-wrapper {
-  margin-top: 0.1rem;
+.url-params-inputs-wrapper {
+  width: 100%;
   display: flex;
-  font-size: 2vmin;
-  width: 96vw;
-  max-height: 7vh;
-  overflow-y: hidden;
-  align-items: end;
-
-  button.filter-clear-btn {
-    position: sticky;
-    left: 0;
-    min-width: 10vw;
-    height: 3vh;
-    margin-left: 0.1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  button {
+    width: 100%;
   }
 
   .filter-inputs {
-    display: flex;
-    flex-flow: nowrap;
-    flex-direction: row;
-    align-items: flex-end;
+    gap: 0.4rem;
 
-    input {
-      font-size: 1.9vmin;
-      margin-left: 0.2rem;
-      text-align: center;
-      height: 3vh;
-      width: 15vw;
+    &.horizontal {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+      & > * {
+        flex-grow: 1;
+      }
     }
 
-    div {
+    &.vertical {
       display: flex;
       flex-direction: column;
-      label {
-        text-align: center;
-      }
-
-      div {
-        display: flex;
-        flex-direction: row;
-        input {
-          height: 3vh;
-        }
-      }
-    }
-
-    input[type="datetime-local"] {
-      width: 24vw;
-      font-size: 1.4vw;
-    }
-
-    input[type="date"] {
-      width: 15vw;
-      font-size: 1.4vw;
+      overflow-x: auto;
     }
   }
 }

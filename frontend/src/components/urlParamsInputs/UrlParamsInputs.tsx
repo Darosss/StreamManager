@@ -5,19 +5,14 @@ import { useSearchParams } from "react-router-dom";
 
 interface UrlParamsInputProps {
   children: React.ReactNode;
+  onClickClear?: () => void;
+  type?: "horizontal" | "vertical";
 }
 
-/**
- * @param {ReactElement} props - react element props
- * @param {React.ReactNode} props.children - inputs, select or sth should have 'queryparam' custom parameter
- * @example ```
- * <UrlParamsInputs>
- *     <FilterBarInput queryparam="search_name" type="search" placeholder="Username"/>
- * </UrlParamsInputs>```
- * @returns - children wrapped in UrlParamsInputs which now they change UrlSearchParam
- */
 export default function UrlParamsInput({
   children,
+  onClickClear,
+  type = "horizontal",
 }: UrlParamsInputProps): JSX.Element {
   const CUSTOM_PARAMETER = "queryparam";
 
@@ -25,7 +20,7 @@ export default function UrlParamsInput({
 
   const inputsWrapper = useRef<HTMLDivElement>(null);
 
-  const clearFilters = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const clearFilters = () => {
     setSearchParams("");
   };
 
@@ -54,13 +49,13 @@ export default function UrlParamsInput({
         return prevState;
       });
     };
-    const childrensWrapper = inputsWrapper.current?.children;
+    const childrensWrapper = inputsWrapper.current;
     if (childrensWrapper) {
-      for (let i = 0; i < childrensWrapper.length; i++) {
-        if (childrensWrapper[i].tagName !== "INPUT") continue;
-
-        const currentChild = childrensWrapper[i] as HTMLInputElement;
+      const allInputs = [...childrensWrapper.querySelectorAll("input")];
+      for (let i = 0; i < allInputs.length; i++) {
+        const currentChild = allInputs[i] as HTMLInputElement;
         const childParameter = currentChild.getAttribute(CUSTOM_PARAMETER);
+
         if (!childParameter) return;
 
         currentChild.value = searchParams.get(childParameter) || "";
@@ -73,14 +68,27 @@ export default function UrlParamsInput({
         };
       }
     }
-  }, [children, searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams]);
 
   return (
-    <div className="filter-wrapper">
-      <Button className="filter-clear-btn" onClick={clearFilters}>
+    <div className="url-params-inputs-wrapper">
+      <Button
+        variant="danger"
+        size="small"
+        className="filter-clear-btn"
+        onClick={() => {
+          clearFilters();
+          onClickClear?.();
+        }}
+      >
         Clear filters
       </Button>
-      <div className="filter-inputs" ref={inputsWrapper}>
+      <div
+        className={`filter-inputs ${
+          type === "horizontal" ? "horizontal" : "vertical"
+        }`}
+        ref={inputsWrapper}
+      >
         {children}
       </div>
     </div>
