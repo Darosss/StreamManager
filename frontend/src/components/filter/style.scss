@@ -1,0 +1,21 @@
+.filter-modal-data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .filter-input-wrapper {
+    border-radius: 0.2rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--background-color-opposite);
+    input {
+      height: 5vh;
+      margin: 0.2rem;
+      padding-left: 0.5rem;
+    }
+    & > div {
+      padding: 0.3rem 1rem;
+    }
+    filter: brightness(80%);
+  }
+}
