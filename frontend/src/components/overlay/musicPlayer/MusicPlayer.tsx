@@ -6,7 +6,7 @@ import useMusicPlayer from "@hooks/useMusicPlayer";
 import { AudioStreamData } from "@socketTypes";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
 import RequestSongInfo from "./RequestSongInfo";
-import SongPlayerTime from "./SongPlayertime";
+import SongPlayerTime from "./SongPlayerTime";
 
 const editorTestData: AudioStreamData = {
   id: "djV11Xbc914",
@@ -43,6 +43,7 @@ export default function MusicPlayer() {
     },
     [audioData.duration]
   );
+  if (!isPlaying) return null;
   return (
     <div className="music-player">
       <RequestSongInfo
