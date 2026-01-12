@@ -15,7 +15,7 @@ interface ReactGridProps {
   layoutState: ReactGridLayout.Layouts;
   toolboxState: ReactGridLayout.Layouts;
   currentBreakpointState: CurrentBreakpointState;
-  componentsMap: Map<string, () => JSX.Element>;
+  componentsMap: Map<string, () => JSX.Element | null>;
   onEdit: (
     layout: ReactGridLayout.Layouts,
     toolbox: ReactGridLayout.Layouts
