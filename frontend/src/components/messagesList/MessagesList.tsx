@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import NavigateButton from "@components/navigateButton";
-import FilterBarMessages from "./filterBarMessages";
 import {
   PaginationData,
   useGetMessages,
@@ -16,6 +15,8 @@ import Loading from "@components/axiosHelper/loading";
 
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList, TableListWrapper } from "@components/tableWrapper";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 interface MessagesDetailsProp {
   messages: Message[];
@@ -92,6 +93,7 @@ const MessagesSession = ({ sessionId }: MessagesSessionProps) => {
 
 const MessagesAll = () => {
   const queryParams = useQueryParams(fetchMessagesDefaultParams);
+  console.log(queryParams, "jakie?");
   const { data, isLoading, error } = useGetMessages(queryParams);
   if (error) return <ErrorHelper error={error} />;
   if (!data || isLoading) return <Loading />;
@@ -131,13 +133,22 @@ const MessagesDetails = ({ messages }: MessagesDetailsProp) => (
     ))}
   />
 );
+
 const Messages = ({
   messagesData: { data, currentPage, count },
 }: MessagesProps) => {
+  const options: Options<keyof Message> = {
+    ...getPossibleCommonField("search_name"),
+    owner: { type: "text", placeholder: "Owner" },
+    ...getPossibleCommonField("end_date"),
+    ...getPossibleCommonField("start_date"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarMessages />
+    <div>
+      <div className="messages-header-wrapper">
+        <NavigateButton />
+        <Filter options={options} />
+      </div>
       <TableList
         paginationProps={{
           currentPage: currentPage,
@@ -148,6 +159,6 @@ const Messages = ({
       >
         <MessagesDetails messages={data} />
       </TableList>
-    </>
+    </div>
   );
 };

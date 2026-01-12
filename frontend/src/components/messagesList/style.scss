@@ -1,3 +1,8 @@
+.messages-header-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .table-messages-list {
   td.message-time {
     max-width: 15%;
