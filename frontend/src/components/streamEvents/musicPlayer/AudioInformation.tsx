@@ -20,7 +20,7 @@ export default function AudioInformation(props: AudioInformationProps) {
   const timer = useTimer({
     currentTime: audioData.currentTime,
     duration: audioData.duration,
-    isPlaying,
+    enabled: isPlaying,
   });
 
   const showCurrentSongProgress = () => {

@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 interface UseTimerProps {
   currentTime: number;
   duration: number;
-  isPlaying: boolean;
+  enabled: boolean;
+
+  updateMs?: number;
 }
 
 export const useTimer = ({
   currentTime,
   duration,
-  isPlaying,
+  enabled,
+  updateMs = 1000,
 }: UseTimerProps) => {
   const [progressTimer, setProgressTimer] =
     useState<ReturnType<typeof setTimeout>>();
@@ -24,24 +27,24 @@ export const useTimer = ({
   useEffect(() => {
     setTimer(currentTime);
 
-    //TODO: added duration for forcing setTimer (mostly duration will be different in each songs)
+    // added duration for forcing setTimer (mostly duration will be different responsible for setting 'new' timer)
   }, [currentTime, duration]);
 
   useEffect(() => {
     clearInterval(progressTimer);
-    if (!isPlaying) return;
+    if (!enabled) return;
 
     setProgressTimer(
       setInterval(() => {
         countTime(duration);
-      }, 1000)
+      }, updateMs)
     );
 
     return () => {
       clearInterval(progressTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [duration, isPlaying]);
+  }, [duration, enabled]);
 
   useEffect(() => {
     return () => {

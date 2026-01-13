@@ -21,7 +21,7 @@ export default function SongPlayerTime({
   const timer = useTimer({
     currentTime,
     duration,
-    isPlaying,
+    enabled: isPlaying,
   });
 
   useEffect(() => {

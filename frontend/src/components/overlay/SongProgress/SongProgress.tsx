@@ -12,7 +12,7 @@ export default function SongProgress(props: SongProgressProps) {
   const timer = useTimer({
     currentTime: currentTime,
     duration: songDuration,
-    isPlaying: songDuration > 0,
+    enabled: songDuration > 0,
   });
 
   const [maxMinutes, maxSeconds] = convertSecondsToMS(songDuration);
