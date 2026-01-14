@@ -19,7 +19,10 @@ export const useTimer = ({
 
   const countTime = (newDuration: number) =>
     setTimer((prev) => {
-      const newTime = prev + 1 > newDuration ? newDuration : prev + 1;
+      const newTime =
+        prev + updateMs / 1000 > newDuration
+          ? newDuration
+          : prev + updateMs / 1000;
       return newTime;
     });
 
