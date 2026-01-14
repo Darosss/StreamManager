@@ -5,9 +5,9 @@ import { OverlayKeysStylesParsedType } from "@layout";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { useEditOverlay } from "@services";
-import { addNotification } from "@utils";
 import { setStyles } from "@redux/overlaysSlice";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 type OverlayKeysType =
   OverlayKeysStylesParsedType[keyof OverlayKeysStylesParsedType];
@@ -19,15 +19,16 @@ function StyleCSSEditor() {
     overlay: { styles },
   } = useSelector((state: RootStore) => state.overlays);
 
+  const { addNotify } = useNotifications();
   const editOverlayMutation = useEditOverlay();
 
   const handleEditOverlay = () => {
     if (!baseData._id)
-      return addNotification(
-        "No overlay id",
-        "No overlay id to delete",
-        "warning"
-      );
+      return addNotify({
+        title: "No overlay id",
+        message: "No overlay id to delete",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
 
     editOverlayMutation.mutate({
       id: baseData._id,

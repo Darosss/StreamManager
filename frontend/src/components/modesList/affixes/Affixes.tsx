@@ -8,7 +8,6 @@ import {
   useCreateAffix,
   useEditAffix,
 } from "@services";
-import { addNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { closeModal, resetAffixState, setEditingId } from "@redux/affixesSlice";
@@ -16,8 +15,10 @@ import { RootStore } from "@redux/store";
 import FilterBarModes from "../filterBarModes";
 import AffixModalData from "./AffixModalData";
 import AffixesData from "./AffixesData";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function Affixes() {
+  const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchAffixesDefaultParams);
   const { data: affixes, isLoading, error } = useGetAffixes(queryParams);
   const dispatch = useDispatch();
@@ -40,7 +41,11 @@ export default function Affixes() {
 
   const handleUpdateAffix = () => {
     if (!editingId) {
-      addNotification("Couldn't update affix", "No affix id", "warning");
+      addNotify({
+        title: "Couldn't update affix",
+        message: "No affix id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateAffixMutation.mutate({

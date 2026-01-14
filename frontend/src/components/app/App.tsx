@@ -1,11 +1,10 @@
-import "react-notifications-component/dist/theme.css";
 import { SocketContextProvider } from "@socket";
 import { RouterProvider } from "react-router-dom";
-import { ReactNotifications } from "react-notifications-component";
 import { allRoutes } from "@routes";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import { store } from "@redux/store";
+import { NotificationsContextProvider } from "@contexts";
 
 const queryClient = new QueryClient();
 function App() {
@@ -14,8 +13,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <SocketContextProvider>
           <div className="main">
-            <ReactNotifications />
-            <RouterProvider router={allRoutes} />
+            <NotificationsContextProvider>
+              <RouterProvider router={allRoutes} />
+            </NotificationsContextProvider>
           </div>
         </SocketContextProvider>
       </QueryClientProvider>

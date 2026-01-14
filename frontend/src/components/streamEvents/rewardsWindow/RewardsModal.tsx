@@ -1,17 +1,17 @@
 import Modal from "@components/modal";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useFileUpload } from "@hooks";
 import { setCost, setEditingAlertSound, closeModal } from "@redux/rewardsSlice";
 import { setTitle } from "@redux/songsSlice";
 import { RootStore } from "@redux/store";
 import { uploadMp3Data } from "@services";
 import { useSocketContext } from "@socket";
-import { addErrorNotification, addSuccessNotification } from "@utils";
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export function RewardsModal() {
   const socketContext = useSocketContext();
-
+  const { addNotify } = useNotifications();
   const [fileList, setFileList] = useState<FileList | null>(null);
 
   const { handleFileUpload } = useFileUpload(uploadMp3Data.rewardsAlertSounds);
@@ -29,12 +29,18 @@ export function RewardsModal() {
     } = socketContext;
     if (!editingId) return;
     if (fileList && fileList.length <= 0) {
-      addErrorNotification("You must add sound file to update alert sound");
+      addNotify({
+        title: "You must add sound file to update alert sound",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
       return;
     }
     updateCustomReward(editingId, { title, cost }, (success) => {
       if (!success) {
-        addErrorNotification("Custom reward couldn't be created");
+        addNotify({
+          title: "Custom reward couldn't be created",
+          type: NOTIFICATION_TYPE.DANGER,
+        });
         return;
       }
 
@@ -47,21 +53,38 @@ export function RewardsModal() {
       );
 
       setFileList(null);
-      addSuccessNotification("Custom reward created successfully");
+      addNotify({
+        title: "Custom reward created successfully",
+        type: NOTIFICATION_TYPE.SUCCESS,
+      });
     });
-  }, [socketContext, editingId, fileList, handleFileUpload, title, cost]);
+  }, [
+    socketContext,
+    editingId,
+    fileList,
+    title,
+    cost,
+    addNotify,
+    handleFileUpload,
+  ]);
   const emitCreateAlertSoundReward = useCallback(() => {
     if (!title || !fileList) return;
     const {
       emits: { getCustomRewards, createCustomReward },
     } = socketContext;
     if (fileList && fileList.length <= 0) {
-      addErrorNotification("You must add sound file to create alert sound");
+      addNotify({
+        title: "You must add sound file to create alert sound",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
       return;
     }
     createCustomReward({ title: title, cost: cost }, (success) => {
       if (!success) {
-        addErrorNotification("Custom reward couldn't be created");
+        addNotify({
+          title: "Custom reward couldn't be created",
+          type: NOTIFICATION_TYPE.DANGER,
+        });
         return;
       }
 
@@ -73,11 +96,14 @@ export function RewardsModal() {
         "alertSound"
       );
       setFileList(null);
-      addSuccessNotification("Custom reward created successfully");
+      addNotify({
+        title: "Custom reward created successfully",
+        type: NOTIFICATION_TYPE.SUCCESS,
+      });
     });
 
     getCustomRewards();
-  }, [socketContext, fileList, handleFileUpload, title, cost]);
+  }, [addNotify, socketContext, fileList, handleFileUpload, title, cost]);
 
   return (
     <Modal

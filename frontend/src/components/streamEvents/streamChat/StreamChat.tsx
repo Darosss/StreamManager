@@ -6,11 +6,12 @@ import {
 } from "@services";
 import Message from "@components/message";
 import { MessageServerData, useSocketContext } from "@socket";
-import { addSuccessNotification } from "@utils";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function StreamChat() {
   const socketContext = useSocketContext();
+  const { addNotify } = useNotifications();
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
   const [messagesDB, setMessagesDB] = useState<MessageType[]>([]);
@@ -39,10 +40,13 @@ export default function StreamChat() {
     const {
       emits: { messageClient },
     } = socketContext;
-    addSuccessNotification(`Sent message ${messageToSend}`);
+    addNotify({
+      title: `Sent message ${messageToSend}`,
+      type: NOTIFICATION_TYPE.SUCCESS,
+    });
     messageClient(messageToSend);
     chatToBottom();
-  }, [socketContext, messageToSend]);
+  }, [socketContext, messageToSend, addNotify]);
 
   useEffect(() => {
     const {

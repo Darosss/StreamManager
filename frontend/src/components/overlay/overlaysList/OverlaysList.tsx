@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { addNotification } from "@utils";
 import { Link } from "react-router-dom";
 import {
   fetchOverlaysDefaultParams,
@@ -12,10 +11,11 @@ import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { initialLayoutOverlays, initialToolboxOverlays } from "@layout";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function OverlaysList() {
   const queryParams = useQueryParams(fetchOverlaysDefaultParams);
-
+  const { addNotify } = useNotifications();
   const { data, isLoading, error } = useGetOverlays(queryParams);
 
   const [overlayName, setLayoutName] = useState<string>("");
@@ -30,11 +30,11 @@ export default function OverlaysList() {
 
   const handleCreateOverlay = () => {
     if (!overlayName)
-      return addNotification(
-        "Provide name",
-        "You need to provide overlay name",
-        "danger"
-      );
+      return addNotify({
+        title: "Provide name",
+        message: "You need to provide overlay name",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
     createOverlayMutation.mutate({
       name: overlayName,
       layout: initialLayoutOverlays,

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { CustomRewardData, useSocketContext } from "@socket";
 import { useAxiosWithConfirmation } from "@hooks";
 import { useGetAlertSoundsMp3Names, useDeleteAlertSound } from "@services";
-import { addErrorNotification, addSuccessNotification } from "@utils";
 import { useDispatch } from "react-redux";
 import {
   openModal,
@@ -11,9 +10,11 @@ import {
 } from "@redux/rewardsSlice";
 import { RewardsModal } from "./RewardsModal";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function MessagesWindow() {
   const socketContext = useSocketContext();
+  const { addNotify } = useNotifications();
   const dispatch = useDispatch();
 
   const [alertSounds, setAlertSounds] = useState<CustomRewardData[]>();
@@ -60,15 +61,21 @@ export default function MessagesWindow() {
       if (!window.confirm("Are you sure to delete custom reward?")) return;
       deleteCustomReward(id, (succes) => {
         if (!succes) {
-          addErrorNotification("Custom reward couldn't be removed");
+          addNotify({
+            title: "Custom reward couldn't be removed",
+            type: NOTIFICATION_TYPE.DANGER,
+          });
           return;
         }
         setAlertSoundNameDelete(name);
         getCustomRewards();
-        addSuccessNotification("Custom reward removed successfully");
+        addNotify({
+          title: "Custom reward removed successfully",
+          type: NOTIFICATION_TYPE.SUCCESS,
+        });
       });
     },
-    [socketContext, setAlertSoundNameDelete]
+    [socketContext, setAlertSoundNameDelete, addNotify]
   );
 
   const isAlertSoundMp3OnServer = (rewardTitle: string) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Redemptions from "./redemptions";
 import { overlaysKeys } from "@layout";
-import { addNotification, getInitialCurrentBreakpoint } from "@utils";
+import { getInitialCurrentBreakpoint } from "@utils";
 import ReactGrid from "@components/reactGrid";
 import MusicPlayer from "./musicPlayer";
 import { HelmetTitle } from "@components/componentWithTitle";
@@ -26,6 +26,7 @@ import {
 import { RootStore } from "@redux/store";
 import { useParams } from "react-router-dom";
 import { Error, Loading } from "@components/axiosHelper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 const components = new Map([
   [overlaysKeys.overlayRedemptions, Redemptions],
@@ -37,6 +38,7 @@ const components = new Map([
 export default function Overlay(params: { editor?: boolean }) {
   const { editor = false } = params;
   const { overlayId } = useParams();
+  const { addNotify } = useNotifications();
   const {
     events: { refreshOverlayLayout: refreshOverlayLayoutEvent },
   } = useSocketContext();
@@ -56,15 +58,15 @@ export default function Overlay(params: { editor?: boolean }) {
 
   useEffect(() => {
     if (!overlayId) {
-      addNotification(
-        "No overlay id",
-        "Something went wrong, no overlay id",
-        "warning"
-      );
+      addNotify({
+        title: "No overlay id",
+        message: "Something went wrong, no overlay id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     dispatch(setId(overlayId));
-  }, [dispatch, overlayId]);
+  }, [addNotify, dispatch, overlayId]);
 
   useEffect(() => {
     dispatch(setIsEditor(editor));
@@ -98,7 +100,11 @@ export default function Overlay(params: { editor?: boolean }) {
     toolboxState: ReactGridLayout.Layouts
   ) => {
     if (!overlayId) {
-      addNotification("Couldn't update overlay", "No overlay id", "warning");
+      addNotify({
+        title: "Couldn't update overlay",
+        message: "No overlay id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     dispatch(setLayout(layoutState));

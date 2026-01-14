@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useCreateWidget, useDeleteWidget, useGetWidgets } from "@services";
 import { Link } from "react-router-dom";
 import { initialLayoutWidgets, initialToolboxWidgets } from "@layout";
-import { addNotification } from "@utils";
 import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { fetchWidgetsDefaultParams } from "@services";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function StreamNotifications() {
   const queryParams = useQueryParams(fetchWidgetsDefaultParams);
+
+  const { addNotify } = useNotifications();
   const { data, isLoading, error } = useGetWidgets(queryParams);
 
   const [layoutName, setLayoutName] = useState<string>("");
@@ -25,11 +27,11 @@ export default function StreamNotifications() {
 
   const handleCreateWidget = () => {
     if (!layoutName)
-      return addNotification(
-        "Provide name",
-        "You need to provide layout name",
-        "danger"
-      );
+      return addNotify({
+        title: "Provide name",
+        message: "You need to provide layout name",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
     createWidgetMutation.mutate({
       name: layoutName,
       layout: initialLayoutWidgets,

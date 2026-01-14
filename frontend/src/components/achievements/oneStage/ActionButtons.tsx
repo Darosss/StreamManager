@@ -2,11 +2,11 @@ import {
   useEditAchievementStage,
   useRefetchAchievementStageById,
 } from "@services";
-import { addErrorNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { pushToStageData } from "@redux/stagesSlice";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface ActionButtonsProps {
   stageId: string;
@@ -23,7 +23,9 @@ export default function ActionButtons({
   onClickSave,
 }: ActionButtonsProps) {
   const dispatch = useDispatch();
+
   const { stage } = useSelector((root: RootStore) => root.stages);
+  const { addNotify } = useNotifications();
   const editAchievementStageMutation = useEditAchievementStage();
   const handleOnClickAddStage = () => {
     const { stageData } = stage;
@@ -80,7 +82,11 @@ export default function ActionButtons({
     const isBadgeSet = stage.stageData.every(
       (stageData) => stageData.badge._id
     );
-    if (!isBadgeSet) return addErrorNotification("Badge is not set properly");
+    if (!isBadgeSet)
+      return addNotify({
+        title: "Badge is not set properly",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
     onClickSave();
     handleEditAchievementStage();
   };

@@ -7,7 +7,6 @@ import {
   useCreateSong,
   useEditSong,
 } from "@services";
-import { addNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { resetSongState, closeModal, setEditingId } from "@redux/songsSlice";
@@ -16,9 +15,11 @@ import FilterBarSongs from "./filterBarSongs";
 import SongModalData from "./SongModalData";
 import SongsData from "./SongsData";
 import { TableList } from "@components/tableWrapper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function SongsList() {
   const queryParams = useQueryParams(fetchSongsDefaultParams);
+  const { addNotify } = useNotifications();
   const { data: songs, isLoading, error } = useGetSongs(queryParams);
 
   const dispatch = useDispatch();
@@ -39,7 +40,11 @@ export default function SongsList() {
 
   const handleUpdateSong = () => {
     if (!editingId) {
-      addNotification("Couldn't update song", "No song id", "warning");
+      addNotify({
+        title: "Couldn't update song",
+        message: "No song id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateSongMutation.mutate({

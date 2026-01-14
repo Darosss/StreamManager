@@ -4,14 +4,15 @@ import {
   useIncrementUsesCategoryById,
 } from "@services";
 import Modal from "@components/modal";
-import { addNotification } from "@utils";
 
 import { useSocketContext } from "@socket";
 import { Error, Loading } from "@components/axiosHelper";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function MessagesWindow() {
   const socket = useSocketContext();
+  const { addNotify } = useNotifications();
   const [showModal, setShowModal] = useState(false);
 
   const [currentMessages, setCurrentMessages] = useState<string[]>([]);
@@ -49,7 +50,11 @@ export default function MessagesWindow() {
   const handleOnClickRandomMessage = (id: string) => {
     const randomMessage = getRandomMessage(id);
 
-    addNotification("Send random message", randomMessage, "success");
+    addNotify({
+      title: "Send random message",
+      message: randomMessage,
+      type: NOTIFICATION_TYPE.SUCCESS,
+    });
 
     sendMessage(randomMessage);
   };

@@ -1,7 +1,7 @@
 import DrawerBar from "@components/drawer";
 import NavigateButton from "@components/navigateButton";
 import { Button } from "@components/ui";
-import { addSuccessNotification } from "@utils";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface LayoutDrawerBarProps {
   layoutName: string;
@@ -33,6 +33,7 @@ export default function LayoutDrawerBar({
   editFn,
 }: LayoutDrawerBarProps) {
   const [isEdit, setIsEdit] = isEditState;
+  const { addNotify } = useNotifications();
   const toggleEditMode = () => {
     setEditableInLayout(isEdit);
 
@@ -54,7 +55,10 @@ export default function LayoutDrawerBar({
 
   const handleOnSave = () => {
     editFn();
-    addSuccessNotification("Stream events layout edited successfully");
+    addNotify({
+      title: "Stream events layout edited successfully",
+      type: NOTIFICATION_TYPE.SUCCESS,
+    });
   };
 
   return (
