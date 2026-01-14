@@ -2,7 +2,7 @@ import {
   NOTIFICATION_TYPE,
   NotificationOpts,
   useNotifications,
-} from "src/contexts";
+} from "@contexts";
 import { AxiosError } from "axios";
 import { useMutation, UseMutationOptions } from "react-query";
 
@@ -12,11 +12,13 @@ export enum MutationAction {
   DELETE = "Deleted",
   DUPLICATE = "Duplicated",
   INCREMENT_USES = "Incremented uses",
+  REVERT = "Reverted",
 }
 export enum MutationEntity {
   ACHIEVEMENT = "achievement",
   ACHIEVEMENT_STAGE = "achievement stage",
   ACHIEVEMENT_STAGE_SOUND = "achievement stage sound",
+  ALERT_SOUND = "alert sound",
   BADGE = "achievement badge",
   BADGE_IMAGE = "achievement badge image",
   SONG = "song",
