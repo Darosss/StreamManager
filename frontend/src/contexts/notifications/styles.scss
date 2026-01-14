@@ -1,0 +1,101 @@
+$notifcation-width: 25vw;
+$notification-variants: (
+  success: var(--success-color),
+  danger: var(--danger-color),
+  info: var(--info-color),
+  warning: var(--warning-color),
+  default: var(--primary-color),
+);
+
+.notifications-context-wrapper {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  .notification-wrapper {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    width: $notifcation-width;
+    max-width: $notifcation-width;
+    min-width: $notifcation-width;
+    min-height: 5vh;
+    height: min-content;
+    max-height: 25vh;
+    position: relative;
+    animation: show-notify 0.5s;
+    z-index: 1000;
+    @each $name, $color in $notification-variants {
+      &.#{$name} {
+        .notification-bg {
+          background: $color;
+        }
+
+        .notification-progress {
+          background: $color;
+        }
+
+        .notification-title,
+        .notification-content {
+          box-shadow: 1px 1px 1px 0px $color;
+        }
+      }
+    }
+    &:hover {
+      filter: brightness(120%);
+    }
+
+    .notification-title {
+      display: flex;
+      justify-content: center;
+      font-size: 1.2rem;
+      padding: 0.2rem 0;
+    }
+
+    .notification-content {
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      height: 100%;
+      overflow-y: auto;
+      & > * {
+        margin: 0.5rem;
+      }
+    }
+    .notification-bg {
+      position: absolute;
+      border-radius: 0.5rem;
+      inset: 0;
+      opacity: 0.7;
+      z-index: -1;
+    }
+    .notification-progress {
+      width: 100%;
+      transition: width 0.5s ease-in;
+      height: 0.5rem;
+      filter: brightness(130%);
+    }
+  }
+}
+
+@keyframes show-notify {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hide-notify {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
