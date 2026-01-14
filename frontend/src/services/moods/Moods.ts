@@ -1,17 +1,15 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import { FetchMoodParams, Mood, MoodCreateData, MoodUpdateData } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchMoodsDefaultParams: Required<FetchMoodParams> = {
   limit: 10,
@@ -70,56 +68,50 @@ export const useGetMoods = (params?: QueryParams<keyof FetchMoodParams>) => {
 
 export const useEditMood = () => {
   const refetchMoods = useRefetchMoodsData();
-  return useMutation(editMood, {
-    onSuccess: () => {
-      refetchMoods().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    editMood,
+    {
+      entity: MutationEntity.MOOD,
+      action: MutationAction.EDIT,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MOOD,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchMoods().then(() => socketConn.emit("changeModes"));
+      },
+    }
+  );
 };
 
 export const useCreateMood = () => {
   const refetchMoods = useRefetchMoodsData();
-  return useMutation(createMood, {
-    onSuccess: () => {
-      refetchMoods().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    createMood,
+    {
+      entity: MutationEntity.MOOD,
+      action: MutationAction.CREATE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MOOD,
-        OnErrorHelperServiceAction.CREATE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchMoods().then(() => socketConn.emit("changeModes"));
+      },
+    }
+  );
 };
 
 export const useDeleteMood = () => {
   const refetchMoods = useRefetchMoodsData();
-  return useMutation(deleteMood, {
-    onSuccess: () => {
-      refetchMoods().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    deleteMood,
+    {
+      entity: MutationEntity.MOOD,
+      action: MutationAction.DELETE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MOOD,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchMoods().then(() => socketConn.emit("changeModes"));
+      },
+    }
+  );
 };
 
 export const useRefetchMoodsData = (exact = false) => {

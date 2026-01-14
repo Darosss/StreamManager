@@ -1,16 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BackendData,
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   refetchDataFunctionHelper,
 } from "../api";
 import { socketConn } from "@socket";
 import { Config, ConfigUpdateData } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.CONFIGS;
 
@@ -46,38 +44,34 @@ export const useGetConfigs = () => {
 
 export const useEditConfig = () => {
   const refetchConfigs = useRefetchConfigsData();
-  return useMutation(editConfig, {
-    onSuccess: () => {
-      refetchConfigs().then(() => {
-        socketConn.emit("saveConfigs");
-      });
+  return useCustomMutation(
+    editConfig,
+    {
+      entity: MutationEntity.CONFIG,
+      action: MutationAction.EDIT,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.CONFIG,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchConfigs().then(() => socketConn.emit("saveConfigs"));
+      },
+    }
+  );
 };
 
 export const useResetConfigs = () => {
   const refetchConfigs = useRefetchConfigsData();
-  return useMutation(resetConfigs, {
-    onSuccess: () => {
-      refetchConfigs().then(() => {
-        socketConn.emit("saveConfigs");
-      });
+  return useCustomMutation(
+    resetConfigs,
+    {
+      entity: MutationEntity.CONFIG,
+      action: MutationAction.REVERT,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.CONFIG,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchConfigs().then(() => socketConn.emit("saveConfigs"));
+      },
+    }
+  );
 };
 
 export const useRefetchConfigsData = (exact = false) => {

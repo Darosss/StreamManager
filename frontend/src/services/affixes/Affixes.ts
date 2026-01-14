@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -17,6 +14,7 @@ import {
   AffixUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchAffixesDefaultParams: Required<FetchAffixParams> = {
   limit: 10,
@@ -77,56 +75,56 @@ export const useGetAffixes = (params?: QueryParams<keyof FetchAffixParams>) => {
 
 export const useEditAffix = () => {
   const refetchAffixes = useRefetchAffixesData();
-  return useMutation(editAffix, {
-    onSuccess: () => {
-      refetchAffixes().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    editAffix,
+    {
+      entity: MutationEntity.AFFIX,
+      action: MutationAction.EDIT,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.AFFIX,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchAffixes().then(() => {
+          socketConn.emit("changeModes");
+        });
+      },
+    }
+  );
 };
 
 export const useCreateAffix = () => {
   const refetchAffixes = useRefetchAffixesData();
-  return useMutation(createAffix, {
-    onSuccess: () => {
-      refetchAffixes().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    createAffix,
+    {
+      entity: MutationEntity.AFFIX,
+      action: MutationAction.CREATE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.AFFIX,
-        OnErrorHelperServiceAction.CREATE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchAffixes().then(() => {
+          socketConn.emit("changeModes");
+        });
+      },
+    }
+  );
 };
 
 export const useDeleteAffix = () => {
   const refetchAffixes = useRefetchAffixesData();
-  return useMutation(deleteAffix, {
-    onSuccess: () => {
-      refetchAffixes().then(() => {
-        socketConn.emit("changeModes");
-      });
+  return useCustomMutation(
+    deleteAffix,
+    {
+      entity: MutationEntity.AFFIX,
+      action: MutationAction.DELETE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.AFFIX,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchAffixes().then(() => {
+          socketConn.emit("changeModes");
+        });
+      },
+    }
+  );
 };
 export const useRefetchAffixesData = (exact = false) => {
   const queryClient = useQueryClient();

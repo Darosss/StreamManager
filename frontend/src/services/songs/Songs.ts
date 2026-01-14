@@ -1,10 +1,7 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   QueryParams,
@@ -16,6 +13,7 @@ import {
   SongCreateData,
   FetchSongsParams,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchSongsDefaultParams: Required<FetchSongsParams> = {
   limit: 10,
@@ -77,44 +75,38 @@ export const useGetSongs = (params?: QueryParams<keyof FetchSongsParams>) => {
 
 export const useCreateSong = () => {
   const refetchSongs = useRefetchSongsData();
-  return useMutation(createSong, {
-    onSuccess: refetchSongs,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.SONG,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createSong,
+    {
+      entity: MutationEntity.SONG,
+      action: MutationAction.CREATE,
     },
-  });
+    { onSuccess: refetchSongs }
+  );
 };
 
 export const useEditSong = () => {
   const refetchSongs = useRefetchSongsData();
-  return useMutation(editSong, {
-    onSuccess: refetchSongs,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.SONG,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editSong,
+    {
+      entity: MutationEntity.SONG,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchSongs }
+  );
 };
 
 export const useDeleteSong = () => {
   const refetchSongs = useRefetchSongsData();
-  return useMutation(deleteSong, {
-    onSuccess: refetchSongs,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.SONG,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteSong,
+    {
+      entity: MutationEntity.SONG,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchSongs }
+  );
 };
 
 export const useRefetchSongsData = (exact = false) => {

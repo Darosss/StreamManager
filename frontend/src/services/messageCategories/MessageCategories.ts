@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -16,6 +13,7 @@ import {
   MessageCategoryCreateData,
   MessageCategoryUpdateData,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.MESSAGE_CATEGORIES;
 export const queryKeysMessageCategories = {
@@ -89,58 +87,52 @@ export const useGetMessageCategories = (
 
 export const useEditMessageCategory = () => {
   const refetchMessageCategories = useRefetchMessageCategoriesData();
-  return useMutation(editMessageCategory, {
-    onSuccess: refetchMessageCategories,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MESSAGE_CATEGORY,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editMessageCategory,
+    {
+      entity: MutationEntity.MESSAGE_CATEGORY,
+      action: MutationAction.EDIT,
     },
-  });
+    {
+      onSuccess: refetchMessageCategories,
+    }
+  );
 };
 
 export const useIncrementUsesCategoryById = () => {
   const refetchMessageCategories = useRefetchMessageCategoriesData();
-  return useMutation(incrementUsesMessageCategory, {
-    onSuccess: refetchMessageCategories,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MESSAGE_CATEGORY,
-        OnErrorHelperServiceAction.INCREMENT_USES
-      );
+  return useCustomMutation(
+    incrementUsesMessageCategory,
+    {
+      entity: MutationEntity.MESSAGE_CATEGORY,
+      action: MutationAction.INCREMENT_USES,
     },
-  });
+    { onSuccess: refetchMessageCategories }
+  );
 };
 
 export const useCreateMessageCategory = () => {
   const refetchMessageCategories = useRefetchMessageCategoriesData();
-  return useMutation(createMessageCategory, {
-    onSuccess: refetchMessageCategories,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MESSAGE_CATEGORY,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createMessageCategory,
+    {
+      entity: MutationEntity.MESSAGE_CATEGORY,
+      action: MutationAction.CREATE,
     },
-  });
+    { onSuccess: refetchMessageCategories }
+  );
 };
 
 export const useDeleteMessageCategory = () => {
   const refetchMessageCategories = useRefetchMessageCategoriesData();
-  return useMutation(deleteMessageCategory, {
-    onSuccess: refetchMessageCategories,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.MESSAGE_CATEGORY,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteMessageCategory,
+    {
+      entity: MutationEntity.MESSAGE_CATEGORY,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchMessageCategories }
+  );
 };
 
 export const useRefetchMessageCategoriesData = (exact = false) => {

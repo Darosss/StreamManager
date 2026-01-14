@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -16,6 +13,7 @@ import {
   WidgetCreateData,
   WidgetUpdateData,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.WIDGETS;
 export const queryKeysWidgets = {
@@ -86,44 +84,38 @@ export const useGetWidgets = (
 
 export const useEditWidget = () => {
   const refetchWidgets = useRefetchWidgetsData();
-  return useMutation(editWidget, {
-    onSuccess: refetchWidgets,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.WIDGET,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editWidget,
+    {
+      entity: MutationEntity.WIDGET,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchWidgets }
+  );
 };
 
 export const useCreateWidget = () => {
   const refetchWidgets = useRefetchWidgetsData();
-  return useMutation(createWidget, {
-    onSuccess: refetchWidgets,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.WIDGET,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createWidget,
+    {
+      entity: MutationEntity.WIDGET,
+      action: MutationAction.CREATE,
     },
-  });
+    { onSuccess: refetchWidgets }
+  );
 };
 
 export const useDeleteWidget = () => {
   const refetchWidgets = useRefetchWidgetsData();
-  return useMutation(deleteWidget, {
-    onSuccess: refetchWidgets,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.WIDGET,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteWidget,
+    {
+      entity: MutationEntity.WIDGET,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchWidgets }
+  );
 };
 
 export const useGetWidgetById = (id: string) => {

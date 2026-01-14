@@ -1,10 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   queryKeysParamsHelper,
@@ -19,6 +16,7 @@ import {
   FirstAndLatestMsgs,
   FetchUsersParams,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchUsersDefaultParams: Required<FetchUsersParams> = {
   limit: 10,
@@ -132,16 +130,14 @@ export const useGetUser = (id: string) => {
 
 export const useEditUser = () => {
   const refetchUsers = useRefetchUsersData();
-  return useMutation(editUser, {
-    onSuccess: refetchUsers,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.USER,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editUser,
+    {
+      entity: MutationEntity.USER,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchUsers }
+  );
 };
 
 export const useGetUserMessages = (

@@ -1,10 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   QueryParams,
@@ -18,6 +15,7 @@ import {
   CustomAchievementUpdateData,
   FetchAchievementsParams,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.ACHIEVEMENTS;
 
@@ -102,61 +100,54 @@ export const useGetAchievements = (
 
 export const useEditAchievement = () => {
   const refetchAchievements = useRefetchAchievementsData();
-
-  return useMutation(editAchievement, {
-    onSuccess: refetchAchievements,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editAchievement,
+    {
+      entity: MutationEntity.ACHIEVEMENT,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchAchievements }
+  );
 };
 
 export const useCreateCustomAchievement = () => {
   const refetchAchievements = useRefetchAchievementsData();
 
-  return useMutation(createCustomAchievement, {
-    onSuccess: refetchAchievements,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createCustomAchievement,
+    {
+      entity: MutationEntity.ACHIEVEMENT,
+      action: MutationAction.CREATE,
     },
-  });
+    {
+      onSuccess: refetchAchievements,
+    }
+  );
 };
 
 export const useDeleteCustomAchievement = () => {
   const refetchAchievements = useRefetchAchievementsData();
-  return useMutation(deleteCustomAchievement, {
-    onSuccess: refetchAchievements,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    deleteCustomAchievement,
+    {
+      entity: MutationEntity.ACHIEVEMENT,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchAchievements }
+  );
 };
 
 export const useUpdateCustomAchievement = () => {
   const refetchAchievements = useRefetchAchievementsData();
 
-  return useMutation(editCustomAchievement, {
-    onSuccess: refetchAchievements,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    editCustomAchievement,
+    {
+      entity: MutationEntity.ACHIEVEMENT,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchAchievements }
+  );
 };
 
 /* PROGRESSES */

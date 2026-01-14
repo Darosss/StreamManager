@@ -1,14 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   PromiseBackendData,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import { DeleteMp3FileParams } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.FILES;
 export const queryKeysFiles = {
@@ -95,46 +93,46 @@ export const useGetFolderMp3Files = (folderName: string) => {
 
 export const useDeleteMp3File = () => {
   const refetchFilesData = useRefetchFoldersFilesAudioData();
-  return useMutation(deleteMp3File, {
-    onSuccess: (_, variables) => {
-      refetchFilesData(variables.folderName);
+  return useCustomMutation(
+    deleteMp3File,
+    {
+      entity: MutationEntity.FILE,
+      action: MutationAction.DELETE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.FILE,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+    {
+      onSuccess: (_, variables) => {
+        refetchFilesData(variables.folderName);
+      },
+    }
+  );
 };
 
 export const useCreateAudioFolder = () => {
   const refetchFilesData = useRefetchAllFoldersListData();
-  return useMutation(createAudioFolder, {
-    onSuccess: refetchFilesData,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.FOLDER,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createAudioFolder,
+    {
+      entity: MutationEntity.FOLDER,
+      action: MutationAction.CREATE,
     },
-  });
+    {
+      onSuccess: refetchFilesData,
+    }
+  );
 };
 
 export const useDeleteAudioFolder = () => {
   const refetchFilesData = useRefetchAllFoldersListData();
-  return useMutation(deleteAudioFolder, {
-    onSuccess: refetchFilesData,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.FOLDER,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteAudioFolder,
+    {
+      entity: MutationEntity.FOLDER,
+      action: MutationAction.DELETE,
     },
-  });
+    {
+      onSuccess: refetchFilesData,
+    }
+  );
 };
 
 export const useGetAlertSoundsMp3Names = () => {
@@ -143,16 +141,16 @@ export const useGetAlertSoundsMp3Names = () => {
 
 export const useDeleteAlertSound = () => {
   const refetchFilesData = useRefetchAllFoldersListData();
-  return useMutation(deleteAlertSound, {
-    onSuccess: refetchFilesData,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.FOLDER,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteAlertSound,
+    {
+      entity: MutationEntity.ALERT_SOUND,
+      action: MutationAction.DELETE,
     },
-  });
+    {
+      onSuccess: refetchFilesData,
+    }
+  );
 };
 
 export const useRefetchAllFoldersListDat2a = (
