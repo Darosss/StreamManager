@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Song, useGetUsersByIds } from "@services";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Button } from "@components/ui";
 
 interface UsersUsesProps {

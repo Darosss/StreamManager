@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 
 import StreamSessionDetail from "@components/streamSessionDetail";
 import StreamSessions from "@components/streamSessions";

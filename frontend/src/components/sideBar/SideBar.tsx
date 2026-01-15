@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { Link, LinkProps, useLocation } from "react-router-dom";
+import { Link, LinkProps, useLocation } from "react-router";
 import DrawerBar from "@components/drawer";
 import { routes } from "@routes";
 import ChangeTheme from "@components/changeTheme";

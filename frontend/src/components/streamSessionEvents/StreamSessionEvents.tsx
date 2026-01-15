@@ -1,5 +1,5 @@
 import { DateTooltip } from "@components/dateTooltip/DateTooltip";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { SessionEvents } from "@services";
 import { dayjs } from "@utils";
 

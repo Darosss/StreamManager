@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 import MessagesList from "@components/messagesList";
 import ComponentWithTitle from "@components/componentWithTitle";
 

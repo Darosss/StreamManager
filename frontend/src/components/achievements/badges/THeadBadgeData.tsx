@@ -1,5 +1,5 @@
 import SortByParamsButton from "@components/SortByParamsButton";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { openModal } from "@redux/badgesSlice";
 import { Button } from "@components/ui";

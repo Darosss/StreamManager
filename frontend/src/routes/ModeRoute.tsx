@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 import Tags from "@components/modesList/tags";
 import Moods from "@components/modesList/moods";
 import Affixes from "@components/modesList/affixes";

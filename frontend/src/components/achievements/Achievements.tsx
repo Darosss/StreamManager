@@ -1,5 +1,5 @@
 import NavigateButton from "@components/navigateButton";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 export default function Achievements() {
   return (

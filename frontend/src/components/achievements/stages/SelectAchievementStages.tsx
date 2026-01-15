@@ -2,7 +2,7 @@ import { Button } from "@components/ui";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { AchievementStage, useGetAchievementStages } from "@services";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Select from "react-select";
 
 interface AchievementStageSelectValue {

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import FilterBarSessions from "./filterBarSessions";
 import { fetchStreamSessionsDefaultParams, useGetSessions } from "@services";

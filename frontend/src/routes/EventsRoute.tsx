@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 import StreamEvents from "@components/streamEvents";
 import StreamEventsLayouts from "@components/streamEvents/streamEventsLayouts";
 import ComponentWithTitle from "@components/componentWithTitle";

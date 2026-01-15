@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCreateWidget, useDeleteWidget, useGetWidgets } from "@services";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { initialLayoutWidgets, initialToolboxWidgets } from "@layout";
 import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";

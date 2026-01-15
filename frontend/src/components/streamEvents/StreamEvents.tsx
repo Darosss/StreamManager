@@ -11,7 +11,7 @@ import {
   initialToolboxWidgets,
   widgetsKeys,
 } from "@layout";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useEditWidget, useGetWidgetById } from "@services";
 import StreamModes from "./streamModes";
 import { getInitialCurrentBreakpoint } from "@utils";

@@ -24,7 +24,7 @@ import {
   setToolbox,
 } from "@redux/overlaysSlice";
 import { RootStore } from "@redux/store";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 

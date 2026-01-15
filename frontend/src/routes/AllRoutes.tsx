@@ -4,7 +4,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
-} from "react-router-dom";
+} from "react-router";
 
 import OverlayList from "@components/overlay/overlaysList";
 const Home = lazy(() => import("@components/home"));

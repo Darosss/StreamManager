@@ -2,7 +2,7 @@ import Modal from "@components/modal";
 import { Button } from "@components/ui";
 import UrlParamsInputs, { FilterBarInput } from "@components/urlParamsInputs";
 import { InputHTMLAttributes, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 type PossibleCommonFields = "start_date" | "end_date" | "search_name";
 

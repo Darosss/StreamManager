@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router";
 import TimersList from "@components/timersList";
 import ComponentWithTitle from "@components/componentWithTitle";
 

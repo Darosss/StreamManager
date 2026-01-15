@@ -16,7 +16,7 @@ import {
 } from "@redux/stagesSlice";
 import { RootStore } from "@redux/store";
 import { useGetAchievementStageById } from "@services";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 
 export default function OneAchievementStageData() {

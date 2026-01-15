@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import FilterBarRedemptions from "./filterBarRedemptions";
 import {

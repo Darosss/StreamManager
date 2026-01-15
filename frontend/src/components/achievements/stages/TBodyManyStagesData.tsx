@@ -1,7 +1,7 @@
 import { DateTooltip } from "@components/dateTooltip";
 import { Button } from "@components/ui";
 import { AchievementStage, useDeleteAchievementStage } from "@services";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 interface TBodyManyStagesDataProps {
   data: AchievementStage[];

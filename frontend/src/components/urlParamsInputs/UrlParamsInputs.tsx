@@ -1,7 +1,7 @@
 import { Button } from "@components/ui";
 import React, { JSX, useEffect, useRef } from "react";
 
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 interface UrlParamsInputProps {
   children: React.ReactNode;

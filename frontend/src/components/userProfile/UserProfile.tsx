@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import Message from "@components/message";
 import { DateTooltip } from "@components/dateTooltip";

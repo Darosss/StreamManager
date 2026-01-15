@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Song, SongLikesAction, useGetUsersByIds } from "@services";
 
 interface SongLikesProps {

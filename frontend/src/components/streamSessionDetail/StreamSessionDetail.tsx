@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import SlideShow from "@components/slideShow";
 import { useGetSessionById } from "@services";

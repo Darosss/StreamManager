@@ -1,5 +1,5 @@
 import { SocketContextProvider } from "@socket";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
 import { allRoutes } from "@routes";
 import { Provider } from "react-redux";
 import { store } from "@redux/store";
