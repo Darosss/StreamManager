@@ -37,7 +37,7 @@ export default function EditConfigs() {
   const handleResetConfigs = () => {
     if (!window.confirm("Are you sure you want reset configs to defaults?"))
       return;
-    resetConfigsMutation.mutate();
+    resetConfigsMutation.mutate({});
     dispatch(closeEditMode());
   };
 
