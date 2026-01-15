@@ -1,5 +1,4 @@
 import { useFileUpload } from "@hooks";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { useGetAchievementStagesSoundsBasePath } from "@services";
 import { useEffect, useState } from "react";
 import { viteBackendUrl } from "@configs/envVariables";
@@ -121,7 +120,7 @@ function UploadAchievementStageSoundButtons({
       </Button>
 
       {showUploadSound ? (
-        <div>
+        <div className="upload-achievement-sound-content">
           <div>Upload</div>
           <div>
             <input
@@ -131,9 +130,10 @@ function UploadAchievementStageSoundButtons({
               onChange={(e) => handleFileUpload({ event: e }, "uploaded_file")}
               multiple
             />
-            <div>
-              <ProgressBar completed={uploadProgress} labelAlignment="center" />
-            </div>
+            <div
+              className="upload-achievement-sound-progress"
+              style={{ width: `${uploadProgress}%` }}
+            />
           </div>
         </div>
       ) : null}

@@ -259,3 +259,10 @@
     }
   }
 }
+.upload-achievement-sound-content {
+  .upload-achievement-sound-progress {
+    min-height: 1rem;
+    max-height: 1rem;
+    background-color: var(--success-color);
+  }
+}

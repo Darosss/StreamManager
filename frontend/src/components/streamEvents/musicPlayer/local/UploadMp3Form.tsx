@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { uploadMp3Data, useGetFoldersList } from "@services";
 import "./upload-mp3-form-style.scss";
 import { useFileUpload } from "@hooks";
@@ -69,9 +68,10 @@ export default function UploadMp3Form() {
               }}
               multiple
             />
-            <div className="upload-mp3-progrees-bar">
-              <ProgressBar completed={uploadProgress} labelAlignment="center" />
-            </div>
+            <div
+              className="upload-mp3-progrees-bar"
+              style={{ width: `${uploadProgress}%` }}
+            />
           </div>
         ) : null}
 

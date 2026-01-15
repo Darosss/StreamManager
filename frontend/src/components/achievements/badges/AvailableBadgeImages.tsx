@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useFileUpload } from "@hooks";
-import ProgressBar from "@ramonak/react-progress-bar";
 import {
   GetBagesImagesResponseData,
   uploadBadgesData,
@@ -123,7 +122,7 @@ function UploadBadgeImageButtons({
       </Button>
 
       {showUploadImages ? (
-        <div>
+        <div className="upload-badge-image-content">
           <div>Upload</div>
           <div>
             <input
@@ -133,9 +132,10 @@ function UploadBadgeImageButtons({
               onChange={(e) => handleFileUpload({ event: e }, "uploaded_file")}
               multiple
             />
-            <div>
-              <ProgressBar completed={uploadProgress} labelAlignment="center" />
-            </div>
+            <div
+              className="upload-badge-image-progress"
+              style={{ width: `${uploadProgress}%` }}
+            />
           </div>
         </div>
       ) : null}
