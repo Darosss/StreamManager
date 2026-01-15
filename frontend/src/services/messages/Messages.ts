@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -20,7 +20,10 @@ export const fetchMessagesDefaultParams: Required<FetchMessagesParams> = {
 
 const baseEndpointName = BaseEndpointNames.MESSAGES;
 export const queryKeysMessages = {
-  allMessages: "messages",
+  allMessages: (params?: QueryParams<keyof FetchMessagesParams>) => [
+    "messages",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchMessages = async (
@@ -33,7 +36,8 @@ export const fetchMessages = async (
 export const useGetMessages = (
   params?: QueryParams<keyof FetchMessagesParams>
 ) => {
-  return useQuery([queryKeysMessages.allMessages, params], () =>
-    fetchMessages(params)
-  );
+  return useQuery({
+    queryKey: queryKeysMessages.allMessages(params),
+    queryFn: () => fetchMessages(params),
+  });
 };

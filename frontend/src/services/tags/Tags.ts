@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -21,7 +21,10 @@ export const fetchTagsDefaultParams: Required<FetchTagParams> = {
 
 const baseEndpointName = BaseEndpointNames.TAGS;
 export const queryKeysTags = {
-  allTags: "tags",
+  allTags: (params?: QueryParams<keyof FetchTagParams>) => [
+    "tags",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchTags = async (
@@ -63,7 +66,10 @@ export const deleteTag = async (id: string): PromiseBackendData<Tag> => {
 };
 
 export const useGetTags = (params?: QueryParams<keyof FetchTagParams>) => {
-  return useQuery([queryKeysTags.allTags, params], () => fetchTags(params));
+  return useQuery({
+    queryKey: queryKeysTags.allTags(params),
+    queryFn: () => fetchTags(params),
+  });
 };
 
 export const useEditTag = () => {
@@ -114,7 +120,7 @@ export const useRefetchTagsData = (exact = false) => {
     queryKeysTags,
     "allTags",
     queryClient,
-    null,
+    [],
     exact
   );
 };

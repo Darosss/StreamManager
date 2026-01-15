@@ -1,9 +1,10 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
   PromiseBackendData,
   PromisePaginationData,
+  QueryParams,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -18,9 +19,12 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 const baseEndpointName = `${BaseEndpointNames.ACHIEVEMENTS}/${BaseEndpointNames.BADGES}`;
 
 export const queryKeysBadges = {
-  allBadges: "badges",
-  badgesImages: "badges-images",
-  badgesImagesBasePath: "badges-images-base-path",
+  allBadges: (params?: QueryParams<keyof FetchBadgesParams>) => [
+    "badges",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
+  badgesImages: ["badges-images"],
+  badgesImagesBasePath: ["badges-images-base-path"],
 };
 
 export const uploadBadgesData = {
@@ -28,7 +32,7 @@ export const uploadBadgesData = {
 };
 
 export const fetchBadges = async (
-  params?: FetchBadgesParams
+  params?: QueryParams<keyof FetchBadgesParams>
 ): PromisePaginationData<Badge> => {
   const response = await customAxios.get(`/${baseEndpointName}/`, { params });
   return response.data;
@@ -90,19 +94,23 @@ export const deleteBadgeImage = async (
 };
 
 export const useGetBadges = (params?: FetchBadgesParams) => {
-  return useQuery([queryKeysBadges.allBadges, params], () =>
-    fetchBadges(params)
-  );
+  return useQuery({
+    queryKey: queryKeysBadges.allBadges(params),
+    queryFn: () => fetchBadges(params),
+  });
 };
 
 export const useGetBadgesImages = () => {
-  return useQuery(queryKeysBadges.badgesImages, fetchBadgesImages);
+  return useQuery({
+    queryKey: queryKeysBadges.badgesImages,
+    queryFn: fetchBadgesImages,
+  });
 };
 export const useGetBadgesIamgesBasePath = () => {
-  return useQuery(
-    queryKeysBadges.badgesImagesBasePath,
-    fetchBadgesImagesBasePath
-  );
+  return useQuery({
+    queryKey: queryKeysBadges.badgesImagesBasePath,
+    queryFn: fetchBadgesImagesBasePath,
+  });
 };
 
 export const useEditBadge = () => {
@@ -156,7 +164,7 @@ export const useRefetchBadgeData = (exact = false) => {
     queryKeysBadges,
     "allBadges",
     queryClient,
-    null,
+    [],
     exact
   );
 };

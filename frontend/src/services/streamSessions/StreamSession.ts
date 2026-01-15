@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -32,7 +32,9 @@ export const fetchStreamSessionsDefaultParams: Required<FetchStreamSessionsParam
 const baseEndpointName = BaseEndpointNames.STREAM_SESSIONS;
 
 export const queryKeysStreamSessions = {
-  allStreamSessions: "stream-sessions",
+  allStreamSessions: (
+    params?: QueryParams<keyof FetchStreamSessionsParams>
+  ) => ["stream-sessions", ...(params ? Object.entries(params).join(",") : [])],
   streamSessionById: (id: string) => ["stream-session", id] as [string, string],
   streamSessionMessages: (
     id: string,
@@ -52,9 +54,9 @@ export const queryKeysStreamSessions = {
       string,
       string
     ],
-  currentStreamSessionMessages: "current-stream-session-messages",
-  currentStreamSessionStatistics: "current-stream-session-statistics",
-  currentStreamSessionRedemptions: "current-stream-session-redemptions",
+  currentStreamSessionMessages: ["current-stream-session-messages"],
+  currentStreamSessionStatistics: ["current-stream-session-statistics"],
+  currentStreamSessionRedemptions: ["current-stream-session-redemptions"],
 };
 
 export const fetchStreamSessions = async (
@@ -123,55 +125,59 @@ export const fetchCurrentSessionRedemptions = async (
 export const useGetSessions = (
   params?: QueryParams<keyof FetchStreamSessionsParams>
 ) => {
-  return useQuery([queryKeysStreamSessions.allStreamSessions, params], () =>
-    fetchStreamSessions(params)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.allStreamSessions(params),
+    queryFn: () => fetchStreamSessions(params),
+  });
 };
 
 export const useGetSessionById = (id: string) => {
-  return useQuery(queryKeysStreamSessions.streamSessionById(id), () =>
-    fetchSessionById(id)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.streamSessionById(id),
+    queryFn: () => fetchSessionById(id),
+  });
 };
 
 export const useGetSessionMessages = (
   id: string,
   params?: QueryParams<keyof FetchMessagesParams>
 ) => {
-  return useQuery(
-    queryKeysStreamSessions.streamSessionMessages(id, params),
-    () => fetchSessionMessages(id, params)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.streamSessionMessages(id, params),
+    queryFn: () => fetchSessionMessages(id, params),
+  });
 };
 export const useGetSessionRedemptions = (
   id: string,
   params?: QueryParams<keyof FetchRedemptionsParams>
 ) => {
-  return useQuery(
-    queryKeysStreamSessions.streamSessionRedemptions(id, params),
-    () => fetchSessionRedemptions(id, params)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.streamSessionRedemptions(id, params),
+    queryFn: () => fetchSessionRedemptions(id, params),
+  });
 };
 
 export const useGetCurrentSessionMessages = (
   params?: QueryParams<keyof FetchMessagesParams>
 ) => {
-  return useQuery(queryKeysStreamSessions.currentStreamSessionMessages, () =>
-    fetchCurrentSessionMessages(params)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.currentStreamSessionMessages,
+    queryFn: () => fetchCurrentSessionMessages(params),
+  });
 };
 
 export const useGetCurrentSessionStatistics = () => {
-  return useQuery(
-    queryKeysStreamSessions.currentStreamSessionStatistics,
-    fetchCurrentSessionStatistics
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.currentStreamSessionStatistics,
+    queryFn: fetchCurrentSessionStatistics,
+  });
 };
 
 export const useGetCurrentSessionRedemptions = (
   params?: QueryParams<keyof FetchRedemptionsParams>
 ) => {
-  return useQuery(queryKeysStreamSessions.currentStreamSessionRedemptions, () =>
-    fetchCurrentSessionRedemptions(params)
-  );
+  return useQuery({
+    queryKey: queryKeysStreamSessions.currentStreamSessionRedemptions,
+    queryFn: () => fetchCurrentSessionRedemptions(params),
+  });
 };

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -33,7 +33,10 @@ export const fetchUsersDefaultParams: Required<FetchUsersParams> = {
 
 const baseEndpointName = BaseEndpointNames.USERS;
 export const queryKeysUsers = {
-  allUsers: "users" as string,
+  allUsers: (params?: QueryParams<keyof FetchUsersParams>) => [
+    "users",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
   userById: (id: string) => ["users", id] as [string, string],
   userMessages: (id: string, params?: QueryParams<keyof FetchMessagesParams>) =>
     ["users-messages", id, queryKeysParamsHelper(params)] as [
@@ -121,11 +124,17 @@ export const editUser = async ({
 };
 
 export const useGetUsers = (params?: QueryParams<keyof FetchUsersParams>) => {
-  return useQuery([queryKeysUsers.allUsers, params], () => fetchUsers(params));
+  return useQuery({
+    queryKey: queryKeysUsers.allUsers(params),
+    queryFn: () => fetchUsers(params),
+  });
 };
 
 export const useGetUser = (id: string) => {
-  return useQuery(queryKeysUsers.userById(id), () => fetchUserById(id));
+  return useQuery({
+    queryKey: queryKeysUsers.userById(id),
+    queryFn: () => fetchUserById(id),
+  });
 };
 
 export const useEditUser = () => {
@@ -144,30 +153,34 @@ export const useGetUserMessages = (
   id: string,
   params?: QueryParams<keyof FetchMessagesParams>
 ) => {
-  return useQuery(queryKeysUsers.userMessages(id, params), () =>
-    fetchUserMessages(id, params)
-  );
+  return useQuery({
+    queryKey: queryKeysUsers.userMessages(id, params),
+    queryFn: () => fetchUserMessages(id, params),
+  });
 };
 
 export const useGetLatestEldestMsgs = (id: string) => {
-  return useQuery(queryKeysUsers.userFirstLatestMessages(id), () =>
-    fetchUserLatestEldestMsgs(id)
-  );
+  return useQuery({
+    queryKey: queryKeysUsers.userFirstLatestMessages(id),
+    queryFn: () => fetchUserLatestEldestMsgs(id),
+  });
 };
 
 export const useGetUsersByIds = (ids: string[]) => {
-  return useQuery(queryKeysUsers.getUsersByIds(ids), () =>
-    fetchUsersByIds(ids)
-  );
+  return useQuery({
+    queryKey: queryKeysUsers.getUsersByIds(ids),
+    queryFn: () => fetchUsersByIds(ids),
+  });
 };
 
 export const useGetUserRedemptions = (
   id: string,
   params?: QueryParams<keyof FetchRedemptionsParams>
 ) => {
-  return useQuery(queryKeysUsers.userRedemptions(id, params), () =>
-    fetchUserRedemptions(id, params)
-  );
+  return useQuery({
+    queryKey: queryKeysUsers.userRedemptions(id, params),
+    queryFn: () => fetchUserRedemptions(id, params),
+  });
 };
 
 export const useRefetchUsersData = (exact = false) => {
@@ -176,7 +189,7 @@ export const useRefetchUsersData = (exact = false) => {
     queryKeysUsers,
     "allUsers",
     queryClient,
-    null,
+    [],
     exact
   );
 };

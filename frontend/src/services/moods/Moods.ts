@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -21,7 +21,10 @@ export const fetchMoodsDefaultParams: Required<FetchMoodParams> = {
 
 const baseEndpointName = BaseEndpointNames.MOODS;
 export const queryKeysMoods = {
-  allMoods: "moods",
+  allMoods: (params?: QueryParams<keyof FetchMoodParams>) => [
+    "moods",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchMoods = async (
@@ -63,7 +66,10 @@ export const deleteMood = async (id: string): PromiseBackendData<Mood> => {
 };
 
 export const useGetMoods = (params?: QueryParams<keyof FetchMoodParams>) => {
-  return useQuery([queryKeysMoods.allMoods, params], () => fetchMoods(params));
+  return useQuery({
+    queryKey: queryKeysMoods.allMoods(params),
+    queryFn: () => fetchMoods(params),
+  });
 };
 
 export const useEditMood = () => {
@@ -120,7 +126,7 @@ export const useRefetchMoodsData = (exact = false) => {
     queryKeysMoods,
     "allMoods",
     queryClient,
-    null,
+    [],
     exact
   );
 };

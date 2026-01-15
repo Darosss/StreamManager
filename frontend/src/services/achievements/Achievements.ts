@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -30,7 +30,10 @@ export const fetchAchievementsDefaultParams: Required<FetchAchievementsParams> =
   };
 
 export const queryKeysAchievements = {
-  allAchievements: "achievements",
+  allAchievements: (params?: QueryParams<keyof FetchAchievementsParams>) => [
+    "achievements",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
   userAchievementsProgresses: (userId: string) =>
     ["user-achievements-progresses", userId] as [string, string],
 };
@@ -93,9 +96,10 @@ export const deleteCustomAchievement = async (
 export const useGetAchievements = (
   params?: QueryParams<keyof FetchAchievementsParams>
 ) => {
-  return useQuery([queryKeysAchievements.allAchievements, params], () =>
-    fetchAchievements(params)
-  );
+  return useQuery({
+    queryKey: queryKeysAchievements.allAchievements(params),
+    queryFn: () => fetchAchievements(params),
+  });
 };
 
 export const useEditAchievement = () => {
@@ -159,10 +163,10 @@ export const fetchProgresses = async (
 };
 
 export const useGetUserAchievementsProgresses = (userId: string) => {
-  return useQuery(
-    [queryKeysAchievements.userAchievementsProgresses(userId)],
-    () => fetchProgresses(userId)
-  );
+  return useQuery({
+    queryKey: queryKeysAchievements.userAchievementsProgresses(userId),
+    queryFn: () => fetchProgresses(userId),
+  });
 };
 
 export const useRefetchAchievementsData = (exact = false) => {
@@ -171,7 +175,7 @@ export const useRefetchAchievementsData = (exact = false) => {
     queryKeysAchievements,
     "allAchievements",
     queryClient,
-    null,
+    [],
     exact
   );
 };

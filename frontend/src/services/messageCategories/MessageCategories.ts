@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -17,7 +17,12 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.MESSAGE_CATEGORIES;
 export const queryKeysMessageCategories = {
-  allMessageCategories: "message-categories",
+  allMessageCategories: (
+    params?: QueryParams<keyof FetchMessageCategoriesParams>
+  ) => [
+    "message-categories",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchMessageCategoriesDefaultParams: Required<FetchMessageCategoriesParams> =
@@ -79,10 +84,10 @@ export const deleteMessageCategory = async (
 export const useGetMessageCategories = (
   params?: QueryParams<keyof FetchMessageCategoriesParams>
 ) => {
-  return useQuery(
-    [queryKeysMessageCategories.allMessageCategories, params],
-    () => fetchMessageCategories(params)
-  );
+  return useQuery({
+    queryKey: queryKeysMessageCategories.allMessageCategories(params),
+    queryFn: () => fetchMessageCategories(params),
+  });
 };
 
 export const useEditMessageCategory = () => {
@@ -141,7 +146,7 @@ export const useRefetchMessageCategoriesData = (exact = false) => {
     queryKeysMessageCategories,
     "allMessageCategories",
     queryClient,
-    null,
+    [],
     exact
   );
 };

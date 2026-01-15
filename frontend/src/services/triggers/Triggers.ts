@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -30,7 +30,10 @@ export const fetchTriggersDefaultParams: Required<FetchTriggerParams> = {
 
 const baseEndpointName = BaseEndpointNames.TRIGGERS;
 export const queryKeysTriggers = {
-  allTriggers: "triggers",
+  allTriggers: (params?: QueryParams<keyof FetchTriggerParams>) => [
+    "triggers",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchTriggers = async (
@@ -76,9 +79,10 @@ export const deleteTrigger = async (
 export const useGetTriggers = (
   params?: QueryParams<keyof FetchTriggerParams>
 ) => {
-  return useQuery([queryKeysTriggers.allTriggers, params], () =>
-    fetchTriggers(params)
-  );
+  return useQuery({
+    queryKey: queryKeysTriggers.allTriggers(params),
+    queryFn: () => fetchTriggers(params),
+  });
 };
 
 export const useEditTrigger = () => {
@@ -135,7 +139,7 @@ export const useRefetchTriggersData = (exact = false) => {
     queryKeysTriggers,
     "allTriggers",
     queryClient,
-    null,
+    [],
     exact
   );
 };

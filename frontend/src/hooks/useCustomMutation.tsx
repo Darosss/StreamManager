@@ -4,7 +4,7 @@ import {
   useNotifications,
 } from "@contexts";
 import { AxiosError } from "axios";
-import { useMutation, UseMutationOptions } from "react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
 export enum MutationAction {
   EDIT = "Edited",
@@ -52,19 +52,19 @@ export function useCustomMutation<TData, TVariables>(
   const { onSuccess, onError, ...restOptions } = options || {};
   return useMutation<TData, unknown, TVariables>({
     mutationFn,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       const notification = getNotificationSuccessData(meta);
 
       addNotify(notification);
 
-      options?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, onMutateResult, context);
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, variables, onMutateResult, context) => {
       const notification = getNotificationErrorData(error, meta);
       addNotify(notification);
 
-      options?.onError?.(error, variables, context);
+      options?.onError?.(error, variables, onMutateResult, context);
     },
 
     ...restOptions,
