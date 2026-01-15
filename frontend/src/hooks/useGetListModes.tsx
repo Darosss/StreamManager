@@ -1,4 +1,4 @@
-import { QueryObserverResult } from "react-query";
+import { QueryObserverResult } from "@tanstack/react-query";
 import { Affix, useGetAffixes } from "src/services/affixes";
 import { PaginationData } from "src/services/api";
 import { Mood, useGetMoods } from "src/services/moods";
