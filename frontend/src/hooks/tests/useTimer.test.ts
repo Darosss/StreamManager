@@ -13,7 +13,7 @@ describe("useTimer", () => {
 
   it("should not increment time when isPlaying is false", () => {
     const { result } = renderHook(() =>
-      useTimer({ currentTime: 0, duration: 60, isPlaying: false })
+      useTimer({ currentTime: 0, duration: 60, enabled: false })
     );
 
     act(() => {
@@ -25,7 +25,7 @@ describe("useTimer", () => {
 
   it("should increment time when isPlaying is true", () => {
     const { result } = renderHook(() =>
-      useTimer({ currentTime: 0, duration: 60, isPlaying: true })
+      useTimer({ currentTime: 0, duration: 60, enabled: true })
     );
 
     act(() => {
@@ -37,7 +37,7 @@ describe("useTimer", () => {
 
   it("should stop when reaching the duration", () => {
     const { result } = renderHook(() =>
-      useTimer({ currentTime: 59, duration: 60, isPlaying: true })
+      useTimer({ currentTime: 59, duration: 60, enabled: true })
     );
 
     act(() => {
