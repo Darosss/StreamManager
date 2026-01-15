@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -27,7 +27,10 @@ export const fetchTimersDefaultParams: Required<FetchTimerParams> = {
 
 const baseEndpointName = BaseEndpointNames.TIMERS;
 export const queryKeysTimers = {
-  allTimers: "timers",
+  allTimers: (params?: QueryParams<keyof FetchTimerParams>) => [
+    "timers",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchTimers = async (
@@ -69,9 +72,10 @@ export const deleteTimer = async (id: string): PromiseBackendData<Timer> => {
 };
 
 export const useGetTimers = (params?: QueryParams<keyof FetchTimerParams>) => {
-  return useQuery([queryKeysTimers.allTimers, params], () =>
-    fetchTimers(params)
-  );
+  return useQuery({
+    queryKey: queryKeysTimers.allTimers(params),
+    queryFn: () => fetchTimers(params),
+  });
 };
 
 export const useEditTimer = () => {
@@ -125,7 +129,7 @@ export const useRefetchTimersData = (exact = false) => {
     queryKeysTimers,
     "allTimers",
     queryClient,
-    null,
+    [],
     exact
   );
 };

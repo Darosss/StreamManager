@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -17,7 +17,10 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.WIDGETS;
 export const queryKeysWidgets = {
-  allWidgets: "widgets",
+  allWidgets: (params?: QueryParams<keyof FetchWidgetsParams>) => [
+    "widgets",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
   widgetById: (id: string) => ["widgets", id] as [string, string],
 };
 
@@ -77,9 +80,10 @@ export const deleteWidget = async (id: string): PromiseBackendData<Widget> => {
 export const useGetWidgets = (
   params?: QueryParams<keyof FetchWidgetsParams>
 ) => {
-  return useQuery([queryKeysWidgets.allWidgets, params], () =>
-    fetchWidgets(params)
-  );
+  return useQuery({
+    queryKey: queryKeysWidgets.allWidgets(params),
+    queryFn: () => fetchWidgets(params),
+  });
 };
 
 export const useEditWidget = () => {
@@ -119,7 +123,10 @@ export const useDeleteWidget = () => {
 };
 
 export const useGetWidgetById = (id: string) => {
-  return useQuery(queryKeysWidgets.widgetById(id), () => fetchWidgetById(id));
+  return useQuery({
+    queryKey: queryKeysWidgets.widgetById(id),
+    queryFn: () => fetchWidgetById(id),
+  });
 };
 
 export const useRefetchWidgetsData = (exact = false) => {
@@ -128,7 +135,7 @@ export const useRefetchWidgetsData = (exact = false) => {
     queryKeysWidgets,
     "allWidgets",
     queryClient,
-    null,
+    [],
     exact
   );
 };

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -26,7 +26,10 @@ export const fetchAffixesDefaultParams: Required<FetchAffixParams> = {
 
 const baseEndpointName = BaseEndpointNames.AFFIXES;
 export const queryKeysAffixes = {
-  allAffixes: "affixes",
+  allAffixes: (params?: QueryParams<keyof FetchAffixParams>) => [
+    "affixes",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchAffixes = async (
@@ -68,9 +71,10 @@ export const deleteAffix = async (id: string): PromiseBackendData<Affix> => {
 };
 
 export const useGetAffixes = (params?: QueryParams<keyof FetchAffixParams>) => {
-  return useQuery([queryKeysAffixes.allAffixes, params], () =>
-    fetchAffixes(params)
-  );
+  return useQuery({
+    queryKey: queryKeysAffixes.allAffixes(params),
+    queryFn: () => fetchAffixes(params),
+  });
 };
 
 export const useEditAffix = () => {
@@ -132,7 +136,7 @@ export const useRefetchAffixesData = (exact = false) => {
     queryKeysAffixes,
     "allAffixes",
     queryClient,
-    null,
+    [],
     exact
   );
 };

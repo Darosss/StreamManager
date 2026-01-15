@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -28,7 +28,10 @@ export const fetchSongsDefaultParams: Required<FetchSongsParams> = {
 
 const baseEndpointName = BaseEndpointNames.SONGS;
 export const queryKeysSongs = {
-  allSongs: "songs",
+  allSongs: (params?: QueryParams<keyof FetchSongsParams>) => [
+    "songs",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchSongs = async (
@@ -70,7 +73,10 @@ export const deleteSong = async (id: string): PromiseBackendData<Song> => {
 };
 
 export const useGetSongs = (params?: QueryParams<keyof FetchSongsParams>) => {
-  return useQuery([queryKeysSongs.allSongs, params], () => fetchSongs(params));
+  return useQuery({
+    queryKey: queryKeysSongs.allSongs(params),
+    queryFn: () => fetchSongs(params),
+  });
 };
 
 export const useCreateSong = () => {
@@ -115,7 +121,7 @@ export const useRefetchSongsData = (exact = false) => {
     queryKeysSongs,
     "allSongs",
     queryClient,
-    null,
+    [],
     exact
   );
 };

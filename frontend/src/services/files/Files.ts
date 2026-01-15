@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   PromiseBackendData,
@@ -10,10 +10,10 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.FILES;
 export const queryKeysFiles = {
-  allFoldersList: "folders-list",
+  allFoldersList: ["folders-list"],
   folderFilesAudio: (folderName: string) =>
     ["files-audio", folderName] as [string, string],
-  alertsFilesAudio: `alerts-mp3-names`,
+  alertsFilesAudio: [`alerts-mp3-names`],
 };
 
 //Note: this data is for backend multer
@@ -82,13 +82,17 @@ export const deleteAlertSound = async (
 };
 
 export const useGetFoldersList = () => {
-  return useQuery(queryKeysFiles.allFoldersList, fetchFoldersList);
+  return useQuery({
+    queryKey: queryKeysFiles.allFoldersList,
+    queryFn: fetchFoldersList,
+  });
 };
 
 export const useGetFolderMp3Files = (folderName: string) => {
-  return useQuery(queryKeysFiles.folderFilesAudio(folderName), () =>
-    fetchFoldersMp3FilesList(folderName)
-  );
+  return useQuery({
+    queryKey: queryKeysFiles.folderFilesAudio(folderName),
+    queryFn: () => fetchFoldersMp3FilesList(folderName),
+  });
 };
 
 export const useDeleteMp3File = () => {
@@ -136,7 +140,10 @@ export const useDeleteAudioFolder = () => {
 };
 
 export const useGetAlertSoundsMp3Names = () => {
-  return useQuery(queryKeysFiles.alertsFilesAudio, fetchAlertSoundsMp3Names);
+  return useQuery({
+    queryKey: queryKeysFiles.alertsFilesAudio,
+    queryFn: fetchAlertSoundsMp3Names,
+  });
 };
 
 export const useDeleteAlertSound = () => {

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BackendData,
   BaseEndpointNames,
@@ -13,7 +13,7 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 const baseEndpointName = BaseEndpointNames.CONFIGS;
 
 export const queryKeysConfigs = {
-  allConfigs: "configs",
+  allConfigs: ["configs"],
 };
 
 export const fetchConfigs = async (): Promise<BackendData<Config>> => {
@@ -39,7 +39,10 @@ export const resetConfigs = async (): PromiseBackendData<Config> => {
 };
 
 export const useGetConfigs = () => {
-  return useQuery(queryKeysConfigs.allConfigs, () => fetchConfigs());
+  return useQuery({
+    queryKey: queryKeysConfigs.allConfigs,
+    queryFn: () => fetchConfigs(),
+  });
 };
 
 export const useEditConfig = () => {

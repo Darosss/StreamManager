@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -26,7 +26,10 @@ export const fetchOverlaysDefaultParams: Required<FetchOverlaysParams> = {
 
 const baseEndpointName = BaseEndpointNames.OVERLAYS;
 export const queryKeysOverlays = {
-  allOverlays: "overlays",
+  allOverlays: (params?: QueryParams<keyof FetchOverlaysParams>) => [
+    "overlays",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
   overlayById: (id: string) => ["overlay", id] as [string, string],
 };
 
@@ -87,9 +90,10 @@ export const deleteOverlay = async (
 export const useGetOverlays = (
   params?: QueryParams<keyof FetchOverlaysParams>
 ) => {
-  return useQuery([queryKeysOverlays.allOverlays, params], () =>
-    fetchOverlays(params)
-  );
+  return useQuery({
+    queryKey: queryKeysOverlays.allOverlays(params),
+    queryFn: () => fetchOverlays(params),
+  });
 };
 
 export const useEditOverlay = () => {
@@ -152,9 +156,10 @@ export const useDeleteOverlay = () => {
 };
 
 export const useGetOverlayById = (id: string) => {
-  return useQuery(queryKeysOverlays.overlayById(id), () =>
-    fetchOverlayById(id)
-  );
+  return useQuery({
+    queryKey: queryKeysOverlays.overlayById(id),
+    queryFn: () => fetchOverlayById(id),
+  });
 };
 
 export const useRefetchOverlaysData = (exact = false) => {
@@ -163,7 +168,7 @@ export const useRefetchOverlaysData = (exact = false) => {
     queryKeysOverlays,
     "allOverlays",
     queryClient,
-    null,
+    [],
     exact
   );
 };

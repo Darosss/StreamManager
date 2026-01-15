@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -19,7 +19,10 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 const baseEndpointName = BaseEndpointNames.CHAT_COMMANDS;
 
 export const queryKeysChatCommands = {
-  allChatCommands: "chat-commands",
+  allChatCommands: (params?: QueryParams<keyof FetchChatCommandParams>) => [
+    "chat-commands",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchChatCommandsDefaultParams: Required<FetchChatCommandParams> =
@@ -82,9 +85,10 @@ export const deleteChatCommand = async (
 export const useGetChatCommands = (
   params?: QueryParams<keyof FetchChatCommandParams>
 ) => {
-  return useQuery([queryKeysChatCommands.allChatCommands, params], () =>
-    fetchChatCommands(params)
-  );
+  return useQuery({
+    queryKey: queryKeysChatCommands.allChatCommands(params),
+    queryFn: () => fetchChatCommands(params),
+  });
 };
 
 export const useEditChatCommand = () => {
@@ -135,7 +139,7 @@ export const useRefetchChatCommandsData = (exact = false) => {
     queryKeysChatCommands,
     "allChatCommands",
     queryClient,
-    null,
+    [],
     exact
   );
 };

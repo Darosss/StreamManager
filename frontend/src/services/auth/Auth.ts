@@ -1,11 +1,10 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { BackendData, BaseEndpointNames, customAxios } from "../api";
 const baseEndpointName = BaseEndpointNames.AUTH;
 
 export const queryKeysAuth = {
-  authorizeUrl: "authorize-url",
-  discordInviteUrl: "discord-invite-url",
-  auth: "auth",
+  authorizeUrl: ["authorize-url"],
+  discordInviteUrl: ["discord-invite-url"],
 };
 
 export const fetchAuthorizeUrl = async (): Promise<BackendData<string>> => {
@@ -18,9 +17,15 @@ export const fetchDiscordInviteUrl = async (): Promise<BackendData<string>> => {
 };
 
 export const useGetAuthorizeUrl = () => {
-  return useQuery(queryKeysAuth.authorizeUrl, fetchAuthorizeUrl);
+  return useQuery({
+    queryKey: queryKeysAuth.authorizeUrl,
+    queryFn: fetchAuthorizeUrl,
+  });
 };
 
 export const useGetDiscordInviteUrl = () => {
-  return useQuery(queryKeysAuth.discordInviteUrl, fetchDiscordInviteUrl);
+  return useQuery({
+    queryKey: queryKeysAuth.discordInviteUrl,
+    queryFn: fetchDiscordInviteUrl,
+  });
 };

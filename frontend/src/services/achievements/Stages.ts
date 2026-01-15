@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   customAxios,
@@ -29,11 +29,14 @@ export const fetchAchievementStagesDefaultParams: Required<FetchStagesParams> =
   };
 
 export const queryKeysStages = {
-  allAchievementStages: "achievement-stages",
+  allAchievementStages: (params?: QueryParams<keyof FetchStagesParams>) => [
+    "achievement-stages",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
   achievementStagesById: (id: string) =>
     ["achievement-stages", id] as [string, string],
-  achievementStageSounds: "achievement-stages-sounds",
-  achievementStageSoundsBasePath: "achievement-stages-sounds-base-path",
+  achievementStageSounds: ["achievement-stages-sounds"],
+  achievementStageSoundsBasePath: ["achievement-stages-sounds-base-path"],
 };
 
 export const fetchAchievementStages = async (
@@ -107,9 +110,10 @@ export const deleteAchievementStageSound = async (
 export const useGetAchievementStages = (
   params?: QueryParams<keyof FetchStagesParams>
 ) => {
-  return useQuery([queryKeysStages.allAchievementStages, params], () =>
-    fetchAchievementStages(params)
-  );
+  return useQuery({
+    queryKey: queryKeysStages.allAchievementStages(params),
+    queryFn: () => fetchAchievementStages(params),
+  });
 };
 
 export const useDeleteAchievementStage = () => {
@@ -125,9 +129,10 @@ export const useDeleteAchievementStage = () => {
 };
 
 export const useGetAchievementStageById = (id: string) => {
-  return useQuery(queryKeysStages.achievementStagesById(id), () =>
-    getAchievementStageById(id)
-  );
+  return useQuery({
+    queryKey: queryKeysStages.achievementStagesById(id),
+    queryFn: () => getAchievementStageById(id),
+  });
 };
 
 export const useCreateAchievementStage = () => {
@@ -155,17 +160,17 @@ export const useEditAchievementStage = () => {
 };
 
 export const useGetAchievementStagesSounds = () => {
-  return useQuery(
-    queryKeysStages.achievementStageSounds,
-    fetchAchievementStageSounds
-  );
+  return useQuery({
+    queryKey: queryKeysStages.achievementStageSounds,
+    queryFn: fetchAchievementStageSounds,
+  });
 };
 
 export const useGetAchievementStagesSoundsBasePath = () => {
-  return useQuery(
-    queryKeysStages.achievementStageSoundsBasePath,
-    fetchAchievementStageSoundsBasePath
-  );
+  return useQuery({
+    queryKey: queryKeysStages.achievementStageSoundsBasePath,
+    queryFn: fetchAchievementStageSoundsBasePath,
+  });
 };
 
 export const useDeleteAchievementStageSound = () => {
@@ -187,7 +192,7 @@ export const useRefetchAchievementStagesData = (exact = false) => {
     queryKeysStages,
     "allAchievementStages",
     queryClient,
-    null,
+    [],
     exact
   );
 };

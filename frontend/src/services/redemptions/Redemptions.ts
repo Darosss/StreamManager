@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   BaseEndpointNames,
   QueryParams,
@@ -22,7 +22,10 @@ export const fetchRedemptionsDefaultParams: Required<FetchRedemptionsParams> = {
 
 const baseEndpointName = BaseEndpointNames.REDEMPTIONS;
 export const queryKeysRedemptions = {
-  allRedemptions: "redemptions",
+  allRedemptions: (params?: QueryParams<keyof FetchRedemptionsParams>) => [
+    "redemptions",
+    ...(params ? Object.entries(params).join(",") : []),
+  ],
 };
 
 export const fetchRedemptions = async (
@@ -35,7 +38,8 @@ export const fetchRedemptions = async (
 export const useGetRedemptions = (
   params?: QueryParams<keyof FetchRedemptionsParams>
 ) => {
-  return useQuery([queryKeysRedemptions.allRedemptions, params], () =>
-    fetchRedemptions(params)
-  );
+  return useQuery({
+    queryKey: queryKeysRedemptions.allRedemptions(params),
+    queryFn: () => fetchRedemptions(params),
+  });
 };

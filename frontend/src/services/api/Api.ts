@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { viteBackendUrl } from "@configs/envVariables";
-import { QueryClient } from "react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { QueryParams } from "./types";
 
 export const queryKeysParamsHelper = <ParamsType extends string>(
@@ -17,7 +17,10 @@ export const customAxios = Axios.create({
 });
 
 export const refetchDataFunctionHelper = <
-  QueryKeysType extends Record<string, string | ((...args: any[]) => string[])>,
+  QueryKeysType extends Record<
+    string,
+    string[] | ((...args: any[]) => string[])
+  >,
   Key extends keyof QueryKeysType
 >(
   queryStrings: QueryKeysType,
@@ -33,11 +36,11 @@ export const refetchDataFunctionHelper = <
   const finalQueryKey =
     typeof queryKeyValue === "function"
       ? queryKeyValue(...(params || []))
-      : queryKeyValue;
+      : (queryKeyValue as string[]);
 
   return () =>
-    queryClient.invalidateQueries({
-      queryKey: finalQueryKey.toString(),
+    queryClient.invalidateQueries<readonly string[]>({
+      queryKey: finalQueryKey,
       exact,
     });
 };
