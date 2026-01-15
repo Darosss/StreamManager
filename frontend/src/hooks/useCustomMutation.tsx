@@ -57,14 +57,14 @@ export function useCustomMutation<TData, TVariables>(
 
       addNotify(notification);
 
-      options?.onSuccess?.(data, variables, onMutateResult, context);
+      onSuccess?.(data, variables, onMutateResult, context);
     },
 
     onError: (error, variables, onMutateResult, context) => {
       const notification = getNotificationErrorData(error, meta);
       addNotify(notification);
 
-      options?.onError?.(error, variables, onMutateResult, context);
+      onError?.(error, variables, onMutateResult, context);
     },
 
     ...restOptions,
