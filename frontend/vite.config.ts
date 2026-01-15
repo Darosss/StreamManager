@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import svgrPlugin from "vite-plugin-svgr";
-import eslint from "vite-plugin-eslint";
+import eslint from "@nabla/vite-plugin-eslint";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
 import { playwright } from "@vitest/browser-playwright";
