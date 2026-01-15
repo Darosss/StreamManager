@@ -1,13 +1,8 @@
-import {
-  Tag,
-  Affix,
-  Mood,
-  PaginationData,
-  useGetTags,
-  useGetAffixes,
-  useGetMoods,
-} from "@services";
 import { QueryObserverResult } from "react-query";
+import { Affix, useGetAffixes } from "src/services/affixes";
+import { PaginationData } from "src/services/api";
+import { Mood, useGetMoods } from "src/services/moods";
+import { Tag, useGetTags } from "src/services/tags";
 
 export interface AllModesReturn {
   tags: Tag[];
