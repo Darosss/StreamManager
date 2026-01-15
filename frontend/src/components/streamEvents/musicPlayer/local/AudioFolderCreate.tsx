@@ -5,7 +5,7 @@ import {
   useGetFoldersList,
 } from "@services";
 import "./audio-folder-create-style.scss";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function AudioFolderCreate() {
   const [folderName, setFolderName] = useState("");

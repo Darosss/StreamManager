@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { AchievementStage, useGetAchievementStages } from "@services";
 import { useEffect, useState } from "react";

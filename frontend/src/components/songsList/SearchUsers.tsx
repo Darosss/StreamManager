@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { User, useGetUsers } from "@services";
 import { useState } from "react";
 

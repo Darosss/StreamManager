@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import React, { useEffect } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";

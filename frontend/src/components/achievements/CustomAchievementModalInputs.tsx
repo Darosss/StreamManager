@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { setCustom, setIsTime, setName } from "@redux/achievementsSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function CustomAchievementModalInputs() {
   const dispatch = useDispatch();

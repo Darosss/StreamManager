@@ -1,7 +1,7 @@
 import { useState } from "react";
 import YTPlaylist from "./YTPlaylist";
 import Modal from "@components/modal";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 enum AvailableTabs {
   PLAYLISTS = "playlists",

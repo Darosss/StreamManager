@@ -1,7 +1,7 @@
 import ChangeTheme from "@components/changeTheme";
 import { HelmetTitle } from "@components/componentWithTitle";
 import Message, { MessageProps } from "@components/message";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { routes } from "@routes";
 import { useGetMessages } from "@services";
 import { useEffect, useReducer, useRef, useState } from "react";

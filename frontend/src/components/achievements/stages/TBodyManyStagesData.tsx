@@ -1,5 +1,5 @@
 import { DateTooltip } from "@components/dateTooltip";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { AchievementStage, useDeleteAchievementStage } from "@services";
 import { Link } from "react-router";
 

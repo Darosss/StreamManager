@@ -9,7 +9,7 @@ import {
 import "./audio-folders-list.style.scss";
 import { useSocketContext } from "@socket";
 import { Loading } from "@components/axiosHelper";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function AudioFoldersList() {
   const socket = useSocketContext();

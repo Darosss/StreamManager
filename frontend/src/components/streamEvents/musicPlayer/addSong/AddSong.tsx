@@ -2,7 +2,7 @@ import Modal from "@components/modal";
 import { useCallback, useState } from "react";
 import "./style.scss";
 import { useSocketContext } from "@socket";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export function AddSong() {
   const socket = useSocketContext();

@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import React, { JSX, useEffect, useRef } from "react";
 
 import { useSearchParams } from "react-router";

@@ -19,7 +19,7 @@ import {
   setTagId,
 } from "@redux/achievementsSlice";
 import { SelectAchievementStages } from "./stages/SelectAchievementStages";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 
 export default function EditCreateAchievementModal() {

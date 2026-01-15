@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 

@@ -3,7 +3,7 @@ import { viteBackendUrl } from "@configs/envVariables";
 import { useDispatch } from "react-redux";
 import { openModal, setBadgeState, setEditingId } from "@redux/badgesSlice";
 import { Badge, useDeleteBadge } from "@services";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 interface TBodyManyBadgesDataProps {
   badges: Badge[];

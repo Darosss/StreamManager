@@ -8,7 +8,7 @@ import {
   useRefetchFoldersFilesAudioData,
 } from "@services";
 import { useSocketContext } from "@socket";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function AudioFoldersList() {
   const socket = useSocketContext();

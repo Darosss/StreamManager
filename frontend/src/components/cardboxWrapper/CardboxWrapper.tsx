@@ -1,5 +1,5 @@
 import Pagination, { PaginationProps } from "@components/pagination/Pagination";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 interface CardboxCommonProps {
   title: string;

@@ -1,6 +1,6 @@
 import DrawerBar from "@components/drawer";
 import NavigateButton from "@components/navigateButton";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface LayoutDrawerBarProps {

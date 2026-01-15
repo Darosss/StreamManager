@@ -13,7 +13,7 @@ import {
 } from "@redux/stagesSlice";
 import { closeSoundModal, openSoundModal } from "@redux/stagesSlice";
 import { TimeGoalInput } from "./TimeGoalInput";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 interface AchievementStageEditDataProps {
   onClickBadge: (indexOfStage: number) => void;

@@ -14,7 +14,7 @@ import {
   setTimerState,
 } from "@redux/timersSlice";
 import { HandleShowModalParams } from "@components/types";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { StatusLabel } from "@components/common/StatusLabel";
 
 interface TimersDataProps {

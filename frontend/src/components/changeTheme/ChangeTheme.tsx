@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useLocalStorage } from "@hooks";
 import { useEffect } from "react";
 

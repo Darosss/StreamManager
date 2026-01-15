@@ -6,7 +6,7 @@ import CardboxWrapper, { CardboxItem } from "@components/cardboxWrapper";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { fetchWidgetsDefaultParams } from "@services";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function StreamNotifications() {

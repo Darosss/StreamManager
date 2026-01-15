@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import React, { Children, useEffect, useRef, useState } from "react";
 
 const SLIDE_DELAY = 9999;

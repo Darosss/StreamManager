@@ -8,7 +8,7 @@ import {
   setCurrentAction,
   setEditingId,
 } from "@redux/achievementsSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 const initialAchievementData: Required<AchievementSliceDataType> = {
   name: "",

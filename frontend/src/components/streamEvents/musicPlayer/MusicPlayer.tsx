@@ -8,7 +8,7 @@ import { AddSong } from "./addSong/AddSong";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import PlayerOptions from "./PlayerOptions";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useSocketContext } from "@socket";
 
 enum AvailableWindowsEnum {

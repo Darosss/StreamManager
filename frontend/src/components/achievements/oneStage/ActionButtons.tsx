@@ -5,7 +5,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { pushToStageData } from "@redux/stagesSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface ActionButtonsProps {

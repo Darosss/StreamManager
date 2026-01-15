@@ -4,7 +4,7 @@ import AchievementStageLists from "./AchievementStagesList";
 import Pagination from "@components/pagination";
 import { useLocalStorage } from "@hooks";
 import { Error, Loading } from "@components/axiosHelper";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function UserAchievements() {
   const { data: achievementsData, isLoading, error } = useGetAchievements();

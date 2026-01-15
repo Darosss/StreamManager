@@ -15,7 +15,7 @@ import Error from "@components/axiosHelper/errors";
 import { Loading } from "@components/axiosHelper";
 import { useDispatch } from "react-redux";
 import { setConfigState } from "@redux/configsSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 enum ConfigsListTabNames {
   HEAD = "Head options",

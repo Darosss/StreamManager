@@ -7,7 +7,7 @@ import Modal from "@components/modal";
 
 import { useSocketContext } from "@socket";
 import { Error, Loading } from "@components/axiosHelper";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function MessagesWindow() {

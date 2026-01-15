@@ -11,7 +11,7 @@ import { OnClickBadgeType } from "./types";
 import { closeModal, openModal } from "@redux/badgesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function BadgesImages() {
   const dispatch = useDispatch();

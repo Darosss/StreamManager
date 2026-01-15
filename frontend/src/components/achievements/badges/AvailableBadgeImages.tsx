@@ -8,7 +8,7 @@ import {
 } from "@services";
 import { viteBackendUrl } from "@configs/envVariables";
 import { OnClickBadgeType } from "./types";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface AvailableBadgeImagesProps {

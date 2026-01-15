@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { setIsGoalTime } from "@redux/stagesSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 interface AchievementStageTheadDataProps {
   editing: boolean;
 }

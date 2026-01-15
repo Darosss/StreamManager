@@ -2,7 +2,7 @@ import { useFileUpload } from "@hooks";
 import { useGetAchievementStagesSoundsBasePath } from "@services";
 import { useEffect, useState } from "react";
 import { viteBackendUrl } from "@configs/envVariables";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface OnClickSoundType {

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./yt-playlist.style.scss";
 import { useSocketContext } from "@socket";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function YTPlaylist() {
   const socket = useSocketContext();

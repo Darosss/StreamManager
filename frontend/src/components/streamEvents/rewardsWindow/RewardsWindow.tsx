@@ -9,7 +9,7 @@ import {
   setRewardState,
 } from "@redux/rewardsSlice";
 import { RewardsModal } from "./RewardsModal";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function MessagesWindow() {

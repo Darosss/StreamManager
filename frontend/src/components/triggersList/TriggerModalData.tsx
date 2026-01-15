@@ -13,7 +13,7 @@ import {
   setTag,
   setWords,
 } from "@redux/triggersSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 import { useGetAllModes } from "@hooks";
 

@@ -6,7 +6,7 @@ import {
 } from "@services";
 import Message from "@components/message";
 import { MessageServerData, useSocketContext } from "@socket";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function StreamChat() {

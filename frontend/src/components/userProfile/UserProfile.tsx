@@ -6,7 +6,7 @@ import { DateTooltip } from "@components/dateTooltip";
 import { HelmetTitle } from "@components/componentWithTitle";
 import { useEditUser, useGetLatestEldestMsgs, useGetUser } from "@services";
 import { Error, Loading } from "@components/axiosHelper";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function UserProfile() {
   //Note: userId should be as it is taken from route

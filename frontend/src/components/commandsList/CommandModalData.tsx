@@ -12,7 +12,7 @@ import {
   setMessages,
 } from "@redux/commandsSlice";
 import { RootStore } from "@redux/store";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 
 export default function CommandModalData() {

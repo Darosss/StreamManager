@@ -1,5 +1,5 @@
 import Modal from "@components/modal";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import UrlParamsInputs, { FilterBarInput } from "@components/urlParamsInputs";
 import { InputHTMLAttributes, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";

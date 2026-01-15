@@ -1,7 +1,7 @@
 import { Error, Loading } from "@components/axiosHelper";
 import Modal from "@components/modal";
 import SelectWithData from "@components/selectWithData";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
 import { AddAchievementProgressToUserData, useSocketContext } from "@socket";

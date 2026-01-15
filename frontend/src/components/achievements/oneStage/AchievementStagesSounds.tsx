@@ -10,7 +10,7 @@ import AvailableAchievementSounds from "./AvailableAchievementSounds";
 import { viteBackendUrl } from "@configs/envVariables";
 import { Error, Loading } from "@components/axiosHelper";
 import { useAxiosWithConfirmation } from "@hooks";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function AchievementStagesSounds() {
   const [showModal, setShowModal] = useState(false);

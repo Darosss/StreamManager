@@ -10,7 +10,7 @@ import {
   setCurrentAction,
   setEditingId,
 } from "@redux/achievementsSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { StatusLabel } from "@components/common/StatusLabel";
 
 interface TBodyDataProps {

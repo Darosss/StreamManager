@@ -3,7 +3,7 @@ import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 type CurrentBreakpointState = [
   string,

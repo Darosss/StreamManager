@@ -12,7 +12,7 @@ import {
   setCustomId,
   setWhoAdded,
 } from "@redux/songsSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function SongModalData() {
   const dispatch = useDispatch();

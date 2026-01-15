@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { useEditOverlay } from "@services";
 import { setStyles } from "@redux/overlaysSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 type OverlayKeysType =

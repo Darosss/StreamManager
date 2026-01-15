@@ -9,7 +9,7 @@ import {
   setTag,
   toggleEnabled,
 } from "@redux/messageCategoriesSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 import { useGetAllModes } from "@hooks";
 

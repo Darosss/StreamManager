@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import React from "react";
 
 import { createPortal } from "react-dom";

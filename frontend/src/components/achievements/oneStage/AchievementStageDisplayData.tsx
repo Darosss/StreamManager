@@ -3,7 +3,7 @@ import { TableDataWrapper } from "@components/tableWrapper";
 import { getDateFromSecondsToYMDHMS } from "@utils";
 import { useSocketContext } from "@socket";
 import { AchievementStageData } from "@services";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 interface AchievementStageDisplayDataProps {
   stageData: AchievementStageData[];

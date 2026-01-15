@@ -1,6 +1,6 @@
 import { CardboxItem } from "@components/cardboxWrapper";
 import { HandleShowModalParams } from "@components/types";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import {
   openModal,
   resetMoodState,

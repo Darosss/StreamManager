@@ -13,7 +13,7 @@ import {
   setRequirementPoints,
   setName,
 } from "@redux/timersSlice";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useGetAllModes } from "@hooks";
 import { SelectModes } from "@components/modesList";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";

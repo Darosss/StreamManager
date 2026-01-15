@@ -3,7 +3,7 @@ import AudioFolderCreate from "./AudioFolderCreate";
 import AudioFoldersList from "./AudioFoldersList";
 import UploadMp3Form from "./UploadMp3Form";
 import Modal from "@components/modal";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 enum AvailableTabs {
   UPLOAD = "upload",

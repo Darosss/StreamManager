@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { uploadMp3Data, useGetFoldersList } from "@services";
 import "./upload-mp3-form-style.scss";
 import { useFileUpload } from "@hooks";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function UploadMp3Form() {

@@ -1,5 +1,5 @@
 import { Loading } from "@components/axiosHelper";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useGetAllModes } from "@hooks";
 import { useEditTag, useEditMood, useEditAffix } from "@services";

@@ -9,7 +9,7 @@ import {
 } from "@redux/configsSlice";
 import { RootStore } from "@redux/store";
 import Error from "@components/axiosHelper/errors";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 
 export default function EditConfigs() {
   const dispatch = useDispatch();

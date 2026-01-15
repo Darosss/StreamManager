@@ -1,4 +1,4 @@
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
 import { useState, useEffect, useCallback } from "react";

@@ -1,5 +1,5 @@
 import Modal from "@components/modal";
-import { Button } from "@components/ui";
+import { Button } from "@components/ui/button";
 import { useCreateAchievementStage } from "@services";
 import { useState } from "react";
 
