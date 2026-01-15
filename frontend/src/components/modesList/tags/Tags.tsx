@@ -8,7 +8,6 @@ import {
   useCreateTag,
   useEditTag,
 } from "@services";
-import { addNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { RootStore } from "@redux/store";
@@ -16,8 +15,10 @@ import { resetTagState, closeModal, setEditingId } from "@redux/tagsSlice";
 import FilterBarModes from "../filterBarModes";
 import TagModalData from "./TagModalData";
 import TagsData from "./TagsData";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function Tags() {
+  const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchTagsDefaultParams);
   const { data: tags, isLoading, error } = useGetTags(queryParams);
   const dispatch = useDispatch();
@@ -40,7 +41,11 @@ export default function Tags() {
 
   const handleUpdateTag = () => {
     if (!editingId) {
-      addNotification("Couldn't update tag", "No tag id", "warning");
+      addNotify({
+        title: "Couldn't update tag",
+        message: "No tag id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateTagMutation.mutate({

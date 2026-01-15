@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -17,7 +14,7 @@ import {
   OverlaysUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
-import { addNotification } from "@utils";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchOverlaysDefaultParams: Required<FetchOverlaysParams> = {
   limit: 10,
@@ -97,67 +94,61 @@ export const useGetOverlays = (
 
 export const useEditOverlay = () => {
   const refetchOverlays = useRefetchOverlaysData();
-  return useMutation(editOverlay, {
-    onSuccess: (_, params) => {
-      refetchOverlays().then(() => {
+  return useCustomMutation(
+    editOverlay,
+    {
+      entity: MutationEntity.OVERLAY,
+      action: MutationAction.EDIT,
+    },
+    {
+      onSuccess: async (_, params) => {
+        await refetchOverlays();
         socketConn.emit("refreshOverlayLayout", params.id);
-        addNotification(
-          "Successfully edited",
-          "Overlay is successfully edited",
-          "success"
-        );
-      });
-    },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.OVERLAY,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+      },
+    }
+  );
 };
 
 export const useDuplicateOverlay = (id: string) => {
   const refetchOverlays = useRefetchOverlaysData();
-  return useMutation(() => duplicateOverlay(id), {
-    onSuccess: refetchOverlays,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.OVERLAY,
-        OnErrorHelperServiceAction.DUPLICATE
-      );
+  return useCustomMutation(
+    () => duplicateOverlay(id),
+    {
+      entity: MutationEntity.OVERLAY,
+      action: MutationAction.DUPLICATE,
     },
-  });
+    {
+      onSuccess: () => refetchOverlays(),
+    }
+  );
 };
 
 export const useCreateOverlay = () => {
   const refetchOverlays = useRefetchOverlaysData();
-  return useMutation(createOverlay, {
-    onSuccess: refetchOverlays,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.OVERLAY,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createOverlay,
+    {
+      entity: MutationEntity.OVERLAY,
+      action: MutationAction.CREATE,
     },
-  });
+    {
+      onSuccess: refetchOverlays,
+    }
+  );
 };
 
 export const useDeleteOverlay = () => {
   const refetchOverlays = useRefetchOverlaysData();
-  return useMutation(deleteOverlay, {
-    onSuccess: refetchOverlays,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.OVERLAY,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteOverlay,
+    {
+      entity: MutationEntity.OVERLAY,
+      action: MutationAction.DELETE,
     },
-  });
+    {
+      onSuccess: refetchOverlays,
+    }
+  );
 };
 
 export const useGetOverlayById = (id: string) => {

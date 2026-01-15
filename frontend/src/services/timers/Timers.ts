@@ -1,10 +1,7 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   QueryParams,
@@ -17,6 +14,7 @@ import {
   TimerUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchTimersDefaultParams: Required<FetchTimerParams> = {
   limit: 10,
@@ -78,54 +76,48 @@ export const useGetTimers = (params?: QueryParams<keyof FetchTimerParams>) => {
 
 export const useEditTimer = () => {
   const refetchTimers = useRefetchTimersData();
-  return useMutation(editTimer, {
-    onSuccess: () =>
-      refetchTimers().then(() => {
-        socketConn.emit("refreshTimers");
-      }),
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TIMER,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editTimer,
+    {
+      entity: MutationEntity.TIMER,
+      action: MutationAction.EDIT,
     },
-  });
+    {
+      onSuccess: () =>
+        refetchTimers().then(() => socketConn.emit("refreshTimers")),
+    }
+  );
 };
 
 export const useCreateTimer = () => {
   const refetchTimers = useRefetchTimersData();
-  return useMutation(createTimer, {
-    onSuccess: () =>
-      refetchTimers().then(() => {
-        socketConn.emit("refreshTimers");
-      }),
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TIMER,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createTimer,
+    {
+      entity: MutationEntity.TIMER,
+      action: MutationAction.CREATE,
     },
-  });
+    {
+      onSuccess: () =>
+        refetchTimers().then(() => socketConn.emit("refreshTimers")),
+    }
+  );
 };
 
 export const useDeleteTimer = () => {
   const refetchTimers = useRefetchTimersData();
-  return useMutation(deleteTimer, {
-    onSuccess: () => {
-      refetchTimers().then(() => {
-        socketConn.emit("refreshTimers");
-      });
+  return useCustomMutation(
+    deleteTimer,
+    {
+      entity: MutationEntity.TIMER,
+      action: MutationAction.DELETE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TIMER,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchTimers().then(() => socketConn.emit("refreshTimers"));
+      },
+    }
+  );
 };
 export const useRefetchTimersData = (exact = false) => {
   const queryClient = useQueryClient();

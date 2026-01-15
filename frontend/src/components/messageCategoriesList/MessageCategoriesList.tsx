@@ -7,7 +7,6 @@ import {
 } from "@services";
 import Modal from "@components/modal";
 import FilterBarCategories from "./filterBarCategories";
-import { addNotification } from "@utils";
 import CategoriesData from "./CategoriesData";
 import CategoriesModalData from "./CategoriesModalData";
 import { Error, Loading } from "@components/axiosHelper";
@@ -20,8 +19,10 @@ import { RootStore } from "@redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function MessageCategoriesList() {
+  const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchMessageCategoriesDefaultParams);
   const {
     data: messageCategories,
@@ -49,11 +50,11 @@ export default function MessageCategoriesList() {
 
   const handleUpdateMessageCategory = () => {
     if (!editingId) {
-      addNotification(
-        "Couldn't update message category",
-        "No message category id",
-        "warning"
-      );
+      addNotify({
+        title: "Couldn't update message category",
+        message: "No message category id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateMessageCategoryMutation.mutate({

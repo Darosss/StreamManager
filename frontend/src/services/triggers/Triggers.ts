@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -17,6 +14,7 @@ import {
   TriggerUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchTriggersDefaultParams: Required<FetchTriggerParams> = {
   limit: 10,
@@ -85,56 +83,50 @@ export const useGetTriggers = (
 
 export const useEditTrigger = () => {
   const refetchTriggers = useRefetchTriggersData();
-  return useMutation(editTrigger, {
-    onSuccess: () => {
-      refetchTriggers().then(() => {
-        socketConn.emit("refreshTriggers");
-      });
+  return useCustomMutation(
+    editTrigger,
+    {
+      entity: MutationEntity.TRIGGER,
+      action: MutationAction.EDIT,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TRIGGER,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
+      },
+    }
+  );
 };
 
 export const useCreateTrigger = () => {
   const refetchTriggers = useRefetchTriggersData();
-  return useMutation(createTrigger, {
-    onSuccess: () => {
-      refetchTriggers().then(() => {
-        socketConn.emit("refreshTriggers");
-      });
+  return useCustomMutation(
+    createTrigger,
+    {
+      entity: MutationEntity.TRIGGER,
+      action: MutationAction.CREATE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TRIGGER,
-        OnErrorHelperServiceAction.CREATE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
+      },
+    }
+  );
 };
 
 export const useDeleteTrigger = () => {
   const refetchTriggers = useRefetchTriggersData();
-  return useMutation(deleteTrigger, {
-    onSuccess: () => {
-      refetchTriggers().then(() => {
-        socketConn.emit("refreshTriggers");
-      });
+  return useCustomMutation(
+    deleteTrigger,
+    {
+      entity: MutationEntity.TRIGGER,
+      action: MutationAction.DELETE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TRIGGER,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
+      },
+    }
+  );
 };
 
 export const useRefetchTriggersData = (exact = false) => {

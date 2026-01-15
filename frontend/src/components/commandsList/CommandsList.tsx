@@ -6,7 +6,6 @@ import {
   useEditChatCommand,
   useGetChatCommands,
 } from "@services";
-import { addNotification } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   resetCommandState,
@@ -20,11 +19,12 @@ import FilterBarCommands from "./filterBarCommands";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function CommandsList() {
   const dispatch = useDispatch();
   const queryParams = useQueryParams(fetchChatCommandsDefaultParams);
-
+  const { addNotify } = useNotifications();
   const {
     isModalOpen,
     command: commandState,
@@ -48,7 +48,11 @@ export default function CommandsList() {
 
   const handleUpdateCommand = () => {
     if (!editingId) {
-      addNotification("Couldn't update command", "No command id", "warning");
+      addNotify({
+        title: "Couldn't update command",
+        message: "No command id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateCommandMutation.mutate({

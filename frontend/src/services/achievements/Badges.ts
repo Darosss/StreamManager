@@ -1,10 +1,7 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   refetchDataFunctionHelper,
@@ -16,6 +13,7 @@ import {
   BadgeUpdateData,
   BadgeCreateData,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = `${BaseEndpointNames.ACHIEVEMENTS}/${BaseEndpointNames.BADGES}`;
 
@@ -109,55 +107,47 @@ export const useGetBadgesIamgesBasePath = () => {
 
 export const useEditBadge = () => {
   const refetchBadges = useRefetchBadgeData();
-  return useMutation(editBadge, {
-    onSuccess: refetchBadges,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.BADGE,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editBadge,
+    {
+      entity: MutationEntity.BADGE,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchBadges }
+  );
 };
 export const useCreateBadge = () => {
   const refetchBadges = useRefetchBadgeData();
-  return useMutation(createBadge, {
-    onSuccess: refetchBadges,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.BADGE,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createBadge,
+    {
+      entity: MutationEntity.BADGE,
+      action: MutationAction.CREATE,
     },
-  });
+    { onSuccess: refetchBadges }
+  );
 };
 export const useDeleteBadge = () => {
   const refetchBadges = useRefetchBadgeData();
-  return useMutation(deleteBadge, {
-    onSuccess: refetchBadges,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.BADGE,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteBadge,
+    {
+      entity: MutationEntity.BADGE,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchBadges }
+  );
 };
 export const useDeleteBadgeImage = () => {
   const refetchBadges = useRefetchBadgeData();
-  return useMutation(deleteBadgeImage, {
-    onSuccess: refetchBadges,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.BADGE_IMAGE,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteBadgeImage,
+    {
+      entity: MutationEntity.BADGE_IMAGE,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchBadges }
+  );
 };
 
 export const useRefetchBadgeData = (exact = false) => {

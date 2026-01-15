@@ -1,10 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   QueryParams,
@@ -16,6 +13,7 @@ import {
   AchievementStageUpdateData,
   FetchStagesParams,
 } from "./types";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = `${BaseEndpointNames.ACHIEVEMENTS}/${BaseEndpointNames.STAGES}`;
 
@@ -116,16 +114,14 @@ export const useGetAchievementStages = (
 
 export const useDeleteAchievementStage = () => {
   const refetchAchievementStages = useRefetchAchievementStagesData();
-  return useMutation(deleteAchievementStage, {
-    onSuccess: refetchAchievementStages,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT_STAGE,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteAchievementStage,
+    {
+      entity: MutationEntity.ACHIEVEMENT_STAGE,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchAchievementStages }
+  );
 };
 
 export const useGetAchievementStageById = (id: string) => {
@@ -136,30 +132,26 @@ export const useGetAchievementStageById = (id: string) => {
 
 export const useCreateAchievementStage = () => {
   const refetchAchievementStages = useRefetchAchievementStagesData();
-  return useMutation(createaAchievementStage, {
-    onSuccess: refetchAchievementStages,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT_STAGE,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createaAchievementStage,
+    {
+      entity: MutationEntity.ACHIEVEMENT_STAGE,
+      action: MutationAction.CREATE,
     },
-  });
+    { onSuccess: refetchAchievementStages }
+  );
 };
 
 export const useEditAchievementStage = () => {
   const refetchAchievementStages = useRefetchAchievementStagesData();
-  return useMutation(editAchievementStage, {
-    onSuccess: refetchAchievementStages,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT_STAGE,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editAchievementStage,
+    {
+      entity: MutationEntity.ACHIEVEMENT_STAGE,
+      action: MutationAction.EDIT,
     },
-  });
+    { onSuccess: refetchAchievementStages }
+  );
 };
 
 export const useGetAchievementStagesSounds = () => {
@@ -178,16 +170,14 @@ export const useGetAchievementStagesSoundsBasePath = () => {
 
 export const useDeleteAchievementStageSound = () => {
   const refetchAchievementStageSounds = useRefetchAchievementStageSoundsData();
-  return useMutation(deleteAchievementStageSound, {
-    onSuccess: refetchAchievementStageSounds,
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.ACHIEVEMENT_STAGE_SOUND,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteAchievementStageSound,
+    {
+      entity: MutationEntity.ACHIEVEMENT_STAGE_SOUND,
+      action: MutationAction.DELETE,
     },
-  });
+    { onSuccess: refetchAchievementStageSounds }
+  );
 };
 
 //TODO: make from these one function somehow later

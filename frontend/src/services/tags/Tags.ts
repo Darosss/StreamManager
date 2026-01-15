@@ -1,10 +1,7 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   customAxios,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   PromiseBackendData,
   PromisePaginationData,
   QueryParams,
@@ -12,6 +9,7 @@ import {
 } from "../api";
 import { FetchTagParams, Tag, TagCreateData, TagUpdateData } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 export const fetchTagsDefaultParams: Required<FetchTagParams> = {
   limit: 10,
@@ -70,53 +68,44 @@ export const useGetTags = (params?: QueryParams<keyof FetchTagParams>) => {
 
 export const useEditTag = () => {
   const refetchTags = useRefetchTagsData();
-  return useMutation(editTag, {
-    onSuccess: () =>
-      refetchTags().then(() => {
-        socketConn.emit("changeModes");
-      }),
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TAG,
-        OnErrorHelperServiceAction.EDIT
-      );
+  return useCustomMutation(
+    editTag,
+    {
+      entity: MutationEntity.TAG,
+      action: MutationAction.EDIT,
     },
-  });
+    {
+      onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
+    }
+  );
 };
 
 export const useCreateTag = () => {
   const refetchTags = useRefetchTagsData();
-  return useMutation(createTag, {
-    onSuccess: () =>
-      refetchTags().then(() => {
-        socketConn.emit("changeModes");
-      }),
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TAG,
-        OnErrorHelperServiceAction.CREATE
-      );
+  return useCustomMutation(
+    createTag,
+    {
+      entity: MutationEntity.TAG,
+      action: MutationAction.CREATE,
     },
-  });
+    {
+      onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
+    }
+  );
 };
 
 export const useDeleteTag = () => {
   const refetchTags = useRefetchTagsData();
-  return useMutation(deleteTag, {
-    onSuccess: () =>
-      refetchTags().then(() => {
-        socketConn.emit("changeModes");
-      }),
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.TAG,
-        OnErrorHelperServiceAction.DELETE
-      );
+  return useCustomMutation(
+    deleteTag,
+    {
+      entity: MutationEntity.TAG,
+      action: MutationAction.DELETE,
     },
-  });
+    {
+      onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
+    }
+  );
 };
 
 export const useRefetchTagsData = (exact = false) => {

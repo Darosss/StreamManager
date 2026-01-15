@@ -1,10 +1,11 @@
 import { Loading } from "@components/axiosHelper";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useGetAllModes } from "@hooks";
 import { useEditTag, useEditMood, useEditAffix } from "@services";
-import { addNotification } from "@utils";
 
 export default function StreamModes() {
+  const { addNotify } = useNotifications();
   const editTagMutation = useEditTag();
 
   const editMoodMutation = useEditMood();
@@ -57,18 +58,18 @@ export default function StreamModes() {
                     prefixes.push(affix.prefixes.join(" | "));
                     suffixes.push(affix.suffixes.join(" | "));
                   });
-                  addNotification(
-                    "Enabled prefixes",
-                    `${prefixes.join(" | ")}`,
-                    "info",
-                    25000
-                  );
-                  addNotification(
-                    "Enabled suffixes",
-                    `${suffixes.join(" | ")}`,
-                    "info",
-                    25000
-                  );
+                  addNotify({
+                    title: "Enabled prefixes",
+                    message: `${prefixes.join(" | ")}`,
+                    type: NOTIFICATION_TYPE.INFO,
+                    duration: 25000,
+                  });
+                  addNotify({
+                    title: "Enabled suffixes",
+                    message: `${suffixes.join(" | ")}`,
+                    type: NOTIFICATION_TYPE.INFO,
+                    duration: 25000,
+                  });
                 }}
               >
                 Affixes

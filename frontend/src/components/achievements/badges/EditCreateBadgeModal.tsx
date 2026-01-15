@@ -1,14 +1,14 @@
 import Modal from "@components/modal";
 import { useEditBadge, useCreateBadge } from "@services";
-import { addErrorNotification } from "@utils";
 import BadgeModalData from "./BadgesModalData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStore } from "@redux/store";
 import { closeModal, setEditingId } from "@redux/badgesSlice";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function EditCreateBadgeModal() {
   const dispatch = useDispatch();
-
+  const { addNotify } = useNotifications();
   const { isModalOpen, badge, editingId } = useSelector(
     (root: RootStore) => root.badges
   );
@@ -21,7 +21,11 @@ export default function EditCreateBadgeModal() {
   };
 
   const onSubmitModalEdit = () => {
-    if (!editingId) return addErrorNotification("ID badge need to be provided");
+    if (!editingId)
+      return addNotify({
+        title: "ID badge need to be provided",
+        type: NOTIFICATION_TYPE.DANGER,
+      });
     editBadgeMutation.mutate({
       id: editingId,
       updatedBadge: badge,

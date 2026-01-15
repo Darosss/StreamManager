@@ -14,11 +14,12 @@ import { RootStore } from "@redux/store";
 import { closeModal, resetTimerState, setEditingId } from "@redux/timersSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Error, Loading } from "@components/axiosHelper";
-import { addNotification } from "@utils";
 import { TableList } from "@components/tableWrapper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function TimersList() {
   const queryParams = useQueryParams(fetchTimersDefaultParams);
+  const { addNotify } = useNotifications();
   const { data: timers, isLoading, error } = useGetTimers(queryParams);
   const dispatch = useDispatch();
   const {
@@ -40,7 +41,11 @@ export default function TimersList() {
 
   const handleUpdateTimer = () => {
     if (!editingId) {
-      addNotification("Couldn't update timer", "No timer id", "warning");
+      addNotify({
+        title: "Couldn't update timer",
+        message: "No timer id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateTimerMutation.mutate({

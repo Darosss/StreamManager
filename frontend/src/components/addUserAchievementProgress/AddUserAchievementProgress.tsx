@@ -2,9 +2,9 @@ import { Error, Loading } from "@components/axiosHelper";
 import Modal from "@components/modal";
 import SelectWithData from "@components/selectWithData";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
 import { AddAchievementProgressToUserData, useSocketContext } from "@socket";
-import { addErrorNotification, addSuccessNotification } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface UserAchievementProgressProps {
@@ -16,6 +16,7 @@ export default function UserAchievementProgress({
   userId,
   username,
 }: UserAchievementProgressProps) {
+  const { addNotify } = useNotifications();
   const {
     emits: { addAchievementProgressToUser },
   } = useSocketContext();
@@ -68,9 +69,17 @@ export default function UserAchievementProgress({
       },
       (error) => {
         if (error)
-          addErrorNotification(`Couldn't add progress for user. ${error}`);
+          addNotify({
+            title: "Couldn't add progress for user",
+            message: error,
+            type: NOTIFICATION_TYPE.DANGER,
+          });
         else {
-          addSuccessNotification("Added progress for user");
+          addNotify({
+            title: "Added progress for user",
+            message: error,
+            type: NOTIFICATION_TYPE.SUCCESS,
+          });
         }
       }
     );

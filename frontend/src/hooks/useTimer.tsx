@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseTimerProps {
   currentTime: number;
@@ -14,13 +14,15 @@ export const useTimer = ({
   enabled,
   updateMs = 1000,
 }: UseTimerProps) => {
-  const [progressTimer, setProgressTimer] =
-    useState<ReturnType<typeof setTimeout>>();
+  const progressTimer = useRef<ReturnType<typeof setTimeout>>(null);
   const [timer, setTimer] = useState(0);
 
   const countTime = (newDuration: number) =>
     setTimer((prev) => {
-      const newTime = prev + 1 > newDuration ? newDuration : prev + 1;
+      const newTime =
+        prev + updateMs / 1000 > newDuration
+          ? newDuration
+          : prev + updateMs / 1000;
       return newTime;
     });
 
@@ -31,24 +33,22 @@ export const useTimer = ({
   }, [currentTime, duration]);
 
   useEffect(() => {
-    clearInterval(progressTimer);
+    progressTimer.current && clearInterval(progressTimer.current);
     if (!enabled) return;
 
-    setProgressTimer(
-      setInterval(() => {
-        countTime(duration);
-      }, updateMs)
-    );
+    progressTimer.current = setInterval(() => {
+      countTime(duration);
+    }, updateMs);
 
     return () => {
-      clearInterval(progressTimer);
+      progressTimer.current && clearInterval(progressTimer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [duration, enabled]);
 
   useEffect(() => {
     return () => {
-      clearInterval(progressTimer);
+      progressTimer.current && clearInterval(progressTimer.current);
     };
   }, [progressTimer]);
   return timer;

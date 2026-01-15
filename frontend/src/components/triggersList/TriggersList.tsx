@@ -7,7 +7,6 @@ import {
   useCreateTrigger,
   fetchTriggersDefaultParams,
 } from "@services";
-import { addNotification } from "@utils";
 import TriggersData from "./TriggersData";
 import TriggerModalData from "./TriggerModalData";
 import { Loading } from "@components/axiosHelper";
@@ -21,9 +20,11 @@ import {
   setEditingId,
 } from "@redux/triggersSlice";
 import { TableList } from "@components/tableWrapper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function TriggersList() {
   const queryParams = useQueryParams(fetchTriggersDefaultParams);
+  const { addNotify } = useNotifications();
   const { data: triggers, isLoading, error } = useGetTriggers(queryParams);
   const dispatch = useDispatch();
   const {
@@ -45,7 +46,11 @@ export default function TriggersList() {
 
   const handleUpdateTrigger = () => {
     if (!editingId) {
-      addNotification("Couldn't update trigger", "No trigger id", "warning");
+      addNotify({
+        title: "Couldn't update trigger",
+        message: "No trigger id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     updateTriggerMutation.mutate({

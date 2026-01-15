@@ -1,10 +1,10 @@
 import { useFileUpload } from "@hooks";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useGetAchievementStagesSoundsBasePath } from "@services";
-import { addErrorNotification, addSuccessNotification } from "@utils";
 import { useEffect, useState } from "react";
 import { viteBackendUrl } from "@configs/envVariables";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface OnClickSoundType {
   basePath: string;
@@ -88,6 +88,7 @@ interface UploadAchievementStageSoundButtonsProps {
 function UploadAchievementStageSoundButtons({
   onSuccessCallback,
 }: UploadAchievementStageSoundButtonsProps) {
+  const { addNotify } = useNotifications();
   const [showUploadSound, setShowUploadSound] = useState(false);
 
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
@@ -96,14 +97,22 @@ function UploadAchievementStageSoundButtons({
 
   useEffect(() => {
     if (success) {
-      addSuccessNotification("Uploaded achievement stages sound to server");
+      addNotify({
+        title: "Successfuly uplaoded audio files",
+        type: NOTIFICATION_TYPE.SUCCESS,
+      });
       onSuccessCallback();
     }
-  }, [success]);
+  }, [addNotify, success]);
 
   useEffect(() => {
-    if (error) addErrorNotification(error);
-  }, [error]);
+    if (error)
+      addNotify({
+        title: "Couldn't uplaod audio files",
+        message: error,
+        type: NOTIFICATION_TYPE.DANGER,
+      });
+  }, [addNotify, error]);
 
   return (
     <>

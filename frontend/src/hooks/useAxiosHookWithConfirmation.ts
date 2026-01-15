@@ -1,4 +1,4 @@
-import { addSuccessNotification } from "@utils";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useState, useEffect } from "react";
 
 type DefaultHookType<TParams> = (params: TParams | null) => any;
@@ -26,6 +26,7 @@ export const useAxiosWithConfirmation = <TParams>({
     onRejected,
   } = {},
 }: UseAxiosWithConfirmationParams<TParams>) => {
+  const { addNotify } = useNotifications();
   const [id, setId] = useState<TParams | null>(null);
 
   const { refetchData } = hookToProceed(id);
@@ -42,7 +43,7 @@ export const useAxiosWithConfirmation = <TParams>({
     refetchData().then(
       () => {
         onFullfiled?.();
-        addSuccessNotification(successMessage);
+        addNotify({ title: successMessage, type: NOTIFICATION_TYPE.SUCCESS });
         resetId();
       },
       () => {

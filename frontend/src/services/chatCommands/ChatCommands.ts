@@ -1,13 +1,10 @@
-import { useQuery, useQueryClient, useMutation } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import {
   BaseEndpointNames,
   QueryParams,
   PromisePaginationData,
   customAxios,
   PromiseBackendData,
-  onErrorHelperService,
-  OnErrorHelperServiceAction,
-  OnErrorHelperServiceConcern,
   refetchDataFunctionHelper,
 } from "../api";
 import {
@@ -17,6 +14,7 @@ import {
   ChatCommandUpdateData,
 } from "./types";
 import { socketConn } from "@socket";
+import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 
 const baseEndpointName = BaseEndpointNames.CHAT_COMMANDS;
 
@@ -91,56 +89,44 @@ export const useGetChatCommands = (
 
 export const useEditChatCommand = () => {
   const refetchChatCommands = useRefetchChatCommandsData();
-  return useMutation(editChatCommand, {
-    onSuccess: () => {
-      refetchChatCommands().then(() => {
-        socketConn.emit("refreshCommands");
-      });
-    },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.COMMAND,
-        OnErrorHelperServiceAction.EDIT
-      );
-    },
-  });
+  return useCustomMutation(
+    editChatCommand,
+    { entity: MutationEntity.COMMAND, action: MutationAction.EDIT },
+    {
+      onSuccess: () => {
+        refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
+      },
+    }
+  );
 };
 
 export const useCreateChatCommand = () => {
   const refetchChatCommands = useRefetchChatCommandsData();
-  return useMutation(createChatCommand, {
-    onSuccess: () => {
-      refetchChatCommands().then(() => {
-        socketConn.emit("refreshCommands");
-      });
+  return useCustomMutation(
+    createChatCommand,
+    {
+      entity: MutationEntity.COMMAND,
+      action: MutationAction.CREATE,
     },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.COMMAND,
-        OnErrorHelperServiceAction.CREATE
-      );
-    },
-  });
+    {
+      onSuccess: () => {
+        refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
+      },
+    }
+  );
 };
 
 export const useDeleteChatCommand = () => {
   const refetchChatCommands = useRefetchChatCommandsData();
-  return useMutation(deleteChatCommand, {
-    onSuccess: () => {
-      refetchChatCommands().then(() => {
-        socketConn.emit("refreshCommands");
-      });
-    },
-    onError: (error) => {
-      onErrorHelperService(
-        error,
-        OnErrorHelperServiceConcern.COMMAND,
-        OnErrorHelperServiceAction.DELETE
-      );
-    },
-  });
+  return useCustomMutation(
+    deleteChatCommand,
+    { entity: MutationEntity.COMMAND, action: MutationAction.DELETE },
+    {
+      onSuccess: () => {
+        refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
+      },
+    }
+  );
 };
 
 export const useRefetchChatCommandsData = (exact = false) => {

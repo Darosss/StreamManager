@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { addNotification } from "@utils";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { uploadMp3Data, useGetFoldersList } from "@services";
 import "./upload-mp3-form-style.scss";
 import { useFileUpload } from "@hooks";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function UploadMp3Form() {
   const [fileList, setFileList] = useState<FileList | null>(null);
   const [folderName, setFolderName] = useState("");
 
+  const { addNotify } = useNotifications();
   const { data: foldersData } = useGetFoldersList();
 
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
@@ -17,12 +18,22 @@ export default function UploadMp3Form() {
   );
 
   useEffect(() => {
-    if (success) addNotification("Uploaded files to sever", success, "success");
-  }, [success]);
+    if (success)
+      addNotify({
+        title: "Uploaded files to server",
+        message: success,
+        type: NOTIFICATION_TYPE.SUCCESS,
+      });
+  }, [addNotify, success]);
 
   useEffect(() => {
-    if (error) addNotification("Danger", error, "danger");
-  }, [error]);
+    if (error)
+      addNotify({
+        title: "Couldn't upload files to server",
+        message: error,
+        type: NOTIFICATION_TYPE.DANGER,
+      });
+  }, [addNotify, error]);
 
   if (!foldersData) return <> No folders to upload </>;
 

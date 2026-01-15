@@ -14,12 +14,13 @@ import {
 import { useParams } from "react-router-dom";
 import { useEditWidget, useGetWidgetById } from "@services";
 import StreamModes from "./streamModes";
-import { addNotification, getInitialCurrentBreakpoint } from "@utils";
+import { getInitialCurrentBreakpoint } from "@utils";
 import ReactGrid from "@components/reactGrid";
 import MusicPlayer from "./musicPlayer";
 import RewardsWindow from "./rewardsWindow";
 import { HelmetTitle } from "@components/componentWithTitle";
 import { Error, Loading } from "@components/axiosHelper";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 const components = new Map([
   [widgetsKeys.streamChat, StreamChat],
@@ -35,6 +36,7 @@ const components = new Map([
 export default function StreamEvents(params: { editor?: boolean }) {
   const { editor = false } = params;
   const { eventsId } = useParams();
+  const { addNotify } = useNotifications();
   const [layoutWidgets, setLayoutWidgets] =
     useState<ReactGridLayout.Layouts>(initialLayoutWidgets);
   const [toolbox, setToolbox] = useState<ReactGridLayout.Layouts>(
@@ -66,7 +68,11 @@ export default function StreamEvents(params: { editor?: boolean }) {
     toolboxState: ReactGridLayout.Layouts
   ) => {
     if (!eventsId) {
-      addNotification("Couldn't update widget", "No widget id", "warning");
+      addNotify({
+        title: "Couldn't update widget",
+        message: "No widget id",
+        type: NOTIFICATION_TYPE.WARNING,
+      });
       return;
     }
     setLayoutWidgets(layoutState);

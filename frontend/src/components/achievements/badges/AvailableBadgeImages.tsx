@@ -7,10 +7,10 @@ import {
   useGetBadgesIamgesBasePath,
   useRefetchBadgeData,
 } from "@services";
-import { addErrorNotification, addSuccessNotification } from "@utils";
 import { viteBackendUrl } from "@configs/envVariables";
 import { OnClickBadgeType } from "./types";
 import { Button } from "@components/ui";
+import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 interface AvailableBadgeImagesProps {
   badgesData: GetBagesImagesResponseData;
@@ -95,21 +95,26 @@ function UploadBadgeImageButtons({
 }: UploadBadgeImageButtonsProps) {
   const [showUploadImages, setShowUploadImages] = useState(false);
 
+  const { addNotify } = useNotifications();
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
     uploadBadgesData.badgesImages
   );
 
   useEffect(() => {
     if (success) {
-      addSuccessNotification(success);
+      addNotify({
+        title: "Uploaded badge image",
+        message: success,
+        type: NOTIFICATION_TYPE.SUCCESS,
+      });
       onSuccessCallback();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success]);
 
   useEffect(() => {
-    if (error) addErrorNotification(error);
-  }, [error]);
+    if (error) addNotify({ title: error, type: NOTIFICATION_TYPE.DANGER });
+  }, [addNotify, error]);
 
   return (
     <>
