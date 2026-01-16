@@ -1,9 +1,9 @@
 import { Button } from "@components/ui/button";
+import { Select } from "@components/ui/select";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { AchievementStage, useGetAchievementStages } from "@services";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import Select from "react-select";
 
 interface AchievementStageSelectValue {
   value: string;
@@ -55,18 +55,12 @@ export const SelectAchievementStages = ({
   return (
     <div>
       <Select
-        styles={{
-          option: (styles) => ({ ...styles, color: "black" }),
-        }}
-        value={defaultValue}
+        placeholder="Select stage"
+        defaultValue={defaultValue}
         isSearchable={true}
-        onInputChange={(value, { action }) => {
-          if (action === "input-change") {
-            setSearchInput(value);
-          }
-        }}
+        onChangeSearch={setSearchInput}
         options={options}
-        onChange={(value) => (value ? onChangeSelect(value) : null)}
+        onSelect={(value) => (value ? onChangeSelect(value) : null)}
       />
       <div className="stages-actions">
         <Button variant="secondary" onClick={() => refetchAchievementStages()}>
