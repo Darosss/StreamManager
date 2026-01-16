@@ -1,8 +1,13 @@
 export default function Loading() {
   return (
     <div className="loading-wrapper">
-      Loading
-      <span></span>
+      <div className="loading-content">
+        {"Loading".split("").map((w, index) => (
+          <div key={index} className={w === " " ? "dot" : ""}>
+            {w}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
