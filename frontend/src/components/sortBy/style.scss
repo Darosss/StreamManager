@@ -1,0 +1,17 @@
+.sort-by {
+  display: flex;
+
+  &__content {
+    display: flex;
+    gap: 0.1rem;
+  }
+
+  &__current-search {
+    color: var(--info-text-color);
+  }
+
+  &__button {
+    display: flex;
+    justify-content: space-between;
+  }
+}
