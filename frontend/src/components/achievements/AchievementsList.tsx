@@ -1,12 +1,19 @@
 import NavigateButton from "@components/navigateButton";
 
 import AchievementsListData from "./AchievementsListData";
-import FilterBarAchievements from "./FilterBarAchievements";
-import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
+import {
+  Achievement,
+  fetchAchievementsDefaultParams,
+  useGetAchievements,
+} from "@services";
 import { Error, Loading } from "@components/axiosHelper";
 import EditCreateAchievementModal from "./EditCreateAchievementModal";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
+import Filter, {
+  getPossibleCommonField,
+  Options,
+} from "@components/filter/Filter";
 
 export default function AchievementsList() {
   const queryParams = useQueryParams(fetchAchievementsDefaultParams);
@@ -19,10 +26,17 @@ export default function AchievementsList() {
   if (error) return <Error error={error} />;
   if (isLoading || !achievementsData) return <Loading />;
 
+  const filterOpts: Options<keyof Achievement> = {
+    ...getPossibleCommonField("search_name"),
+    custom_action: { type: "text", placeholder: "Custom Action" },
+  };
+
   return (
-    <>
-      <NavigateButton />
-      <FilterBarAchievements />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "achievementsListPageSize",
@@ -34,6 +48,6 @@ export default function AchievementsList() {
         <AchievementsListData achievements={achievementsData.data} />
       </TableList>
       <EditCreateAchievementModal />
-    </>
+    </div>
   );
 }

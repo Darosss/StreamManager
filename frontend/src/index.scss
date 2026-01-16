@@ -316,3 +316,8 @@ div {
 .hidden {
   visibility: hidden;
 }
+
+.base-header-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}

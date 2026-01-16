@@ -4,9 +4,9 @@ import {
   useGetMessageCategories,
   useEditMessageCategory,
   fetchMessageCategoriesDefaultParams,
+  MessageCategory,
 } from "@services";
 import Modal from "@components/modal";
-import FilterBarCategories from "./filterBarCategories";
 import CategoriesData from "./CategoriesData";
 import CategoriesModalData from "./CategoriesModalData";
 import { Error, Loading } from "@components/axiosHelper";
@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { Options } from "@components/filter/Filter";
 
 export default function MessageCategoriesList() {
   const { addNotify } = useNotifications();
@@ -65,11 +67,17 @@ export default function MessageCategoriesList() {
     dispatch(closeModal());
     dispatch(setEditingId(""));
   };
-
+  const filterOpts: Options<keyof MessageCategory> = {
+    category: { type: "text", placeholder: "Category" },
+    messages: { type: "text", placeholder: "Messages" },
+    privilege: { type: "text", placeholder: "Privilege" },
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarCategories />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
 
       <TableList
         paginationProps={{
@@ -93,6 +101,6 @@ export default function MessageCategoriesList() {
       >
         <CategoriesModalData />
       </Modal>
-    </>
+    </div>
   );
 }

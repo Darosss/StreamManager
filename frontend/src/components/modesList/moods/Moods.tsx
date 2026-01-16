@@ -7,15 +7,17 @@ import {
   useGetMoods,
   useCreateMood,
   useEditMood,
+  Mood,
 } from "@services";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { closeModal, resetMoodState, setEditingId } from "@redux/moodsSlice";
 import { RootStore } from "@redux/store";
-import FilterBarModes from "../filterBarModes";
 import MoodsData from "./MoodsData";
 import MoodModalData from "./MoodModalData";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function Moods() {
   const { addNotify } = useNotifications();
@@ -55,11 +57,15 @@ export default function Moods() {
     dispatch(resetMoodState());
     dispatch(setEditingId(""));
   };
-
+  const filterOpts: Options<keyof Mood> = {
+    ...getPossibleCommonField("search_name"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarModes />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <div className="moods-data-wrapper">
         <CardboxWrapper
           title={"Moods list"}
@@ -81,6 +87,6 @@ export default function Moods() {
       >
         <MoodModalData />
       </Modal>
-    </>
+    </div>
   );
 }

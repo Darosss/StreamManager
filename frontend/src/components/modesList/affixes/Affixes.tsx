@@ -7,15 +7,17 @@ import {
   useGetAffixes,
   useCreateAffix,
   useEditAffix,
+  Affix,
 } from "@services";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { closeModal, resetAffixState, setEditingId } from "@redux/affixesSlice";
 import { RootStore } from "@redux/store";
-import FilterBarModes from "../filterBarModes";
 import AffixModalData from "./AffixModalData";
 import AffixesData from "./AffixesData";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function Affixes() {
   const { addNotify } = useNotifications();
@@ -55,11 +57,15 @@ export default function Affixes() {
     dispatch(resetAffixState());
     dispatch(setEditingId(""));
   };
-
+  const filterOpts: Options<keyof Affix> = {
+    ...getPossibleCommonField("search_name"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarModes />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <CardboxWrapper
         title={"Affixes list"}
         paginationProps={{
@@ -80,6 +86,6 @@ export default function Affixes() {
       >
         <AffixModalData />
       </Modal>
-    </>
+    </div>
   );
 }

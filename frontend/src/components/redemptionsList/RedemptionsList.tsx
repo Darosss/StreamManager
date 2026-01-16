@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
-import FilterBarRedemptions from "./filterBarRedemptions";
 import {
   useGetRedemptions,
   Redemption,
@@ -14,6 +13,8 @@ import SortByParamsButton from "@components/SortByParamsButton";
 import { Error as ErrorHelper, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 interface RedemptionsListProps {
   redemptions: "all" | "session" | "user";
@@ -141,14 +142,23 @@ const RedemptionsDetails = ({ redemptions }: RedemptionsDetailProps) => (
     </tbody>
   </table>
 );
-
+const filterOpts: Options<keyof Redemption> = {
+  ...getPossibleCommonField("search_name"),
+  receiver: { type: "text", placeholder: "Receiver" },
+  ...getPossibleCommonField("start_date"),
+  ...getPossibleCommonField("end_date"),
+  cost: { type: "number", placeholder: "Cost" },
+  message: { type: "text", placeholder: "Message" },
+};
 const Redemptions = ({
   redemptionsData: { data, count, currentPage },
 }: RedemptionsProps) => {
   return (
-    <>
-      <NavigateButton />
-      <FilterBarRedemptions />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "redemptionsListPageSize",
@@ -159,6 +169,6 @@ const Redemptions = ({
       >
         <RedemptionsDetails redemptions={data} />
       </TableList>
-    </>
+    </div>
   );
 };

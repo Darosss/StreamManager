@@ -1,12 +1,17 @@
 import { Link } from "react-router";
 import NavigateButton from "@components/navigateButton";
-import FilterBarSessions from "./filterBarSessions";
-import { fetchStreamSessionsDefaultParams, useGetSessions } from "@services";
+import {
+  fetchStreamSessionsDefaultParams,
+  StreamSession,
+  useGetSessions,
+} from "@services";
 import { DateDifference, DateTooltip } from "@components/dateTooltip";
 import SortByParamsButton from "@components/SortByParamsButton";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function StreamSessions() {
   const searchParams = useQueryParams(fetchStreamSessionsDefaultParams);
@@ -16,11 +21,20 @@ export default function StreamSessions() {
   if (!sessionsData || isLoading) return <Loading />;
 
   const { data, count, currentPage } = sessionsData;
-
+  const filterOpts: Options<keyof StreamSession> = {
+    ...getPossibleCommonField("search_name"),
+    tags: { type: "search", placeholder: "Tags" },
+    categories: { type: "search", placeholder: "Categories" },
+    ...getPossibleCommonField("start_date"),
+    ...getPossibleCommonField("end_date"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarSessions />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "streamSessionPageSize",
@@ -98,6 +112,6 @@ export default function StreamSessions() {
           </tbody>
         </table>
       </TableList>
-    </>
+    </div>
   );
 }

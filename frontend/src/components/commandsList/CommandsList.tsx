@@ -1,6 +1,7 @@
 import Modal from "@components/modal";
 import NavigateButton from "@components/navigateButton";
 import {
+  ChatCommand,
   fetchChatCommandsDefaultParams,
   useCreateChatCommand,
   useEditChatCommand,
@@ -15,11 +16,12 @@ import {
 import { RootStore } from "@redux/store";
 import CommandModalData from "./CommandModalData";
 import CommandsData from "./CommandsData";
-import FilterBarCommands from "./filterBarCommands";
 import { Error, Loading } from "@components/axiosHelper";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function CommandsList() {
   const dispatch = useDispatch();
@@ -65,11 +67,16 @@ export default function CommandsList() {
   };
   if (error) return <Error error={error} />;
   if (isLoading || !commandsData) return <Loading />;
-
+  const filterOpts: Options<keyof ChatCommand> = {
+    ...getPossibleCommonField("search_name"),
+    customId: { type: "search", placeholder: "Custom Id" },
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarCommands />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "commandsListPageSize",
@@ -91,6 +98,6 @@ export default function CommandsList() {
       >
         <CommandModalData />
       </Modal>
-    </>
+    </div>
   );
 }

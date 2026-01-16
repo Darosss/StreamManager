@@ -7,15 +7,17 @@ import {
   useGetTags,
   useCreateTag,
   useEditTag,
+  Tag,
 } from "@services";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { RootStore } from "@redux/store";
 import { resetTagState, closeModal, setEditingId } from "@redux/tagsSlice";
-import FilterBarModes from "../filterBarModes";
 import TagModalData from "./TagModalData";
 import TagsData from "./TagsData";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function Tags() {
   const { addNotify } = useNotifications();
@@ -55,11 +57,15 @@ export default function Tags() {
     dispatch(resetTagState());
     dispatch(setEditingId(""));
   };
-
+  const filterOpts: Options<keyof Tag> = {
+    ...getPossibleCommonField("search_name"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarModes />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <CardboxWrapper
         title={"Tags list"}
         paginationProps={{
@@ -80,6 +86,6 @@ export default function Tags() {
       >
         <TagModalData />
       </Modal>
-    </>
+    </div>
   );
 }

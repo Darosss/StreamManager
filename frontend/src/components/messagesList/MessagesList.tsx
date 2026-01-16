@@ -137,7 +137,7 @@ const MessagesDetails = ({ messages }: MessagesDetailsProp) => (
 const Messages = ({
   messagesData: { data, currentPage, count },
 }: MessagesProps) => {
-  const options: Options<keyof Message> = {
+  const filterOpts: Options<keyof Message> = {
     ...getPossibleCommonField("search_name"),
     owner: { type: "text", placeholder: "Owner" },
     ...getPossibleCommonField("end_date"),
@@ -145,9 +145,9 @@ const Messages = ({
   };
   return (
     <div>
-      <div className="messages-header-wrapper">
+      <div className="base-header-wrapper">
         <NavigateButton />
-        <Filter options={options} />
+        <Filter options={filterOpts} />
       </div>
       <TableList
         paginationProps={{

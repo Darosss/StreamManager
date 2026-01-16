@@ -1,11 +1,11 @@
 import Modal from "@components/modal";
 import NavigateButton from "@components/navigateButton";
-import FilterBarTriggers from "./filterBarTriggers";
 import {
   useGetTriggers,
   useEditTrigger,
   useCreateTrigger,
   fetchTriggersDefaultParams,
+  Trigger,
 } from "@services";
 import TriggersData from "./TriggersData";
 import TriggerModalData from "./TriggerModalData";
@@ -21,6 +21,8 @@ import {
 } from "@redux/triggersSlice";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function TriggersList() {
   const queryParams = useQueryParams(fetchTriggersDefaultParams);
@@ -61,11 +63,19 @@ export default function TriggersList() {
     dispatch(setEditingId(""));
     dispatch(closeModal());
   };
-
+  const filterOpts: Options<keyof Trigger> = {
+    ...getPossibleCommonField("search_name"),
+    words: { type: "search", placeholder: "Words" },
+    messages: { type: "search", placeholder: "Messages" },
+    ...getPossibleCommonField("end_date"),
+    ...getPossibleCommonField("start_date"),
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarTriggers />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "triggersListPageSize",
@@ -86,6 +96,6 @@ export default function TriggersList() {
       >
         <TriggerModalData />
       </Modal>
-    </>
+    </div>
   );
 }

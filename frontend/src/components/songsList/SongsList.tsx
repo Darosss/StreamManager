@@ -6,16 +6,18 @@ import {
   useGetSongs,
   useCreateSong,
   useEditSong,
+  Song,
 } from "@services";
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { resetSongState, closeModal, setEditingId } from "@redux/songsSlice";
 import { RootStore } from "@redux/store";
-import FilterBarSongs from "./filterBarSongs";
 import SongModalData from "./SongModalData";
 import SongsData from "./SongsData";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function SongsList() {
   const queryParams = useQueryParams(fetchSongsDefaultParams);
@@ -54,11 +56,18 @@ export default function SongsList() {
     dispatch(resetSongState());
     dispatch(setEditingId(""));
   };
-
+  const filterOpts: Options<keyof Song> = {
+    ...getPossibleCommonField("search_name"),
+    aliases: { type: "text", placeholder: "Aliases" },
+    messages: { type: "text", placeholder: "Messages" },
+    privilege: { type: "text", placeholder: "Privilege" },
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarSongs />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "songsListPageSize",
@@ -77,6 +86,6 @@ export default function SongsList() {
       >
         <SongModalData />
       </Modal>
-    </>
+    </div>
   );
 }

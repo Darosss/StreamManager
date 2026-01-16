@@ -1,11 +1,11 @@
 import Modal from "@components/modal";
 import NavigateButton from "@components/navigateButton";
-import FilterBarTimers from "./filterBarTimers";
 import {
   useGetTimers,
   useEditTimer,
   useCreateTimer,
   fetchTimersDefaultParams,
+  Timer,
 } from "@services";
 import TimersData from "./TimersData";
 import TimerModalData from "./TimerModalData";
@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Error, Loading } from "@components/axiosHelper";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import Filter from "@components/filter";
+import { Options, getPossibleCommonField } from "@components/filter/Filter";
 
 export default function TimersList() {
   const queryParams = useQueryParams(fetchTimersDefaultParams);
@@ -56,11 +58,16 @@ export default function TimersList() {
     dispatch(setEditingId(""));
     dispatch(closeModal());
   };
-
+  const filterOpts: Options<keyof Timer> = {
+    ...getPossibleCommonField("search_name"),
+    messages: { type: "text", placeholder: "Messages" },
+  };
   return (
-    <>
-      <NavigateButton />
-      <FilterBarTimers />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <Filter options={filterOpts} />
+      </div>
       <TableList
         paginationProps={{
           localStorageName: "timersListPageSize",
@@ -81,6 +88,6 @@ export default function TimersList() {
       >
         <TimerModalData />
       </Modal>
-    </>
+    </div>
   );
 }
