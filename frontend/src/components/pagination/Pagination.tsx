@@ -4,24 +4,25 @@ import { usePagination, DOTS, useLocalStorage } from "@hooks";
 import { useSearchParams } from "react-router";
 
 export interface PaginationProps {
-  totalCount: number;
-  siblingCount: number;
-  currentPage: number;
-  localStorageName: string;
+  totalCount?: number;
+  siblingCount?: number;
+  currentPage?: number;
+  localStorageName?: string;
   className?: string;
 }
 
+const DEFUALT_LOCAL_STORAGE_NAME = "pagination-default";
 export default function Pagination({
-  totalCount,
-  siblingCount,
-  currentPage,
+  totalCount = 1,
+  siblingCount = 1,
+  currentPage = 1,
   localStorageName,
   className,
 }: PaginationProps) {
   const [, setSearchParams] = useSearchParams();
 
   const [pageSizeT, setPageSize] = useLocalStorage<number>(
-    localStorageName,
+    localStorageName || DEFUALT_LOCAL_STORAGE_NAME,
     15
   );
   const [currentPageLoc, setCurrentPageLoc] = useState<number>(currentPage);
@@ -64,7 +65,7 @@ export default function Pagination({
     totalCount,
     pageSizeT,
     siblingCount,
-    currentPage
+    currentPageLoc
   );
 
   const PageSizeSelect = () => {
@@ -117,21 +118,21 @@ export default function Pagination({
   }
 
   const onNext = () => {
-    onPageChangeSearchParam(String(currentPage + 1));
+    onPageChangeSearchParam(String(currentPageLoc + 1));
   };
 
   const onPrevious = () => {
-    onPageChangeSearchParam(String(currentPage - 1));
+    onPageChangeSearchParam(String(currentPageLoc - 1));
   };
 
-  let lastPage = paginationRange[paginationRange.length - 1];
+  const lastPage = paginationRange[paginationRange.length - 1];
 
   return (
     <div className="pagination-wrapper">
       <ul className={`pagination-container ${className || ""}`}>
         <li
           className={`pagination-item ${currentPage === 1 ? "disabled" : ""}`}
-          onClick={() => (currentPage > 1 ? onPrevious() : "")}
+          onClick={() => (currentPageLoc > 1 ? onPrevious() : "")}
         >
           <div className="arrow left" />
         </li>
@@ -162,7 +163,7 @@ export default function Pagination({
           className={`pagination-item ${
             currentPage === lastPage ? "disabled" : ""
           }`}
-          onClick={() => (currentPage < Number(lastPage) ? onNext() : "")}
+          onClick={() => (currentPageLoc < Number(lastPage) ? onNext() : "")}
         >
           <div className="arrow right" />
         </li>
