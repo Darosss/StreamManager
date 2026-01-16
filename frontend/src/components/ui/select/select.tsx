@@ -21,6 +21,7 @@ interface SelectProps {
   className?: string | { overrideAll?: true; value: string };
   onSelect: (option: OptionType) => void;
   onChangeSearch?: (value: string) => void;
+  closeOnSelect?: boolean;
 }
 export default function Select({
   options,
@@ -29,6 +30,7 @@ export default function Select({
   defaultValue,
   isSearchable,
   placeholder,
+  closeOnSelect = true,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<OptionType | null>(
@@ -42,7 +44,7 @@ export default function Select({
   const handleSelect = (option: OptionType) => {
     onSelect(option);
     setSelectedValue(option);
-    setIsOpen(false);
+    if (closeOnSelect) setIsOpen(false);
   };
   const handleClickOutside = (e: MouseEvent) => {
     if (
