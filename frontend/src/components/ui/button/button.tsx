@@ -8,7 +8,7 @@ type ButtonVariant =
 
 type ButtonSize = "small" | "medium" | "large";
 
-interface ButtonProps {
+export interface ButtonProps {
   variant?: ButtonVariant;
   disabled?: boolean;
   size?: ButtonSize;
