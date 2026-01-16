@@ -1,9 +1,10 @@
 import { Button } from "@components/ui/button";
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface ErrorsProps {
   error: unknown;
+  onRefresh?: () => void;
 }
 
 //TODO: replenish these
@@ -11,9 +12,15 @@ enum KnownErrorCodes {
   ERROR_NETWORK = "ERR_NETWORK",
 }
 
-export default function Error({ error }: ErrorsProps) {
-  const [countdown, setCountdown] = useState(15);
-  const [isActiveCountdown, setIsActiveCountdown] = useState(true);
+const MAX_TRIES = 3;
+const DEFAULT_COUNTDOWN = 5;
+
+export default function Error({ error, onRefresh }: ErrorsProps) {
+  const [currentTry, setCurrentTry] = useState(0);
+  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
+  const [isActiveCountdown, setIsActiveCountdown] = useState(
+    currentTry < MAX_TRIES
+  );
 
   useEffect(() => {
     if (
@@ -28,12 +35,19 @@ export default function Error({ error }: ErrorsProps) {
       return () => clearInterval(timer);
     }
   }, [error, isActiveCountdown]);
+  const handleRefresh = useCallback(() => {
+    if (onRefresh) {
+      setCountdown(DEFAULT_COUNTDOWN * (currentTry + 1));
+      setCurrentTry((prevState) => prevState + 1);
+      onRefresh();
+    } else window.location.reload();
+  }, [onRefresh]);
 
   useEffect(() => {
-    if (countdown === 0) {
-      window.location.reload();
-    }
-  }, [countdown]);
+    if (countdown != 0) return;
+
+    handleRefresh();
+  }, [countdown, handleRefresh]);
 
   const stopRefresh = () => {
     setIsActiveCountdown(false);
@@ -46,7 +60,8 @@ export default function Error({ error }: ErrorsProps) {
           <br />
           {isActiveCountdown ? (
             <Button onClick={stopRefresh}>
-              We will automatically try again in {countdown} seconds.
+              {currentTry + 1}/{MAX_TRIES} tries We will automatically try again
+              in {countdown} seconds.
               <div className="hidrr">Stop refreshing</div>
             </Button>
           ) : (
@@ -56,6 +71,9 @@ export default function Error({ error }: ErrorsProps) {
       ) : (
         (error as Error).message || "Unknown error occured :("
       )}
+      <Button variant="tertiary" onClick={handleRefresh}>
+        Refresh manualy
+      </Button>
     </div>
   );
 }
