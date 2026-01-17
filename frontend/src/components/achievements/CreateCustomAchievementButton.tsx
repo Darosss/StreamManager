@@ -26,6 +26,8 @@ export function CreateCustomAchievementButton() {
   return (
     <div>
       <Button
+        size="small"
+        variant="success"
         onClick={() => {
           dispatch(openModal());
 
