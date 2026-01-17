@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type UseLocalStorageReturnType<T> = readonly [
   storedValue: T,
-  setValue: (value: T | ((val: T) => T)) => void
+  setValue: (value: T | ((val: T) => T)) => void,
 ];
 
 export const useLocalStorage = <T = unknown>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): UseLocalStorageReturnType<T> => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === "undefined") {
@@ -28,15 +28,17 @@ export const useLocalStorage = <T = unknown>(
     }
   }, [storedValue, key]);
 
-  const setValue = (value: T | ((val: T) => T)) => {
+  const setValue = useCallback((value: T | ((val: T) => T)) => {
     try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
+      setStoredValue((currentPrevValue) => {
+        const nextValue =
+          value instanceof Function ? value(currentPrevValue) : value;
+        return nextValue;
+      });
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   return [storedValue, setValue] as const;
 };
