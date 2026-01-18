@@ -1,33 +1,81 @@
-import { useMemo } from "react";
+import { useCallback, useEffect } from "react";
 
-import { Link, LinkProps, useLocation } from "react-router";
-import DrawerBar from "@components/drawer";
 import { routes } from "@routes";
 import ChangeTheme from "@components/changeTheme";
 import DiscordInviteButton from "./DiscordInviteButton";
 import SignupButton from "@components/auth";
+import { useLocalStorage } from "@hooks";
+import { Button } from "@components/ui/button";
+import SidebarSection from "./SidebarSection";
 
-interface NavLinkProps extends LinkProps {
-  label: string;
-}
-
-function resetWindowScroll() {
-  window.scroll(0, 0);
-}
+type SidebarStatusLS = {
+  isOpen: boolean;
+  menus: Record<string, boolean>;
+};
 
 export default function SideBar() {
+  const [sidebarStatus, setSidebarStatus] = useLocalStorage<SidebarStatusLS>(
+    "sidebar-status",
+    {
+      isOpen: false,
+      menus: {},
+    },
+  );
+
+  const toggleIsOpen = () => {
+    setSidebarStatus((prevState) => ({
+      ...prevState,
+      isOpen: !prevState.isOpen,
+    }));
+  };
+  const handleHeaderClick = (name: string) => {
+    console.log(name);
+    setSidebarStatus((prevState) => ({
+      ...prevState,
+      menus: {
+        ...prevState.menus,
+        [name]: !prevState.menus[name],
+      },
+    }));
+  };
+  const handleMenuShortcuts = useCallback((ev: KeyboardEvent) => {
+    if (ev.ctrlKey && ev.key === "b") {
+      ev.preventDefault();
+      toggleIsOpen();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleMenuShortcuts);
+    return () => {
+      window.removeEventListener("keydown", handleMenuShortcuts);
+    };
+  }, [handleMenuShortcuts]);
   return (
-    <DrawerBar direction={"right"} size={"15vw"} overlay={true}>
-      <ul className="sidebar-ul">
+    <div className={`sidebar ${!sidebarStatus.isOpen ? "__hidden" : ""}`}>
+      <ul className="sidebar__content">
+        <li>
+          <Button
+            className="sidebar__toggle"
+            variant="secondary"
+            onClick={toggleIsOpen}
+          >
+            {sidebarStatus.isOpen ? "▶" : "◀"}
+          </Button>
+        </li>
         <li>
           <ChangeTheme />
         </li>
-        {routes
-          .map((r) => r.routes.map((r) => ({ ...r })))
-          .flat()
-          .map((route, index) => (
-            <NavLink key={index} to={route.path} label={route.label} />
-          ))}
+        {routes.map((route, index) => (
+          <li key={index} className="sidebar__sub-sidebar">
+            <SidebarSection
+              route={route}
+              onClickHeader={() => handleHeaderClick(route.title)}
+              isExpanded={sidebarStatus.menus[route.title]}
+              isOpen={sidebarStatus.isOpen}
+            />
+          </li>
+        ))}
 
         <li>
           <SignupButton />
@@ -36,35 +84,6 @@ export default function SideBar() {
           <DiscordInviteButton />
         </li>
       </ul>
-    </DrawerBar>
+    </div>
   );
 }
-
-const NavLink = ({ label, ...restProps }: NavLinkProps) => {
-  const location = useLocation();
-  function handleClick() {
-    resetWindowScroll();
-  }
-
-  const isUserOnThisSite = useMemo(() => {
-    const restPropsToString = restProps.to.toString();
-    return (
-      restPropsToString.length > 1 &&
-      location.pathname.includes(restPropsToString)
-    );
-  }, [restProps.to, location.pathname]);
-
-  return (
-    <li>
-      <Link
-        {...restProps}
-        className={`common-button ${
-          isUserOnThisSite ? "secondary-button" : "primary-button"
-        }`}
-        onClick={handleClick}
-      >
-        {label}
-      </Link>
-    </li>
-  );
-};

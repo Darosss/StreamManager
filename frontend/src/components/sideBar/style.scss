@@ -1,40 +1,76 @@
-.sidebar-ul {
-  list-style: none;
-  font-size: 1.7vmin;
-  margin: 0;
-  padding: 1vw;
-  position: relative;
-  max-height: 90dvh;
-  overflow-x: hidden;
+.sidebar {
+  background-color: var(--background-color-darker);
+  display: flex;
+  width: max-content;
+  max-width: 15vw;
+  transition:
+    max-width 1.2s ease-out,
+    padding 3s ease-in;
+  overflow: hidden;
+  &__sub-sidebar {
+    ul {
+      list-style: none;
+      padding-inline: 0.05rem;
+    }
+  }
+  &.__hidden {
+    max-width: 5vw;
+    min-width: 5vw;
+    @media screen and (max-width: $screen-md) {
+      max-width: 15vw;
+      min-width: 15vw;
+    }
+    @media screen and (max-width: $screen-lg) {
+      max-width: 10vw;
+      min-width: 10vw;
+    }
 
-  li {
-    margin: 0.1rem;
-    a,
-    button {
-      display: flex;
-      width: 100%;
-      text-align: center;
-      height: 5vh;
+    .nav-link {
+      a {
+        padding: 0;
+        justify-content: center;
+        font-size: 1em;
+      }
+    }
+  }
+  &__content {
+    list-style: none;
+    font-size: 1.7vmin;
+    margin: 0;
+    padding: 1vw;
+    position: relative;
+    max-height: 90dvh;
+    overflow-x: hidden;
+
+    li {
+      margin: 0.1rem;
+      a,
+      button {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        height: 4vh;
+      }
     }
   }
 }
 
-@media screen and (max-width: $screen-md) {
-  .sidebar-ul {
-    font-size: 4vw;
-  }
-
-  .connect-twitch {
-    font-size: 4vw;
-  }
-}
-
-@media screen and (max-width: $screen-lg) {
-  .sidebar-ul {
-    font-size: 3vw;
-  }
-
-  .connect-twitch {
-    font-size: 3vw;
+.nav-link {
+  padding: 0;
+  button a {
+    display: flex;
+    font-size: 0.7em;
+    flex-grow: 1;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: start;
+    gap: 0.2rem;
+    align-items: center;
+    @media screen and (max-width: $screen-md) {
+      font-size: 1em;
+    }
+    @media screen and (max-width: $screen-lg) {
+      font-size: 0.6em;
+    }
   }
 }
