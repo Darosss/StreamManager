@@ -27,31 +27,24 @@ const UserRoutes = lazy(() => import("./UserRoute"));
 const OverlayRoutes = lazy(() => import("./OverlayRoute"));
 const AchievementsRoutes = lazy(() => import("./AchievementsRoute"));
 
-const DefaultRouteLayout = () => {
-  return (
-    <div className="main-other">
-      <SideBar />
+const DefaultRouteLayout = () => (
+  <div className="main-content">
+    <Outlet />
+    <SideBar />
+  </div>
+);
 
-      <Outlet />
-    </div>
-  );
-};
+const HomeLayout = () => (
+  <div className="main-content">
+    <Outlet />
+  </div>
+);
 
-const HomeLayout = () => {
-  return (
-    <div className="main-other">
-      <Outlet />
-    </div>
-  );
-};
-
-const OverlayLayout = () => {
-  return (
-    <div className="main-overlay">
-      <Outlet />
-    </div>
-  );
-};
+const OverlayLayout = () => (
+  <div className="main-overlay">
+    <Outlet />
+  </div>
+);
 
 export const allRoutes = createBrowserRouter(
   createRoutesFromElements(
@@ -88,6 +81,6 @@ export const allRoutes = createBrowserRouter(
         <Route path="/configs/*" element={<ConfigRoutes />} />
         <Route path="/*" element={<>Not found</>} />
       </Route>
-    </Route>
-  )
+    </Route>,
+  ),
 );
