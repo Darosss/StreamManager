@@ -34,7 +34,7 @@ export default function UserProfile() {
   const handleSaveNote = () => {
     editUserMutation.mutate(
       { id: userId, updatedUser: { notes: notes.split("\n") } },
-      { onSuccess: () => setIsEditingNotes(false) }
+      { onSuccess: () => setIsEditingNotes(false) },
     );
   };
 
@@ -46,7 +46,7 @@ export default function UserProfile() {
   if (!userData || !msgsData || msgLoading || isLoading) return <Loading />;
   const { data } = userData;
   return (
-    <>
+    <div>
       <HelmetTitle title={data.username + " profile" || "User profile"} />
       <NavigateButton />
       <div className="profile-details-wrapper">
@@ -156,6 +156,6 @@ export default function UserProfile() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

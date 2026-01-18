@@ -5,11 +5,15 @@
 }
 
 @mixin hover-lift {
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition:
+    transform $transition-normal,
+    box-shadow $transition-normal;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-color);
+    box-shadow:
+      0 12px 24px rgba(0, 0, 0, 0.4),
+      0 0 20px var(--primary-color);
   }
 }
 
@@ -17,7 +21,7 @@ $home-header-height: 9vh;
 
 .home-wrapper {
   position: relative;
-
+  width: 100%;
   min-height: 100vh;
 
   overflow-x: hidden;

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 export default function Achievements() {
   return (
-    <>
+    <div>
       <NavigateButton />
       <div className="achievements-links-wrapper">
         <div>
@@ -22,6 +22,6 @@ export default function Achievements() {
           <Link to="stages/sounds"> Stages sounds </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }
