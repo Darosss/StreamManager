@@ -1,6 +1,5 @@
 import "./style.scss";
 
-import Achievements from "./Achievements";
 import AchievementsList from "./AchievementsList";
 import { BadgesList, BadgesImages } from "./badges";
 import { AchievementStagesList } from "./stages";
@@ -14,4 +13,3 @@ export {
   OneAchievementStageData,
   BadgesImages,
 };
-export default Achievements;

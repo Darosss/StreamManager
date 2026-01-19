@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router";
 import ComponentWithTitle from "@components/componentWithTitle";
-import Achievements, {
+import {
   AchievementsList,
   BadgesList,
   AchievementStagesList,
@@ -12,15 +12,6 @@ import Achievements, {
 export default function AchievementsRoutes() {
   return (
     <Routes>
-      <Route
-        index
-        element={
-          <ComponentWithTitle
-            title="Achievements menu"
-            component={<Achievements />}
-          />
-        }
-      />
       <Route
         path="list"
         element={
