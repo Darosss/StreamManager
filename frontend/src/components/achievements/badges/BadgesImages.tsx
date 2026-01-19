@@ -23,19 +23,19 @@ export default function BadgesImages() {
     error,
   } = useGetBadgesImages();
   const [choosenBadge, setChoosenBadge] = useState<OnClickBadgeType | null>(
-    null
+    null,
   );
   const deleteBadgeMutation = useDeleteBadgeImage();
   const handleDeleteBadge = () => {
     if (
       !choosenBadge ||
       !window.confirm(
-        `Are you sure you want to delete the badge: ${choosenBadge.badgeName}.${choosenBadge.badgeExtension}?`
+        `Are you sure you want to delete the badge: ${choosenBadge.badgeName}.${choosenBadge.badgeExtension}?`,
       )
     )
       return;
     deleteBadgeMutation.mutate(
-      `${choosenBadge?.badgeName}${choosenBadge?.badgeExtension}`
+      `${choosenBadge?.badgeName}${choosenBadge?.badgeExtension}`,
     );
   };
   const handleOnClickBadgeImage = (data: OnClickBadgeType) => {
@@ -54,14 +54,16 @@ export default function BadgesImages() {
 
   return (
     <>
-      <NavigateButton />
-      <AvailableBadgeImages
-        onClickBadge={(data) => {
-          handleOnClickBadgeImage(data);
-        }}
-        badgesData={badgeImagesResponseData.data}
-        showNames={true}
-      />
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <AvailableBadgeImages
+          onClickBadge={(data) => {
+            handleOnClickBadgeImage(data);
+          }}
+          badgesData={badgeImagesResponseData.data}
+          showNames={true}
+        />
+      </div>
 
       <Modal
         title={`Badge image ${choosenBadge?.badgeName}`}
@@ -86,7 +88,7 @@ export default function BadgesImages() {
                         />
                       </div>
                     </React.Fragment>
-                  )
+                  ),
                 )}
             </div>
             <div>

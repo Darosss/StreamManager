@@ -46,14 +46,16 @@ export default function AchievementStagesSounds() {
 
   return (
     <>
-      <NavigateButton />
-      <AvailableAchievementSounds
-        soundPaths={stagesSoundResponseData.data}
-        onClickRefresh={refetch}
-        onClickSound={({ soundName }) => {
-          handleOnClickSoundName(soundName);
-        }}
-      />
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <AvailableAchievementSounds
+          soundPaths={stagesSoundResponseData.data}
+          onClickRefresh={refetch}
+          onClickSound={({ soundName }) => {
+            handleOnClickSoundName(soundName);
+          }}
+        />
+      </div>
 
       <Modal
         title={`Achievement stage sound ${choosenSound}`}
