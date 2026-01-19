@@ -15,6 +15,7 @@ export const routes = [
       { path: "/messages", label: "Messages", icon: "💬" },
       { path: "/message-categories", label: "Categories", icon: "📁" },
       { path: "/events", label: "Events", icon: "⚡" },
+      { path: "/songs", label: "Songs", icon: "🎵" },
     ],
   },
   {
@@ -26,12 +27,24 @@ export const routes = [
       { path: "/modes/tags", label: "Tags", icon: "🔖" },
     ],
   },
+
   {
-    title: "Media",
-    description: "Content and achievements",
+    title: "Achievements",
+    description: "Achievement  based",
     routes: [
-      { path: "/achievements", label: "Achievements", icon: "🏆" },
-      { path: "/songs", label: "Songs", icon: "🎵" },
+      { path: "/achievements/list", label: "Achievements", icon: "🏆" },
+      { path: "/achievements/badges", label: "Badges", icon: "🥇" },
+      {
+        path: "/achievements/badges/images",
+        label: "Badges Images",
+        icon: "📷",
+      },
+      { path: "/achievements/stages", label: "Stages", icon: "📂" },
+      {
+        path: "/achievements/stages/sounds",
+        label: "Stages sounds",
+        icon: "🎵",
+      },
     ],
   },
   {
