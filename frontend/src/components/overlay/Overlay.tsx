@@ -48,7 +48,7 @@ export default function Overlay(params: { editor?: boolean }) {
   const { isEditor, overlay: overlayState } = overlaysStateRedux;
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState(
-    getInitialCurrentBreakpoint()
+    getInitialCurrentBreakpoint(),
   );
   const editOverlayMutation = useEditOverlay();
 
@@ -97,7 +97,7 @@ export default function Overlay(params: { editor?: boolean }) {
 
   const handleOnEditOverlay = (
     layoutState: ReactGridLayout.Layouts,
-    toolboxState: ReactGridLayout.Layouts
+    toolboxState: ReactGridLayout.Layouts,
   ) => {
     if (!overlayId) {
       addNotify({
@@ -121,10 +121,10 @@ export default function Overlay(params: { editor?: boolean }) {
     <div>
       <HelmetTitle title={"Overlay " + overlayState.name} />
       {editor ? (
-        <>
+        <div className="overlay-editor-actions-wrapper">
           <StyleCSSEditor />
           <PreviewImageSelector />
-        </>
+        </div>
       ) : null}
       <ReactGrid
         layoutName={overlayState.name}
@@ -133,7 +133,7 @@ export default function Overlay(params: { editor?: boolean }) {
         currentBreakpointState={[currentBreakpoint, setCurrentBreakpoint]}
         componentsMap={components}
         onEdit={handleOnEditOverlay}
-        showDrawer={isEditor}
+        showMenu={isEditor}
       />
     </div>
   );

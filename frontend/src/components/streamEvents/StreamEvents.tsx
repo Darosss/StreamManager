@@ -40,10 +40,10 @@ export default function StreamEvents(params: { editor?: boolean }) {
   const [layoutWidgets, setLayoutWidgets] =
     useState<ReactGridLayout.Layouts>(initialLayoutWidgets);
   const [toolbox, setToolbox] = useState<ReactGridLayout.Layouts>(
-    initialToolboxWidgets
+    initialToolboxWidgets,
   );
   const [currentBreakpoint, setCurrentBreakpoint] = useState(
-    getInitialCurrentBreakpoint()
+    getInitialCurrentBreakpoint(),
   );
 
   const updateWidgetMutation = useEditWidget();
@@ -65,7 +65,7 @@ export default function StreamEvents(params: { editor?: boolean }) {
   if (!widgetData || isLoading) return <Loading />;
   const handleUpdateWidget = (
     layoutState: ReactGridLayout.Layouts,
-    toolboxState: ReactGridLayout.Layouts
+    toolboxState: ReactGridLayout.Layouts,
   ) => {
     if (!eventsId) {
       addNotify({
@@ -92,7 +92,7 @@ export default function StreamEvents(params: { editor?: boolean }) {
         currentBreakpointState={[currentBreakpoint, setCurrentBreakpoint]}
         componentsMap={components}
         onEdit={handleUpdateWidget}
-        showDrawer={editor}
+        showMenu={editor}
       ></ReactGrid>
     </div>
   );

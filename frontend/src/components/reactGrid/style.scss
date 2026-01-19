@@ -1,3 +1,77 @@
+.grid-menu--actions-wrapper {
+  position: absolute;
+  bottom: 0;
+  padding: 0.3rem;
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+  background: var(--primary-color);
+}
+
+.grid-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    color: var(--warning-text-color);
+    font-weight: bold;
+  }
+
+  &__header {
+    justify-content: space-between;
+  }
+  &__edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    font-size: 2vmin;
+    color: var(--primary-color);
+  }
+  &__info-wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+  & > div {
+    padding: 0.5rem;
+    box-shadow: 1px 1px 1px 1px var(--background-color-darker);
+    text-align: center;
+  }
+
+  &__toolbox {
+    .grid-toolbox {
+      display: flex;
+      flex-wrap: wrap;
+      height: 50%;
+      overflow-x: hidden;
+    }
+
+    .grid-toolbox-title {
+      text-align: center;
+      top: 0;
+    }
+
+    .grid-toolbox-items {
+      display: flex;
+      flex-wrap: wrap;
+
+      .grid-items-item {
+        background: var(--warning-color);
+        overflow-x: auto;
+        box-shadow: 1px 1px 1px 1px var(--background-color-darker);
+        padding: 0.3rem;
+        border-radius: 0.5rem;
+
+        &:hover {
+          cursor: pointer;
+          background: var(--info-color);
+        }
+      }
+    }
+  }
+}
+
 .react-grid-item {
   &.react-grid-item-edit {
     border: 0.1rem solid var(--danger-color);
@@ -26,75 +100,6 @@
     width: 100%;
     text-align: center;
     background-color: rgba(28, 28, 15, 0.645);
-  }
-}
-
-.grid-menu-drawer {
-  display: flex;
-  margin-top: 0.5rem;
-
-  .grid-edit-save {
-    display: flex;
-    align-items: center;
-    font-size: 2vmin;
-    color: var(--primary-color);
-
-    & > div {
-      flex: 1 1 30%;
-    }
-  }
-
-  .grid-header-drawer {
-    font-size: 2vmin;
-
-    & > span {
-      color: var(--info-color);
-      font-weight: 700;
-    }
-  }
-
-  & > div {
-    margin-left: 0.5rem;
-    width: 50%;
-    border: 1px solid black;
-    text-align: center;
-  }
-
-  button {
-    font-size: 2vmin;
-  }
-
-  .grid-menu-drawer-toolbox {
-    .grid-toolbox {
-      display: flex;
-      flex-wrap: wrap;
-      height: 50%;
-      overflow-x: hidden;
-    }
-
-    .grid-toolbox-title {
-      text-align: center;
-      top: 0;
-    }
-
-    .grid-toolbox-items {
-      display: flex;
-      margin: 0.2rem;
-      flex-wrap: wrap;
-
-      .grid-items-item {
-        background-color: var(--background-color);
-        width: 49%;
-        overflow-x: auto;
-        border: 0.1rem solid black;
-        flex: 1 0 49%;
-
-        &:hover {
-          cursor: pointer;
-          background-color: var(--primary-color);
-        }
-      }
-    }
   }
 }
 

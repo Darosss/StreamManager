@@ -1,13 +1,13 @@
-import DrawerBar from "@components/drawer";
 import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
 import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
 import { Button } from "@components/ui/button";
+import Modal from "@components/modal";
 
 type CurrentBreakpointState = [
   string,
-  React.Dispatch<React.SetStateAction<string>>
+  React.Dispatch<React.SetStateAction<string>>,
 ];
 
 interface ReactGridProps {
@@ -18,9 +18,9 @@ interface ReactGridProps {
   componentsMap: Map<string, () => JSX.Element | null>;
   onEdit: (
     layout: ReactGridLayout.Layouts,
-    toolbox: ReactGridLayout.Layouts
+    toolbox: ReactGridLayout.Layouts,
   ) => void;
-  showDrawer?: boolean;
+  showMenu?: boolean;
 }
 
 export default function ReactGrid({
@@ -30,7 +30,7 @@ export default function ReactGrid({
   currentBreakpointState,
   componentsMap,
   onEdit,
-  showDrawer = true,
+  showMenu = true,
 }: ReactGridProps) {
   const [layout, setLayout] = useState(layoutState);
   const [toolbox, setToolbox] = useState(toolboxState);
@@ -47,7 +47,7 @@ export default function ReactGrid({
         })),
       }));
     },
-    [currentBreakpoint]
+    [currentBreakpoint],
   );
   const toggleEdit = useCallback(() => {
     setEditableInLayout(isEdit);
@@ -56,6 +56,7 @@ export default function ReactGrid({
       return !prevState;
     });
   }, [isEdit, setEditableInLayout]);
+
   useEffect(() => {
     const keyboardSave = (e: KeyboardEvent) => {
       console.log(e, e.ctrlKey, e.code);
@@ -86,7 +87,7 @@ export default function ReactGrid({
 
   const ResponsiveReactGridLayout = useMemo(
     () => WidthProvider(Responsive),
-    []
+    [],
   );
 
   const onLayoutChange = (currLayout: ReactGridLayout.Layout[]) => {
@@ -114,7 +115,7 @@ export default function ReactGrid({
     setLayout((prevLayout) => ({
       ...prevLayout,
       [currentBreakpoint]: prevLayout[currentBreakpoint].filter(
-        ({ i }) => i !== item.i
+        ({ i }) => i !== item.i,
       ),
     }));
   };
@@ -123,7 +124,7 @@ export default function ReactGrid({
     setToolbox((prevToolbox) => ({
       ...prevToolbox,
       [currentBreakpoint]: prevToolbox[currentBreakpoint].filter(
-        ({ i }) => i !== item.i
+        ({ i }) => i !== item.i,
       ),
     }));
 
@@ -161,8 +162,8 @@ export default function ReactGrid({
 
   return (
     <div>
-      {showDrawer ? (
-        <LayoutDrawerBar
+      {showMenu ? (
+        <LayoutMenuActions
           layoutName={layoutName}
           toolbox={toolbox}
           currentBreakpoint={currentBreakpoint}
@@ -229,7 +230,7 @@ const ToolBoxItem = (props: {
   );
 };
 
-function LayoutDrawerBar(props: {
+function LayoutMenuActions(props: {
   layoutName: string;
   toolbox: ReactGridLayout.Layouts;
   currentBreakpoint: string;
@@ -238,6 +239,7 @@ function LayoutDrawerBar(props: {
   toggleEdit: () => void;
   editFn: () => void;
 }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     layoutName,
     toolbox,
@@ -249,38 +251,51 @@ function LayoutDrawerBar(props: {
   } = props;
 
   return (
-    <DrawerBar direction={"top"} size={120} sticky={true} overlay={false}>
-      <div className="grid-menu-drawer">
-        <div className="grid-menu-drawer-toolbox">
-          <ToolBox
-            items={toolbox[currentBreakpoint] || []}
-            onTakeItem={onTakeItem}
-          />
-        </div>
-        <div>
-          <div className="grid-header-drawer">
-            <NavigateButton /> <span>{layoutName}</span> grid
-          </div>
-
-          <div className="grid-edit-save">
-            <div> Breakpoint: {currentBreakpoint}</div>
-
-            <div>
-              <Button
-                variant={isEdit ? "danger" : "primary"}
-                onClick={toggleEdit}
-              >
-                Turn edit {isEdit ? "off" : "on"}
-              </Button>
-            </div>
-            <div>
-              <Button variant="success" onClick={editFn}>
-                Save
-              </Button>
-            </div>
-          </div>
-        </div>
+    <>
+      <div className="grid-menu--actions-wrapper">
+        <Button onClick={() => setIsMenuOpen(true)}> Menu </Button>
       </div>
-    </DrawerBar>
+      <Modal
+        title="Overlay actions"
+        show={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      >
+        <div className="grid-menu">
+          <div className="base-header-wrapper grid-menu__header">
+            <NavigateButton />
+            <div className="grid-menu__edit-actions">
+              <div>
+                <Button
+                  variant={isEdit ? "danger" : "primary"}
+                  onClick={toggleEdit}
+                >
+                  Turn edit {isEdit ? "off" : "on"}
+                </Button>
+              </div>
+              <div>
+                <Button variant="success" onClick={editFn}>
+                  Save
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="grid-menu__info-wrapper">
+            <div>
+              Name: <span>{layoutName}</span>
+            </div>{" "}
+            <div>
+              Current breakpoint: <span>{currentBreakpoint}</span>
+            </div>
+          </div>
+
+          <div className="grid-menu__toolbox">
+            <ToolBox
+              items={toolbox[currentBreakpoint] || []}
+              onTakeItem={onTakeItem}
+            />
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
