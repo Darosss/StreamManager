@@ -41,7 +41,7 @@ export default function MessagesList({ messages }: MessagesListProps) {
         <ErrorHelper
           error={
             new Error(
-              "Session id must be provided in order to get session messages"
+              "Session id must be provided in order to get session messages",
             )
           }
         />
@@ -83,7 +83,7 @@ const MessagesSession = ({ sessionId }: MessagesSessionProps) => {
   const queryParams = useQueryParams(fetchMessagesDefaultParams);
   const { data, isLoading, error } = useGetSessionMessages(
     sessionId,
-    queryParams
+    queryParams,
   );
   if (error) return <ErrorHelper error={error} />;
   if (!data || isLoading) return <Loading />;
@@ -93,7 +93,6 @@ const MessagesSession = ({ sessionId }: MessagesSessionProps) => {
 
 const MessagesAll = () => {
   const queryParams = useQueryParams(fetchMessagesDefaultParams);
-  console.log(queryParams, "jakie?");
   const { data, isLoading, error } = useGetMessages(queryParams);
   if (error) return <ErrorHelper error={error} />;
   if (!data || isLoading) return <Loading />;
