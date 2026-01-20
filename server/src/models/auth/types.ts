@@ -3,7 +3,9 @@ import { Document } from "mongoose";
 export interface AuthModel {
   _id: string;
   accessToken: string;
+  authTag: Buffer;
   ivAccessToken: Buffer;
+  authTagRefreshToken: Buffer;
   refreshToken: string;
   ivRefreshToken: Buffer;
   expiresIn: number;

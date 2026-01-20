@@ -123,8 +123,13 @@ const init = async (token: AuthModel) => {
 };
 
 const initializeAuthToken = async (token: AuthModel) => {
-  const decryptedAccessToken = decryptToken(token.accessToken, token.ivAccessToken, encryptionKey);
-  const decryptedRefreshToken = decryptToken(token.refreshToken, token.ivRefreshToken, encryptionKey);
+  const decryptedAccessToken = decryptToken(token.accessToken, token.ivAccessToken, token.authTag, encryptionKey);
+  const decryptedRefreshToken = decryptToken(
+    token.refreshToken,
+    token.ivRefreshToken,
+    token.authTagRefreshToken,
+    encryptionKey
+  );
 
   const authProvider = new RefreshingAuthProvider({
     clientId,
