@@ -66,7 +66,7 @@ export const deleteDirectory = (
   callback: (message: string) => void,
   errorCB: (errorMsg: string) => void
 ) => {
-  fs.rmdir(pathToDir, { recursive: true }, (err) => {
+  fs.rm(pathToDir, { recursive: true }, (err) => {
     if (err) {
       console.error(err);
       errorCB("Failed to delete folder");
