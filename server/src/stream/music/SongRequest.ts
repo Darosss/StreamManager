@@ -1,5 +1,5 @@
 import { SongProperties, SongType } from "@socket";
-import youtubeMusic from "./YoutubeMusic";
+import youtubeMusic, { YoutubeMusic } from "./YoutubeMusic";
 import { MusicType } from "./enums";
 import { ConfigModel, SongsModel } from "@models";
 import { ConfigManager } from "../ConfigManager";
@@ -9,7 +9,6 @@ import { getOneSong, updateSongUsesById } from "@services";
 import fs from "fs";
 import { publicEndpointPath } from "@configs";
 import path from "path";
-import ytdl from "@distube/ytdl-core";
 import { musicLogger } from "@utils";
 
 export type SongRequestListType = [string, SongProperties] | null;
@@ -164,7 +163,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
   }
 
   private async _handleOnNoDbSongYT(songName: string): Promise<CommonSongHandlersReturnData> {
-    const isYtId = ytdl.validateID(songName);
+    const isYtId = YoutubeMusic.validateYtId(songName);
     const data = await youtubeMusic.handleYoutubeSongLogic(
       isYtId ? { youtubeId: songName } : { searchQuery: songName }
     );

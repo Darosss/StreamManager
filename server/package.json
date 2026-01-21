@@ -19,11 +19,11 @@
   "author": "Darosss",
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.12",
     "@twurple/api": "^7.0.3",
     "@twurple/eventsub-http": "^7.0.3",
     "@twurple/eventsub-ws": "^7.0.3",
     "@twurple/pubsub": "^7.0.3",
+    "bgutils-js": "^3.2.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -32,6 +32,8 @@
     "express": "^5.1.0",
     "get-audio-duration": "^4.0.1",
     "googleapis": "^118.0.0",
+    "googlevideo": "^4.0.4",
+    "jsdom": "^27.4.0",
     "module-alias": "^2.2.2",
     "moment": "^2.29.4",
     "mongoose": "^8.15.0",
@@ -41,6 +43,7 @@
     "tmi.js": "^1.8.5",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1",
+    "youtubei.js": "^16.0.1",
     "zod": "^4.3.5"
   },
   "devDependencies": {
@@ -48,6 +51,7 @@
     "@babel/preset-env": "^7.28.6",
     "@babel/preset-typescript": "^7.28.5",
     "@types/express": "^5.0.6",
+    "@types/jsdom": "^27.0.0",
     "@types/multer": "^1.4.7",
     "@types/node": "^25.0.9",
     "@types/supertest": "^6.0.3",
