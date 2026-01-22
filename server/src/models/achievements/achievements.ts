@@ -51,8 +51,7 @@ const AchivementSchema: Schema<AchievementDocument> = new Schema(
   },
   { timestamps: true }
 );
-
-const AchievementUserProgressSchema: Schema<AchievementUserProgressDocument> = new Schema(
+const AchievementUserProgressSchema = new Schema<AchievementUserProgressDocument>(
   {
     userId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
     achievement: { type: Schema.Types.ObjectId, required: true, ref: "Achievement" },

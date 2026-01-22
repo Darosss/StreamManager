@@ -1,9 +1,9 @@
 import { Message, MessageDocument } from "@models";
 import { handleAppError, logger } from "@utils";
-import { FilterQuery } from "mongoose";
+import { QueryFilter } from "mongoose";
 import { ManyMessageFindOptions, MessageCreateData } from "./types";
 
-export const getMessages = async (filter: FilterQuery<MessageDocument> = {}, findOptions: ManyMessageFindOptions) => {
+export const getMessages = async (filter: QueryFilter<MessageDocument> = {}, findOptions: ManyMessageFindOptions) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate = [] } = findOptions;
   try {
     const messages = await Message.find(filter)
@@ -29,7 +29,7 @@ export const createMessage = async (createData: MessageCreateData) => {
   }
 };
 
-export const getMessagesCount = async (filter: FilterQuery<MessageDocument>) => {
+export const getMessagesCount = async (filter: QueryFilter<MessageDocument>) => {
   return await Message.countDocuments(filter);
 };
 

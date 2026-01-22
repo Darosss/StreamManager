@@ -1,5 +1,5 @@
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import mongoose, { FilterQuery, UpdateQuery } from "mongoose";
+import mongoose, { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import {
   CreateSongReturn,
   ManageSongLikesAction,
@@ -13,7 +13,7 @@ import {
 import { SongsDocument, Songs, UserModel } from "@models";
 import { getUserById } from "@services";
 
-export const getSongs = async (filter: FilterQuery<SongsDocument> = {}, findOptions: ManySongsFindOptions) => {
+export const getSongs = async (filter: QueryFilter<SongsDocument> = {}, findOptions: ManySongsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: 1 }, select = { __v: 0 }, populate = [] } = findOptions;
 
   try {
@@ -31,7 +31,7 @@ export const getSongs = async (filter: FilterQuery<SongsDocument> = {}, findOpti
   }
 };
 
-export const getSongsCount = async (filter: FilterQuery<SongsDocument> = {}) => {
+export const getSongsCount = async (filter: QueryFilter<SongsDocument> = {}) => {
   return await Songs.countDocuments(filter);
 };
 
@@ -52,7 +52,7 @@ export const createSong = async (createData: SongsCreateData): Promise<CreateSon
   );
 
   if (foundSong) {
-    const updatedSong = await updateSongById(foundSong._id, createData);
+    const updatedSong = await updateSongById(foundSong._id.toString(), createData);
     return { isNew: false, song: updatedSong! };
   }
 
@@ -80,13 +80,11 @@ export const createSong = async (createData: SongsCreateData): Promise<CreateSon
 };
 
 export const updateSongs = async (
-  filter: FilterQuery<SongsDocument> = {},
+  filter: QueryFilter<SongsDocument> = {},
   updateData: UpdateQuery<SongsUpdateData>
 ) => {
   try {
-    await Songs.updateMany(filter, updateData, {
-      new: true
-    });
+    await Songs.updateMany(filter, updateData);
   } catch (err) {
     logger.error(`Error occured while updating many songs. ${err}`);
     handleAppError(err);
@@ -145,9 +143,9 @@ export const deleteSongById = async (id: string) => {
   }
 };
 
-export const getSongById = async (id: string, filter: FilterQuery<SongsDocument> = {}) => {
+export const getSongById = async (id: string, projection: ProjectionType<SongsDocument> = {}) => {
   try {
-    const foundSong = await Songs.findById(id, filter);
+    const foundSong = await Songs.findById(id, projection);
 
     const songs = checkExistResource(foundSong, `Song with id(${id})`);
 
@@ -158,7 +156,7 @@ export const getSongById = async (id: string, filter: FilterQuery<SongsDocument>
   }
 };
 
-export const getOneSong = async (filter: FilterQuery<SongsDocument> = {}, findOptions?: SongsFindOptions) => {
+export const getOneSong = async (filter: QueryFilter<SongsDocument> = {}, findOptions?: SongsFindOptions) => {
   const { populate = [], select = { __v: 0 } } = findOptions || {};
   try {
     const foundSong = await Songs.findOne(filter).select(select).populate(populate);

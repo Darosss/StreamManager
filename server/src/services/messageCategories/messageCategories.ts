@@ -1,7 +1,7 @@
 import { modesPipeline, getLeastMessagePipeline } from "../aggregations";
 import { MessageCategory, MessageCategoryDocument, MessageCategoryModel } from "@models";
 import { handleAppError, checkExistResource, logger, randomWithMax } from "@utils";
-import mongoose, { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
+import mongoose, { QueryFilter, PipelineStage, UpdateQuery } from "mongoose";
 import {
   ManyMessageCategoriesFindOptions,
   MessageCategoryCreateData,
@@ -10,7 +10,7 @@ import {
 } from "./types";
 
 export const getMessageCategories = async (
-  filter: FilterQuery<MessageCategoryModel> = {},
+  filter: QueryFilter<MessageCategoryDocument> = {},
   findOptions: ManyMessageCategoriesFindOptions
 ) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate = [] } = findOptions;
@@ -29,7 +29,7 @@ export const getMessageCategories = async (
   }
 };
 
-export const getMessageCategoriesCount = async (filter: FilterQuery<MessageCategoryModel>) => {
+export const getMessageCategoriesCount = async (filter: QueryFilter<MessageCategoryDocument>) => {
   const count = await MessageCategory.countDocuments(filter);
   return count;
 };

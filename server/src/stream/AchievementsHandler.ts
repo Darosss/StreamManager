@@ -23,7 +23,9 @@ import { randomUUID } from "crypto";
 import {
   AchievementCustomModel,
   AchievementModel,
+  AchievementStageModel,
   AchievementUserProgressModel,
+  AchievementWithBadgePopulated,
   BadgeModel,
   ConfigModel,
   CustomAchievementAction,
@@ -87,8 +89,10 @@ interface CheckUserSubscribeGiftsForAchievementsParams extends Omit<CheckGlobalU
 }
 type IncrementCommandAchievementsArgs = Pick<CheckMessageForAchievement, "userId" | "username">;
 
-interface AddAchievementProgressDataToQueueData
-  extends Omit<GetDataForObtainAchievementEmitReturnData, "stages" | "gainedProgress"> {
+interface AddAchievementProgressDataToQueueData extends Omit<
+  GetDataForObtainAchievementEmitReturnData,
+  "stages" | "gainedProgress"
+> {
   gainedProgress: ObtainAchievementDataWithProgressOnly["progressData"];
 }
 
@@ -316,7 +320,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
 
   public async checkOnlineUserAchievements(user: UserModel) {
     const { _id, username, messageCount, watchTime, points, follower } = user;
-    const commonData = { userId: _id, username: username };
+    const commonData = { userId: _id.toString(), username: username };
 
     await this.updateAchievementUserProgressAndAddToQueue({
       ...commonData,
@@ -625,7 +629,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
 
   private async setBadgesAchievementCount(
     data: CommonAchievementCheckType,
-    progresses: AchievementUserProgressModel[]
+    progresses: AchievementUserProgressModel<AchievementWithBadgePopulated>[]
   ) {
     const earnedBadgesCount = progresses.reduce(
       (badgesCount, { progressesLength }) => badgesCount + progressesLength,
@@ -641,11 +645,14 @@ class AchievementsHandler extends AchievementsQueueHandler<
   // note:
   // for now I create dynamical choose badges.
   // latter it should be changeable by twitch command / discord command
-  private async updateUsersDisplayBadgesDependsOnRarity(userId: string, progresses: AchievementUserProgressModel[]) {
+  private async updateUsersDisplayBadgesDependsOnRarity(
+    userId: string,
+    progresses: AchievementUserProgressModel<AchievementWithBadgePopulated>[]
+  ) {
     const bestBadges = progresses
       .map((progress) => {
         const lastProgress = progress.progresses.slice(-1)[0];
-        const achievement = <AchievementModel<BadgeModel>>progress.achievement;
+        const achievement = progress.achievement;
         const stageData = achievement.stages.stageData.find((stageData) => stageData.stage === lastProgress[0]);
 
         return { rarity: stageData?.rarity || 1, badge: stageData?.badge._id || "" };

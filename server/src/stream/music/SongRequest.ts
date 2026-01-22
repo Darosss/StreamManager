@@ -128,7 +128,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     return {
       duration,
       name: title,
-      id: youtubeId || _id,
+      id: youtubeId || _id.toString(),
       type,
       downloadedData:
         folderName && fileName && publicPath
@@ -207,7 +207,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     if ("error" in data) error = data.error;
     else {
       songProperties = this.extractSongPropertiesFromModelHelper(data);
-      await updateSongUsesById(data._id, "songRequestUses");
+      await updateSongUsesById(data._id.toString(), "songRequestUses");
     }
 
     const added = songProperties ? await this.addRequestedSongToList(username, songProperties) : false;

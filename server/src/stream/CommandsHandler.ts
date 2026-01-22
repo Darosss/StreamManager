@@ -65,7 +65,7 @@ class CommandsHandler {
     if (!isCommand) return false;
 
     await AchievementsHandler.getInstance().incrementCommandAchievements({
-      userId: user._id,
+      userId: user._id.toString(),
       username: user.username
     });
 
@@ -92,7 +92,13 @@ class CommandsHandler {
       message.toLowerCase().startsWith(this.configs.commandsConfigs.commandsPrefix + alias)
     );
     if (defaultMusicAlias) {
-      return this.onMessageMusicCommand(defaultMusicAlias, user.privileges, user.username, user._id, message);
+      return this.onMessageMusicCommand(
+        defaultMusicAlias,
+        user.privileges,
+        user.username,
+        user._id.toString(),
+        message
+      );
     }
   }
 

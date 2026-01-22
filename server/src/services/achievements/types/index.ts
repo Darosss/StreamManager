@@ -27,11 +27,9 @@ export type AchievementUpdateData = Partial<
 > & { stages?: string; tag?: string };
 
 export interface AchievementCreateData
-  extends Pick<AchievementModel, "name" | "description" | "hidden">,
-    Partial<Pick<AchievementModel, "enabled" | "showProgress" | "isTime">> {
-  stages: string;
-  tag: string;
-}
+  extends
+    Pick<AchievementModel, "name" | "description" | "hidden" | "stages" | "tag">,
+    Partial<Pick<AchievementModel, "enabled" | "showProgress" | "isTime">> {}
 export type AchievementUpdateDataController = Pick<
   AchievementUpdateData,
   "description" | "enabled" | "tag" | "stages" | "hidden"
@@ -53,8 +51,7 @@ export interface AchievementStagesPopulateOptions {
 }
 
 export interface AchievementUserProgressCreate
-  extends Pick<AchievementUserProgressModel, "achievement" | "userId">,
-    AchievementUserProgressUpdate {}
+  extends Pick<AchievementUserProgressModel, "achievement" | "userId">, AchievementUserProgressUpdate {}
 
 export type AchievementStageCreateData = Pick<AchievementStageModel, "name" | "stageData">;
 export type AchievementStageUpdateData = Partial<AchievementStageCreateData>;

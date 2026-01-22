@@ -31,7 +31,7 @@ export const filterUsersByUrlParams = (params: RequestQueryUser) => {
     ...(search_name && { username: { $regex: search_name, $options: "i" } })
   };
   const filterPrivilege = {
-    ...(privilege && { privileges: { $eq: privilege } })
+    ...(privilege && { privileges: { $eq: Number(privilege) } })
   };
 
   const searchFilter = {

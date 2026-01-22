@@ -2,11 +2,12 @@ import {
   Achievement,
   AchievementCustomModel,
   AchievementDocument,
+  AchievementModel,
   AchievementWithBadgePopulated,
   CustomAchievementAction
 } from "@models";
 import { AppError, checkExistResource, handleAppError, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import {
   AchievementCreateData,
   AchievementsFindOptions,
@@ -17,11 +18,11 @@ import {
 } from "./types";
 
 export const getAchievements = async (
-  filter: FilterQuery<AchievementDocument> = {},
+  filter: QueryFilter<AchievementDocument> = {},
   findOptions: ManyAchievementsFindOptions,
   //TODO: move this into achievementsFindOptions as optional
   populateOptions?: AchievementsPopulateOptions
-) => {
+): Promise<AchievementWithBadgePopulated[] | AchievementModel[] | undefined> => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -74,16 +75,16 @@ export const createAchievement = async (createData: AchievementCreateData) => {
   }
 };
 
-export const getAchievementsCount = async (filter: FilterQuery<AchievementDocument> = {}) => {
+export const getAchievementsCount = async (filter: QueryFilter<AchievementDocument> = {}) => {
   return await Achievement.countDocuments(filter);
 };
 
 export const getOneAchievement = async (
-  filter: FilterQuery<AchievementDocument> = {},
+  filter: QueryFilter<AchievementDocument> = {},
   findOptions: AchievementsFindOptions,
   //TODO: add populate opts
   populateTag?: boolean
-) => {
+): Promise<AchievementWithBadgePopulated | null> => {
   const { select = { __v: 0 } } = findOptions;
   try {
     const foundAchievement: AchievementWithBadgePopulated | null =
@@ -103,11 +104,12 @@ export const getOneAchievement = async (
   } catch (err) {
     logger.error(`Error occured while getting achievement. ${err}`);
     handleAppError(err);
+    return null;
   }
 };
 
 export const updateOneAchievement = async (
-  filter: FilterQuery<AchievementDocument>,
+  filter: QueryFilter<AchievementDocument>,
   updateData: UpdateQuery<AchievementUpdateData>
 ) => {
   try {
@@ -168,7 +170,7 @@ const handleCustomAchievementActionData = (customProperty: AchievementCustomMode
   }
 };
 
-export const deleteOneAchievement = async (filter: FilterQuery<AchievementDocument>) => {
+export const deleteOneAchievement = async (filter: QueryFilter<AchievementDocument>) => {
   try {
     const deletedAchievement = await Achievement.findOneAndDelete(filter);
 
