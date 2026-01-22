@@ -7,10 +7,10 @@ import {
   getTriggersCount
 } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import { ManyTagsFindOptions } from "./types";
 
-export const getTags = async (filter: FilterQuery<TagDocument> = {}, findOptions: ManyTagsFindOptions) => {
+export const getTags = async (filter: QueryFilter<TagDocument> = {}, findOptions: ManyTagsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -27,11 +27,11 @@ export const getTags = async (filter: FilterQuery<TagDocument> = {}, findOptions
   }
 };
 
-export const getTagsCount = async (filter: FilterQuery<TagDocument> = {}) => {
+export const getTagsCount = async (filter: QueryFilter<TagDocument> = {}) => {
   return await Tag.countDocuments(filter);
 };
 
-export const createTag = async (createData: TagCreateData | TagCreateData[]) => {
+export const createTag = async (createData: TagCreateData) => {
   try {
     const createdTag = await Tag.create(createData);
 
@@ -45,11 +45,9 @@ export const createTag = async (createData: TagCreateData | TagCreateData[]) => 
   }
 };
 
-export const updateTags = async (filter: FilterQuery<TagDocument> = {}, updateData: UpdateQuery<TagUpdateData>) => {
+export const updateTags = async (filter: QueryFilter<TagDocument> = {}, updateData: UpdateQuery<TagUpdateData>) => {
   try {
-    await Tag.updateMany(filter, updateData, {
-      new: true
-    });
+    await Tag.updateMany(filter, updateData);
   } catch (err) {
     logger.error(`Error occured while updating many tags. ${err}`);
     handleAppError(err);
@@ -97,9 +95,9 @@ export const deleteTagById = async (id: string) => {
   }
 };
 
-export const getTagById = async (id: string, filter: FilterQuery<TagDocument> = {}) => {
+export const getTagById = async (id: string, projection: ProjectionType<TagDocument> = {}) => {
   try {
-    const foundTag = await Tag.findById(id, filter);
+    const foundTag = await Tag.findById(id, projection);
 
     const tag = checkExistResource(foundTag, `Tag with id(${id})`);
 
@@ -110,7 +108,7 @@ export const getTagById = async (id: string, filter: FilterQuery<TagDocument> = 
   }
 };
 
-export const getOneTag = async (filter: FilterQuery<TagDocument> = {}) => {
+export const getOneTag = async (filter: QueryFilter<TagDocument> = {}) => {
   try {
     const foundTag = await Tag.findOne(filter);
 

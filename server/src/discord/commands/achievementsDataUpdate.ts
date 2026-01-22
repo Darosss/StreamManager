@@ -15,7 +15,7 @@ import {
   SendAchievementsListMessagesFn,
   SendBadgesListMessagesFn
 } from "./types";
-import { generateRandomWord, getDateFromSecondsToYMDHMS } from "@utils";
+import { generateRandomWord, getDateFromSecondsToYMDHMS, logger } from "@utils";
 import { clearChannelFromMessages, findTextBasedChannelById, sendMessageInChannelByChannel } from "../utils";
 import { getAchievements, getBadges } from "@services";
 import { BadgeModel, StageData } from "@models";
@@ -182,13 +182,25 @@ const getAchievementsListMessagesData = async () => {
   const foundAchievements = await getAchievements({}, {}, { stages: true, stagesBadge: true });
 
   if (!foundAchievements) return;
-  const achievementListData = foundAchievements.map(({ name, description, isTime, hidden, stages: { stageData } }) => ({
-    name,
-    description,
-    hidden,
-    isTime,
-    stageData: stageData as unknown as StageData<BadgeModel>[]
-  }));
+  const achievementListData = foundAchievements
+    .map(({ name, description, isTime, hidden, stages }) => {
+      const stageData: StageData<BadgeModel>[] = [];
+      if (!("stageData" in stages)) {
+        logger.warn("getAchievementsListMessagesData -> There is no stage data", { name });
+        return;
+      } else {
+        stageData.push(...stages.stageData);
+      }
+
+      return {
+        name,
+        description,
+        hidden,
+        isTime,
+        stageData
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => !!item);
 
   return achievementListData;
 };

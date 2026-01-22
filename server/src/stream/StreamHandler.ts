@@ -117,7 +117,7 @@ class StreamHandler {
         timestamp: Number(userstate["tmi-sent-ts"]) || new Date().getTime()
       });
 
-      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id, user.username, new Date(), {
+      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id.toString(), user.username, new Date(), {
         emotes: !!userstate.emotes,
         message
       });
@@ -143,7 +143,9 @@ class StreamHandler {
 
   private async getUserBadgesPathsForMessageServer(displayBadges: UserModel["displayBadges"]) {
     const foundBadges =
-      displayBadges && displayBadges.length > 0 ? await getBadges({ _id: { $in: displayBadges } }, {}) : [];
+      displayBadges && displayBadges.length > 0
+        ? await getBadges({ _id: { $in: displayBadges.map((x) => x._id) } }, {})
+        : [];
     const badgesPaths: MessageServerDataBadgesPathsType = ["", "", ""];
     foundBadges?.forEach(({ imagesUrls: { x32 } }, index) => (badgesPaths[index] = x32));
 

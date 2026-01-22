@@ -22,7 +22,7 @@ export const filterCommandsByUrlParams = (params: RequestCommandsQuery) => {
     ...(search_name && { name: { $regex: search_name, $options: "i" } })
   };
   const filterPrivilege = {
-    ...(privilege && { privilege: { $eq: privilege } })
+    ...(privilege && { privilege: { $eq: Number(privilege) } })
   };
   const filterAliases = {
     ...(aliases && { aliases: { $regex: aliases, $options: "i" } })

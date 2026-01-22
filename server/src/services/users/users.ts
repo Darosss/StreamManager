@@ -1,9 +1,9 @@
 import { UserDocument, User } from "@models";
 import { checkExistResource, handleAppError, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import { ManyUsersFindOptions, UserCreateData, UserFindOptions, UserUpdateData } from "./types";
 
-export const getUsers = async (filter: FilterQuery<UserDocument> = {}, findOptions: ManyUsersFindOptions) => {
+export const getUsers = async (filter: QueryFilter<UserDocument> = {}, findOptions: ManyUsersFindOptions) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate } = findOptions;
 
   try {
@@ -20,7 +20,7 @@ export const getUsers = async (filter: FilterQuery<UserDocument> = {}, findOptio
   }
 };
 
-export const getOneUser = async (filter: FilterQuery<UserDocument> = {}, findOptions: UserFindOptions) => {
+export const getOneUser = async (filter: QueryFilter<UserDocument> = {}, findOptions: UserFindOptions) => {
   const { select = { __v: 0 }, populate } = findOptions;
   try {
     const userFiltered = await User.findOne(filter)
@@ -65,7 +65,7 @@ export const updateUserById = async (id: string, updateData: UpdateQuery<UserUpd
   }
 };
 
-export const getUserCount = async (filter: FilterQuery<UserDocument>) => {
+export const getUserCount = async (filter: QueryFilter<UserDocument>) => {
   return await User.countDocuments(filter);
 };
 
@@ -115,7 +115,7 @@ export const getTwitchNames = async (
   }
 };
 
-export const isUserInDB = async (filter: FilterQuery<UserDocument>) => {
+export const isUserInDB = async (filter: QueryFilter<UserDocument>) => {
   const user = await User.findOne(filter);
   if (user) return user;
 };
@@ -130,7 +130,7 @@ export const createUser = async (createData: UserCreateData) => {
   }
 };
 
-export const createUserIfNotExist = async (filter: FilterQuery<UserDocument>, createData: UserCreateData) => {
+export const createUserIfNotExist = async (filter: QueryFilter<UserDocument>, createData: UserCreateData) => {
   try {
     const user = await User.findOneAndUpdate(filter, createData, { upsert: true, new: true });
 
@@ -141,7 +141,7 @@ export const createUserIfNotExist = async (filter: FilterQuery<UserDocument>, cr
   }
 };
 
-export const updateUser = async (filter: FilterQuery<UserDocument>, updateData: UpdateQuery<UserUpdateData>) => {
+export const updateUser = async (filter: QueryFilter<UserDocument>, updateData: UpdateQuery<UserUpdateData>) => {
   try {
     const updatedUser = await User.findOneAndUpdate(filter, updateData, {
       new: true

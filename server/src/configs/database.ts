@@ -24,6 +24,7 @@ import {
   getDefaultMood,
   getDefaultTag
 } from "@defaults";
+import { AchievementStageModel, BadgeModel, TagModel } from "@models";
 
 export const initMongoDataBase = async (uri: string) => {
   mongoose.set("strictQuery", false);
@@ -79,13 +80,13 @@ const createDefaultMood = async () => {
   }
 };
 
-const createDefaultAchievementStages = async (badgeId: string) => {
+const createDefaultAchievementStages = async (badgeId: BadgeModel["_id"]) => {
   if ((await getAchievementStagesCount()) === 0) {
     return await createAchievementStage(getDefaultAchievementStagesData(badgeId));
   }
 };
 
-const createDefaultAchievements = async (stagesId: string, tagId: string) => {
+const createDefaultAchievements = async (stagesId: AchievementStageModel["_id"], tagId: TagModel["_id"]) => {
   const achievementsData = getDefaultAchievementsData(stagesId, tagId);
 
   achievementsData.forEach((data) => createAchievement(data));

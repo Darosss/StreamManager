@@ -1,7 +1,11 @@
 import { AchievementCreateData } from "services/achievements/types";
 import { ACHIEVEMENTS } from "./types";
+import { AchievementStageModel, TagModel } from "@models";
 
-export const getDefaultAchievementsData = (stagesId: string, tagId: string): AchievementCreateData[] => {
+export const getDefaultAchievementsData = (
+  stagesId: AchievementStageModel["_id"],
+  tagId: TagModel["_id"]
+): AchievementCreateData[] => {
   return [
     {
       name: ACHIEVEMENTS.CHAT_MESSAGES,

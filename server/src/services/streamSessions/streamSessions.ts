@@ -7,7 +7,7 @@ import {
   getFollowersCount
 } from "@services";
 import { checkExistResource, handleAppError, getLastNItemsFromMap, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import {
   StreamSessionStatisticOptions,
   ManyStreamSessionsFindOptions,
@@ -17,7 +17,7 @@ import {
 } from "./types/";
 
 export const getStreamSessions = async (
-  filter: FilterQuery<StreamSessionDocument> = {},
+  filter: QueryFilter<StreamSessionDocument> = {},
   findOptions: ManyStreamSessionsFindOptions
 ) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
@@ -140,7 +140,7 @@ export const getStreamSessionStatistics = async (
   };
 };
 
-export const getStreamSessionsCount = async (filter: FilterQuery<StreamSessionDocument> = {}) => {
+export const getStreamSessionsCount = async (filter: QueryFilter<StreamSessionDocument> = {}) => {
   return await StreamSession.countDocuments(filter);
 };
 

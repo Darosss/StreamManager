@@ -82,7 +82,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelSubscription - error when trying to manipulate user data`);
         }
         await AchievementsHandler.getInstance().checkUserSubscribeForAchievements({
-          userId: userDB._id,
+          userId: userDB._id.toString(),
           username: userDB.username,
           tier,
           isGift
@@ -119,7 +119,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelFollow - error when trying to manipulate user data`);
 
         await AchievementsHandler.getInstance().checkUserSubscribeGiftsForAchievements({
-          userId: userDB._id,
+          userId: userDB._id.toString(),
           username: userDB.username,
           tier,
           amount: amount || 1,
@@ -151,7 +151,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelFollow - error when trying to manipulate user data`);
         }
         await AchievementsHandler.getInstance().checkUserFollowageForAchievement({
-          userId: userDB._id,
+          userId: userDB._id.toString(),
           username: userDB.username,
           dateProgress: followDate
         });
@@ -186,7 +186,7 @@ class EventSubHandler extends HeadHandler {
         }
         await AchievementsHandler.getInstance().checkRaidFromForAchievements({
           viewersAmount: viewers,
-          userId: userDB._id,
+          userId: userDB._id.toString(),
           username: userDB.username
         });
       } catch (err) {
@@ -229,7 +229,7 @@ class EventSubHandler extends HeadHandler {
           isAnonymous,
           bits,
           message,
-          userId: userDB?._id,
+          userId: userDB?._id.toString(),
           username: userDB?.username
         });
       } catch (err) {
@@ -288,7 +288,7 @@ class EventSubHandler extends HeadHandler {
       const reward = await e.getReward();
 
       const rewardData = {
-        userId: user?._id,
+        userId: user?._id.toString(),
         rewardId: rewardId,
         twitchId: userId,
         userName: userName,
@@ -352,10 +352,13 @@ class EventSubHandler extends HeadHandler {
 
       SocketHandler.getInstance().getIO().emit("onRedemption", firstAlert[0], firstAlert[1].audioBuffer);
 
-      setTimeout(() => {
-        this.isAlertPlaying = false;
-        this.startAlertSounds();
-      }, firstAlert[1].duration * 1000 + 1000);
+      setTimeout(
+        () => {
+          this.isAlertPlaying = false;
+          this.startAlertSounds();
+        },
+        firstAlert[1].duration * 1000 + 1000
+      );
     }, delay);
   }
 

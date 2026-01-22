@@ -1,10 +1,10 @@
 import { modesPipeline } from "../aggregations";
 import { Timer, TimerDocument, TimerModel } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
 import { ManyTimersFindOptions, TimerCreateData, TimerFindOptions, TimerUpdateData } from "./types";
 
-export const getTimers = async (filter: FilterQuery<TimerDocument> = {}, findOptions: ManyTimersFindOptions) => {
+export const getTimers = async (filter: QueryFilter<TimerDocument> = {}, findOptions: ManyTimersFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 }, populate = [] } = findOptions;
 
   try {
@@ -22,11 +22,11 @@ export const getTimers = async (filter: FilterQuery<TimerDocument> = {}, findOpt
   }
 };
 
-export const getTimersCount = async (filter: FilterQuery<TimerDocument> = {}) => {
+export const getTimersCount = async (filter: QueryFilter<TimerDocument> = {}) => {
   return await Timer.countDocuments(filter);
 };
 
-export const createTimer = async (createData: TimerCreateData | TimerCreateData[]) => {
+export const createTimer = async (createData: TimerCreateData) => {
   try {
     const createdTimer = await Timer.create(createData);
 
@@ -41,13 +41,11 @@ export const createTimer = async (createData: TimerCreateData | TimerCreateData[
 };
 
 export const updateTimers = async (
-  filter: FilterQuery<TimerDocument> = {},
+  filter: QueryFilter<TimerDocument> = {},
   updateData: UpdateQuery<TimerUpdateData>
 ) => {
   try {
-    const updatedTimers = await Timer.updateMany(filter, updateData, {
-      new: true
-    });
+    const updatedTimers = await Timer.updateMany(filter, updateData);
 
     return updatedTimers;
   } catch (err) {
@@ -58,7 +56,7 @@ export const updateTimers = async (
 
 export const updateEnabledTimersAndEnabledModes = async (
   pointsInrement: number,
-  matchOption?: FilterQuery<TimerDocument>
+  matchOption?: QueryFilter<TimerDocument>
 ) => {
   try {
     const pipeline: PipelineStage[] = [
@@ -108,12 +106,12 @@ export const deleteTimerById = async (id: string) => {
 
 export const getTimerById = async (
   id: string,
-  filter: FilterQuery<TimerDocument> = {},
+  projection: ProjectionType<TimerDocument> = {},
   findOptions: TimerFindOptions
 ) => {
   const { select = { __v: 0 }, populate = [] } = findOptions;
   try {
-    const foundTimer = await Timer.findById(id, filter).select(select).populate(populate);
+    const foundTimer = await Timer.findById(id, projection).select(select).populate(populate);
 
     const timer = checkExistResource(foundTimer, `Timer with id(${id})`);
 
@@ -124,7 +122,7 @@ export const getTimerById = async (
   }
 };
 
-export const getOneTimer = async (filter: FilterQuery<TimerDocument> = {}) => {
+export const getOneTimer = async (filter: QueryFilter<TimerDocument> = {}) => {
   try {
     const foundTimer = await Timer.findOne(filter);
 

@@ -1,19 +1,19 @@
+import { StreamSessionModel } from "@models";
 import { RequestQuerySession } from "./types";
+import { getFilterForMap } from "@utils";
 
 export const filterSessionByUrlParams = (params: RequestQuerySession) => {
   const { search_name, start_date, end_date, tags, categories } = params;
 
   const filterTitles = {
-    ...(search_name && {
-      sessionTitles: { $regex: search_name, $options: "i" }
-    })
+    ...(search_name && getFilterForMap<StreamSessionModel>("sessionTitles", search_name))
   };
 
   const filterCategories = {
-    ...(categories && { categories: { $regex: categories, $options: "i" } })
+    ...(categories && getFilterForMap<StreamSessionModel>("categories", categories))
   };
   const filterTags = {
-    ...(tags && { tags: { $regex: tags, $options: "i" } })
+    ...(tags && getFilterForMap<StreamSessionModel>("tags", tags))
   };
 
   const filterStarted = {

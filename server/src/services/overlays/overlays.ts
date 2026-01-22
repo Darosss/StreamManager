@@ -1,9 +1,9 @@
 import { Overlay, OverlayDocument } from "@models";
 import { AppError, handleAppError, checkExistResource, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import { OverlayCreateData, OverlaysFindOptions, OverlayUpdateData, ManyOverlaysFindOptions } from "./types/";
 
-export const getOverlays = async (filter: FilterQuery<OverlayDocument> = {}, findOptions: ManyOverlaysFindOptions) => {
+export const getOverlays = async (filter: QueryFilter<OverlayDocument> = {}, findOptions: ManyOverlaysFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -20,11 +20,11 @@ export const getOverlays = async (filter: FilterQuery<OverlayDocument> = {}, fin
   }
 };
 
-export const getOverlaysCount = async (filter: FilterQuery<OverlayDocument> = {}) => {
+export const getOverlaysCount = async (filter: QueryFilter<OverlayDocument> = {}) => {
   return await Overlay.countDocuments(filter);
 };
 
-export const createOverlay = async (createData: OverlayCreateData | OverlayCreateData[]) => {
+export const createOverlay = async (createData: OverlayCreateData) => {
   try {
     const createdOverlay = await Overlay.create(createData);
 

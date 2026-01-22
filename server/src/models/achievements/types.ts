@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 import { BaseModel } from "../types";
 import { BadgeModel } from "../badges/types";
 import { UserModel } from "../users/types";
@@ -6,7 +6,7 @@ import { TagModel } from "../tags/types";
 import { CustomAchievementAction } from "./enums";
 
 export type StageDataRarity = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-export interface StageData<T = string> {
+export interface StageData<T extends BadgeModel | Types.ObjectId = Types.ObjectId> {
   name: string;
   stage: number;
   goal: number;
@@ -16,7 +16,7 @@ export interface StageData<T = string> {
   rarity?: StageDataRarity;
 }
 export type StageDataWithBadgePopulated = StageData<BadgeModel>;
-export interface AchievementStageModel<T = string> extends BaseModel {
+export interface AchievementStageModel<T extends BadgeModel | Types.ObjectId = Types.ObjectId> extends BaseModel {
   name: string;
   stageData: StageData<T>[];
 }
@@ -30,10 +30,12 @@ export interface AchievementCustomModel {
   action: CustomAchievementAction;
 }
 
-export interface AchievementModel<T = string | BadgeModel> extends BaseModel {
+export interface AchievementModel<
+  StageType extends AchievementStageModel<BadgeModel | Types.ObjectId> | Types.ObjectId = Types.ObjectId
+> extends BaseModel {
   name: string;
   description: string;
-  stages: AchievementStageModel<T>;
+  stages: StageType;
   isTime: boolean;
   tag: string | TagModel;
   enabled: boolean;
@@ -42,13 +44,17 @@ export interface AchievementModel<T = string | BadgeModel> extends BaseModel {
   showProgress?: boolean;
 }
 
-export type AchievementWithBadgePopulated = AchievementModel<BadgeModel>;
+export type AchievementWithBadgePopulated = AchievementModel<AchievementStageModel<BadgeModel>>;
 
 export type AchievementDocument = AchievementModel & Document;
 
-export interface AchievementUserProgressModel extends BaseModel {
+export interface AchievementUserProgressModel<
+  AchievementType extends
+    | Types.ObjectId
+    | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> = Types.ObjectId
+> extends BaseModel {
   userId: string | UserModel;
-  achievement: string | AchievementModel;
+  achievement: AchievementType;
   value: number;
   progresses: [number, number][];
   progressesLength: number;

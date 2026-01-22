@@ -1,5 +1,5 @@
 import { AchievementStage, AchievementStageDocument } from "@models";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import {
   AchievementStageCreateData,
   AchievementStageUpdateData,
@@ -14,7 +14,7 @@ import { achievementsStagesSoundsPath } from "@configs";
 import { promises as fsPromises } from "fs";
 
 export const getAchievementStages = async (
-  filter: FilterQuery<AchievementStageDocument> = {},
+  filter: QueryFilter<AchievementStageDocument> = {},
   findOptions: ManyAchievementsFindOptions<AchievementStageDocument>
 ) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
@@ -47,12 +47,12 @@ export const createAchievementStage = async (createData: AchievementStageCreateD
   }
 };
 
-export const getAchievementStagesCount = async (filter: FilterQuery<AchievementStageDocument> = {}) => {
+export const getAchievementStagesCount = async (filter: QueryFilter<AchievementStageDocument> = {}) => {
   return await AchievementStage.countDocuments(filter);
 };
 
 export const getOneAchievementStage = async (
-  filter: FilterQuery<AchievementStageDocument> = {},
+  filter: QueryFilter<AchievementStageDocument> = {},
   findOptions: AchievementsFindOptions<AchievementStageDocument>
 ) => {
   const { select = { __v: 0 } } = findOptions;
@@ -67,7 +67,7 @@ export const getOneAchievementStage = async (
 };
 
 export const updateOneAchievementStage = async (
-  filter: FilterQuery<AchievementStageDocument>,
+  filter: QueryFilter<AchievementStageDocument>,
   updateData: UpdateQuery<AchievementStageUpdateData>
 ) => {
   try {
@@ -86,11 +86,11 @@ export const updateOneAchievementStage = async (
 //TOOD: add select opts instead alone populateOptions
 export const getAchievementStagesById = async (
   id: string,
-  filter: FilterQuery<AchievementStageDocument> = {},
+  projection: ProjectionType<AchievementStageDocument> = {},
   populateOptions?: AchievementStagesPopulateOptions
 ) => {
   try {
-    const achievementStage = await AchievementStage.findOne({ _id: id }, filter).populate([
+    const achievementStage = await AchievementStage.findById(id, projection).populate([
       ...(populateOptions?.stageDataBadge ? [{ path: "stageData.badge" }] : [])
     ]);
 
