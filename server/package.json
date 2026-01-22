@@ -29,7 +29,7 @@
     "cross-env": "^7.0.3",
     "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "get-audio-duration": "^4.0.1",
     "googleapis": "^118.0.0",
     "googlevideo": "^4.0.4",
