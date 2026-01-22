@@ -20,9 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "@twurple/api": "^7.0.3",
+    "@twurple/auth": "^7.0.3",
     "@twurple/eventsub-http": "^7.0.3",
     "@twurple/eventsub-ws": "^7.0.3",
-    "@twurple/pubsub": "^7.0.3",
     "bgutils-js": "^3.2.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
