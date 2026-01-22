@@ -12,12 +12,20 @@ import {
 } from "@utils";
 import { alertSoundsPath, musicPath, alertSoundPrefix, publicEndpointPath } from "@configs";
 import path from "path";
+import { ParamsDictionary } from "express-serve-static-core";
+
+export interface RequestParamsFolder extends ParamsDictionary {
+  folder: string;
+}
+export interface RequestParamsFileName extends ParamsDictionary {
+  fileName: string;
+}
 
 const maxFilesAtOnce = 30;
-
+//TODO: all req.params needs zod validate.
 const storageMp3 = multer.diskStorage({
   destination: function (req, file, cb) {
-    const { folder } = req.params;
+    const { folder } = req.params as RequestParamsFolder;
     cb(null, path.join(musicPath, folder));
   },
   filename: function (req, file, cb) {
@@ -52,7 +60,7 @@ export const uploadMp3File = (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-export const getFoldersList = (req: Request, res: Response, next: NextFunction) => {
+export const getFoldersList = (req: Request<RequestParamsFolder>, res: Response, next: NextFunction) => {
   const { folder } = req.params;
   getListOfDirectoryNames(
     folder ? path.join(publicEndpointPath, folder) : publicEndpointPath,
@@ -65,7 +73,7 @@ export const getFoldersList = (req: Request, res: Response, next: NextFunction) 
   );
 };
 
-export const getFolderMp3Files = (req: Request, res: Response, next: NextFunction) => {
+export const getFolderMp3Files = (req: Request<RequestParamsFolder>, res: Response, next: NextFunction) => {
   const { folder } = req.params;
   getListOfFilesWithExtensionInFolder(
     path.join(musicPath, folder),
@@ -79,7 +87,11 @@ export const getFolderMp3Files = (req: Request, res: Response, next: NextFunctio
   );
 };
 
-export const deleteMp3File = (req: Request, res: Response, next: NextFunction) => {
+export const deleteMp3File = (
+  req: Request<RequestParamsFolder & RequestParamsFileName>,
+  res: Response,
+  next: NextFunction
+) => {
   const { folder, fileName } = req.params;
 
   const filePath = path.join(musicPath, folder, fileName);
@@ -95,7 +107,7 @@ export const deleteMp3File = (req: Request, res: Response, next: NextFunction) =
   });
 };
 
-export const createAudioFolder = (req: Request, res: Response, next: NextFunction) => {
+export const createAudioFolder = (req: Request<RequestParamsFolder>, res: Response, next: NextFunction) => {
   const { folder } = req.params;
 
   const folderPath = path.join(musicPath, folder);
@@ -113,7 +125,7 @@ export const createAudioFolder = (req: Request, res: Response, next: NextFunctio
 export const deleteAudioFolder = (req: Request, res: Response, next: NextFunction) => {
   const { folder } = req.params;
 
-  const folderPath = path.join(musicPath, folder);
+  const folderPath = path.join(musicPath, ...folder);
   deleteDirectory(
     folderPath,
     (message) => {
@@ -169,7 +181,7 @@ export const getAlertSoundsList = (req: Request, res: Response, next: NextFuncti
   );
 };
 
-export const deleteAlertSound = (req: Request, res: Response, next: NextFunction) => {
+export const deleteAlertSound = (req: Request<RequestParamsFileName>, res: Response, next: NextFunction) => {
   const { fileName } = req.params;
 
   const filePath = path.join(alertSoundsPath, fileName) + ".mp3";
