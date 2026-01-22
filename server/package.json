@@ -28,7 +28,7 @@
     "cors": "^2.8.6",
     "cross-env": "^10.1.0",
     "dayjs": "^1.11.19",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "get-audio-duration": "^4.0.1",

@@ -1,5 +1,6 @@
 import { Client, TextBasedChannel } from "discord.js";
 import { MessageType } from "./types";
+import { headLogger } from "@utils";
 
 export const clearChannelFromMessages = async (channel: TextBasedChannel) => {
   //TODO: make it to clear whole messages with loop
@@ -19,7 +20,7 @@ export const findTextBasedChannelById = (client: Client, channelId: string) => {
 
 export const clearWholeChannelAndCreateMessage = async (channel: TextBasedChannel, message: MessageType) => {
   await clearChannelFromMessages(channel);
-  return await channel.send(message);
+  return await sendMessageInChannelByChannel(channel, message);
 };
 
 export const sendMessageInChannelByChannelId = (client: Client, channelId: string, message: MessageType) => {
@@ -29,5 +30,13 @@ export const sendMessageInChannelByChannelId = (client: Client, channelId: strin
 };
 
 export const sendMessageInChannelByChannel = (channel: TextBasedChannel, message: MessageType) => {
-  return channel.send(message);
+  if (channel.isSendable()) {
+    return channel.send(message);
+  } else {
+    headLogger.warn("Couldn't send message to channel, 'cuz it's not sendable", {
+      channel: channel.name,
+      message
+    });
+    return;
+  }
 };

@@ -1,4 +1,4 @@
-import { CommandInteraction, InteractionResponse, SlashCommandBuilder, TextBasedChannel } from "discord.js";
+import { CommandInteraction, InteractionResponse, SlashCommandOptionsOnlyBuilder, TextBasedChannel } from "discord.js";
 
 export enum CommandNames {
   AchievementsDataUpdate = "update-achievements-data",
@@ -6,7 +6,7 @@ export enum CommandNames {
 }
 
 export interface CommandData {
-  data: SlashCommandBuilder;
+  data: SlashCommandOptionsOnlyBuilder;
   execute: (interaction: CommandInteraction) => Promise<InteractionResponse<boolean> | void>;
 }
 
