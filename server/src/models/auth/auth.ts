@@ -21,7 +21,7 @@ const AuthSchema: Schema<AuthDocument> = new Schema(
   }
 );
 
-AuthSchema.pre("save", async function (next) {
+AuthSchema.pre("save", async function () {
   try {
     // Encrypt access token
     const accessToken = this.accessToken;
@@ -40,12 +40,8 @@ AuthSchema.pre("save", async function (next) {
     this.refreshToken = encryptedRefreshToken;
     this.ivRefreshToken = ivRefreshToken;
     this.authTagRefreshToken = authTagRefreshToken;
-    next();
   } catch (err) {
-    if (err instanceof Error) {
-      return next(err);
-    }
-    return next();
+    throw err;
   }
 });
 
