@@ -1,5 +1,5 @@
 import { AudioStreamData } from "@socket";
-import moment from "moment";
+import dayjs from "dayjs";
 
 export class SongDataManager {
   private currentSong: AudioStreamData | null = null;
@@ -30,7 +30,7 @@ export class SongDataManager {
   }
 
   public getCurrentTimeSong() {
-    const currentTimeSong = moment().diff(this.getCurrentSongStart(), "seconds");
+    const currentTimeSong = dayjs().diff(this.getCurrentSongStart(), "seconds");
     return isNaN(currentTimeSong) ? 0 : currentTimeSong;
   }
 

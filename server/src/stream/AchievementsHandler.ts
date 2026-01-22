@@ -18,15 +18,12 @@ import {
 } from "@services";
 import { ACHIEVEMENTS } from "@defaults";
 import { achievementsLogger, getDateFromSecondsToYMDHMS, percentChance } from "@utils";
-import moment from "moment";
+import dayjs from "dayjs";
 import { randomUUID } from "crypto";
 import {
   AchievementCustomModel,
-  AchievementModel,
-  AchievementStageModel,
   AchievementUserProgressModel,
   AchievementWithBadgePopulated,
-  BadgeModel,
   ConfigModel,
   CustomAchievementAction,
   TagModel,
@@ -162,7 +159,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
   }: ObtainAchievementDataWithCollectedAchievement) {
     return codeBlock(
       "js",
-      `${moment(timestamp).format("DD-MM-YYYY HH:MM:ss")}\nUser: "${username}" - obtained achievement ${
+      `${dayjs(timestamp).format("DD-MM-YYYY HH:MM:ss")}\nUser: "${username}" - obtained achievement ${
         achievement.name
       }\nName: '${data.name}'\nGoal: ${
         achievement.isTime ? `'${getDateFromSecondsToYMDHMS(data.goal).trim()}'` : data.goal
@@ -361,7 +358,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
 
   public async checkUserFollowageForAchievement({ dateProgress, ...rest }: CheckGlobalUserDetailsDateArgs) {
     // add 1 minute bonus there to prevent situations where followDate===current date
-    const secondsFollow = moment().add(1, "minute").diff(moment(dateProgress), "seconds");
+    const secondsFollow = dayjs().add(1, "minute").diff(dayjs(dateProgress), "seconds");
 
     await this.updateAchievementUserProgressAndAddToQueue({
       achievementName: ACHIEVEMENTS.FOLLOWAGE,

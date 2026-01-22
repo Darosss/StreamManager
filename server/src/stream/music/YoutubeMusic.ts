@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { YoutubeApiHandler } from "../YoutubeAPIHandler";
 import { getOneUser, createSong, getOneSong } from "@services";
 import { botId, musicFolderName, ytMusicFolderName, ytMusicPath } from "@configs";
@@ -142,7 +142,7 @@ class YoutubeMusic extends YoutubeApiHandler {
       return {
         id: item.id || "",
         name: item.snippet?.title || "",
-        duration: moment.duration(item.contentDetails?.duration || 0).asSeconds(),
+        duration: dayjs.duration(Number(item.contentDetails?.duration || 0)).seconds(),
         ageRestricted: item.contentDetails?.contentRating?.ytRating,
         isPrivate: item.status?.privacyStatus === "private",
         topicDetails: item.topicDetails,
