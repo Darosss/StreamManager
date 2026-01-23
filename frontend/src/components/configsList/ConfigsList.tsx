@@ -32,7 +32,7 @@ export default function ConfigsList() {
   const dispatch = useDispatch();
 
   const [currentTab, setCurrentTab] = useState<ConfigsListTabNames>(
-    ConfigsListTabNames.HEAD
+    ConfigsListTabNames.HEAD,
   );
 
   const { data: configs, isLoading, error } = useGetConfigs();
@@ -67,9 +67,11 @@ export default function ConfigsList() {
   };
 
   return (
-    <>
-      <NavigateButton />
-      <EditConfigs />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+        <EditConfigs />
+      </div>
 
       <div className="configs-list-tab-list-wrapper">
         {Object.values(ConfigsListTabNames).map((tabName, index) => (
@@ -88,6 +90,6 @@ export default function ConfigsList() {
           {renderTabComponent()}
         </div>
       </div>
-    </>
+    </div>
   );
 }
