@@ -32,7 +32,7 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "get-audio-duration": "^4.0.1",
-    "googleapis": "^118.0.0",
+    "googleapis": "^170.1.0",
     "googlevideo": "^4.0.4",
     "jsdom": "^27.4.0",
     "module-alias": "^2.2.2",
