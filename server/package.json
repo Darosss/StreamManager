@@ -10,7 +10,7 @@
     "build": "tsc",
     "start": "npm run start:dev",
     "start:prod": "cross-env NODE_ENV=production node dist/index.js",
-    "start:dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"nodemon --inspect dist/index.js\" ",
+    "start:dev": "cross-env NODE_ENV=development tsc-watch --onSuccess \"nodemon --inspect dist/index.js --ignore public/ --ignore '*.json'\"",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000"
