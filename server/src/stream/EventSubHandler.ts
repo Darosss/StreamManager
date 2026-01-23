@@ -106,15 +106,22 @@ class EventSubHandler extends HeadHandler {
           gifterDisplayName
         })}`
       );
-
-      const userData = {
-        username: gifterDisplayName,
-        twitchId: gifterId,
-        twitchName: gifterName
-      };
-
+      if (!gifterDisplayName || !gifterId || !gifterName) {
+        return eventsubLogger.error(`Not found at least one of the gifter's required data`, {
+          gifterDisplayName,
+          gifterId,
+          gifterName
+        });
+      }
       try {
-        const userDB = await createUserIfNotExist({ twitchId: gifterId }, userData);
+        const userDB = await createUserIfNotExist(
+          { twitchId: gifterId },
+          {
+            username: gifterDisplayName,
+            twitchId: gifterId,
+            twitchName: gifterName
+          }
+        );
         if (!userDB)
           return eventsubLogger.error(`subscribeToChannelFollow - error when trying to manipulate user data`);
 
