@@ -5,10 +5,11 @@ import {
   AchievementUserProgressModel,
   TagModel,
   StageData,
-  BadgeModel
+  BadgeModel,
+  AchievementWithBadgePopulated
 } from "@models";
 import { logger, handleAppError, checkExistResource } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import { getOneAchievement, getUserById } from "@services";
 import {
   AchievementUserProgressCreate,
@@ -22,12 +23,14 @@ import {
 } from "./types";
 
 export const getAchievementUserProgresses = async (
-  filter: FilterQuery<AchievementUserProgressDocument> = {},
+  filter: QueryFilter<AchievementUserProgressDocument> = {},
   findOptions: AchievementUserProgressesFindOptions
-) => {
+): Promise<AchievementUserProgressModel<AchievementWithBadgePopulated>[]> => {
   const { select = { __v: 0 }, populate } = findOptions;
   try {
-    const achievementUserProgress = await AchievementUserProgress.find(filter)
+    const achievementUserProgress = await AchievementUserProgress.find<
+      AchievementUserProgressModel<AchievementWithBadgePopulated>
+    >(filter)
       .select(select)
       .populate([
         ...(populate?.achievements?.value
@@ -50,9 +53,10 @@ export const getAchievementUserProgresses = async (
   } catch (err) {
     logger.error(`Error occured in getAchievementUserProgresses. ${err}`);
     handleAppError(err);
+    return [];
   }
 };
-export const getOneAchievementUserProgress = async (filter: FilterQuery<AchievementUserProgressDocument> = {}) => {
+export const getOneAchievementUserProgress = async (filter: QueryFilter<AchievementUserProgressDocument> = {}) => {
   try {
     const achievementUserProgress = await AchievementUserProgress.findOne(filter);
 
@@ -82,7 +86,7 @@ export const createAchievementUserProgress = async (createData: AchievementUserP
 };
 
 export const updateOneAchievementUserProgress = async (
-  filter: FilterQuery<AchievementUserProgressDocument>,
+  filter: QueryFilter<AchievementUserProgressDocument>,
   updateData: UpdateQuery<AchievementUserProgressUpdate>
 ) => {
   try {
@@ -133,7 +137,7 @@ export const getAchievementsProgressesByUserId = async (userId: string) => {
 };
 
 export const updateFinishedStagesDependsOnProgress = async (
-  { stages: { stageData }, showProgress }: AchievementModel,
+  { stages: { stageData }, showProgress }: AchievementWithBadgePopulated,
   { _id: progressId, progresses }: AchievementUserProgressModel,
   progress: number
 ): Promise<UpdateFinishedStagesDependsOnProgressReturnData> => {

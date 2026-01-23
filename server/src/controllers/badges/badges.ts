@@ -26,6 +26,10 @@ import multer from "multer";
 import { filterBadgesByUrlParams } from "./filters";
 import path from "path";
 import sharp from "sharp";
+import { ParamsDictionary } from "express-serve-static-core";
+export interface RequestParamsBadgeName extends ParamsDictionary {
+  badgeName: string;
+}
 
 const storageImageBadges = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -113,9 +117,12 @@ export const uploadBadgeImages = (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const deleteBadgeImageByName = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteBadgeImageByName = async (
+  req: Request<RequestParamsBadgeName>,
+  res: Response,
+  next: NextFunction
+) => {
   const { badgeName } = req.params;
-
   const { fileName, extension } = getFileNameAndExtension(badgeName);
 
   const deleteFilter = { name: fileName, extension, sizesToDelete: badgeModelIMagesUrlsSizesNumbers };

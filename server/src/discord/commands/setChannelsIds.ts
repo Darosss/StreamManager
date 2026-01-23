@@ -16,6 +16,8 @@ export const setObtainedAchievementsChannelId: CommandData = {
     .setDescription("Sets channel for announce obtained user achievements!"),
 
   execute: async (interaction: CommandInteraction) => {
+    if (!interaction.isChatInputCommand()) return await interaction.reply("Sorry. Something went wrong.");
+
     const channelInput = interaction.options.get("channel");
 
     if (!channelInput || !channelInput.value)

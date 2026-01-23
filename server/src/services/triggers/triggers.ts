@@ -1,10 +1,10 @@
 import { Trigger, TriggerDocument } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { modesPipeline } from "../aggregations";
-import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
 import { ManyTriggersFindOptions, TriggerCreateData, TriggerFindOptions, TriggerUpdateData } from "./types";
 
-export const getTriggers = async (filter: FilterQuery<TriggerDocument> = {}, findOptions: ManyTriggersFindOptions) => {
+export const getTriggers = async (filter: QueryFilter<TriggerDocument> = {}, findOptions: ManyTriggersFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 }, populate = [] } = findOptions;
 
   try {
@@ -22,11 +22,11 @@ export const getTriggers = async (filter: FilterQuery<TriggerDocument> = {}, fin
   }
 };
 
-export const getTriggersCount = async (filter: FilterQuery<TriggerDocument> = {}) => {
+export const getTriggersCount = async (filter: QueryFilter<TriggerDocument> = {}) => {
   return await Trigger.countDocuments(filter);
 };
 
-export const createTrigger = async (createData: TriggerCreateData | TriggerCreateData[]) => {
+export const createTrigger = async (createData: TriggerCreateData) => {
   try {
     const createdTrigger = await Trigger.create(createData);
 
@@ -41,13 +41,11 @@ export const createTrigger = async (createData: TriggerCreateData | TriggerCreat
 };
 
 export const updateTriggers = async (
-  filter: FilterQuery<TriggerDocument> = {},
+  filter: QueryFilter<TriggerDocument> = {},
   updateData: UpdateQuery<TriggerUpdateData>
 ) => {
   try {
-    await Trigger.updateMany(filter, updateData, {
-      new: true
-    });
+    await Trigger.updateMany(filter, updateData);
   } catch (err) {
     logger.error(`Error occured while updating many triggers. ${err}`);
     handleAppError(err);
@@ -82,9 +80,9 @@ export const deleteTriggerById = async (id: string) => {
   }
 };
 
-export const getTriggerById = async (id: string, filter: FilterQuery<TriggerDocument> = {}) => {
+export const getTriggerById = async (id: string, projection: ProjectionType<TriggerDocument> = {}) => {
   try {
-    const foundTrigger = await Trigger.findById(id, filter);
+    const foundTrigger = await Trigger.findById(id, projection);
 
     const trigger = checkExistResource(foundTrigger, `Trigger with id(${id})`);
 
@@ -95,7 +93,7 @@ export const getTriggerById = async (id: string, filter: FilterQuery<TriggerDocu
   }
 };
 
-export const getOneTrigger = async (filter: FilterQuery<TriggerDocument> = {}, findOptions: TriggerFindOptions) => {
+export const getOneTrigger = async (filter: QueryFilter<TriggerDocument> = {}, findOptions: TriggerFindOptions) => {
   const { populate = [], select = { __v: 0 } } = findOptions;
   try {
     const foundTrigger = await Trigger.findOne(filter).select(select).populate(populate);

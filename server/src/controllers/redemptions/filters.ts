@@ -25,7 +25,7 @@ export const filterRedemptionsByUrlParams = (params: RequestRedemptionQuery) => 
     ...(receiver && { userDisplayName: { $regex: receiver, $options: "i" } })
   };
   const filterCost = {
-    ...(cost && { rewardCost: { $eq: cost } })
+    ...(cost && { rewardCost: { $eq: Number(cost) } })
   };
   const filterMessage = {
     ...(message && { message: { $regex: message, $options: "i" } })

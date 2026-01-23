@@ -1,10 +1,10 @@
 import { Affix, AffixDocument } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import { ManyAffixesFindOptions, AffixCreateData, AffixUpdateData } from "./types";
 
-export const getAffixes = async (filter: FilterQuery<AffixDocument> = {}, findOptions: ManyAffixesFindOptions) => {
+export const getAffixes = async (filter: QueryFilter<AffixDocument> = {}, findOptions: ManyAffixesFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -21,11 +21,11 @@ export const getAffixes = async (filter: FilterQuery<AffixDocument> = {}, findOp
   }
 };
 
-export const getAffixesCount = async (filter: FilterQuery<AffixDocument> = {}) => {
+export const getAffixesCount = async (filter: QueryFilter<AffixDocument> = {}) => {
   return await Affix.countDocuments(filter);
 };
 
-export const createAffix = async (createData: AffixCreateData | AffixCreateData[]) => {
+export const createAffix = async (createData: AffixCreateData) => {
   try {
     const createdAffix = await Affix.create(createData);
 
@@ -40,13 +40,11 @@ export const createAffix = async (createData: AffixCreateData | AffixCreateData[
 };
 
 export const updateAffixes = async (
-  filter: FilterQuery<AffixDocument> = {},
+  filter: QueryFilter<AffixDocument> = {},
   updateData: UpdateQuery<AffixUpdateData>
 ) => {
   try {
-    await Affix.updateMany(filter, updateData, {
-      new: true
-    });
+    await Affix.updateMany(filter, updateData);
   } catch (err) {
     logger.error(`Error occured while updating many affixs. ${err}`);
     handleAppError(err);
@@ -93,9 +91,9 @@ export const deleteAffixById = async (id: string) => {
   }
 };
 
-export const getAffixById = async (id: string, filter: FilterQuery<AffixDocument> = {}) => {
+export const getAffixById = async (id: string, projection: ProjectionType<AffixDocument> = {}) => {
   try {
-    const foundAffix = await Affix.findById(id, filter);
+    const foundAffix = await Affix.findById(id, projection);
 
     const affix = checkExistResource(foundAffix, `Affix with id(${id})`);
 
@@ -106,7 +104,7 @@ export const getAffixById = async (id: string, filter: FilterQuery<AffixDocument
   }
 };
 
-export const getOneAffix = async (filter: FilterQuery<AffixDocument> = {}) => {
+export const getOneAffix = async (filter: QueryFilter<AffixDocument> = {}) => {
   try {
     const foundAffix = await Affix.findOne(filter);
 

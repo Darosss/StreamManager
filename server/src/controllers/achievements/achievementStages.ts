@@ -16,6 +16,11 @@ import { AppError, checkExistResource, filterMp3, getListOfFilesWithExtensionInF
 import path from "path";
 import { achievementsStagesSoundsPath, publicEndpointPath } from "@configs";
 import multer from "multer";
+import { ParamsDictionary } from "express-serve-static-core";
+
+export interface RequestParamsSoundName extends ParamsDictionary {
+  soundName: string;
+}
 
 const storageAchievementStagesSounds = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -139,9 +144,12 @@ export const getAchievementStageSoundsList = (req: Request, res: Response, next:
   }
 };
 
-export const deleteAchievementStageSoundById = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteAchievementStageSoundById = async (
+  req: Request<RequestParamsSoundName>,
+  res: Response,
+  next: NextFunction
+) => {
   const { soundName } = req.params;
-
   try {
     const message = await deleteAchievementSound(soundName);
     res.status(200).send({ message });

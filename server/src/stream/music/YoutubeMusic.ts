@@ -1,15 +1,16 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { YoutubeApiHandler } from "../YoutubeAPIHandler";
 import { getOneUser, createSong, getOneSong } from "@services";
 import { botId, musicFolderName, ytMusicFolderName, ytMusicPath } from "@configs";
 import { CommonSongHandlersReturnData, YoutubeSongProperties } from "./types";
-import { convertSecondsToMS, headLogger, musicLogger } from "@utils";
+import { convertSecondsToMS, musicLogger } from "@utils";
 import { YoutubeSongInfoMessageType } from "./enums";
-import ytdl from "@distube/ytdl-core";
 import { createWriteStream } from "fs";
 import path from "path";
 import fs from "fs";
-
+import { createSabrStream, createStreamSink } from "./YoutubeDownloader";
+import { SabrPlaybackOptions } from "googlevideo/sabr-stream";
+import { EnabledTrackTypes } from "googlevideo/utils";
 type SearchForYoutubeSongParams = {
   searchQuery?: string;
   youtubeId?: string;
@@ -24,13 +25,24 @@ type SearchForYoutubeSongParams = {
 })();
 
 class YoutubeMusic extends YoutubeApiHandler {
+  private static readonly validateIdRegex = /^[a-zA-Z0-9-_]{11}$/;
+  private readonly downloadOptions: SabrPlaybackOptions = {
+    preferWebM: true,
+    preferOpus: true,
+    videoQuality: "480p",
+    audioQuality: "AUDIO_QUALITY_MEDIUM",
+    enabledTrackTypes: EnabledTrackTypes.AUDIO_ONLY
+  };
   constructor() {
     super();
   }
 
+  public static validateYtId(id: string) {
+    return YoutubeMusic.validateIdRegex.test(id.trim());
+  }
+
   public convertTopicDetailsIntoTags(topicDetails: YoutubeSongProperties["topicDetails"]) {
     const TOPIC_CATEGORY_SPLIT_FOR_TAG = "wiki/";
-
     const topicsNames = topicDetails?.topicCategories?.map((topic) => {
       const splitedTopic = topic.split(TOPIC_CATEGORY_SPLIT_FOR_TAG);
       return splitedTopic[splitedTopic.length - 1].toLowerCase();
@@ -42,33 +54,35 @@ class YoutubeMusic extends YoutubeApiHandler {
   public async downloadSongAndUpdateDBData(
     { id, duration, name, topicDetails }: YoutubeSongProperties,
     usernameWhoAdded?: string
-  ) {
-    return await new Promise<CommonSongHandlersReturnData>(async (resolve, reject) => {
-      ytdl(`http://www.youtube.com/watch?v=${id}`, { quality: "highestaudio" })
-        .pipe(createWriteStream(path.join(ytMusicPath, id + ".mp3")))
-        .on("error", (err) => {
-          headLogger.error(`Error occured while trying to download yt video: ${err}`);
+  ): Promise<CommonSongHandlersReturnData> {
+    try {
+      const { streamResults } = await createSabrStream(id, this.downloadOptions);
+      const { audioStream } = streamResults;
 
-          reject({ error: `couldn't play your song, because youtube...${err.message}` });
-        })
-        .on("finish", async () => {
-          const addedByUser = await getOneUser({ $or: [{ username: usernameWhoAdded }, { twitchId: botId }] }, {});
-          const createdSong = await createSong({
-            duration: duration,
-            whoAdded: String(addedByUser!._id),
-            title: name,
-            youtubeId: id,
-            tags: this.convertTopicDetailsIntoTags(topicDetails),
-            downloadedData: {
-              publicPath: path.join(musicFolderName, ytMusicFolderName, id + ".mp3"),
-              folderName: ytMusicFolderName,
-              fileName: id + ".mp3"
-            }
-          });
-          musicLogger.info(`downloadSongAndUpdateDBData -> new Song?: ${createdSong?.isNew}`);
-          resolve(createdSong!.song);
-        });
+      const outputPath = path.join(ytMusicPath, id + ".mp3");
+      const audioOutputStream = createWriteStream(outputPath);
+      await audioStream.pipeTo(createStreamSink(audioOutputStream));
+    } catch (err) {
+      console.error(err);
+      return { error: "Download file failed, sorry" };
+    }
+
+    const addedByUser = await getOneUser({ $or: [{ username: usernameWhoAdded }, { twitchId: botId }] }, {});
+    const createdSong = await createSong({
+      duration: duration,
+      whoAdded: String(addedByUser!._id),
+      title: name,
+      youtubeId: id,
+      tags: this.convertTopicDetailsIntoTags(topicDetails),
+      downloadedData: {
+        publicPath: path.join(musicFolderName, ytMusicFolderName, id + ".mp3"),
+        folderName: ytMusicFolderName,
+        fileName: id + ".mp3"
+      }
     });
+    musicLogger.info(`downloadSongAndUpdateDBData -> new Song?: ${createdSong?.isNew}`);
+
+    return createdSong!.song;
   }
 
   public async handleYoutubeSongLogic(
@@ -128,7 +142,7 @@ class YoutubeMusic extends YoutubeApiHandler {
       return {
         id: item.id || "",
         name: item.snippet?.title || "",
-        duration: moment.duration(item.contentDetails?.duration || 0).asSeconds(),
+        duration: dayjs.duration(Number(item.contentDetails?.duration || 0)).seconds(),
         ageRestricted: item.contentDetails?.contentRating?.ytRating,
         isPrivate: item.status?.privacyStatus === "private",
         topicDetails: item.topicDetails,

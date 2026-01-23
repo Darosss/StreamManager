@@ -1,5 +1,9 @@
-import moment from "moment";
 import path from "path";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(relativeTime);
+dayjs.extend(duration);
 
 export const shuffleArray = <T = unknown>(array: Array<T>) => {
   return array.sort(() => 0.5 - Math.random());
@@ -31,7 +35,7 @@ export const percentChance = (percent: number) => {
 };
 
 export const convertSecondsToMS = (secondsConvert: number) => {
-  const duration = moment.duration(secondsConvert, "seconds");
+  const duration = dayjs.duration(secondsConvert, "seconds");
   const minutes = Math.floor(duration.asMinutes());
   const seconds = (Math.floor(duration.asSeconds()) % 60).toString().padStart(2, "0");
   return [minutes, seconds];
@@ -51,7 +55,7 @@ export const getBaseLog = (x: number, y: number) => {
 
 //NOTE: there is same function in /frontend folder
 export const getDateFromSecondsToYMDHMS = (time: number, separator = " ") => {
-  const duration = moment.duration(time, "seconds");
+  const duration = dayjs.duration(time, "seconds");
 
   const seconds = Math.floor(duration.seconds());
   const minutes = Math.floor(duration.minutes());

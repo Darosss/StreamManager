@@ -12,14 +12,14 @@ export default function YoutubePlayer({
   isPlaying,
 }: YoutubePlayerProps) {
   const socket = useSocketContext();
-  const audioPlayer = useRef<any>(null);
+  const audioPlayer = useRef<HTMLAudioElement>(null);
 
   const handleYTChangeVolume = useCallback(
     (volume: number) => {
       if (!audioPlayer || !audioPlayer.current) return;
       audioPlayer.current.volume = volume / 100;
     },
-    [audioPlayer]
+    [audioPlayer],
   );
   useEffect(() => {
     socket.events.changeVolume.on((volume) => {
@@ -33,7 +33,8 @@ export default function YoutubePlayer({
 
   return isPlaying ? (
     <audio
-      src={`${viteBackendUrl}/public/music/youtube/${songId}.mp3`}
+      ref={audioPlayer}
+      src={`${viteBackendUrl}/music/youtube/${songId}.mp3`}
       autoPlay
     />
   ) : null;

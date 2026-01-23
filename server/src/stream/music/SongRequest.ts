@@ -1,5 +1,5 @@
 import { SongProperties, SongType } from "@socket";
-import youtubeMusic from "./YoutubeMusic";
+import youtubeMusic, { YoutubeMusic } from "./YoutubeMusic";
 import { MusicType } from "./enums";
 import { ConfigModel, SongsModel } from "@models";
 import { ConfigManager } from "../ConfigManager";
@@ -9,7 +9,6 @@ import { getOneSong, updateSongUsesById } from "@services";
 import fs from "fs";
 import { publicEndpointPath } from "@configs";
 import path from "path";
-import ytdl from "@distube/ytdl-core";
 import { musicLogger } from "@utils";
 
 export type SongRequestListType = [string, SongProperties] | null;
@@ -129,7 +128,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     return {
       duration,
       name: title,
-      id: youtubeId || _id,
+      id: youtubeId || _id.toString(),
       type,
       downloadedData:
         folderName && fileName && publicPath
@@ -164,7 +163,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
   }
 
   private async _handleOnNoDbSongYT(songName: string): Promise<CommonSongHandlersReturnData> {
-    const isYtId = ytdl.validateID(songName);
+    const isYtId = YoutubeMusic.validateYtId(songName);
     const data = await youtubeMusic.handleYoutubeSongLogic(
       isYtId ? { youtubeId: songName } : { searchQuery: songName }
     );
@@ -208,7 +207,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     if ("error" in data) error = data.error;
     else {
       songProperties = this.extractSongPropertiesFromModelHelper(data);
-      await updateSongUsesById(data._id, "songRequestUses");
+      await updateSongUsesById(data._id.toString(), "songRequestUses");
     }
 
     const added = songProperties ? await this.addRequestedSongToList(username, songProperties) : false;

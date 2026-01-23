@@ -70,7 +70,7 @@ class TimersHandler {
   private async setTimersTimeouts() {
     this.timers.map((timer) => {
       const { _id, name, delay } = timer;
-      this.setTimerTimeout(_id, name, delay);
+      this.setTimerTimeout(_id.toString(), name, delay);
     });
   }
 
@@ -149,7 +149,7 @@ class TimersHandler {
         if (this._onTimerExecute) this._onTimerExecute(timerMessage);
         else timerLogger.warn("In order to execute timer message provide and set _onTimerExecute in TimersHandler");
 
-        await this.updateTimerAfterUsage(_id);
+        await this.updateTimerAfterUsage(_id.toString());
       }, index * 2000);
     });
   }

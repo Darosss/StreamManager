@@ -1,7 +1,8 @@
-import { ChannelType, Client, Events, TextBasedChannel, inlineCode } from "discord.js";
+import { ChannelType, Client, Events, inlineCode } from "discord.js";
 import { EventData } from "./types";
 import { discordClientId } from "@configs";
 import { CommandNames } from "../commands";
+import { sendMessageInChannelByChannel } from "../utils";
 
 export const guildCreate: EventData = {
   name: Events.GuildCreate,
@@ -12,7 +13,7 @@ export const guildCreate: EventData = {
         const botMember = channel.members.get(discordClientId);
         if (!botMember) return;
         channel.permissionsFor(botMember);
-        (channel as TextBasedChannel)?.send(getWelcomeMessage());
+        sendMessageInChannelByChannel(channel, getWelcomeMessage());
       }
     });
   }

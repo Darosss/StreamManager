@@ -1,9 +1,9 @@
 import { Widgets, WidgetsDocument } from "@models";
 import { AppError, handleAppError, logger, checkExistResource } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import { WidgetCreateData, WidgetsFindOptions, WidgetUpdateData, ManyWidgetsFindOptions } from "./types/";
 
-export const getWidgets = async (filter: FilterQuery<WidgetsDocument> = {}, findOptions: ManyWidgetsFindOptions) => {
+export const getWidgets = async (filter: QueryFilter<WidgetsDocument> = {}, findOptions: ManyWidgetsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -20,11 +20,11 @@ export const getWidgets = async (filter: FilterQuery<WidgetsDocument> = {}, find
   }
 };
 
-export const getWidgetsCount = async (filter: FilterQuery<WidgetsDocument> = {}) => {
+export const getWidgetsCount = async (filter: QueryFilter<WidgetsDocument> = {}) => {
   return await Widgets.countDocuments(filter);
 };
 
-export const createWidget = async (createData: WidgetCreateData | WidgetCreateData[]) => {
+export const createWidget = async (createData: WidgetCreateData) => {
   try {
     const createdWidget = await Widgets.create(createData);
     if (!createdWidget) {

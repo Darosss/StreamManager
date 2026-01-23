@@ -7,7 +7,7 @@ import {
   DeleteBadgeImagesFn,
   ManyBadgesFindOptions
 } from "./types";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { QueryFilter, UpdateQuery } from "mongoose";
 import { getAchievementStages } from "@services";
 import { promises as fsPromises } from "fs";
 import path from "path";
@@ -16,9 +16,8 @@ import { badgesPath } from "@configs";
 export const SEPARATOR_BADGE_IMAGE_SIZE = `-xSize-`;
 export const badgeModelIMagesUrlsSizesNumbers = Object.values(BadgeModelImagesUrlsSizes).filter(Number) as number[];
 
-export const getBadges = async (filter: FilterQuery<BadgeDocument> = {}, findOptions: ManyBadgesFindOptions) => {
+export const getBadges = async (filter: QueryFilter<BadgeDocument> = {}, findOptions: ManyBadgesFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
-
   try {
     const affix = await Badge.find(filter)
       .limit(limit * 1)
@@ -33,7 +32,7 @@ export const getBadges = async (filter: FilterQuery<BadgeDocument> = {}, findOpt
   }
 };
 
-export const getBadgesCount = async (filter: FilterQuery<BadgeDocument> = {}) => {
+export const getBadgesCount = async (filter: QueryFilter<BadgeDocument> = {}) => {
   return await Badge.countDocuments(filter);
 };
 

@@ -15,7 +15,7 @@ import {
   SendAchievementsListMessagesFn,
   SendBadgesListMessagesFn
 } from "./types";
-import { generateRandomWord, getDateFromSecondsToYMDHMS } from "@utils";
+import { generateRandomWord, getDateFromSecondsToYMDHMS, logger } from "@utils";
 import { clearChannelFromMessages, findTextBasedChannelById, sendMessageInChannelByChannel } from "../utils";
 import { getAchievements, getBadges } from "@services";
 import { BadgeModel, StageData } from "@models";
@@ -63,6 +63,11 @@ export const achievementsDataUpdate: CommandData = {
 };
 
 const onInterractionOptionsLogic: OnInterractionOptionsLogicFn = async (interaction) => {
+  if (!interaction.isChatInputCommand()) {
+    await interaction.reply("Sorry. Something went wrong.");
+    return;
+  }
+
   const confirmWord = interaction.options.get("confirm_word")?.value;
   const achievementListChannelId = interaction.options.get("achievements_list_channel")?.value as string;
   const badgesListChannelId = interaction.options.get("badges_list_channel")?.value as string;
@@ -117,7 +122,7 @@ const sendAchievementsListMessages: SendAchievementsListMessagesFn = async ({ ch
     )}\n`
   );
 
-  await headMessageRef.suppressEmbeds(true);
+  await headMessageRef?.suppressEmbeds(true);
 
   const achievementListMsg = await getAchievementsListMessagesData();
   if (!achievementListMsg) return;
@@ -128,7 +133,7 @@ const sendAchievementsListMessages: SendAchievementsListMessagesFn = async ({ ch
       hiddenAchievementsCount++;
       continue;
     }
-    const preStageMsg = `----------------------------\n(Back to top): ${headMessageRef.url}\n
+    const preStageMsg = `----------------------------\n(Back to top): ${headMessageRef?.url}\n
     `;
 
     const stageDataString = stageData
@@ -145,18 +150,18 @@ const sendAchievementsListMessages: SendAchievementsListMessagesFn = async ({ ch
       `ACHIEVEMENT: '${name}'\n'${description}'`
     )}\n${codeBlock("js", stageDataString)}`;
 
-    await channel.send(`\n${messageToSend}`);
+    await sendMessageInChannelByChannel(channel, `\n${messageToSend}`);
   }
 
   hiddenAchievementsCount > 0
-    ? await headMessageRef.edit(
-        `${headMessageRef.content}\n${bold(
+    ? await headMessageRef?.edit(
+        `${headMessageRef?.content}\n${bold(
           `There are ${hiddenAchievementsCount} hidden achievement(s). GL in finding them :D`
         )}`
       )
     : null;
 
-  await headMessageRef.suppressEmbeds(true);
+  await headMessageRef?.suppressEmbeds(true);
 };
 
 const sendBadgesListMessages: SendBadgesListMessagesFn = async ({ channel, achievementsListChannelUrl }) => {
@@ -166,13 +171,13 @@ const sendBadgesListMessages: SendBadgesListMessagesFn = async ({ channel, achie
       "Use search option to find what you looking for :)"
     )}\n`
   );
-  await headMessageRef.suppressEmbeds(true);
+  await headMessageRef?.suppressEmbeds(true);
   const badgesListMsg = await getBadgesListMessagesData();
   if (!badgesListMsg) return;
 
   for await (const { name, description, imageUrl } of badgesListMsg) {
-    await channel.send({
-      content: `${`----------------------------\n(Back to top): ${headMessageRef.url}\n`}${name}\n${description}`,
+    await sendMessageInChannelByChannel(channel, {
+      content: `${`----------------------------\n(Back to top): ${headMessageRef?.url}\n`}${name}\n${description}`,
       files: [{ attachment: imageUrl }]
     });
   }
@@ -182,13 +187,25 @@ const getAchievementsListMessagesData = async () => {
   const foundAchievements = await getAchievements({}, {}, { stages: true, stagesBadge: true });
 
   if (!foundAchievements) return;
-  const achievementListData = foundAchievements.map(({ name, description, isTime, hidden, stages: { stageData } }) => ({
-    name,
-    description,
-    hidden,
-    isTime,
-    stageData: stageData as unknown as StageData<BadgeModel>[]
-  }));
+  const achievementListData = foundAchievements
+    .map(({ name, description, isTime, hidden, stages }) => {
+      const stageData: StageData<BadgeModel>[] = [];
+      if (!("stageData" in stages)) {
+        logger.warn("getAchievementsListMessagesData -> There is no stage data", { name });
+        return;
+      } else {
+        stageData.push(...stages.stageData);
+      }
+
+      return {
+        name,
+        description,
+        hidden,
+        isTime,
+        stageData
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => !!item);
 
   return achievementListData;
 };

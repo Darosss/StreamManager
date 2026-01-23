@@ -1,11 +1,11 @@
 import { ChatCommand, ChatCommandCreateData, ChatCommandDocument, ChatCommandUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { FilterQuery, PipelineStage, UpdateQuery } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery } from "mongoose";
 import { ChatCommandsFindOptions, ManyChatCommandsFindOptions } from "./types";
 import { modesPipeline } from "../aggregations";
 
 export const getChatCommands = async (
-  filter: FilterQuery<ChatCommandDocument> = {},
+  filter: QueryFilter<ChatCommandDocument> = {},
   findOptions: ManyChatCommandsFindOptions
 ) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 }, populate = [] } = findOptions;
@@ -36,7 +36,7 @@ export const getAllChatCommands = async () => {
   }
 };
 
-export const getOneChatCommand = async (filter: FilterQuery<ChatCommandDocument> = {}) => {
+export const getOneChatCommand = async (filter: QueryFilter<ChatCommandDocument> = {}) => {
   try {
     const foundChatCommand = await ChatCommand.findOne(filter);
 
@@ -49,7 +49,7 @@ export const getOneChatCommand = async (filter: FilterQuery<ChatCommandDocument>
   }
 };
 
-export const getChatCommandsCount = async (filter: FilterQuery<ChatCommandDocument> = {}) => {
+export const getChatCommandsCount = async (filter: QueryFilter<ChatCommandDocument> = {}) => {
   return await ChatCommand.countDocuments(filter);
 };
 
@@ -99,7 +99,7 @@ export const updateChatCommandById = async (id: string, updateData: UpdateQuery<
 };
 
 export const updateChatCommands = async (
-  filter: FilterQuery<ChatCommandDocument>,
+  filter: QueryFilter<ChatCommandDocument>,
   updateData: UpdateQuery<ChatCommandUpdateData>
 ) => {
   try {

@@ -6,8 +6,10 @@ import { encryptToken } from "@utils";
 const AuthSchema: Schema<AuthDocument> = new Schema(
   {
     accessToken: { type: String, required: true },
+    authTag: { type: Buffer },
     ivAccessToken: { type: Buffer },
     refreshToken: { type: String, required: true },
+    authTagRefreshToken: { type: Buffer },
     ivRefreshToken: { type: Buffer },
     expiresIn: { type: Number, required: true, default: 0 },
     obtainmentTimestamp: { type: Number, required: true, default: 0 },
@@ -19,26 +21,27 @@ const AuthSchema: Schema<AuthDocument> = new Schema(
   }
 );
 
-AuthSchema.pre("save", async function (next) {
+AuthSchema.pre("save", async function () {
   try {
     // Encrypt access token
     const accessToken = this.accessToken;
-    const { iv: ivAccessToken, encrypted: encryptedAccessToken } = encryptToken(accessToken, encryptionKey);
+    const { iv: ivAccessToken, encrypted: encryptedAccessToken, authTag } = encryptToken(accessToken, encryptionKey);
     this.accessToken = encryptedAccessToken;
     this.ivAccessToken = ivAccessToken;
+    this.authTag = authTag;
 
     // Encrypt refresh token
     const refreshToken = this.refreshToken;
-    const { iv: ivRefreshToken, encrypted: encryptedRefreshToken } = encryptToken(refreshToken, encryptionKey);
+    const {
+      iv: ivRefreshToken,
+      encrypted: encryptedRefreshToken,
+      authTag: authTagRefreshToken
+    } = encryptToken(refreshToken, encryptionKey);
     this.refreshToken = encryptedRefreshToken;
     this.ivRefreshToken = ivRefreshToken;
-
-    next();
+    this.authTagRefreshToken = authTagRefreshToken;
   } catch (err) {
-    if (err instanceof Error) {
-      return next(err);
-    }
-    return next();
+    throw err;
   }
 });
 

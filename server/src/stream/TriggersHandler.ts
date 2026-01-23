@@ -147,10 +147,11 @@ class TriggersHandler {
 
   private async getMessageAndUpdateTriggerLogic(trigger: TriggerModel) {
     const { _id, name, mood, messages, delay } = trigger;
+    const id = _id.toString();
     const triggerMessage = await this.getTriggerMessage(mood as MoodModel, messages);
-    await this.updateTrigerAfterUsage(_id);
+    await this.updateTrigerAfterUsage(id);
 
-    await this.setTimeoutRefreshTriggerDelay(_id, name, delay);
+    await this.setTimeoutRefreshTriggerDelay(id, name, delay);
     triggerLogger.info(`Use ${name} trigger, delay: ${delay}s`);
 
     return triggerMessage;

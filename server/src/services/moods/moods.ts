@@ -1,10 +1,10 @@
 import { Mood, MoodCreateData, MoodDocument, MoodUpdateData } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import { ManyMoodsFindOptions } from "./types";
 
-export const getMoods = async (filter: FilterQuery<MoodDocument> = {}, findOptions: ManyMoodsFindOptions) => {
+export const getMoods = async (filter: QueryFilter<MoodDocument> = {}, findOptions: ManyMoodsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
 
   try {
@@ -21,11 +21,11 @@ export const getMoods = async (filter: FilterQuery<MoodDocument> = {}, findOptio
   }
 };
 
-export const getMoodsCount = async (filter: FilterQuery<MoodDocument> = {}) => {
+export const getMoodsCount = async (filter: QueryFilter<MoodDocument> = {}) => {
   return await Mood.countDocuments(filter);
 };
 
-export const createMood = async (createData: MoodCreateData | MoodCreateData[]) => {
+export const createMood = async (createData: MoodCreateData) => {
   try {
     const createdMood = await Mood.create(createData);
 
@@ -39,11 +39,9 @@ export const createMood = async (createData: MoodCreateData | MoodCreateData[]) 
   }
 };
 
-export const updateMoods = async (filter: FilterQuery<MoodDocument> = {}, updateData: UpdateQuery<MoodUpdateData>) => {
+export const updateMoods = async (filter: QueryFilter<MoodDocument> = {}, updateData: UpdateQuery<MoodUpdateData>) => {
   try {
-    await Mood.updateMany(filter, updateData, {
-      new: true
-    });
+    await Mood.updateMany(filter, updateData);
   } catch (err) {
     logger.error(`Error occured while updating many moods. ${err}`);
     handleAppError(err);
@@ -89,9 +87,9 @@ export const deleteMoodById = async (id: string) => {
   }
 };
 
-export const getMoodById = async (id: string, filter: FilterQuery<MoodDocument> = {}) => {
+export const getMoodById = async (id: string, projection: ProjectionType<MoodDocument> = {}) => {
   try {
-    const foundMood = await Mood.findById(id, filter);
+    const foundMood = await Mood.findById(id, projection);
 
     const mood = checkExistResource(foundMood, `Mood with id(${id})`);
 
@@ -102,7 +100,7 @@ export const getMoodById = async (id: string, filter: FilterQuery<MoodDocument> 
   }
 };
 
-export const getOneMood = async (filter: FilterQuery<MoodDocument> = {}) => {
+export const getOneMood = async (filter: QueryFilter<MoodDocument> = {}) => {
   try {
     const foundMood = await Mood.findOne(filter);
 

@@ -1,10 +1,10 @@
 import { Redemption, RedemptionDocument } from "@models";
 import { AppError, handleAppError, logger } from "@utils";
-import { FilterQuery } from "mongoose";
+import { QueryFilter } from "mongoose";
 import { ManyRedemptionsFindOptions, RedemptionCreateData } from "./types";
 
 export const getRedemptions = async (
-  filter: FilterQuery<RedemptionDocument> = {},
+  filter: QueryFilter<RedemptionDocument> = {},
   findOptions: ManyRedemptionsFindOptions
 ) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 } } = findOptions;
@@ -22,7 +22,7 @@ export const getRedemptions = async (
   }
 };
 
-export const getRedemptionsCount = async (filter: FilterQuery<RedemptionDocument> = {}) => {
+export const getRedemptionsCount = async (filter: QueryFilter<RedemptionDocument> = {}) => {
   return await Redemption.countDocuments(filter);
 };
 
