@@ -109,7 +109,6 @@ class StreamHandler {
       const user = await createUserIfNotExist({ twitchId: userData.twitchId }, userData);
 
       if (!user) return;
-
       await this.handleSocketMessageServerEmit(user, {
         message,
         id: userstate.id || randomUUID(),
@@ -142,10 +141,9 @@ class StreamHandler {
   }
 
   private async getUserBadgesPathsForMessageServer(displayBadges: UserModel["displayBadges"]) {
-    const foundBadges =
-      displayBadges && displayBadges.length > 0
-        ? await getBadges({ _id: { $in: displayBadges.map((x) => x._id) } }, {})
-        : [];
+    const foundBadges = displayBadges?.every(Boolean)
+      ? await getBadges({ _id: { $in: displayBadges.map((x) => x._id) } }, {})
+      : [];
     const badgesPaths: MessageServerDataBadgesPathsType = ["", "", ""];
     foundBadges?.forEach(({ imagesUrls: { x32 } }, index) => (badgesPaths[index] = x32));
 
