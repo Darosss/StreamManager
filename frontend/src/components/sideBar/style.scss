@@ -24,14 +24,6 @@
       max-width: 10vw;
       min-width: 10vw;
     }
-
-    .nav-link {
-      a {
-        padding: 0;
-        justify-content: center;
-        font-size: 1em;
-      }
-    }
   }
   &__content {
     list-style: none;
@@ -72,5 +64,14 @@
     @media screen and (max-width: $screen-lg) {
       font-size: 0.6em;
     }
+  }
+}
+
+.sidebar-section {
+  &__submenu-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
   }
 }

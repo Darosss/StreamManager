@@ -1,7 +1,11 @@
 import { Error, Loading } from "@components/axiosHelper";
 import { useGetDiscordInviteUrl } from "@services";
-
-export default function DiscordInviteButton() {
+interface DiscordInviteButtonProps {
+  onlyIcon: boolean;
+}
+export default function DiscordInviteButton({
+  onlyIcon,
+}: DiscordInviteButtonProps) {
   const { data: discordInviteUrl, error, isLoading } = useGetDiscordInviteUrl();
 
   if (!discordInviteUrl) return null;
@@ -14,7 +18,7 @@ export default function DiscordInviteButton() {
       target="_blank"
       rel="noreferrer"
     >
-      Invite to discord
+      {onlyIcon ? <div> DC </div> : <div> Invite to discord </div>}
     </a>
   );
 }

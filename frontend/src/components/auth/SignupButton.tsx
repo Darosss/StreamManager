@@ -2,22 +2,24 @@ import { Button } from "@components/ui/button";
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
 import { useState, useEffect, useCallback } from "react";
-export default function SignupButton() {
+import { Link } from "react-router";
+
+interface SignupButtonProps {
+  onlyIcon?: boolean;
+}
+
+export default function SignupButton({ onlyIcon }: SignupButtonProps) {
   const {
     data: authData,
     error,
     refetch: refetchAuthorizeUrl,
   } = useGetAuthorizeUrl();
   const {
-    emits: { logout: emitLogout, getLoggedUserInfo },
+    emits: { getLoggedUserInfo },
     events: { sendLoggedUserInfo },
   } = useSocketContext();
 
   const [loggedUser, setLoggedUser] = useState<string>("");
-
-  const handleOnLogoutButton = () => {
-    emitLogout();
-  };
 
   const handleSetLoggedUserInfo = useCallback(() => {
     getLoggedUserInfo((username) => {
@@ -43,15 +45,17 @@ export default function SignupButton() {
     return (
       <>
         <Button variant="primary" size="small" className="signup-button">
-          Logged as: <span>{loggedUser}</span>
+          <div>
+            {onlyIcon ? (
+              "👤"
+            ) : (
+              <>
+                Logged as: <span>{loggedUser}</span>
+              </>
+            )}
+          </div>
         </Button>
-        <Button
-          variant="danger"
-          className="signup-button"
-          onClick={() => handleOnLogoutButton()}
-        >
-          Logout
-        </Button>
+        <LogoutButton onlyIcon={onlyIcon} />
       </>
     );
   } else if (error || !authData) {
@@ -63,19 +67,39 @@ export default function SignupButton() {
           refetchAuthorizeUrl();
         }}
       >
-        Refresh Link
+        <div>{onlyIcon ? "🔃" : "Refresh link"}</div>
       </Button>
     );
   }
   return (
     <Button variant="primary" className="signup-button">
-      <a
-        href={authData ? authData.data : "_blank"}
+      <Link
+        to={authData ? authData.data : "_blank"}
         target="_blank"
         rel="noreferrer"
       >
-        Connect with twitch
-      </a>
+        <div>{onlyIcon ? "🔐" : "Connect with twitch"}</div>
+      </Link>
+    </Button>
+  );
+}
+interface LogoutButtonProps {
+  onlyIcon?: boolean;
+}
+
+function LogoutButton({ onlyIcon }: LogoutButtonProps) {
+  const {
+    emits: { logout: emitLogout },
+  } = useSocketContext();
+
+  const handleLogout = () => {
+    emitLogout();
+  };
+
+  return (
+    <Button variant="danger" className="signup-button" onClick={handleLogout}>
+      <div> 🚪 </div>
+      {!onlyIcon && <div> Logout </div>}
     </Button>
   );
 }

@@ -69,7 +69,7 @@ export default function SideBar() {
         {routes.map((route, index) => (
           <li key={index} className="sidebar__sub-sidebar">
             <SidebarSection
-              route={route}
+              content={{ route }}
               onClickHeader={() => handleHeaderClick(route.title)}
               isExpanded={sidebarStatus.menus[route.title]}
               isOpen={sidebarStatus.isOpen}
@@ -78,10 +78,10 @@ export default function SideBar() {
         ))}
 
         <li>
-          <SignupButton />
+          <SignupButton onlyIcon={!sidebarStatus.isOpen} />
         </li>
         <li>
-          <DiscordInviteButton />
+          <DiscordInviteButton onlyIcon={!sidebarStatus.isOpen} />
         </li>
       </ul>
     </div>
