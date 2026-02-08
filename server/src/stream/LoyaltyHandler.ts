@@ -120,7 +120,7 @@ class LoyaltyHandler extends HeadHandler {
       }
 
       if (!this.usersBefore.has(userName) && userDB) {
-        await this.updateEventsInCurrentSession(userDB.id, "Join chat");
+        await this.updateEventsInCurrentSession(userDB._id.toString(), "Join chat");
 
         SocketHandler.getInstance().getIO().emit("userJoinTwitchChat", {
           eventDate: new Date(),
