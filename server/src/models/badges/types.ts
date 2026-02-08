@@ -1,17 +1,12 @@
-import { BaseModel } from "../types";
+import z from "zod";
 import { Document } from "mongoose";
+import { BadgeSchema, BadgeCreateSchema, BadgeUpdateSchema, BadgeImagesUrlsSchema } from "./schemas";
 
-export interface BadgeModelImagesUrls {
-  x32: string;
-  x64: string;
-  x96: string;
-  x128: string;
-}
+export type BadgeModelImagesUrls = z.infer<typeof BadgeImagesUrlsSchema>;
 
-export interface BadgeModel extends BaseModel {
-  name: string;
-  description: string;
-  imagesUrls: BadgeModelImagesUrls;
-}
-
+export type BadgeModel = z.infer<typeof BadgeSchema>;
 export type BadgeDocument = BadgeModel & Document;
+
+export type BadgeCreateData = z.infer<typeof BadgeCreateSchema>;
+
+export type BadgeUpdateData = z.infer<typeof BadgeUpdateSchema>;

@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { badgesPath, publicEndpointPath } from "@configs";
 import {
-  BadgeCreateData,
-  BadgeUpdateData,
   createBadge,
   getBadges,
   getBadgesCount,
@@ -27,6 +25,7 @@ import { filterBadgesByUrlParams } from "./filters";
 import path from "path";
 import sharp from "sharp";
 import { ParamsDictionary } from "express-serve-static-core";
+import { BadgeUpdateData, BadgeCreateData } from "@models";
 export interface RequestParamsBadgeName extends ParamsDictionary {
   badgeName: string;
 }

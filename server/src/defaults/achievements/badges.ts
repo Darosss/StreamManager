@@ -1,4 +1,4 @@
-import { BadgeCreateData } from "@services";
+import { BadgeCreateData } from "@models";
 
 export const getDefaultBadgeData = (): BadgeCreateData => {
   return {

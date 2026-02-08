@@ -1,7 +1,8 @@
-import { BadgeModel } from "models/badges/types";
 import { AchievementStageCreateData } from "services/achievements/types";
 
-export const getDefaultAchievementStagesData = (badgeId: BadgeModel["_id"]): AchievementStageCreateData => {
+export const getDefaultAchievementStagesData = (
+  badgeId: AchievementStageCreateData["stageData"][0]["badge"]
+): AchievementStageCreateData => {
   return {
     name: "DEFAULT_ACHIEVEMNT_STAGES",
     stageData: [

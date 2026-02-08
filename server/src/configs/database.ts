@@ -82,7 +82,7 @@ const createDefaultMood = async () => {
 
 const createDefaultAchievementStages = async (badgeId: BadgeModel["_id"]) => {
   if ((await getAchievementStagesCount()) === 0) {
-    return await createAchievementStage(getDefaultAchievementStagesData(badgeId));
+    return await createAchievementStage(getDefaultAchievementStagesData(new mongoose.Types.ObjectId(badgeId)));
   }
 };
 
