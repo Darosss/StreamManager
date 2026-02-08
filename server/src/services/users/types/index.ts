@@ -1,4 +1,4 @@
-import { UserModel } from "@models";
+import { BadgeModel, UserModel } from "@models";
 import { SortQuery, SelectQuery } from "@services";
 
 export interface UserPopulateOptions {
@@ -18,3 +18,7 @@ export interface ManyUsersFindOptions extends UserFindOptions {
 export type UserCreateData = Partial<Omit<UserModel, "_id" | "createdAt" | "updatedAt">> &
   Pick<UserModel, "twitchId" | "username">;
 export type UserUpdateData = Partial<UserCreateData>;
+
+export type UserReturnType<DBadgesPopulate extends boolean> = UserModel<
+  DBadgesPopulate extends true ? BadgeModel : string
+>;

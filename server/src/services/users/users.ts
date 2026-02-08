@@ -1,7 +1,7 @@
-import { UserDocument, User } from "@models";
+import { UserDocument, User, BadgeModel, UserModel } from "@models";
 import { checkExistResource, handleAppError, logger } from "@utils";
 import { QueryFilter, UpdateQuery } from "mongoose";
-import { ManyUsersFindOptions, UserCreateData, UserFindOptions, UserUpdateData } from "./types";
+import { ManyUsersFindOptions, UserCreateData, UserFindOptions, UserReturnType, UserUpdateData } from "./types";
 
 export const getUsers = async (filter: QueryFilter<UserDocument> = {}, findOptions: ManyUsersFindOptions) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate } = findOptions;
@@ -130,11 +130,19 @@ export const createUser = async (createData: UserCreateData) => {
   }
 };
 
-export const createUserIfNotExist = async (filter: QueryFilter<UserDocument>, createData: UserCreateData) => {
+export const createUserIfNotExist = async <DBadgesPopulate extends boolean = false>(
+  filter: QueryFilter<UserDocument>,
+  createData: UserCreateData,
+  populateDBadges?: DBadgesPopulate
+): Promise<UserReturnType<DBadgesPopulate> | undefined> => {
   try {
-    const user = await User.findOneAndUpdate(filter, createData, { upsert: true, new: true });
+    const user = await User.findOneAndUpdate(filter, createData, {
+      upsert: true,
+      new: true,
+      populate: populateDBadges && "displayBadges"
+    }).lean();
 
-    return user;
+    return user as UserReturnType<DBadgesPopulate>;
   } catch (err) {
     logger.error(`Error occured while creating user if not exist. ${err}`);
     handleAppError(err);
