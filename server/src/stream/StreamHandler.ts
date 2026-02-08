@@ -1,5 +1,5 @@
 import { ApiClient } from "@twurple/api";
-import { ConfigModel, UserModel } from "@models";
+import { BadgeModel, ConfigModel, UserModel } from "@models";
 import {
   type CustomRewardCreateData,
   type CustomRewardData,
@@ -106,7 +106,7 @@ class StreamHandler {
       const userData = this.getUserStateInfo(userstate, self);
       messageLogger.info(`${userData.username}: ${message}`);
 
-      const user = await createUserIfNotExist({ twitchId: userData.twitchId }, userData);
+      const user = await createUserIfNotExist({ twitchId: userData.twitchId }, userData, true);
 
       if (!user) return;
       await this.handleSocketMessageServerEmit(user, {
@@ -129,7 +129,7 @@ class StreamHandler {
   }
 
   private async handleSocketMessageServerEmit(
-    { displayBadges, username, _id }: UserModel,
+    { displayBadges, username, _id }: UserModel<BadgeModel>,
     messageData: MessageServerDataMessageDataType
   ) {
     const badgesPaths = await this.getUserBadgesPathsForMessageServer(displayBadges);
@@ -140,7 +140,7 @@ class StreamHandler {
     });
   }
 
-  private async getUserBadgesPathsForMessageServer(displayBadges: UserModel["displayBadges"]) {
+  private async getUserBadgesPathsForMessageServer(displayBadges: UserModel<BadgeModel>["displayBadges"]) {
     const foundBadges = displayBadges?.every(Boolean)
       ? await getBadges({ _id: { $in: displayBadges.map((x) => x._id) } }, {})
       : [];
@@ -150,7 +150,7 @@ class StreamHandler {
     return badgesPaths;
   }
 
-  private async chceckAndSendAnswer(user: UserModel, message: string) {
+  private async chceckAndSendAnswer(user: Omit<UserModel, "displayBadges">, message: string) {
     const commandMessage = await this.handlers.commandsHandler.checkMessageForCommand(user, message);
     if (commandMessage) {
       if (typeof commandMessage === "string") {
