@@ -6,7 +6,6 @@ import {
   getUserCount,
   getUsers,
   updateUserById,
-  UserUpdateData,
   getMessages,
   getMessagesCount,
   getRedemptions,
@@ -17,6 +16,7 @@ import { filterMessagesByUrlParams } from "../messages";
 import { RequestRedemptionQuery, filterRedemptionsByUrlParams } from "../redemptions";
 import { RequestParams } from "../types";
 import { RequestQueryMessage } from "../messages";
+import { UserUpdateData } from "@models";
 
 export const getUsersList = async (req: Request<{}, {}, {}, RequestQueryUser>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50, sortBy = "lastSeen", sortOrder = "desc" } = req.query;

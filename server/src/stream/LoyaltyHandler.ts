@@ -140,7 +140,7 @@ class LoyaltyHandler extends HeadHandler {
       const userDB = await isUserInDB({ twitchName: userLeft });
       // const userDB = await this.isUserInDB(userLeft);
       if (userDB) {
-        await this.updateEventsInCurrentSession(userDB.id, "Left chat");
+        await this.updateEventsInCurrentSession(userDB._id, "Left chat");
 
         SocketHandler.getInstance().getIO().emit("userJoinTwitchChat", {
           eventDate: new Date(),

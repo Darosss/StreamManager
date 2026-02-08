@@ -1,7 +1,7 @@
-import { UserDocument, User, BadgeModel, UserModel } from "@models";
+import { UserDocument, User, UserModel, UserCreateData, UserUpdateData } from "@models";
 import { checkExistResource, handleAppError, logger } from "@utils";
 import { QueryFilter, UpdateQuery } from "mongoose";
-import { ManyUsersFindOptions, UserCreateData, UserFindOptions, UserReturnType, UserUpdateData } from "./types";
+import { ManyUsersFindOptions, UserFindOptions, UserReturnType } from "./types";
 
 export const getUsers = async (filter: QueryFilter<UserDocument> = {}, findOptions: ManyUsersFindOptions) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate } = findOptions;
@@ -115,9 +115,11 @@ export const getTwitchNames = async (
   }
 };
 
-export const isUserInDB = async (filter: QueryFilter<UserDocument>) => {
-  const user = await User.findOne(filter);
-  if (user) return user;
+export const isUserInDB = async (filter: QueryFilter<UserDocument>): Promise<UserModel<string> | null> => {
+  const user = await User.findOne(filter).lean();
+  if (user) return user as UserModel<string>;
+
+  return null;
 };
 
 export const createUser = async (createData: UserCreateData) => {

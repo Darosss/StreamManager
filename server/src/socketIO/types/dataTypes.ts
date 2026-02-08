@@ -44,7 +44,7 @@ export interface RequestSongData {
 export interface EventAndUser {
   eventDate: Date;
   eventName: string;
-  user: UserModel;
+  user: UserModel<string>;
 }
 
 export interface AudioChunkData {
@@ -108,11 +108,6 @@ export interface CustomRewardData {
   // userInputRequired: boolean;
 }
 
-export interface EventAndUser {
-  eventDate: Date;
-  eventName: string;
-  user: UserModel;
-}
 export interface RewardData {
   rewardId: string;
   userId: string;

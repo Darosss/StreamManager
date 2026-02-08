@@ -1,5 +1,5 @@
 import { ApiClient } from "@twurple/api";
-import { BadgeModel, ConfigModel, UserModel } from "@models";
+import { BadgeModel, ConfigModel, UserCreateData, UserModel } from "@models";
 import {
   type CustomRewardCreateData,
   type CustomRewardData,
@@ -12,7 +12,6 @@ import {
   updateStreamSessionById,
   removeAuthToken,
   createUserIfNotExist,
-  UserCreateData,
   getBadges
 } from "@services";
 import CommandsHandler from "./CommandsHandler";

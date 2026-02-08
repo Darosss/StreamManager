@@ -15,10 +15,6 @@ export interface ManyUsersFindOptions extends UserFindOptions {
   limit?: number;
 }
 
-export type UserCreateData = Partial<Omit<UserModel, "_id" | "createdAt" | "updatedAt">> &
-  Pick<UserModel, "twitchId" | "username">;
-export type UserUpdateData = Partial<UserCreateData>;
-
 export type UserReturnType<DBadgesPopulate extends boolean> = UserModel<
   DBadgesPopulate extends true ? BadgeModel : string
 >;
