@@ -18,7 +18,7 @@ import { getInitialCurrentBreakpoint } from "@utils";
 import ReactGrid from "@components/reactGrid";
 import MusicPlayer from "./musicPlayer";
 import RewardsWindow from "./rewardsWindow";
-import { HelmetTitle } from "@components/componentWithTitle";
+import { CustomTitle } from "@components/componentWithTitle";
 import { Error, Loading } from "@components/axiosHelper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
@@ -84,7 +84,7 @@ export default function StreamEvents(params: { editor?: boolean }) {
   };
   return (
     <div>
-      <HelmetTitle title={"Events " + widgetData.data.name} />
+      <CustomTitle title={"Events " + widgetData.data.name} />
       <ReactGrid
         layoutName={widgetData.data.name}
         layoutState={layoutWidgets}

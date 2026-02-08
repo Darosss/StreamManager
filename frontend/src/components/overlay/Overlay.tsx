@@ -4,7 +4,7 @@ import { overlaysKeys } from "@layout";
 import { getInitialCurrentBreakpoint } from "@utils";
 import ReactGrid from "@components/reactGrid";
 import MusicPlayer from "./musicPlayer";
-import { HelmetTitle } from "@components/componentWithTitle";
+import { CustomTitle } from "@components/componentWithTitle";
 import Achievements from "./achievements";
 import Chat from "./chat";
 import PreviewImageSelector from "./PreviewImageSelector";
@@ -119,7 +119,7 @@ export default function Overlay(params: { editor?: boolean }) {
   };
   return (
     <div>
-      <HelmetTitle title={"Overlay " + overlayState.name} />
+      <CustomTitle title={"Overlay " + overlayState.name} />
       {editor ? (
         <div className="overlay-editor-actions-wrapper">
           <StyleCSSEditor />

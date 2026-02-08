@@ -1,5 +1,5 @@
 import "./style.scss";
 import ComponentWithTitle, { CustomTitle } from "./ComponentWithTitle";
 
-export { CustomTitle as HelmetTitle };
+export { CustomTitle };
 export default ComponentWithTitle;

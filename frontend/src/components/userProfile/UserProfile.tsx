@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import Message from "@components/message";
 import { DateTooltip } from "@components/dateTooltip";
-import { HelmetTitle } from "@components/componentWithTitle";
+import { CustomTitle } from "@components/componentWithTitle";
 import { useEditUser, useGetLatestEldestMsgs, useGetUser } from "@services";
 import { Error, Loading } from "@components/axiosHelper";
 import { Button } from "@components/ui/button";
@@ -47,7 +47,7 @@ export default function UserProfile() {
   const { data } = userData;
   return (
     <div>
-      <HelmetTitle title={data.username + " profile" || "User profile"} />
+      <CustomTitle title={data.username + " profile" || "User profile"} />
       <NavigateButton />
       <div className="profile-details-wrapper">
         <div className="detail-section-wrapper">

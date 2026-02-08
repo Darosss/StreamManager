@@ -1,5 +1,5 @@
 import ChangeTheme from "@components/changeTheme";
-import { HelmetTitle } from "@components/componentWithTitle";
+import { CustomTitle } from "@components/componentWithTitle";
 import Message, { MessageProps } from "@components/message";
 import { Button } from "@components/ui/button";
 import { routes } from "@routes";
@@ -28,7 +28,7 @@ export default function Home() {
     });
   return (
     <div ref={homeWrapper} className="home-wrapper">
-      <HelmetTitle title="Home" />
+      <CustomTitle title="Home" />
 
       <ChatBackground />
 
@@ -132,7 +132,7 @@ function ChatBackground() {
       messagesToShow.push({
         message: msg.message,
         username: msg.ownerUsername,
-      })
+      }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
