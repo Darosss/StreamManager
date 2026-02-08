@@ -15,7 +15,7 @@ export interface ServerToClientEvents extends ServerToClientMusicEvents {
   messageServer: (data: MessageServerData) => void;
   messageServerDelete: (data: MessageServerDeleteData) => void;
   userJoinTwitchChat: (eventAndUser: EventAndUser) => void;
-  onRedemption: (data: RewardData, alertSound: Buffer) => void;
+  onRedemption: (data: RewardData, alertSound: Uint8Array) => void;
 
   forceReconnect: () => void;
   getCustomRewards: (data: CustomRewardData[]) => void;

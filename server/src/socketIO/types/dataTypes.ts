@@ -48,7 +48,7 @@ export interface EventAndUser {
 }
 
 export interface AudioChunkData {
-  chunk: string | Buffer;
+  chunk: string | Uint8Array;
 }
 
 export type MessageServerDataBadgesPathsType = [string, string, string];
@@ -63,6 +63,7 @@ export interface MessageServerDataMessageDataType {
   emotes: CommonUserstate["emotes"];
   timestamp: number;
 }
+//TODO: when schema validate fix the frontend file chat/exampleData.ts
 export interface MessageServerData {
   user: Pick<UserModel, "_id" | "username"> & { badgesPaths: MessageServerDataBadgesPathsType };
   messageData: MessageServerDataMessageDataType;
