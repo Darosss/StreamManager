@@ -6,9 +6,15 @@ import {
 } from "../api";
 import { Message } from "../messages";
 
-export type UserDisplayBadgesType = [Badge, Badge, Badge];
+export type UserDisplayBadgesType<BadgeType extends string | Badge = string> = [
+  BadgeType,
+  BadgeType,
+  BadgeType,
+];
 
-export interface User extends BaseModelProperties {
+export interface User<
+  BadgeType extends string | Badge = string,
+> extends BaseModelProperties {
   twitchId: string;
   username: string;
   privileges: number;
@@ -20,13 +26,12 @@ export interface User extends BaseModelProperties {
   twitchName?: string;
   twitchCreated?: Date;
   follower?: Date;
-  displayBadges?: UserDisplayBadgesType;
+  displayBadges?: UserDisplayBadgesType<BadgeType>;
 }
 
-export interface UserUpdateData
-  extends Partial<
-    Omit<User, "_id" | "twitchId" | "twitchName" | "twitchCreated">
-  > {}
+export interface UserUpdateData extends Partial<
+  Omit<User, "_id" | "twitchId" | "twitchName" | "twitchCreated">
+> {}
 
 export interface FirstAndLatestMsgs {
   firstMessages: Message[];
@@ -45,3 +50,4 @@ export interface FetchUsersParams extends DefaultRequestParams<keyof User> {
   created_start?: string;
   created_end?: string;
 }
+
