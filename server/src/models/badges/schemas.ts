@@ -22,6 +22,4 @@ export const BadgeCreateSchema = BadgeSchema.omit({
   updatedAt: true
 });
 
-export const BadgeUpdateSchema = BadgeCreateSchema.partial().extend({
-  uses: z.number().optional()
-});
+export const BadgeUpdateSchema = BadgeCreateSchema.partial();
