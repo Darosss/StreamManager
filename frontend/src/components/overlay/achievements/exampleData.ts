@@ -57,7 +57,8 @@ const generateRandomObtainedAchievementData = (
         stage: Math.floor(Math.random() * 20),
         goal: Math.floor(Math.random() * 1000000),
         badge: {
-          _id: Math.random().toString(),
+          //TODO: ZOD Backend -> update
+          _id: Math.random().toString() as never,
           name: "badge name",
           description: "badge description",
           imagesUrls: {

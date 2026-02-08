@@ -30,7 +30,10 @@ export type QueryParams<KeyType extends string> = {
 };
 
 export interface BaseModelProperties {
-  _id: string;
+  //TODO: ZOD backend -> update then
+  //This gonna be anyway as string later.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _id: any;
   createdAt: Date;
   updatedAt: Date;
 }

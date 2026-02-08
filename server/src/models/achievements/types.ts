@@ -15,6 +15,7 @@ export interface StageData<T extends BadgeModel | Types.ObjectId = Types.ObjectI
   sound?: string;
   rarity?: StageDataRarity;
 }
+//TODO: when schema validate fix the frontend file achievements/exampleData.ts
 export type StageDataWithBadgePopulated = StageData<BadgeModel>;
 export interface AchievementStageModel<T extends BadgeModel | Types.ObjectId = Types.ObjectId> extends BaseModel {
   name: string;

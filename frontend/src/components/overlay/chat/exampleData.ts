@@ -30,7 +30,8 @@ const generateRandomMessageServerData = (index: number): MessageServerData => {
       timestamp: dayjs().add(index, "second").toDate().getTime(),
     },
     user: {
-      _id: Math.random().toString(),
+      //TODO: ZOD Backend -> update
+      _id: Math.random().toString() as never,
       badgesPaths: ["", "", ""],
       username:
         commonData.nicknames[randomWithMax(commonData.nicknames.length - 1)],

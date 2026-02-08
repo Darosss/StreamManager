@@ -16,10 +16,12 @@ export default function StreamNotifications() {
       events: { userJoinTwitchChat },
     } = socketContext;
     userJoinTwitchChat.on((eventAndUser) => {
+      //TODO: ZOD when backend schemas updates, update here.
+      const { _id, ...restUser } = eventAndUser.user;
       setUserNotif((prevState) => {
         prevState.unshift({
           _id: eventAndUser.eventDate.toString() + Date.now(),
-          user: eventAndUser.user,
+          user: { _id: _id.toString(), ...restUser },
           name: eventAndUser.eventName,
           createdAt: eventAndUser.eventDate,
           updatedAt: eventAndUser.eventDate,
