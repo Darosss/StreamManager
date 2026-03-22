@@ -1,13 +1,12 @@
-import { BadgeModel } from "../badges";
 import { BadgeSchema } from "../badges/schemas";
 
 import z from "zod";
 
-export const createDisplayBadgesSchema = <T extends z.ZodTypeAny>(badgeSchema: T) =>
+export const createDisplayBadgesSchema = <T extends z.ZodType>(badgeSchema: T) =>
   z.tuple([badgeSchema, badgeSchema, badgeSchema]);
 
 // Generic function that creates the user schema
-export const createUserSchema = <T extends z.ZodTypeAny>(badgeSchema: T) =>
+export const createUserSchema = <T extends z.ZodType>(badgeSchema: T) =>
   z.object({
     _id: z.string(),
     createdAt: z.date(),
