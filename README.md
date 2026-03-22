@@ -60,8 +60,6 @@ It **SHOULD NOT** be on online hosting
 
 ## Getting started
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Prerequisites
 
 It can work on most versions, tho it is most tested on versions mentioned
@@ -198,8 +196,6 @@ DISCORD_CLIENT_ID=
 
 ## Usage
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 Once the app is started, it will listen for incoming twitch chat messages on your local machine and respond accordingly.
 
 ## Features
@@ -207,7 +203,6 @@ Once the app is started, it will listen for incoming twitch chat messages on you
 #### The manager includes the following features:
 
 - Modes:
-
   - Available modes are: Tags / Moods / Affixes
   - Create modes and assign them to timers / triggers / commands / message categories
   - By default global modes are created
@@ -215,7 +210,6 @@ Once the app is started, it will listen for incoming twitch chat messages on you
   - Affixes are a bit different, just because they works as affix to messages. Each of affixes have multipler(in %) that adjust global configs of affix chance
 
 - Timers:
-
   - Schedule messages to be sent at regular intervals
   - And/or depends on points per message.
   - Two options per timers when non sub(_option is visible but not yet implemented_) or non follow write on chat it adds points depends on values in config
@@ -225,10 +219,8 @@ Once the app is started, it will listen for incoming twitch chat messages on you
       </details>
 
 - Triggers:
-
   - Messages that triggers depends on context that user says
   - Each trigger canhave mode between: ALL / WHOLE-WORD / STARTS-WITH
-
     - **STARTS-WITH**: trigger only fire when any word/message starts with word
     - **WHOLE-WORD**: trigger only fire when whole word occurs
     - **ALL**: trigger fire wherever word occurs
@@ -241,22 +233,17 @@ Once the app is started, it will listen for incoming twitch chat messages on you
       </details>
 
 - Message categories:
-
   - These are used in message box and random messages when no triggers found
   - Simply they contain name of category and messages list
 
 - Event subscriptions:
-
   - Subscribe to event on Twitch, such as when a user receive rewards and starts stream session when you start streaming.
 
 - Chat commands:
-
   - Define custom commands that users can trigger in chat.
   - Static commands for music player and song request:
-
     - <details>
       <summary>Show commands for <b>mod</b> permission</summary>
-
       - skip
       - pause
       - resume / play
@@ -267,7 +254,6 @@ Once the app is started, it will listen for incoming twitch chat messages on you
 
     - <details>
       <summary>Show commands for <b>all</b> permission</summary>
-
       - next - say next song
       - previous - say previous song
       - when - say when requested song will be played
@@ -281,25 +267,21 @@ Once the app is started, it will listen for incoming twitch chat messages on you
     - I'm command and my name is: `$command{name}`
 
 - Chat logging:
-
   - Log all messages from the chat to database.
 
 - Loyalty system:
-
   - Count watch time depends on visible chatters
   - Points system with multipler
   - Points per message
   - Points per watch session x multipler
 
 - Overlay:
-
   - Channel points reward popup
   - Music player current song progress and current que
 
 - Widgets / events which contain:
 
   All of widgets can be shown, hidden, resized and saved depending on requirements
-
   - Stream chat: Where you see messages and can send your custom messages as bot account
   - Last chatters: Show last active users on chat
   - Prepared messages window: Here are messages from Message categories list.
@@ -314,7 +296,6 @@ Once the app is started, it will listen for incoming twitch chat messages on you
       </details>
 
 - Most options are configurable
-
   - <details>
       <summary>Show images</summary>
       <img src="./images/configs1.png" alt="Configs list">
@@ -341,13 +322,9 @@ Once the app is started, it will listen for incoming twitch chat messages on you
 
 ## License
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 Distributed under the MIT License. See `LICENSE.md` for more information.
 
 ## Contact
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Darosss - darosss12@proton.me
 
