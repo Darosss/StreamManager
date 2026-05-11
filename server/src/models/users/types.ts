@@ -2,7 +2,7 @@ import z from "zod";
 import { Document } from "mongoose";
 import { BadgeModel } from "../badges";
 import { createUserSchema, UserCreateSchema, UserUpdateSchema } from "./schemas";
-import { BadgeSchema } from "models/badges/schemas";
+import { BadgeSchema } from "../badges/schemas";
 
 export type UserDisplayBadgesType<BadgeType extends string | BadgeModel = string> = [BadgeType, BadgeType, BadgeType];
 
