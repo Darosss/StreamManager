@@ -2,15 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { RequestParams } from "../types";
 import { RequestTriggerQuery } from "./types";
 import { filterTriggersByUrlParams } from "./filters";
-import {
-  createTrigger,
-  deleteTriggerById,
-  getTriggers,
-  getTriggersCount,
-  updateTriggerById,
-  TriggerCreateData,
-  TriggerUpdateData
-} from "@services";
+import { createTrigger, deleteTriggerById, getTriggers, getTriggersCount, updateTriggerById } from "@services";
+import { TriggerCreateData, TriggerUpdateData } from "@models";
 
 export const getTriggersList = async (
   req: Request<{}, {}, {}, RequestTriggerQuery>,

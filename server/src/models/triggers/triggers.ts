@@ -10,7 +10,7 @@ const TriggerSchema: Schema<TriggerDocument> = new Schema(
     chance: { type: Number, default: 50 },
     onDelay: { type: Boolean, default: false },
     words: [String],
-    mode: { type: String, default: "WHOLE-WORD" }
+    mode: { type: String, default: "WholeWord" }
   },
   { timestamps: true }
 );

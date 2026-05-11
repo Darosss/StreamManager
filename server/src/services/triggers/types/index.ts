@@ -11,11 +11,3 @@ export interface ManyTriggersFindOptions extends TriggerFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type TriggerOptionalData = Partial<Omit<TriggerModel, "_id" | "createdAt" | "updatedAt">>;
-
-export interface TriggerCreateData
-  extends Pick<TriggerModel, "name" | "words" | "messages">,
-    Omit<TriggerOptionalData, "name" | "messages" | "words"> {}
-
-export interface TriggerUpdateData extends TriggerOptionalData, Partial<TriggerCreateData> {}

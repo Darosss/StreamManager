@@ -159,13 +159,13 @@ class TriggersHandler {
 
   private async checkIfCanSendTrigger(mode: TriggerMode, wholeWord: string, triggerWord: string) {
     switch (mode) {
-      case "WHOLE-WORD":
+      case "WholeWord":
         if (wholeWord !== triggerWord) {
           triggerLogger.info(`WHOLE-WORD: Trigger - trigger word (${triggerWord} != ${wholeWord}). Not sending`);
           return false;
         }
         break;
-      case "STARTS-WITH":
+      case "StartsWith":
         if (!wholeWord.startsWith(triggerWord)) {
           triggerLogger.info(`STARTS-WITH: Trigger not starting with word (${triggerWord}  ${wholeWord}). Not sending`);
           return false;

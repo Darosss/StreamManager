@@ -1,8 +1,8 @@
-import { Trigger, TriggerDocument } from "@models";
+import { Trigger, TriggerCreateData, TriggerDocument, TriggerUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { modesPipeline } from "../aggregations";
 import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
-import { ManyTriggersFindOptions, TriggerCreateData, TriggerFindOptions, TriggerUpdateData } from "./types";
+import { ManyTriggersFindOptions, TriggerFindOptions } from "./types";
 
 export const getTriggers = async (filter: QueryFilter<TriggerDocument> = {}, findOptions: ManyTriggersFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 }, populate = [] } = findOptions;

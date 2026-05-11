@@ -1,22 +1,9 @@
-import { BaseModel } from "../types";
 import { Document } from "mongoose";
-import { TagModel } from "../tags";
-import { MoodModel } from "../moods";
+import z from "zod";
+import { TriggerCreateSchema, TriggerModeSchema, TriggerSchema, TriggerUpdateSchema } from "./schemas";
 
-export type TriggerMode = "WHOLE-WORD" | "STARTS-WITH" | "ALL";
-
-export interface TriggerModel extends BaseModel {
-  name: string;
-  enabled: boolean;
-  chance: number;
-  delay: number;
-  onDelay: boolean;
-  uses: number;
-  words: string[];
-  messages: string[];
-  mode: TriggerMode;
-  mood: string | MoodModel;
-  tag: string | TagModel;
-}
-
+export type TriggerMode = z.infer<typeof TriggerModeSchema>;
+export type TriggerModel = z.infer<typeof TriggerSchema>;
 export type TriggerDocument = TriggerModel & Document;
+export type TriggerUpdateData = z.infer<typeof TriggerUpdateSchema>;
+export type TriggerCreateData = z.infer<typeof TriggerCreateSchema>;
