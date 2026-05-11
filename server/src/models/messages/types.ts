@@ -1,12 +1,8 @@
 import { Document } from "mongoose";
-import { UserModel } from "../users";
+import z from "zod";
+import { MessageCreateSchema, MessageSchema, MessageUpdateSchema } from "./schemas";
 
-export interface MessageModel {
-  _id: string;
-  message: string;
-  date: Date;
-  owner: string | UserModel;
-  ownerUsername: string;
-}
-
+export type MessageModel = z.infer<typeof MessageSchema>;
 export type MessageDocument = MessageModel & Document;
+export type MessageUpdateData = z.infer<typeof MessageUpdateSchema>;
+export type MessageCreateData = z.infer<typeof MessageCreateSchema>;

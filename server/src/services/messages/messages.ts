@@ -1,7 +1,7 @@
-import { Message, MessageDocument } from "@models";
+import { Message, MessageCreateData, MessageDocument } from "@models";
 import { handleAppError, logger } from "@utils";
 import { QueryFilter } from "mongoose";
-import { ManyMessageFindOptions, MessageCreateData } from "./types";
+import { ManyMessageFindOptions } from "./types";
 
 export const getMessages = async (filter: QueryFilter<MessageDocument> = {}, findOptions: ManyMessageFindOptions) => {
   const { limit = 50, skip = 1, sort = {}, select = { __v: 0 }, populate = [] } = findOptions;

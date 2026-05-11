@@ -1,5 +1,5 @@
-import { createMessage, MessageCreateData, updateUser } from "@services";
-import { ConfigModel } from "@models";
+import { createMessage, updateUser } from "@services";
+import { ConfigModel, MessageCreateData } from "@models";
 import { ConfigManager } from "./ConfigManager";
 import AchievementsHandler from "./AchievementsHandler";
 
