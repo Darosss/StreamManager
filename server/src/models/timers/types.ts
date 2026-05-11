@@ -1,21 +1,8 @@
-import { BaseModel } from "../types";
 import { Document } from "mongoose";
-import { TagModel } from "../tags";
-import { MoodModel } from "../moods";
+import z from "zod";
+import { TimerCreateSchema, TimerSchema, TimerUpdateSchema } from "./schemas";
 
-export interface TimerModel extends BaseModel {
-  name: string;
-  enabled: boolean;
-  delay: number;
-  points: number;
-  reqPoints: number;
-  nonFollowMulti: boolean;
-  nonSubMulti: boolean;
-  uses: number;
-  messages: string[];
-  description: string;
-  mood: string | MoodModel;
-  tag: string | TagModel;
-}
-
+export type TimerModel = z.infer<typeof TimerSchema>;
 export type TimerDocument = TimerModel & Document;
+export type TimerUpdateData = z.infer<typeof TimerUpdateSchema>;
+export type TimerCreateData = z.infer<typeof TimerCreateSchema>;

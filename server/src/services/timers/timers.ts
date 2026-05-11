@@ -1,8 +1,8 @@
 import { modesPipeline } from "../aggregations";
-import { Timer, TimerDocument, TimerModel } from "@models";
+import { Timer, TimerCreateData, TimerDocument, TimerModel, TimerUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
-import { ManyTimersFindOptions, TimerCreateData, TimerFindOptions, TimerUpdateData } from "./types";
+import { ManyTimersFindOptions, TimerFindOptions } from "./types";
 
 export const getTimers = async (filter: QueryFilter<TimerDocument> = {}, findOptions: ManyTimersFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 }, populate = [] } = findOptions;
@@ -56,7 +56,7 @@ export const updateTimers = async (
 
 export const updateEnabledTimersAndEnabledModes = async (
   pointsInrement: number,
-  matchOption?: QueryFilter<TimerDocument>
+  matchOption?: QueryFilter<TimerUpdateData>
 ) => {
   try {
     const pipeline: PipelineStage[] = [

@@ -2,16 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { RequestParams } from "../types";
 import { RequestTimerQuery } from "./types";
 import { filterTimersByUrlParams } from "./filters";
-import {
-  createTimer,
-  deleteTimerById,
-  getTimers,
-  getTimersCount,
-  updateTimerById,
-  TimerCreateData,
-  TimerUpdateData
-} from "@services";
+import { createTimer, deleteTimerById, getTimers, getTimersCount, updateTimerById } from "@services";
 import { minDelayTimer } from "@configs";
+import { TimerCreateData, TimerUpdateData } from "@models";
 
 export const getTimersList = async (req: Request<{}, {}, {}, RequestTimerQuery>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50, sortBy = "createdAt", sortOrder = "desc" } = req.query;
