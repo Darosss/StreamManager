@@ -11,7 +11,3 @@ export interface ManyOverlaysFindOptions extends OverlaysFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type OverlayCreateData = Pick<OverlayModel, "name" | "layout" | "toolbox">;
-
-export interface OverlayUpdateData extends Partial<OverlayCreateData>, Pick<OverlayModel, "styles"> {}

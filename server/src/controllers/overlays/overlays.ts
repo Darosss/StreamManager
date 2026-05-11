@@ -5,11 +5,10 @@ import {
   getOverlayById as getOverlayByIdService,
   getOverlays,
   getOverlaysCount,
-  updateOverlayById,
-  OverlayCreateData,
-  OverlayUpdateData
+  updateOverlayById
 } from "@services";
 import { RequestParams, RequestSearch } from "../types";
+import { OverlayCreateData, OverlayUpdateData } from "@models";
 
 export const getOverlaysList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 25 } = req.query;

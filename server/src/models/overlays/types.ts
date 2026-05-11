@@ -1,12 +1,8 @@
 import { Document } from "mongoose";
-import { BaseModel } from "../types";
-import { LayoutBreakpointModel } from "models/layouts";
+import z from "zod";
+import { OverlayCreateSchema, OverlaySchema, OverlayUpdateSchema } from "./schemas";
 
-export interface OverlayModel extends BaseModel {
-  name: string;
-  layout: { [P: string]: LayoutBreakpointModel[] };
-  toolbox: { [P: string]: LayoutBreakpointModel[] };
-  styles?: Map<string, string>;
-}
-
+export type OverlayModel = z.infer<typeof OverlaySchema>;
 export type OverlayDocument = OverlayModel & Document;
+export type OverlayUpdateData = z.infer<typeof OverlayUpdateSchema>;
+export type OverlayCreateData = z.infer<typeof OverlayCreateSchema>;

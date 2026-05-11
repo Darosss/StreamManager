@@ -1,7 +1,7 @@
-import { Overlay, OverlayDocument } from "@models";
+import { Overlay, OverlayCreateData, OverlayDocument, OverlayUpdateData } from "@models";
 import { AppError, handleAppError, checkExistResource, logger } from "@utils";
 import { QueryFilter, UpdateQuery } from "mongoose";
-import { OverlayCreateData, OverlaysFindOptions, OverlayUpdateData, ManyOverlaysFindOptions } from "./types/";
+import { OverlaysFindOptions, ManyOverlaysFindOptions } from "./types/";
 
 export const getOverlays = async (filter: QueryFilter<OverlayDocument> = {}, findOptions: ManyOverlaysFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
