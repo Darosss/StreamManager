@@ -1,11 +1,8 @@
 import { Document } from "mongoose";
-import { BaseModel } from "../types";
-import { LayoutBreakpoint } from "../layouts";
+import z from "zod";
+import { WidgetsSchema, WidgetsUpdateSchema, WidgetsCreateSchema } from "./schemas";
 
-export interface WidgetsModel extends BaseModel {
-  name: string;
-  layout: { [P: string]: LayoutBreakpoint[] };
-  toolbox: { [P: string]: LayoutBreakpoint[] };
-}
-
+export type WidgetsModel = z.infer<typeof WidgetsSchema>;
 export type WidgetsDocument = WidgetsModel & Document;
+export type WidgetsUpdateData = z.infer<typeof WidgetsUpdateSchema>;
+export type WidgetsCreateData = z.infer<typeof WidgetsCreateSchema>;

@@ -1,8 +1,4 @@
-export interface LayoutBreakpoint {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  static: boolean;
-}
+import z from "zod";
+import { LayoutBreakpointSchema } from "./schemas";
+
+export type LayoutBreakpointModel = z.infer<typeof LayoutBreakpointSchema>;

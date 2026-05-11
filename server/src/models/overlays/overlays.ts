@@ -1,19 +1,19 @@
 import { Model, model, Schema } from "mongoose";
 import { OverlayDocument } from "./types";
 import { nameField } from "@utils";
-import { layoutBreakpointSchema } from "../layouts";
+import { LayoutBreakpointSchema } from "../layouts";
 
 const OverlaySchema: Schema<OverlayDocument> = new Schema(
   {
     ...nameField,
     layout: {
       type: Map,
-      of: [layoutBreakpointSchema],
+      of: [LayoutBreakpointSchema],
       default: new Map()
     },
     toolbox: {
       type: Map,
-      of: [layoutBreakpointSchema],
+      of: [LayoutBreakpointSchema],
       default: new Map()
     },
     styles: {

@@ -10,7 +10,3 @@ export interface ManyWidgetsFindOptions extends WidgetsFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type WidgetCreateData = Pick<WidgetsDocument, "name" | "layout" | "toolbox">;
-
-export type WidgetUpdateData = Partial<WidgetCreateData>;

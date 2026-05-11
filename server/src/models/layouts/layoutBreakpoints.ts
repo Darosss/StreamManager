@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
+import { LayoutBreakpointModel } from "./types";
 
-export const layoutBreakpointSchema = new Schema({
+export const LayoutBreakpointSchema = new Schema<LayoutBreakpointModel>({
   i: String,
   x: Number,
   y: Number,

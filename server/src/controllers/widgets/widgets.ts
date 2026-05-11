@@ -5,11 +5,10 @@ import {
   getWidgetById as getWidgetByIdService,
   getWidgets,
   getWidgetsCount,
-  updateWidgetById,
-  WidgetCreateData,
-  WidgetUpdateData
+  updateWidgetById
 } from "@services";
 import { RequestParams, RequestSearch } from "../types";
+import { WidgetsCreateData, WidgetsUpdateData } from "@models";
 
 export const getWidgetsList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = "1", limit = "25", sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -49,7 +48,7 @@ export const getWidgetById = async (req: Request<RequestParams, {}, {}, {}>, res
 };
 
 export const addNewWidget = async (
-  req: Request<RequestParams, {}, WidgetCreateData, {}>,
+  req: Request<RequestParams, {}, WidgetsCreateData, {}>,
   res: Response,
   next: NextFunction
 ) => {
@@ -66,7 +65,7 @@ export const addNewWidget = async (
 };
 
 export const editWidgetById = async (
-  req: Request<RequestParams, {}, WidgetUpdateData, {}>,
+  req: Request<RequestParams, {}, WidgetsUpdateData, {}>,
   res: Response,
   next: NextFunction
 ) => {

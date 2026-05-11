@@ -1,7 +1,7 @@
-import { Widgets, WidgetsDocument } from "@models";
+import { Widgets, WidgetsCreateData, WidgetsDocument, WidgetsUpdateData } from "@models";
 import { AppError, handleAppError, logger, checkExistResource } from "@utils";
 import { QueryFilter, UpdateQuery } from "mongoose";
-import { WidgetCreateData, WidgetsFindOptions, WidgetUpdateData, ManyWidgetsFindOptions } from "./types/";
+import { WidgetsFindOptions, ManyWidgetsFindOptions } from "./types/";
 
 export const getWidgets = async (filter: QueryFilter<WidgetsDocument> = {}, findOptions: ManyWidgetsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: -1 }, select = { __v: 0 } } = findOptions;
@@ -24,7 +24,7 @@ export const getWidgetsCount = async (filter: QueryFilter<WidgetsDocument> = {})
   return await Widgets.countDocuments(filter);
 };
 
-export const createWidget = async (createData: WidgetCreateData) => {
+export const createWidget = async (createData: WidgetsCreateData) => {
   try {
     const createdWidget = await Widgets.create(createData);
     if (!createdWidget) {
@@ -53,7 +53,7 @@ export const getWidgetById = async (id: string, findOptions: WidgetsFindOptions)
   }
 };
 
-export const updateWidgetById = async (id: string, updateData: UpdateQuery<WidgetUpdateData>) => {
+export const updateWidgetById = async (id: string, updateData: UpdateQuery<WidgetsUpdateData>) => {
   try {
     const updatedWidget = await Widgets.findByIdAndUpdate(id, updateData, {
       new: true

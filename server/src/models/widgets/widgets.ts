@@ -1,19 +1,19 @@
 import { nameField } from "@utils";
 import { Model, model, Schema } from "mongoose";
 import { WidgetsDocument } from "./types";
-import { layoutBreakpointSchema } from "../layouts";
+import { LayoutBreakpointSchema } from "../layouts/schemas";
 
 const WidgetsModel: Schema<WidgetsDocument> = new Schema(
   {
     ...nameField,
     layout: {
       type: Map,
-      of: [layoutBreakpointSchema],
+      of: [LayoutBreakpointSchema],
       default: new Map()
     },
     toolbox: {
       type: Map,
-      of: [layoutBreakpointSchema],
+      of: [LayoutBreakpointSchema],
       default: new Map()
     }
   },

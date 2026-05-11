@@ -1,11 +1,11 @@
 import { Document } from "mongoose";
-import { LayoutBreakpoint } from "../layouts";
 import { BaseModel } from "../types";
+import { LayoutBreakpointModel } from "models/layouts";
 
 export interface OverlayModel extends BaseModel {
   name: string;
-  layout: { [P: string]: LayoutBreakpoint[] };
-  toolbox: { [P: string]: LayoutBreakpoint[] };
+  layout: { [P: string]: LayoutBreakpointModel[] };
+  toolbox: { [P: string]: LayoutBreakpointModel[] };
   styles?: Map<string, string>;
 }
 
