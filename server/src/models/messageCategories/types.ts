@@ -1,15 +1,8 @@
 import { Document } from "mongoose";
-import { MoodModel } from "../moods";
-import { TagModel } from "../tags";
-import { BaseModel } from "../types";
+import z from "zod";
+import { MessageCategorySchema, MessageCategoryUpdateSchema, MessageCategoryCreateSchema } from "./schemas";
 
-export interface MessageCategoryModel extends BaseModel {
-  name: string;
-  enabled: boolean;
-  messages: Array<[string, number]>;
-  uses: number;
-  mood: string | MoodModel;
-  tag: string | TagModel;
-}
-
+export type MessageCategoryModel = z.infer<typeof MessageCategorySchema>;
 export type MessageCategoryDocument = MessageCategoryModel & Document;
+export type MessageCategoryUpdateData = z.infer<typeof MessageCategoryUpdateSchema>;
+export type MessageCategoryCreateData = z.infer<typeof MessageCategoryCreateSchema>;

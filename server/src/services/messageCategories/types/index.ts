@@ -11,9 +11,3 @@ export interface ManyMessageCategoriesFindOptions extends MessageCategoryFindOpt
   skip?: number;
   limit?: number;
 }
-
-export type MessageCategoryData = Omit<MessageCategoryModel, "_id" | "createdAt" | "updatedAt" | "uses">;
-
-export interface MessageCategoryCreateData extends Omit<MessageCategoryData, "messages"> {
-  messages: string[];
-}

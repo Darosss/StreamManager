@@ -1,13 +1,8 @@
 import { modesPipeline, getLeastMessagePipeline } from "../aggregations";
-import { MessageCategory, MessageCategoryDocument, MessageCategoryModel } from "@models";
+import { MessageCategory, MessageCategoryCreateData, MessageCategoryDocument, MessageCategoryModel } from "@models";
 import { handleAppError, checkExistResource, logger, randomWithMax } from "@utils";
 import mongoose, { QueryFilter, PipelineStage, UpdateQuery } from "mongoose";
-import {
-  ManyMessageCategoriesFindOptions,
-  MessageCategoryCreateData,
-  MessageCategoryData,
-  MessageCategoryFindOptions
-} from "./types";
+import { ManyMessageCategoriesFindOptions, MessageCategoryFindOptions } from "./types";
 
 export const getMessageCategories = async (
   filter: QueryFilter<MessageCategoryDocument> = {},
@@ -159,7 +154,7 @@ export const getLeastMessagesFromEnabledCategories = async (
 };
 
 export const createMessageCategories = async (createData: MessageCategoryCreateData) => {
-  const modifiedCategoryData: MessageCategoryData = {
+  const modifiedCategoryData = {
     ...createData,
     messages: createData.messages.map((msg) => [msg, 0])
   };
