@@ -1,7 +1,7 @@
 import { SongProperties, SongType } from "@socket";
 import youtubeMusic, { YoutubeMusic } from "./YoutubeMusic";
 import { MusicType } from "./enums";
-import { ConfigModel, SongsModel } from "@models";
+import { ConfigModel, SongModel } from "@models";
 import { ConfigManager } from "../ConfigManager";
 import { CommonSongHandlersReturnData, RequestSongByUserCommonParams, RequestSongReturnType } from "./types";
 import { QueueHandler } from "../QueueHandler";
@@ -121,7 +121,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     return { success: true, error: null };
   }
 
-  private extractSongPropertiesFromModelHelper(song: SongsModel): SongProperties {
+  private extractSongPropertiesFromModelHelper(song: SongModel): SongProperties {
     const { duration, youtubeId, _id, title, downloadedData } = song;
     const { folderName, fileName, publicPath } = downloadedData || {};
     const type: SongType = youtubeId ? "yt" : "local";
@@ -141,7 +141,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     };
   }
 
-  private async _getOneSongHelper(songName: string): Promise<SongsModel | undefined | null> {
+  private async _getOneSongHelper(songName: string): Promise<SongModel | undefined | null> {
     const escapedSearch = songName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const titleRegex = new RegExp(escapedSearch, "i");
@@ -150,7 +150,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     });
   }
 
-  private async _handleOnDbSongButNotDownloaded(foundSong: SongsModel): Promise<CommonSongHandlersReturnData> {
+  private async _handleOnDbSongButNotDownloaded(foundSong: SongModel): Promise<CommonSongHandlersReturnData> {
     if (foundSong.youtubeId) {
       const ytSongData = await youtubeMusic.downloadSongAndUpdateDBData({
         id: foundSong.youtubeId,
@@ -173,7 +173,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
 
   private async _handleRequestSongConditions(
     songName: string,
-    foundSong?: SongsModel
+    foundSong?: SongModel
   ): Promise<CommonSongHandlersReturnData> {
     const foundSongButFileNotFound =
       (foundSong && !foundSong.downloadedData?.publicPath) ||

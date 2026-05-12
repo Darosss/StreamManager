@@ -1,36 +1,11 @@
 import { Document } from "mongoose";
-import { BaseModel } from "../types";
-import { UserModel } from "../users";
+import { CustomTitleSchema, DownloadedDataSchema, SongCreateSchema, SongSchema, SongUpdateSchema } from "./schemas";
+import z from "zod";
 
-export interface CustomTitle {
-  band: string;
-  title: string;
-}
+export type CustomTitle = z.infer<typeof CustomTitleSchema>;
+export type DownloadedData = z.infer<typeof DownloadedDataSchema>;
 
-export interface DownloadedData {
-  fileName: string;
-  folderName: string;
-  publicPath: string;
-}
-
-export interface SongsModel extends BaseModel {
-  title: string;
-  youtubeId?: string;
-  sunoId?: string;
-  localSong?: boolean;
-  downloadedData?: DownloadedData;
-  customTitle?: CustomTitle;
-  customId?: string;
-  duration: number;
-  uses: number;
-  usersUses: Map<string, number>;
-  botUses: number;
-  songRequestUses: number;
-  whoAdded: UserModel;
-  likes: Map<string, number>;
-  enabled: boolean;
-  lastUsed?: Date;
-  tags: string;
-}
-
-export type SongsDocument = SongsModel & Document;
+export type SongModel = z.infer<typeof SongSchema>;
+export type SongDocument = SongModel & Document;
+export type SongUpdateData = z.infer<typeof SongUpdateSchema>;
+export type SongCreateData = z.infer<typeof SongCreateSchema>;

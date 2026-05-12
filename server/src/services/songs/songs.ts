@@ -5,15 +5,13 @@ import {
   ManageSongLikesAction,
   ManageSongLikesByIds,
   ManySongsFindOptions,
-  SongsCreateData,
   SongsFindOptions,
-  SongsUpdateData,
   UsesType
 } from "./types";
-import { SongsDocument, Songs, UserModel } from "@models";
+import { SongCreateData, SongDocument, Songs, SongUpdateData, UserModel } from "@models";
 import { getUserById } from "@services";
 
-export const getSongs = async (filter: QueryFilter<SongsDocument> = {}, findOptions: ManySongsFindOptions) => {
+export const getSongs = async (filter: QueryFilter<SongDocument> = {}, findOptions: ManySongsFindOptions) => {
   const { limit = 50, skip = 1, sort = { createdAt: 1 }, select = { __v: 0 }, populate = [] } = findOptions;
 
   try {
@@ -31,19 +29,27 @@ export const getSongs = async (filter: QueryFilter<SongsDocument> = {}, findOpti
   }
 };
 
-export const getSongsCount = async (filter: QueryFilter<SongsDocument> = {}) => {
+export const getSongsCount = async (filter: QueryFilter<SongDocument> = {}) => {
   return await Songs.countDocuments(filter);
 };
 
-export const createSong = async (createData: SongsCreateData): Promise<CreateSongReturn | undefined> => {
-  const { youtubeId, sunoId, downloadedData, whoAdded, ...rest } = createData;
+const handleExistingSongCreate = async (createData: SongCreateData): Promise<CreateSongReturn | undefined> => {
+  const filterData = [];
+
+  if (createData.sunoId) {
+    filterData.push({ sunoId: createData.sunoId });
+  }
+
+  if (createData.youtubeId) {
+    filterData.push({ youtubeId: createData.youtubeId });
+  }
+
   const foundSong = await getOneSong(
     {
       $and: [
-        ...(sunoId ? [{ sunoId: sunoId }] : []),
-        ...(youtubeId ? [{ youtubeId: youtubeId }] : []),
-        ...(!sunoId && !youtubeId && downloadedData?.fileName
-          ? [{ "downloadedData.fileName": downloadedData.fileName }]
+        ...filterData,
+        ...(filterData.length == 0 && createData.downloadedData?.fileName
+          ? [{ "downloadedData.fileName": createData.downloadedData.fileName }]
           : [])
       ]
       //TODO: add here to check if exisist as local
@@ -55,15 +61,22 @@ export const createSong = async (createData: SongsCreateData): Promise<CreateSon
     const updatedSong = await updateSongById(foundSong._id.toString(), createData);
     return { isNew: false, song: updatedSong! };
   }
+};
+
+export const createSong = async (createData: SongCreateData): Promise<CreateSongReturn | undefined> => {
+  const { sunoId, youtubeId, downloadedData, whoAdded, ...rest } = createData;
+
+  const existingSongData = await handleExistingSongCreate(createData);
+  if (existingSongData) return existingSongData;
 
   try {
-    const foundCreator = checkExistResource(await getUserById(whoAdded, {}), "Creator of song");
+    checkExistResource(await getUserById(whoAdded, { select: { _id: true } }), "Creator of song");
 
     const modifiedCreateData = {
       ...rest,
-      whoAdded: foundCreator as UserModel,
+      whoAdded: whoAdded,
       ...(sunoId ? { sunoId: sunoId } : {}),
-      ...(youtubeId ? { youtubeId: youtubeId } : {}),
+      ...(youtubeId == "youtube" ? { youtubeId: youtubeId } : {}),
       ...(!sunoId && !youtubeId && downloadedData ? { downloadedData } : {})
     };
 
@@ -79,10 +92,7 @@ export const createSong = async (createData: SongsCreateData): Promise<CreateSon
   }
 };
 
-export const updateSongs = async (
-  filter: QueryFilter<SongsDocument> = {},
-  updateData: UpdateQuery<SongsUpdateData>
-) => {
+export const updateSongs = async (filter: QueryFilter<SongDocument> = {}, updateData: UpdateQuery<SongUpdateData>) => {
   try {
     await Songs.updateMany(filter, updateData);
   } catch (err) {
@@ -91,7 +101,7 @@ export const updateSongs = async (
   }
 };
 
-export const updateSongById = async (id: string, updateData: UpdateQuery<SongsUpdateData>) => {
+export const updateSongById = async (id: string, updateData: UpdateQuery<SongUpdateData>) => {
   try {
     const updatedSong = await Songs.findByIdAndUpdate(id, updateData, {
       new: true
@@ -106,12 +116,16 @@ export const updateSongById = async (id: string, updateData: UpdateQuery<SongsUp
   }
 };
 
-export const manageSongLikesById = async (id: ManageSongLikesByIds, action: ManageSongLikesAction, userId: string) => {
-  const filter =
-    "id" in id
-      ? { _id: new mongoose.Types.ObjectId(id.id) }
+export const manageSongLikesById = async (
+  idData: ManageSongLikesByIds,
+  action: ManageSongLikesAction,
+  userId: string
+) => {
+  const filter: QueryFilter<SongDocument> =
+    "id" in idData
+      ? { _id: idData.id }
       : {
-          youtubeId: id.youtubeId
+          youtubeId: idData.youtubeId
         };
   const songID = filter._id || filter.youtubeId;
   try {
@@ -143,7 +157,7 @@ export const deleteSongById = async (id: string) => {
   }
 };
 
-export const getSongById = async (id: string, projection: ProjectionType<SongsDocument> = {}) => {
+export const getSongById = async (id: string, projection: ProjectionType<SongDocument> = {}) => {
   try {
     const foundSong = await Songs.findById(id, projection);
 
@@ -156,7 +170,7 @@ export const getSongById = async (id: string, projection: ProjectionType<SongsDo
   }
 };
 
-export const getOneSong = async (filter: QueryFilter<SongsDocument> = {}, findOptions?: SongsFindOptions) => {
+export const getOneSong = async (filter: QueryFilter<SongDocument> = {}, findOptions?: SongsFindOptions) => {
   const { populate = [], select = { __v: 0 } } = findOptions || {};
   try {
     const foundSong = await Songs.findOne(filter).select(select).populate(populate);

@@ -1,7 +1,7 @@
 import { Model, model, Schema } from "mongoose";
-import { SongsDocument } from "./types";
+import { SongDocument } from "./types";
 
-const SongsSchema: Schema<SongsDocument> = new Schema(
+const SongsSchema: Schema<SongDocument> = new Schema(
   {
     title: {
       type: String,
@@ -70,4 +70,4 @@ const SongsSchema: Schema<SongsDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Songs: Model<SongsDocument> = model("Songs", SongsSchema);
+export const Songs: Model<SongDocument> = model("Songs", SongsSchema);

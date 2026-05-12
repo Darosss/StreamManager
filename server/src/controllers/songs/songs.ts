@@ -7,10 +7,9 @@ import {
   deleteSongById as deleteSongByIdService,
   getSongs,
   getSongsCount,
-  updateSongById,
-  SongsCreateData,
-  SongsUpdateData
+  updateSongById
 } from "@services";
+import { SongCreateData, SongUpdateData } from "@models";
 
 export const getSongsList = async (req: Request<{}, {}, {}, RequestSongsQuery>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 25, sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -36,7 +35,7 @@ export const getSongsList = async (req: Request<{}, {}, {}, RequestSongsQuery>, 
   }
 };
 
-export const addNewSong = async (req: Request<{}, {}, SongsCreateData, {}>, res: Response, next: NextFunction) => {
+export const addNewSong = async (req: Request<{}, {}, SongCreateData, {}>, res: Response, next: NextFunction) => {
   try {
     const newSong = await createSong(req.body);
 
@@ -47,7 +46,7 @@ export const addNewSong = async (req: Request<{}, {}, SongsCreateData, {}>, res:
 };
 
 export const editSongById = async (
-  req: Request<RequestParams, {}, SongsUpdateData, {}>,
+  req: Request<RequestParams, {}, SongUpdateData, {}>,
   res: Response,
   next: NextFunction
 ) => {
@@ -65,7 +64,8 @@ export const editSongById = async (
     usersUses,
     uses,
     whoAdded,
-    youtubeId
+    youtubeId,
+    sunoId
   } = req.body;
 
   const updateData = {
@@ -81,7 +81,8 @@ export const editSongById = async (
     usersUses,
     uses,
     whoAdded,
-    youtubeId
+    youtubeId,
+    sunoId
   };
   try {
     const updatedSong = await updateSongById(id, updateData);

@@ -1,4 +1,4 @@
-import { SongsModel } from "@models";
+import { SongModel } from "@models";
 import { AudioStreamData, SongProperties } from "@socket";
 import { youtube_v3 } from "googleapis";
 
@@ -23,7 +23,7 @@ export type CommonSongHandlersReturnData =
   | {
       error: string;
     }
-  | SongsModel;
+  | SongModel;
 
 export type YoutubeSongProperties = SongProperties & {
   ageRestricted?: string | null;
