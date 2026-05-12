@@ -19,8 +19,8 @@ export const removeDifferenceFromSet = (originalSet: Set<string>, toBeRemovedSet
   });
 };
 
-export const getLastNItemsFromMap = (map: Map<unknown, unknown>, n = 0) => {
-  return map ? Array.from(map.entries()).slice(-n) : [];
+export const getLastNItemsFromMap = <KeyT extends string | number | symbol, ValT>(data: Record<KeyT, ValT>, n = 0) => {
+  return data ? Array.from(Object.entries(data)).slice(-n) : [];
 };
 
 export const randomWithMax = (max: number) => {
