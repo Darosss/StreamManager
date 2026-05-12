@@ -1,4 +1,10 @@
-import { StreamSession, StreamSessionModel, StreamSessionDocument } from "@models";
+import {
+  StreamSession,
+  StreamSessionModel,
+  StreamSessionDocument,
+  StreamSessionUpdateData,
+  StreamSessionCreateData
+} from "@models";
 import {
   getMostActiveUsersByMsgs,
   getMostUsedWord,
@@ -8,13 +14,7 @@ import {
 } from "@services";
 import { checkExistResource, handleAppError, getLastNItemsFromMap, logger } from "@utils";
 import { QueryFilter, UpdateQuery } from "mongoose";
-import {
-  StreamSessionStatisticOptions,
-  ManyStreamSessionsFindOptions,
-  StreamSessionCreateData,
-  StreamSessionFindOptions,
-  StreamSessionOptionalData
-} from "./types/";
+import { StreamSessionStatisticOptions, ManyStreamSessionsFindOptions, StreamSessionFindOptions } from "./types/";
 
 export const getStreamSessions = async (
   filter: QueryFilter<StreamSessionDocument> = {},
@@ -76,7 +76,7 @@ export const getCurrentStreamSession = async (findOptions: StreamSessionFindOpti
   }
 };
 
-export const updateCurrentStreamSession = async (updateData: UpdateQuery<StreamSessionOptionalData>) => {
+export const updateCurrentStreamSession = async (updateData: UpdateQuery<StreamSessionUpdateData>) => {
   const currentStreamSession = await getCurrentStreamSession({});
 
   if (!currentStreamSession) return null;
@@ -154,7 +154,7 @@ export const createStreamSession = async (createData: StreamSessionCreateData) =
   }
 };
 
-export const updateStreamSessionById = async (id: string, updateData: UpdateQuery<StreamSessionOptionalData>) => {
+export const updateStreamSessionById = async (id: string, updateData: UpdateQuery<StreamSessionUpdateData>) => {
   try {
     const streamSession = await StreamSession.findByIdAndUpdate(id, updateData, {
       new: true

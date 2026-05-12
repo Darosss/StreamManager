@@ -1,22 +1,15 @@
 import { Document } from "mongoose";
-import { BaseModel } from "../types";
-import { UserModel } from "../users";
+import z from "zod";
+import {
+  StreamSessionSchema,
+  StreamSessionUpdateSchema,
+  StreamSessionCreateSchema,
+  SessionEventSchema
+} from "./schemas";
 
-export interface SessionEventModel extends BaseModel {
-  user: string | UserModel;
-  name: string;
-}
+export type SessionEventModel = z.infer<typeof SessionEventSchema>;
 
-export interface StreamSessionModel {
-  _id: string;
-  sessionStart: Date;
-  sessionEnd: Date;
-  sessionTitles: Map<string, string>;
-  categories: Map<string, string>;
-  tags: Map<string, string>;
-  viewers: Map<string, number>;
-  watchers: Map<string, number>;
-  events: SessionEventModel[];
-}
-
+export type StreamSessionModel = z.infer<typeof StreamSessionSchema>;
 export type StreamSessionDocument = StreamSessionModel & Document;
+export type StreamSessionUpdateData = z.infer<typeof StreamSessionUpdateSchema>;
+export type StreamSessionCreateData = z.infer<typeof StreamSessionCreateSchema>;

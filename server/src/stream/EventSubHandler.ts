@@ -250,8 +250,8 @@ class EventSubHandler extends HeadHandler {
 
     const newSession = await createStreamSession({
       sessionStart: startDate,
-      sessionTitles: new Map([[timestampUpdateStream, title]]),
-      categories: new Map([[timestampUpdateStream, category]])
+      sessionTitles: { timestampUpdateStream: title },
+      categories: { timestampUpdateStream, category }
     });
 
     return newSession;

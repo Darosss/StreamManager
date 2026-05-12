@@ -59,7 +59,7 @@ class LoyaltyHandler extends HeadHandler {
     });
     if (!this.currentSession) return;
 
-    const viewerWatchTime = this.currentSession.watchers?.get(userName);
+    const viewerWatchTime = this.currentSession.watchers?.[userName];
     const multipler =
       getBaseLog(watchMult, viewerWatchTime ? viewerWatchTime / this.configs.loyaltyConfigs.intervalCheckChatters : 1) +
       1;
