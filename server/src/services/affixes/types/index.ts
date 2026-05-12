@@ -11,6 +11,3 @@ export interface ManyAffixesFindOptions extends AffixFindOptions {
   skip?: number;
   limit?: number;
 }
-
-export type AffixCreateData = Pick<AffixModel, "name"> & Partial<Omit<AffixModel, "_id" | "createdAt" | "updatedAt">>;
-export type AffixUpdateData = Partial<Omit<AffixModel, "_id" | "createdAt" | "updatedAt">>;

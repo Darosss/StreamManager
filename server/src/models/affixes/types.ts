@@ -1,13 +1,8 @@
-import { BaseModel, PrefixSuffixChancesConfig } from "../types";
+import z from "zod";
 import { Document } from "mongoose";
+import { AffixSchema, AffixUpdateSchema, AffixCreateSchema } from "./schemas";
 
-export interface AffixModel extends BaseModel, PrefixSuffixChancesConfig {
-  name: string;
-  enabled: boolean;
-  prefixes: string[];
-  suffixes: string[];
-  prefixChance: number;
-  suffixChance: number;
-}
-
+export type AffixModel = z.infer<typeof AffixSchema>;
 export type AffixDocument = AffixModel & Document;
+export type AffixUpdateData = z.infer<typeof AffixUpdateSchema>;
+export type AffixCreateData = z.infer<typeof AffixCreateSchema>;

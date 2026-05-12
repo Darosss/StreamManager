@@ -5,8 +5,3 @@ export interface BaseModel {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface PrefixSuffixChancesConfig {
-  suffixChance: number;
-  prefixChance: number;
-}
