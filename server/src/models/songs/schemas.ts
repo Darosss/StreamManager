@@ -1,4 +1,4 @@
-import { UserSchemaWithBadgeModel, UserSchemaWithStringBadges } from "models/users/schemas";
+import { UserSchemaWithBadgeModel, UserSchemaWithStringBadges } from "../users/schemas";
 import z from "zod";
 
 export const DownloadedDataSchema = z.object({
