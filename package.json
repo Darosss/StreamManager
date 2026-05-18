@@ -1,0 +1,29 @@
+{
+  "name": "streammanager",
+  "version": "1.0.0",
+  "description": "<a name=\"readme-top\"></a>",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "test": "ok"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,ts,tsx}": [
+      "npm --prefix frontend run lint"
+    ],
+    "server/**/*.{js,ts}": [
+      "npm --prefix server run lint"
+    ]
+  }
+}
