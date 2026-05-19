@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Server as IOServer, Socket } from "socket.io";
 import {
   ClientToServerEvents,
@@ -60,7 +62,7 @@ class SocketHandler {
       socket.on("refreshOverlayLayout", (id) => this.io.emit("refreshOverlayLayout", id));
 
       socket.on("saveConfigs", () => {
-        ConfigManager.getInstance().updateConfig();
+        configInstance.updateConfig();
       });
 
       socket.on("disconnect", () => {

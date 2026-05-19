@@ -44,7 +44,7 @@ export const convertSecondsToMS = (secondsConvert: number) => {
 export const isValidUrl = (urlString: string) => {
   try {
     return Boolean(new URL(urlString));
-  } catch (e) {
+  } catch {
     return false;
   }
 };
@@ -89,7 +89,10 @@ export const getFileNameAndExtension = (fileNameWithExt: string) => {
  * converts { a: { b: 1 } } into { "a.b": 1 } and so on
  *  prevents mongodb from overwriting whole nested objects
  */
+// Note: For now keep as any, TODO: make generic
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const flattenObject = (obj: any, prefix = ""): Record<string, any> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.keys(obj).reduce((acc: any, k) => {
     const pre = prefix.length ? prefix + "." : "";
     if (obj[k] === undefined) return acc;

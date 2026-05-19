@@ -1,4 +1,4 @@
-import { AchievementStageCreateData } from "services/achievements/types";
+import { AchievementStageCreateData } from "@services";
 
 export const getDefaultAchievementStagesData = (
   badgeId: AchievementStageCreateData["stageData"][0]["badge"]

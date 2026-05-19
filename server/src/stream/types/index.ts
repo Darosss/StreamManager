@@ -1,12 +1,12 @@
-import AchievementsHandler from "stream/AchievementsHandler";
+import AchievementsHandler from "../AchievementsHandler";
 import CommandsHandler from "../CommandsHandler";
 import EventSubHandler from "../EventSubHandler";
 import LoyaltyHandler from "../LoyaltyHandler";
 import MessagesHandler from "../MessagesHandler";
 import TriggersHandler from "../TriggersHandler";
-import StreamHandler from "stream/StreamHandler";
-import TimersHandler from "stream/TimersHandler";
-import ClientTmiHandler from "stream/TwitchTmiHandler";
+import StreamHandler from "../StreamHandler";
+import TimersHandler from "../TimersHandler";
+import ClientTmiHandler from "../TwitchTmiHandler";
 
 export type EmitAudioNames = "audio" | "audioYT";
 export type EmitPauseMusic = "audioStop" | "musicYTPause";

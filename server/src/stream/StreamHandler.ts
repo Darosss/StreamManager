@@ -155,7 +155,6 @@ class StreamHandler {
       if (typeof commandMessage === "string") {
         this.handlers.clientTmi.say(commandMessage);
       }
-      ``;
       return;
     }
 

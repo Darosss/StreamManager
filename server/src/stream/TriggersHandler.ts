@@ -109,7 +109,7 @@ class TriggersHandler {
 
       return `${prefix} ${randomMessage} ${suffix}`;
     } catch (err) {
-      triggerLogger.info(`Error occured while getting random category message`);
+      triggerLogger.info(`Error occured while getting random category message`, err);
     }
   }
 
@@ -216,7 +216,9 @@ class TriggersHandler {
         { populate: { path: "mood" } }
       );
       return foundedTrigger;
-    } catch (err) {}
+    } catch (err) {
+      triggerLogger.info(`Error occured while getting by trigger word`, err);
+    }
   }
 
   private async updateTrigerAfterUsage(id: string) {

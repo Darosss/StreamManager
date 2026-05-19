@@ -15,5 +15,4 @@ export interface ManyRedemptionsFindOptions extends RedemptionFindOptions {
 export type RedemptionOptionalData = Partial<Pick<RedemptionModel, "rewardImage" | "message">>;
 
 export interface RedemptionCreateData
-  extends Omit<RedemptionModel, "_id" | "rewardImage" | "message">,
-    RedemptionOptionalData {}
+  extends Omit<RedemptionModel, "_id" | "rewardImage" | "message">, RedemptionOptionalData {}

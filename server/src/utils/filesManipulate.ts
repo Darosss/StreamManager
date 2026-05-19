@@ -105,15 +105,17 @@ export const ensureDirectoryExists = (directoryPath: string): void => {
   }
 };
 
-export const isADirectory = (directoryPath: string) => {
+export const isADirectory = (directoryPath: string): boolean => {
   try {
     const isDirectory = fs.statSync(directoryPath).isDirectory();
     if (!isDirectory) {
-      return;
+      return false;
     }
 
     return true;
-  } catch (err) {}
+  } catch {
+    return false;
+  }
 };
 
 export const getChunksFromStream = async (stream: fs.ReadStream): Promise<(string | Buffer)[]> => {

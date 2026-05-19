@@ -7,7 +7,7 @@ export interface TypedRequest<BodyT> extends Request {
 }
 
 export const validateSchema = <BodyType extends z.ZodType>(schema: BodyType): RequestHandler => {
-  return (req: Request<any, any, BodyType, any>, res: Response, next: NextFunction): void => {
+  return (req: Request<{}, {}, BodyType, {}>, res: Response, next: NextFunction): void => {
     const validationResult = schema.safeParse(req.body);
 
     if (!validationResult.success) {
