@@ -67,7 +67,7 @@ jobs:
 
       - name: Install Server Deps
         if: steps.filter.outputs.server == 'true'
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: ./server
 
       - name: Lint Server
