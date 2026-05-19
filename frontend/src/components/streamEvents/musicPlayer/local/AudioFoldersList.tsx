@@ -23,7 +23,7 @@ export default function AudioFoldersList() {
   const handleDeleteMp3File = (data: DeleteMp3FileParams) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the mp3 file in folder: ${data.folderName} | named: ${data.fileName}?`
+        `Are you sure you want to delete the mp3 file in folder: ${data.folderName} | named: ${data.fileName}?`,
       )
     )
       return;
@@ -42,7 +42,6 @@ export default function AudioFoldersList() {
     if (!folderName) return;
 
     refetchFolderFilesAudioData(folderName);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [folderName]);
 
   useEffect(() => {

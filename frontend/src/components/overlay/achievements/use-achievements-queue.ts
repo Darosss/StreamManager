@@ -16,7 +16,7 @@ type Options = {
   getAudioAndDelay: (
     data:
       | ObtainAchievementDataWithCollectedAchievement
-      | ObtainAchievementDataWithProgressOnly
+      | ObtainAchievementDataWithProgressOnly,
   ) => AchievementData;
 };
 
@@ -27,13 +27,13 @@ export const useAchievementQueue = (
       prev: (
         | ObtainAchievementDataWithCollectedAchievement
         | ObtainAchievementDataWithProgressOnly
-      )[]
+      )[],
     ) => (
       | ObtainAchievementDataWithCollectedAchievement
       | ObtainAchievementDataWithProgressOnly
-    )[]
+    )[],
   ) => void,
-  options: Options
+  options: Options,
 ) => {
   const [start, setStart] = useState(new Date().getTime());
   const [end, setEnd] = useState(new Date().getTime() + 2500);
@@ -75,15 +75,13 @@ export const useAchievementQueue = (
       isProcessing.current = false;
       processNext();
     }, delay);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
   useEffect(() => {
     const handler = (
       data:
         | ObtainAchievementDataWithCollectedAchievement
-        | ObtainAchievementDataWithProgressOnly
+        | ObtainAchievementDataWithProgressOnly,
     ) => {
       queue.current.push(data);
 

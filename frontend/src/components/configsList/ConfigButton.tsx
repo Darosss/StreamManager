@@ -3,7 +3,7 @@ import { Button } from "@components/ui/button";
 interface ConfigButtonProps {
   optionName: string;
   setState: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  value: Boolean;
+  value: boolean;
   showEdit: boolean;
 }
 

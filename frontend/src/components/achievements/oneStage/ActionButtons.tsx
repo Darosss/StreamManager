@@ -58,14 +58,14 @@ export default function ActionButtons({
                 updatedAt: new Date(),
               },
               showTimeMs: 2500,
-            }
-      )
+            },
+      ),
     );
   };
   const refetchAchievementStageById = useRefetchAchievementStageById();
 
   const handleEditAchievementStage = () => {
-    const { createdAt, updatedAt, stageData, ...rest } = stage;
+    const { stageData, ...rest } = stage;
     editAchievementStageMutation.mutate({
       id: stageId,
       updatedAchievementStage: {
@@ -80,7 +80,7 @@ export default function ActionButtons({
 
   const handleOnClickSave = () => {
     const isBadgeSet = stage.stageData.every(
-      (stageData) => stageData.badge._id
+      (stageData) => stageData.badge._id,
     );
     if (!isBadgeSet)
       return addNotify({

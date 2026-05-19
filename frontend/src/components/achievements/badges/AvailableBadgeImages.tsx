@@ -96,7 +96,7 @@ function UploadBadgeImageButtons({
 
   const { addNotify } = useNotifications();
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
-    uploadBadgesData.badgesImages
+    uploadBadgesData.badgesImages,
   );
 
   useEffect(() => {
@@ -108,7 +108,6 @@ function UploadBadgeImageButtons({
       });
       onSuccessCallback();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success]);
 
   useEffect(() => {

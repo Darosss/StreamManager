@@ -29,7 +29,7 @@ export default function Redemptions() {
       setRedemptionInfo(
         `${
           commonData.nicknames[randomWithMax(commonData.nicknames.length - 1)]
-        } has redeemed - Reward`
+        } has redeemed - Reward`,
       );
     }
   }, [isEditor]);
@@ -45,6 +45,7 @@ export default function Redemptions() {
 
       const audioCtx = new AudioContext();
       //TODO: replace any later.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       audioCtx.decodeAudioData(audioBuffer as any, (buffer) => {
         if (source) {
           source.stop();

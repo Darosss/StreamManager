@@ -4,7 +4,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { QueryParams } from "./types";
 
 export const queryKeysParamsHelper = <ParamsType extends string>(
-  params?: QueryParams<ParamsType>
+  params?: QueryParams<ParamsType>,
 ) => {
   return params ? JSON.stringify(params) : "";
 };
@@ -19,17 +19,19 @@ export const customAxios = Axios.create({
 export const refetchDataFunctionHelper = <
   QueryKeysType extends Record<
     string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     string[] | ((...args: any[]) => string[])
   >,
-  Key extends keyof QueryKeysType
+  Key extends keyof QueryKeysType,
 >(
   queryStrings: QueryKeysType,
   queryKey: Key,
   queryClient: QueryClient,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: QueryKeysType[Key] extends (...args: any[]) => any[]
     ? Parameters<QueryKeysType[Key]>
     : null | undefined,
-  exact = false
+  exact = false,
 ) => {
   const queryKeyValue = queryStrings[queryKey];
 

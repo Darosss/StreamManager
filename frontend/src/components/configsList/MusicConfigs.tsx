@@ -15,7 +15,7 @@ export default function MusicConfigsWrapper() {
     <>
       <ConfigButton
         optionName="Song request"
-        setState={(e) =>
+        setState={() =>
           dispatch(setMusicConfigs(["songRequest", !musicConfigs.songRequest]))
         }
         value={musicConfigs.songRequest}
@@ -25,7 +25,7 @@ export default function MusicConfigsWrapper() {
         optionName="Max auto que size"
         setState={(e) =>
           dispatch(
-            setMusicConfigs(["maxAutoQueSize", e.currentTarget.valueAsNumber])
+            setMusicConfigs(["maxAutoQueSize", e.currentTarget.valueAsNumber]),
           )
         }
         value={musicConfigs.maxAutoQueSize}
@@ -38,7 +38,7 @@ export default function MusicConfigsWrapper() {
             setMusicConfigs([
               "maxSongRequestByUser",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={musicConfigs.maxSongRequestByUser}

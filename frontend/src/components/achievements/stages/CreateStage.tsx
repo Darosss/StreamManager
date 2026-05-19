@@ -17,7 +17,7 @@ export default function CreateStages() {
   };
   return (
     <>
-      <Button onClick={(e) => setShowModal(true)}>New</Button>
+      <Button onClick={() => setShowModal(true)}>New</Button>
 
       <Modal
         title="Create new achievement stage"

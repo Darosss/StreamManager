@@ -49,9 +49,9 @@ export default function StreamModes() {
               {/* TODO: REFACTOR UNDER */}
               <Button
                 variant="secondary"
-                onClick={(e) => {
-                  let prefixes: string[] = [];
-                  let suffixes: string[] = [];
+                onClick={() => {
+                  const prefixes: string[] = [];
+                  const suffixes: string[] = [];
 
                   affixes.forEach((affix) => {
                     if (!affix.enabled) return;

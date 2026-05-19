@@ -23,7 +23,7 @@ export default function Pagination({
 
   const [pageSizeT, setPageSize] = useLocalStorage<number>(
     localStorageName || DEFUALT_LOCAL_STORAGE_NAME,
-    15
+    15,
   );
   const [currentPageLoc, setCurrentPageLoc] = useState<number>(currentPage);
 
@@ -40,7 +40,6 @@ export default function Pagination({
       return prevState;
     });
     // Unnecessary rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageSizeT]);
 
   useEffect(() => {
@@ -58,14 +57,13 @@ export default function Pagination({
       return prevState;
     });
     // Unnecessary rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPageLoc]);
 
   const paginationRange = usePagination(
     totalCount,
     pageSizeT,
     siblingCount,
-    currentPageLoc
+    currentPageLoc,
   );
 
   const PageSizeSelect = () => {

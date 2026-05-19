@@ -1,6 +1,7 @@
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useState, useEffect } from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DefaultHookType<TParams> = (params: TParams | null) => any;
 
 interface UseAxiosWithConfirmationParams<TParams> {
@@ -49,9 +50,8 @@ export const useAxiosWithConfirmation = <TParams>({
       () => {
         onRejected?.();
         resetId();
-      }
+      },
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return setId;

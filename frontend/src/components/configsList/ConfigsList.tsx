@@ -39,7 +39,6 @@ export default function ConfigsList() {
   useEffect(() => {
     if (!configs) return;
     dispatch(setConfigState(configs.data));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configs]);
 
   if (error) return <Error error={error} />;

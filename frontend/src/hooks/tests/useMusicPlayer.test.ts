@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import useMusicPlayer from "../useMusicPlayer";
@@ -18,7 +20,7 @@ describe("useMusicPlayer", () => {
             audioData: { name: "Initial Song", duration: 180 },
             isPlaying: true,
             songsInQue: [],
-          })
+          }),
         ),
       },
       events: {

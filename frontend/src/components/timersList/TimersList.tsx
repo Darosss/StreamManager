@@ -82,7 +82,8 @@ export default function TimersList() {
         title={`${editingId ? "Edit" : "Create"} timer`}
         onClose={() => dispatch(closeModal())}
         onSubmit={() => {
-          editingId ? handleUpdateTimer() : handleCreateTimer();
+          if (editingId) handleUpdateTimer();
+          else handleCreateTimer();
         }}
         show={isModalOpen}
       >

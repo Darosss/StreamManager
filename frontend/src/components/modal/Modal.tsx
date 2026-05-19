@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 interface ModalProps {
   title?: string;
   onClose: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit?: () => any;
   show?: boolean;
   children?: React.ReactNode;
@@ -43,6 +44,6 @@ export default function Modal({
         </div>
       </div>
     </div>,
-    document.getElementById("root")!
+    document.getElementById("root")!,
   );
 }

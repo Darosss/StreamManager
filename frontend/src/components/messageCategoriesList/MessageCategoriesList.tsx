@@ -93,9 +93,8 @@ export default function MessageCategoriesList() {
         title={`${editingId ? "Edit" : "Create"} message category`}
         onClose={() => dispatch(closeModal())}
         onSubmit={() => {
-          editingId
-            ? handleUpdateMessageCategory()
-            : handleCreateMessageCategory();
+          if (editingId) handleUpdateMessageCategory();
+          else handleCreateMessageCategory();
         }}
         show={isModalOpen}
       >

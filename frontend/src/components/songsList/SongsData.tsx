@@ -27,7 +27,7 @@ export default function SongsData({ data }: SongsDataProps) {
   const handleDeleteSong = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the song with ID: ${id}?`
+        `Are you sure you want to delete the song with ID: ${id}?`,
       )
     )
       return;
@@ -94,7 +94,7 @@ export default function SongsData({ data }: SongsDataProps) {
             <tr
               key={index}
               className="songs-data-table-song-details"
-              onClick={(e) => {
+              onClick={() => {
                 setPrevievedSong(song);
               }}
             >

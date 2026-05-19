@@ -44,7 +44,7 @@ export default function CustomAchievementModalInputs() {
                     setCustom({
                       ...(achievement.custom || initialCustom),
                       stringValues: e.target.value.split("\n"),
-                    })
+                    }),
                   )
                 }
                 value={achievement.custom.stringValues?.join("\n")}
@@ -61,7 +61,7 @@ export default function CustomAchievementModalInputs() {
                     setCustom({
                       ...(achievement.custom || initialCustom),
                       caseSensitive: !achievement.custom?.caseSensitive,
-                    })
+                    }),
                   )
                 }
               >
@@ -85,7 +85,7 @@ export default function CustomAchievementModalInputs() {
                     setCustom({
                       ...(achievement.custom || initialCustom),
                       numberValue: value > 0 ? value : 5,
-                    })
+                    }),
                   );
                 }}
                 value={achievement.custom.numberValue || 5}
@@ -94,7 +94,6 @@ export default function CustomAchievementModalInputs() {
           </>
         );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [achievement]);
 
   return (
@@ -117,7 +116,7 @@ export default function CustomAchievementModalInputs() {
               setCustom({
                 ...achievement.custom,
                 action: e.target.value as CustomAchievementAction,
-              })
+              }),
             )
           }
         >
