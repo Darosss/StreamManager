@@ -19,10 +19,10 @@ export default function StreamChatters() {
       setLastChatters((prevState) => {
         prevState.set(data.user.username, new Date(data.messageData.timestamp));
 
-        let newState = new Map(
+        const newState = new Map(
           [...prevState.entries()].sort(
-            (a, b) => new Date(b[1]).getTime() - new Date(a[1]).getTime()
-          )
+            (a, b) => new Date(b[1]).getTime() - new Date(a[1]).getTime(),
+          ),
         );
 
         if (newState.size > LIMIT_LAST_CHATTERS) {

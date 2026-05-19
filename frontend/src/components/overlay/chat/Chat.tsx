@@ -22,7 +22,7 @@ export default function Chat() {
 
   const [messagesData, setMessagesData] = useLocalStorage<MessageServerData[]>(
     "chatOverlayMessages",
-    []
+    [],
   );
 
   useEffect(() => {
@@ -37,14 +37,13 @@ export default function Chat() {
 
   useEffect(() => {
     if (isEditor) setMessagesData(getExampleChatData());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditor]);
 
   useEffect(() => {
     messageServerDelete.on((data) => {
       setMessagesData((prevMessages) => {
         const messagesWithoutDeletedMsg = prevMessages.filter(
-          (val) => val.messageData.id !== data.userstate["target-msg-id"]
+          (val) => val.messageData.id !== data.userstate["target-msg-id"],
         );
 
         return messagesWithoutDeletedMsg;
@@ -108,7 +107,7 @@ export default function Chat() {
                   },
                 }}
               />
-            )
+            ),
         )}
       </div>
     </div>

@@ -18,7 +18,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 interface ChartOptions {
@@ -36,8 +36,8 @@ export default function LineChart({
   const { title, label: labelName } = chartOptions;
 
   const mapData = new Map(Object.entries(data));
-  let labels = [];
-  let dataLabel = [];
+  const labels = [];
+  const dataLabel = [];
   for (const [key, value] of mapData) {
     labels.push(new Date(Number(key)).toLocaleTimeString());
     dataLabel.push(value);

@@ -54,10 +54,10 @@ export default function Achievements() {
 
   useEffect(() => {
     if (isEditor) setObtainedAchievements(getExampleAchievementsData());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditor]);
 
   //TODO: add progressBar via those.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { start, end, isActive } = useAchievementQueue(
     socket,
     setObtainedAchievements,
@@ -77,14 +77,14 @@ export default function Achievements() {
           };
         }
       },
-    }
+    },
   );
 
   useEffect(() => {
     if (obtainedAchievements.length > MAX_ACHIEVEMENTS_IN_CACHE) {
       obtainedAchievements.splice(
         MAX_ACHIEVEMENTS_IN_CACHE,
-        obtainedAchievements.length
+        obtainedAchievements.length,
       );
     }
   }, [obtainedAchievements]);
@@ -103,7 +103,7 @@ export default function Achievements() {
       styles.direction === "column" || styles.direction === "horizontal"
         ? "column"
         : "row",
-    [styles.direction]
+    [styles.direction],
   );
 
   return (

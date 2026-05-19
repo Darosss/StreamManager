@@ -1,5 +1,5 @@
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import mongoose, { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
 import {
   CreateSongReturn,
   ManageSongLikesAction,
@@ -8,7 +8,7 @@ import {
   SongsFindOptions,
   UsesType
 } from "./types";
-import { SongCreateData, SongDocument, Songs, SongUpdateData, UserModel } from "@models";
+import { SongCreateData, SongDocument, Songs, SongUpdateData } from "@models";
 import { getUserById } from "@services";
 
 export const getSongs = async (filter: QueryFilter<SongDocument> = {}, findOptions: ManySongsFindOptions) => {

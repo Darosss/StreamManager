@@ -134,7 +134,6 @@ function ChatBackground() {
         username: msg.ownerUsername,
       }),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
@@ -173,7 +172,6 @@ function ChatBackground() {
     timeoutChatMessage();
 
     return () => clearTimeout(chatTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

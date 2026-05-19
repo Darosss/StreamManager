@@ -378,7 +378,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
   public async checkUserCheersForAchievements({
     bits,
     isAnonymous,
-    message,
+    // message,
     username,
     userId
   }: CheckUserCheersForAchievementsParams) {

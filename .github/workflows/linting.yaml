@@ -1,0 +1,76 @@
+name: Linting
+
+on:
+  push:
+    paths:
+      - "frontend/**"
+      - "server/**"
+  pull_request:
+    paths:
+      - "frontend/**"
+      - "server/**"
+
+jobs:
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for Frontend Changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+
+      - name: Setup Node
+        if: steps.filter.outputs.frontend == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Deps
+        if: steps.filter.outputs.frontend == 'true'
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Lint Frontend
+        if: steps.filter.outputs.frontend == 'true'
+        run: npm run lint
+        working-directory: ./frontend
+
+  server-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for Server Changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            server:
+              - 'server/**'
+
+      - name: Setup Node
+        if: steps.filter.outputs.server == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Server Deps
+        if: steps.filter.outputs.server == 'true'
+        run: npm ci --legacy-peer-deps
+        working-directory: ./server
+
+      - name: Lint Server
+        if: steps.filter.outputs.server == 'true'
+        run: npm run lint
+        working-directory: ./server

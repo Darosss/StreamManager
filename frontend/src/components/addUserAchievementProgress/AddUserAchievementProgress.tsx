@@ -5,7 +5,7 @@ import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { fetchAchievementsDefaultParams, useGetAchievements } from "@services";
 import { AddAchievementProgressToUserData, useSocketContext } from "@socket";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface UserAchievementProgressProps {
   userId: string;
@@ -45,7 +45,7 @@ export default function UserAchievementProgress({
         page,
         limit: size,
       }),
-    [getAchievementsSearchParams]
+    [getAchievementsSearchParams],
   );
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function UserAchievementProgress({
             type: NOTIFICATION_TYPE.SUCCESS,
           });
         }
-      }
+      },
     );
   };
   const { currentPage, count, totalPages, data } = achievementsData;
@@ -159,7 +159,7 @@ function UserAchievementProgressValue({
       <div>
         <div>
           <label>
-            <Button onClick={(e) => onChange(values.value, !values.increment)}>
+            <Button onClick={() => onChange(values.value, !values.increment)}>
               {values.increment ? "Increment" : "Set"}
             </Button>{" "}
             values {values.increment ? "by" : "to"}

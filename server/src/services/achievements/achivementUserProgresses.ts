@@ -1,7 +1,6 @@
 import {
   AchievementUserProgressDocument,
   AchievementUserProgress,
-  AchievementModel,
   AchievementUserProgressModel,
   TagModel,
   StageData,

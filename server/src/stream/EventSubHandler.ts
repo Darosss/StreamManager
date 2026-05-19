@@ -223,11 +223,8 @@ class EventSubHandler extends HeadHandler {
               { twitchId: userId },
               {
                 //NOTE:below 3: null assertion - because I know if !isAnonymous its not null
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 username: userDisplayName!,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 twitchId: userId!,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 twitchName: userName!
               }
             );
@@ -309,7 +306,7 @@ class EventSubHandler extends HeadHandler {
       try {
         await createRedemption(rewardData);
       } catch (err) {
-        eventsubLogger.info(`Couldn't save redemption ${rewardTitle} from ${userName}`);
+        eventsubLogger.info(`Couldn't save redemption ${rewardTitle} from ${userName}`, err);
       }
 
       eventsubLogger.info(`${e.userDisplayName} just took redemption! ${rewardTitle}`);

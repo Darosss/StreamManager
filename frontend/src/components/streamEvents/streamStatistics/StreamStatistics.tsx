@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from "react";
+import { lazy, useEffect } from "react";
 
 import {
   useGetCurrentSessionStatistics,
@@ -45,7 +45,6 @@ export default function StreamStatistics() {
     }, FETCH_INTERVAL * 1000);
 
     return () => clearInterval(statisticInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) return <Error error={error} />;

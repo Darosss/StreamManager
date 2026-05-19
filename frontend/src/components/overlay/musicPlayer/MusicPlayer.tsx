@@ -35,13 +35,12 @@ export default function MusicPlayer() {
     if (!isEditor || audioData.id) return;
 
     setAudioData(editorTestData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioData.id, isEditor]);
   const updateProgress = useCallback(
     (value: number) => {
       setProgress((value / audioData.duration) * 100);
     },
-    [audioData.duration]
+    [audioData.duration],
   );
   if (!isPlaying) return null;
   return (

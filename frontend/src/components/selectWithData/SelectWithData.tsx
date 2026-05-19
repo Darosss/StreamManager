@@ -75,7 +75,7 @@ interface SelectPaginationProps {
 function SelectPagination({
   totalCount,
   currentPage,
-  totalPages,
+  // totalPages,
   pageSize,
   onChangePagination,
 }: SelectPaginationProps) {

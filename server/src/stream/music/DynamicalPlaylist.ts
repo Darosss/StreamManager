@@ -40,7 +40,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
     const nextSongData = this.dequeue();
     if (nextSongData && pushToEnd) this.enqueue(nextSongData);
 
-    nextSongData ? this._handleDBSongLogic(nextSongData) : null;
+    if (nextSongData) this._handleDBSongLogic(nextSongData);
 
     return nextSongData;
   }
@@ -79,7 +79,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
       tags: youtubeMusic.convertTopicDetailsIntoTags(songData.topicDetails)
     });
 
-    isYoutubeSong ? await youtubeMusic.downloadSongAndUpdateDBData(songData, this.botDatabaseId) : null;
+    if (isYoutubeSong) await youtubeMusic.downloadSongAndUpdateDBData(songData, this.botDatabaseId);
 
     if (!createData) return musicLogger.error("Couldn't handle _handleDBSongLogic, no creteData");
     await updateSongUsesById(createData.song._id.toString(), "botUses");

@@ -1,4 +1,4 @@
-import { AchievementCreateData } from "services/achievements/types";
+import { AchievementCreateData } from "@services";
 import { ACHIEVEMENTS } from "./types";
 import { AchievementStageModel, TagModel } from "@models";
 

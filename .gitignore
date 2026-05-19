@@ -10,6 +10,9 @@ frontend/.pnp
 frontend/.pnp.js
 frontend/public/alertSounds/*
 
+#root
+node_modules
+
 # testing
 /coverage
 

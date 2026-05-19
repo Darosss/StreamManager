@@ -132,9 +132,8 @@ class MusicHeadHandler {
   }
 
   public async loadNewSongs(type: "yt" | "local", idOrFolderName: string, shuffle = false): Promise<string> {
-    type === "yt"
-      ? await this.dynamicalPlaylist.loadYTPlaylist(idOrFolderName)
-      : await this.dynamicalPlaylist.loadFromLocalFolder(idOrFolderName);
+    if (type === "yt") await this.dynamicalPlaylist.loadYTPlaylist(idOrFolderName);
+    else await this.dynamicalPlaylist.loadFromLocalFolder(idOrFolderName);
     if (shuffle) this.dynamicalPlaylist.shuffle();
 
     await this.prepareInitialQue();
@@ -215,30 +214,33 @@ class MusicHeadHandler {
 
   private async startPlay(delay = 0, newSong = false) {
     this.isPlaying = true;
-    this.isPlayingTimeout = setTimeout(async () => {
-      if (!this.songDataManager.getCurrentSong() || newSong) {
-        await this.setCurrentSongFromQue();
-      }
-      const currentSong = this.songDataManager.getCurrentSong();
-      if (currentSong) {
-        this.songDataManager.updateCurrentSongStart();
-        this.currentDelay = currentSong.duration;
-        this.emitAudioStreamData();
-
-        this.emitGetAudioInfo();
-
-        if (currentSong.downloadedData && currentSong.type !== "yt") {
-          await this.streamAudioLogic.startEmiting(
-            path.join(publicEndpointPath, currentSong.downloadedData.publicPath)
-          );
-        } else {
-          this.streamAudioLogic.stopEmiting(true);
+    this.isPlayingTimeout = setTimeout(
+      async () => {
+        if (!this.songDataManager.getCurrentSong() || newSong) {
+          await this.setCurrentSongFromQue();
         }
+        const currentSong = this.songDataManager.getCurrentSong();
+        if (currentSong) {
+          this.songDataManager.updateCurrentSongStart();
+          this.currentDelay = currentSong.duration;
+          this.emitAudioStreamData();
 
-        const delayNextSong = this.currentDelay - currentSong.currentTime;
-        this.startPlay(delayNextSong * 1000, true);
-      }
-    }, delay + this.secondsBetweenAudio * 1000);
+          this.emitGetAudioInfo();
+
+          if (currentSong.downloadedData && currentSong.type !== "yt") {
+            await this.streamAudioLogic.startEmiting(
+              path.join(publicEndpointPath, currentSong.downloadedData.publicPath)
+            );
+          } else {
+            this.streamAudioLogic.stopEmiting(true);
+          }
+
+          const delayNextSong = this.currentDelay - currentSong.currentTime;
+          this.startPlay(delayNextSong * 1000, true);
+        }
+      },
+      delay + this.secondsBetweenAudio * 1000
+    );
   }
 
   public sayWhenUserRequestedSong(username: string) {

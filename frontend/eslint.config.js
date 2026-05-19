@@ -13,6 +13,16 @@ export default defineConfig([
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
   },
+  {
+    rules: {
+      "@typescript-eslint/no-empty-object-type": [
+        "warn",
+        {
+          allowInterfaces: "with-single-extends",
+        },
+      ],
+    },
+  },
   tseslint.configs.recommended,
   pluginReact.configs.flat["jsx-runtime"],
   {

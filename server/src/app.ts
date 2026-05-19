@@ -10,6 +10,7 @@ let instance: http.Server | null = null;
 
 const expressApp = () => {
   const app = express();
+
   if (instance) return instance;
 
   const server = http.createServer(app);

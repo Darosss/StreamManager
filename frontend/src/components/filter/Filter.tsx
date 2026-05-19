@@ -49,7 +49,7 @@ export default function Filter<OptionsKeys extends string>({
   }, [options, searchParams]);
   return (
     <div>
-      <Button size="small" onClick={(e) => setShowModal(true)}>
+      <Button size="small" onClick={() => setShowModal(true)}>
         <div>Filter {!!appliedFilters && `(${appliedFilters})`}</div>
       </Button>
       <Modal

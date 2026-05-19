@@ -90,7 +90,8 @@ export default function TriggersList() {
         title={`${editingId ? "Edit" : "Create"} trigger`}
         onClose={() => dispatch(closeModal())}
         onSubmit={() => {
-          editingId ? handleUpdateTrigger() : handleCreateTrigger();
+          if (editingId) handleUpdateTrigger();
+          else handleCreateTrigger();
         }}
         show={isModalOpen}
       >

@@ -167,7 +167,6 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     const data = await youtubeMusic.handleYoutubeSongLogic(
       isYtId ? { youtubeId: songName } : { searchQuery: songName }
     );
-    data;
     return data;
   }
 

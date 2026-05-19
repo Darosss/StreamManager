@@ -10,7 +10,7 @@ export default function EditCreateBadgeModal() {
   const dispatch = useDispatch();
   const { addNotify } = useNotifications();
   const { isModalOpen, badge, editingId } = useSelector(
-    (root: RootStore) => root.badges
+    (root: RootStore) => root.badges,
   );
   const editBadgeMutation = useEditBadge();
   const createBadgeMutation = useCreateBadge();
@@ -39,7 +39,8 @@ export default function EditCreateBadgeModal() {
       title={`${editingId ? "Edit" : "Create"} badge`}
       onClose={() => dispatch(closeModal())}
       onSubmit={() => {
-        editingId ? onSubmitModalEdit() : onSubmitModalCreate();
+        if (editingId) onSubmitModalEdit();
+        else onSubmitModalCreate();
       }}
       show={isModalOpen}
     >

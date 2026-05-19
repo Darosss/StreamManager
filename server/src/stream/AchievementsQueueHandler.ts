@@ -49,9 +49,8 @@ export class AchievementsQueueHandler<T> extends QueueHandler<T> {
 
   override enqueue(item: T, overrideAddInfo?: string) {
     super.enqueue(item);
-    !overrideAddInfo
-      ? console.log(`Item ${JSON.stringify(item)} inserted`)
-      : console.log(`Item ${overrideAddInfo} inserted`);
+    if (!overrideAddInfo) console.log(`Item ${JSON.stringify(item)} inserted`);
+    else console.log(`Item ${overrideAddInfo} inserted`);
   }
 }
 

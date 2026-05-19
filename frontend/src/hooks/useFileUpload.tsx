@@ -13,10 +13,10 @@ type UseFileUploadReturnType = {
         value: string;
       };
     },
-    formInputName: string
+    formInputName: string,
   ) => Promise<void>;
   error: string | null;
-  success: any;
+  success?: string;
 };
 
 export const useFileUpload = (url: string): UseFileUploadReturnType => {
@@ -31,7 +31,7 @@ export const useFileUpload = (url: string): UseFileUploadReturnType => {
       fileList?: FileList | null;
       bodySingleFileName?: { bodyName: string; value: string };
     },
-    formInputName: string
+    formInputName: string,
   ) => {
     const { event, fileList, bodySingleFileName } = props;
 
@@ -58,7 +58,7 @@ export const useFileUpload = (url: string): UseFileUploadReturnType => {
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
             const percentage = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
+              (progressEvent.loaded * 100) / progressEvent.total,
             );
             setUploadProgress(percentage);
           }

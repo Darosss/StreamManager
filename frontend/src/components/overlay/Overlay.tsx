@@ -70,7 +70,6 @@ export default function Overlay(params: { editor?: boolean }) {
 
   useEffect(() => {
     dispatch(setIsEditor(editor));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   useEffect(() => {
@@ -81,7 +80,6 @@ export default function Overlay(params: { editor?: boolean }) {
     return () => {
       refreshOverlayLayoutEvent.off();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshOverlayLayoutEvent]);
 
   useEffect(() => {

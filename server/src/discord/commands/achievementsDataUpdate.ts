@@ -153,13 +153,12 @@ const sendAchievementsListMessages: SendAchievementsListMessagesFn = async ({ ch
     await sendMessageInChannelByChannel(channel, `\n${messageToSend}`);
   }
 
-  hiddenAchievementsCount > 0
-    ? await headMessageRef?.edit(
-        `${headMessageRef?.content}\n${bold(
-          `There are ${hiddenAchievementsCount} hidden achievement(s). GL in finding them :D`
-        )}`
-      )
-    : null;
+  if (hiddenAchievementsCount > 0)
+    await headMessageRef?.edit(
+      `${headMessageRef?.content}\n${bold(
+        `There are ${hiddenAchievementsCount} hidden achievement(s). GL in finding them :D`
+      )}`
+    );
 
   await headMessageRef?.suppressEmbeds(true);
 };

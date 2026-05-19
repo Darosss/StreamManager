@@ -16,9 +16,8 @@ for (const key of Object.keys(commands)) {
 
 for (const key of Object.keys(events)) {
   const event = events[key];
-  event.once
-    ? client.once(event.name, (...args) => event.execute(...args))
-    : client.on(event.name, (...args) => event.execute(...args));
+  if (event.once) client.once(event.name, (...args) => event.execute(...args));
+  else client.on(event.name, (...args) => event.execute(...args));
 }
 
 export const initialize = async () => {

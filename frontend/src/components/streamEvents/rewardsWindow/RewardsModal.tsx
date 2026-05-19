@@ -49,7 +49,7 @@ export function RewardsModal() {
           fileList: fileList,
           bodySingleFileName: { bodyName: "title", value: title },
         },
-        "alertSound"
+        "alertSound",
       );
 
       setFileList(null);
@@ -93,7 +93,7 @@ export function RewardsModal() {
           fileList: fileList,
           bodySingleFileName: { bodyName: "title", value: title },
         },
-        "alertSound"
+        "alertSound",
       );
       setFileList(null);
       addNotify({
@@ -113,7 +113,8 @@ export function RewardsModal() {
         dispatch(setEditingAlertSound(""));
       }}
       onSubmit={() => {
-        editingId ? emitEditAlertSoundReward() : emitCreateAlertSoundReward();
+        if (editingId) emitEditAlertSoundReward();
+        else emitCreateAlertSoundReward();
       }}
       show={isModalOpen}
     >

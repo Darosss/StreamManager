@@ -33,7 +33,7 @@ export const useTimer = ({
   }, [currentTime, duration]);
 
   useEffect(() => {
-    progressTimer.current && clearInterval(progressTimer.current);
+    if (progressTimer.current) clearInterval(progressTimer.current);
     if (!enabled) return;
 
     progressTimer.current = setInterval(() => {
@@ -41,14 +41,13 @@ export const useTimer = ({
     }, updateMs);
 
     return () => {
-      progressTimer.current && clearInterval(progressTimer.current);
+      if (progressTimer.current) clearInterval(progressTimer.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [duration, enabled]);
 
   useEffect(() => {
     return () => {
-      progressTimer.current && clearInterval(progressTimer.current);
+      if (progressTimer.current) clearInterval(progressTimer.current);
     };
   }, [progressTimer]);
   return timer;

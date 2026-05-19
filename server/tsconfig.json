@@ -1,20 +1,19 @@
 {
   "compilerOptions": {
     "paths": {
-      "@controllers": ["controllers"],
-      "@configs": ["configs"],
-      "@middlewares": ["middlewares"],
-      "@models": ["models"],
-      "@services": ["services"],
-      "@utils": ["utils"],
-      "@defaults": ["defaults"],
-      "@tests": ["tests"],
-      "@socket": ["socketIO"]
+      "@controllers": ["./src/controllers"],
+      "@configs": ["./src/configs"],
+      "@middlewares": ["./src/middlewares"],
+      "@models": ["./src/models"],
+      "@services": ["./src/services"],
+      "@utils": ["./src/utils"],
+      "@defaults": ["./src/defaults"],
+      "@tests": ["./src/tests"],
+      "@socket": ["./src/socketIO"]
     },
     "target": "es2022",
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "baseUrl": "./src",
     "rootDir": "./src",
     "resolveJsonModule": true,
     "allowJs": true,

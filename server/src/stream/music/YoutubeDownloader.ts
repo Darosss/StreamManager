@@ -49,6 +49,8 @@ export async function makePlayerRequest(
 ): Promise<IPlayerResponse> {
   const watchEndpoint = new YTNodes.NavigationEndpoint({ watchEndpoint: { videoId } });
 
+  // Note: ypes are from  YTNodes.NavigationEndpoint.call itself
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const extraArgs: Record<string, any> = {
     playbackContext: {
       adPlaybackContext: { pyv: true },
@@ -74,12 +76,12 @@ export async function makePlayerRequest(
  * Creates a WritableStream that tracks download progress.
  */
 export function createStreamSink(outputStream: WriteStream) {
-  let size = 0;
+  // let size = 0; Note: those were for loggin purposes?
 
   return new WritableStream({
     write(chunk) {
       return new Promise((resolve, reject) => {
-        size += chunk.length;
+        // size += chunk.length; Note: those were for loggin purposes?
 
         outputStream.write(chunk, (err) => {
           if (err) reject(err);
