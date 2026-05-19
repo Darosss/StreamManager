@@ -36,6 +36,13 @@ export default defineConfig([
         }
       ],
 
+      "@typescript-eslint/no-empty-object-type": [
+        "warn",
+        {
+          allowInterfaces: "always",
+          allowObjectTypes: "always"
+        }
+      ],
       "@typescript-eslint/ban-types": "off"
     }
   }
