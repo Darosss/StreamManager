@@ -9,7 +9,6 @@ import { useState } from "react";
 import AvailableAchievementSounds from "./AvailableAchievementSounds";
 import { viteBackendUrl } from "@configs/envVariables";
 import { Error, Loading } from "@components/axiosHelper";
-import { useAxiosWithConfirmation } from "@hooks";
 import { Button } from "@components/ui/button";
 
 export default function AchievementStagesSounds() {
@@ -24,11 +23,17 @@ export default function AchievementStagesSounds() {
   } = useGetAchievementStagesSounds();
 
   const { data: basePathData } = useGetAchievementStagesSoundsBasePath();
+  const deleteSoundName = useDeleteAchievementStageSound();
 
-  const setSoundNameToDelete = useAxiosWithConfirmation({
-    hookToProceed: useDeleteAchievementStageSound,
-    opts: { onFullfiled: refetch },
-  });
+  const handleDeleteSoundName = (name: string) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete the achievement stage sound: ${name}?`,
+      )
+    )
+      return;
+    deleteSoundName.mutate(name, { onSuccess: () => refetch() });
+  };
 
   const handleOnClickSoundName = (url: string) => {
     setChoosenSound(url);
@@ -77,7 +82,7 @@ export default function AchievementStagesSounds() {
           </div>
           <Button
             variant="danger"
-            onClick={() => setSoundNameToDelete(choosenSound)}
+            onClick={() => handleDeleteSoundName(choosenSound)}
           >
             Delete
           </Button>
