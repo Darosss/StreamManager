@@ -1,9 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
 function getAliasesFromTsconfig() {
-  const tsconfigPath = path.resolve(__dirname, "tsconfig.json");
-  const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, "utf8"));
+  const tsconfigPath = resolve(__dirname, "tsconfig.json");
+  const tsconfig = JSON.parse(readFileSync(tsconfigPath, "utf8"));
 
   const { baseUrl = ".", paths = {} } = tsconfig.compilerOptions || {};
 
@@ -16,21 +16,21 @@ function getAliasesFromTsconfig() {
     // ["src/components/*"] -> "./src/components"
     const aliasPath = value[0].replace(/\/\*$/, "");
 
-    aliases[aliasKey] = path.resolve(__dirname, baseUrl, aliasPath, "index.ts");
+    aliases[aliasKey] = resolve(__dirname, baseUrl, aliasPath, "index.ts");
   }
 
   return aliases;
 }
 
-module.exports = {
-  presets: [["@babel/preset-env", { targets: { node: "current" } }], "@babel/preset-typescript"],
-  plugins: [
-    [
-      "module-resolver",
-      {
-        root: ["./src"],
-        alias: getAliasesFromTsconfig()
-      }
-    ]
-  ]
-};
+export const presets = [["@babel/preset-env", { targets: { node: "current" } }], "@babel/preset-typescript"];
+export const plugins = [
+  ["babel-plugin-transform-import-meta", { module: "ES6" }],
+  [
+    "module-resolver",
+    {
+      root: ["./src"],
+      alias: getAliasesFromTsconfig()
+    }
+  ],
+  "@babel/plugin-transform-modules-commonjs"
+];

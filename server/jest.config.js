@@ -3,10 +3,11 @@
 const config = {
   testEnvironment: "node",
   transform: {
-    "^.+\\.(ts|tsx|js|jsx)$": "babel-jest"
+    "^.+\\.(ts|js)$": "babel-jest"
   },
+  transformIgnorePatterns: ["node_modules/(?!(@twurple)/)"],
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  moduleFileExtensions: ["ts", "js", "json"],
   clearMocks: true
 };
 
