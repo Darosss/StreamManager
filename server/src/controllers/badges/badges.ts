@@ -24,7 +24,8 @@ import multer from "multer";
 import { filterBadgesByUrlParams } from "./filters";
 import path from "path";
 import sharp from "sharp";
-import { ParamsDictionary } from "express-serve-static-core";
+import type { ParamsDictionary } from "express-serve-static-core";
+
 import { BadgeUpdateData, BadgeCreateData } from "@models";
 export interface RequestParamsBadgeName extends ParamsDictionary {
   badgeName: string;

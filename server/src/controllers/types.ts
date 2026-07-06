@@ -1,4 +1,4 @@
-import { ParamsDictionary, Query } from "express-serve-static-core";
+import type { ParamsDictionary, Query } from "express-serve-static-core";
 
 export interface RequestParams extends ParamsDictionary {
   id: string;

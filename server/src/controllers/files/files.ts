@@ -12,7 +12,7 @@ import {
 } from "@utils";
 import { alertSoundsPath, musicPath, alertSoundPrefix, publicEndpointPath } from "@configs";
 import path from "path";
-import { ParamsDictionary } from "express-serve-static-core";
+import type { ParamsDictionary } from "express-serve-static-core";
 
 export interface RequestParamsFolder extends ParamsDictionary {
   folder: string;

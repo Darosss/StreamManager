@@ -16,7 +16,7 @@ import { AppError, checkExistResource, filterMp3, getListOfFilesWithExtensionInF
 import path from "path";
 import { achievementsStagesSoundsPath, publicEndpointPath } from "@configs";
 import multer from "multer";
-import { ParamsDictionary } from "express-serve-static-core";
+import type { ParamsDictionary } from "express-serve-static-core";
 
 export interface RequestParamsSoundName extends ParamsDictionary {
   soundName: string;
