@@ -1,3 +1,5 @@
+[![Linting](https://github.com/Darosss/StreamManager/actions/workflows/linting.yaml/badge.svg)](https://github.com/Darosss/StreamManager/actions/workflows/linting.yaml)
+
 # Stream Manager
 
 <a name="readme-top"></a>
