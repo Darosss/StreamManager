@@ -7,9 +7,7 @@ import {
   updateBadgeById,
   deleteBadgeById as deleteBadgeByIdService,
   deleteBadgeImages,
-  getBadgeById as getBadgeByIdService,
-  badgeModelIMagesUrlsSizesNumbers,
-  SEPARATOR_BADGE_IMAGE_SIZE
+  getBadgeById as getBadgeByIdService
 } from "@services";
 import { RequestParams, RequestSearch } from "../types";
 import {
@@ -27,6 +25,7 @@ import sharp from "sharp";
 import type { ParamsDictionary } from "express-serve-static-core";
 
 import { BadgeUpdateData, BadgeCreateData } from "@models";
+import { badgeModelIMagesUrlsSizesNumbers, SEPARATOR_BADGE_IMAGE_SIZE } from "../../services/badges/utils";
 export interface RequestParamsBadgeName extends ParamsDictionary {
   badgeName: string;
 }
