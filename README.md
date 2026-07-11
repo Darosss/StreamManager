@@ -1,6 +1,6 @@
 [![Linting](https://github.com/Darosss/StreamManager/actions/workflows/linting.yaml/badge.svg)](https://github.com/Darosss/StreamManager/actions/workflows/linting.yaml)
-
 [![Backend Tests](https://github.com/Darosss/StreamManager/actions/workflows/backend-tests.yaml/badge.svg)](https://github.com/Darosss/StreamManager/actions/workflows/backend-tests.yaml)
+[![Frontend Tests](https://github.com/Darosss/StreamManager/actions/workflows/frontend-tests.yaml/badge.svg)](https://github.com/Darosss/StreamManager/actions/workflows/frontend-tests.yaml)
 
 # Stream Manager
 
