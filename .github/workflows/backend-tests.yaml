@@ -1,0 +1,59 @@
+name: Backend Tests
+
+on:
+  push:
+    paths:
+      - "server/**"
+  pull_request:
+    paths:
+      - "server/**"
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:8
+        ports:
+          - 27017:27017
+
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand({ ping: 1 })'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      NODE_ENV: test
+      TEST_DB_URL: mongodb://localhost:27017/test_db
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for Server Changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            server:
+              - "server/**"
+
+      - name: Setup Node
+        if: steps.filter.outputs.server == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install Server Dependencies
+        if: steps.filter.outputs.server == 'true'
+        working-directory: ./server
+        run: npm ci --legacy-peer-deps
+
+      - name: Run Tests
+        if: steps.filter.outputs.server == 'true'
+        working-directory: ./server
+        run: npm test

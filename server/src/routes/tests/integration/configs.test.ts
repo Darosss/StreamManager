@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import request from "supertest";
-import app from "../../app";
+import app from "../../../app";
 import { Config } from "@models";
 import { beforeEach, describe, it, expect, afterAll, test, beforeAll } from "@jest/globals";
 import { initMongoDataBase } from "@configs";
