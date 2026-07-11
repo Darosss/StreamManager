@@ -35,7 +35,8 @@ export const initMongoDataBase = async (uri: string) => {
     console.error("Failed to connect to database:", error);
     process.exit(1);
   }
-
+};
+export const seedDatabase = async () => {
   await createDefaultConfigs();
 
   await Promise.all([createDefaultTag(), createDefaultMood()]);
