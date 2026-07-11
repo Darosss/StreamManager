@@ -5,7 +5,6 @@ import svgrPlugin from "vite-plugin-svgr";
 import eslint from "@nabla/vite-plugin-eslint";
 import path from "path";
 import { visualizer } from "rollup-plugin-visualizer";
-import { playwright } from "@vitest/browser-playwright";
 
 export default defineConfig({
   css: {
@@ -26,13 +25,6 @@ export default defineConfig({
     eslint(),
     visualizer({ filename: "dist/stats.html", template: "treemap" }),
   ],
-  test: {
-    browser: {
-      enabled: true,
-      provider: playwright(),
-      instances: [{ browser: "chromium" }],
-      environment: "jsdom",
-    },
-  },
+
   envDir: "../",
 });
