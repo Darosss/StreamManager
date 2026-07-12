@@ -16,7 +16,7 @@ module.exports = {
       clearMocks: true,
       moduleFileExtensions: ["ts", "js", "json"],
       testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-      testMatch: ["**/unit/*.test.ts"],
+      testMatch: ["**/unit/*.test.ts", "**/*.unit.test.ts"],
       moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: "<rootDir>/"
       }),
@@ -34,7 +34,7 @@ module.exports = {
       clearMocks: true,
       moduleFileExtensions: ["ts", "js", "json"],
       testPathIgnorePatterns: ["/node_modules/", "/dist/"],
-      testMatch: ["**/integration/*.test.ts"],
+      testMatch: ["**/integration/*.test.ts", "**/*.integration.test.ts"],
       moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: "<rootDir>/"
       }),
