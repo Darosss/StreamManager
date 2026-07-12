@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { envFilePath } from "./globalPaths";
-dotenv.config({ path: envFilePath });
+dotenv.config({ path: envFilePath, quiet: true });
 
 export const {
   HOST_FRONTEND_URL: hostFrontendURL,
