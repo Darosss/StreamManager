@@ -1,7 +1,7 @@
 import {
   configExist,
   createNewConfig,
-  createChatCommand,
+  createChatCommands,
   getChatCommandsCount,
   createTag,
   getOneTag,
@@ -63,7 +63,7 @@ const createDefaultCommands = async () => {
           mood: mood.id
         };
       });
-      await createChatCommand(chatCommandsWithModes);
+      await createChatCommands(chatCommandsWithModes);
     }
   }
 };
