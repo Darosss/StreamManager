@@ -53,7 +53,9 @@ export const getChatCommandsCount = async (filter: QueryFilter<ChatCommandDocume
   return await ChatCommand.countDocuments(filter);
 };
 
-export const createChatCommand = async (createData: UpdateQuery<ChatCommandCreateData>) => {
+export const createChatCommand = async (createData: ChatCommandCreateData) => createChatCommands([createData]);
+
+export const createChatCommands = async (createData: ChatCommandCreateData[]) => {
   try {
     const createdCommand = await ChatCommand.create(createData);
 
@@ -64,7 +66,7 @@ export const createChatCommand = async (createData: UpdateQuery<ChatCommandCreat
     return createdCommand;
   } catch (err) {
     logger.error(`Error occured while creating chat command(s): ${err}`);
-    handleAppError(err);
+    return handleAppError(err);
   }
 };
 
