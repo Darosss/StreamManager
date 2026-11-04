@@ -32,13 +32,14 @@ export interface AchievementCustomModel {
 }
 
 export interface AchievementModel<
-  StageType extends AchievementStageModel<BadgeModel | Types.ObjectId> | Types.ObjectId = Types.ObjectId
+  StageType extends AchievementStageModel<BadgeModel | Types.ObjectId> | Types.ObjectId = Types.ObjectId,
+  TagType extends Types.ObjectId | TagModel = Types.ObjectId
 > extends BaseModel {
   name: string;
   description: string;
   stages: StageType;
   isTime: boolean;
-  tag: string | TagModel;
+  tag: TagType;
   enabled: boolean;
   custom?: AchievementCustomModel;
   hidden?: boolean;
