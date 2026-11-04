@@ -27,11 +27,16 @@ type SearchForYoutubeSongParams = {
 class YoutubeMusic extends YoutubeApiHandler {
   private static readonly validateIdRegex = /^[a-zA-Z0-9-_]{11}$/;
   private readonly downloadOptions: SabrPlaybackOptions = {
-    preferWebM: true,
-    preferOpus: true,
-    videoQuality: "480p",
-    audioQuality: "AUDIO_QUALITY_MEDIUM",
-    enabledTrackTypes: EnabledTrackTypes.AUDIO_ONLY
+    videoPreferences: {
+      container: "webm"
+    },
+    audioPreferences: {
+      container: "webm",
+      preferredAudioCodec: "opus",
+      quality: "AUDIO_QUALITY_MEDIUM"
+    },
+    enabledTrackTypes: EnabledTrackTypes.AUDIO_ONLY,
+    isPostLiveDvr: false
   };
   constructor() {
     super();

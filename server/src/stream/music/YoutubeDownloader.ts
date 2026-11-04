@@ -1,12 +1,10 @@
 import { type WriteStream } from "node:fs";
 import { Constants, Innertube, IPlayerResponse, Platform, Types, UniversalCache, YTNodes } from "youtubei.js";
-import { SabrFormat } from "googlevideo/shared-types";
 import { ReloadPlaybackContext } from "googlevideo/protos";
-import { SabrStream, SabrPlaybackOptions } from "googlevideo/sabr-stream";
+import { SabrStream, SabrPlaybackOptions, PlayabilityStatus, SelectedFormats } from "googlevideo/sabr-stream";
 import { buildSabrFormat } from "googlevideo/utils";
-import { BG, BgConfig } from "bgutils-js";
-import { JSDOM } from "jsdom";
 import { musicLogger } from "@utils";
+import { getWebPoMinter } from "./webpo-helper";
 
 export interface DownloadOutput {
   stream: WriteStream;
@@ -16,27 +14,12 @@ export interface DownloadOutput {
 export interface StreamResults {
   videoStream: ReadableStream;
   audioStream: ReadableStream;
-  selectedFormats: {
-    videoFormat: SabrFormat;
-    audioFormat: SabrFormat;
-  };
+  selectedFormats: SelectedFormats;
   videoTitle: string;
 }
 
-Platform.shim.eval = async (data: Types.BuildScriptResult, env: Record<string, Types.VMPrimative>) => {
-  const properties = [];
-
-  if (env.n) {
-    properties.push(`n: exportedVars.nFunction("${env.n}")`);
-  }
-
-  if (env.sig) {
-    properties.push(`sig: exportedVars.sigFunction("${env.sig}")`);
-  }
-
-  const code = `${data.output}\nreturn { ${properties.join(", ")} }`;
-
-  return new Function(code)();
+Platform.shim.eval = async (data: Types.BuildScriptResult) => {
+  return new Function(data.output)();
 };
 
 /**
@@ -57,12 +40,12 @@ export async function makePlayerRequest(
       contentPlaybackContext: {
         vis: 0,
         splay: false,
-        lactMilliseconds: "-1",
         signatureTimestamp: innertube.session.player?.signature_timestamp
       }
     },
     contentCheckOk: true,
-    racyCheckOk: true
+    racyCheckOk: true,
+    client: "WEB"
   };
 
   if (reloadPlaybackContext) {
@@ -70,6 +53,15 @@ export async function makePlayerRequest(
   }
 
   return await watchEndpoint.call<IPlayerResponse>(innertube.actions, { ...extraArgs, parse: true });
+}
+
+export function determineFileExtension(mimeType: string): string {
+  if (mimeType.includes("video")) {
+    return mimeType.includes("webm") ? "webm" : "mp4";
+  } else if (mimeType.includes("audio")) {
+    return mimeType.includes("webm") ? "webm" : "m4a";
+  }
+  return "bin";
 }
 
 /**
@@ -105,8 +97,9 @@ export async function createSabrStream(
   innertube: Innertube;
   streamResults: StreamResults;
 }> {
+  const webpoMinter = await getWebPoMinter();
+
   const innertube = await Innertube.create({ cache: new UniversalCache(true) });
-  const webPoTokenResult = await generateWebPoToken(videoId);
 
   // Get video metadata.
   const playerResponse = await makePlayerRequest(innertube, videoId);
@@ -131,37 +124,78 @@ export async function createSabrStream(
   if (!serverAbrStreamingUrl) throw new Error("serverAbrStreamingUrl not found");
 
   const sabrFormats = playerResponse.streaming_data?.adaptive_formats.map(buildSabrFormat) || [];
+  const clientName = parseInt(
+    Constants.CLIENT_NAME_IDS[innertube.session.context.client.clientName as keyof typeof Constants.CLIENT_NAME_IDS]
+  );
+  const clientVersion = innertube.session.context.client.clientVersion;
+  const heartbeatParams = playerResponse.heartbeat_params;
 
   const serverAbrStream = new SabrStream({
+    videoId,
     formats: sabrFormats,
     serverAbrStreamingUrl,
     videoPlaybackUstreamerConfig,
-    poToken: webPoTokenResult.poToken,
+    heartbeatParams: {
+      heartbeatToken: heartbeatParams?.heartbeat_token,
+      heartbeatServerData: heartbeatParams?.heartbeat_server_data,
+      intervalMilliseconds: heartbeatParams?.interval_milliseconds
+    },
     clientInfo: {
-      clientName: parseInt(
-        Constants.CLIENT_NAME_IDS[innertube.session.context.client.clientName as keyof typeof Constants.CLIENT_NAME_IDS]
-      ),
-      clientVersion: innertube.session.context.client.clientVersion
+      clientName,
+      clientVersion
+    },
+    callbacks: {
+      onMintPoToken: () => webpoMinter.mint(videoId),
+      onReloadPlayerResponse: async (reloadPlaybackContext) => {
+        const playerResponse = await makePlayerRequest(innertube, videoId, reloadPlaybackContext);
+        const serverAbrStreamingUrl = await innertube.session.player?.decipher(
+          playerResponse.streaming_data?.server_abr_streaming_url
+        );
+        const videoPlaybackUstreamerConfig =
+          playerResponse.player_config?.media_common_config.media_ustreamer_request_config
+            ?.video_playback_ustreamer_config;
+
+        if (!serverAbrStreamingUrl || !videoPlaybackUstreamerConfig) {
+          throw new Error("Missing serverAbrStreamingUrl or videoPlaybackUstreamerConfig in reloaded player response");
+        }
+
+        return {
+          videoPlaybackUstreamerConfig,
+          serverAbrStreamingUrl
+        };
+      },
+      onCheckHeartbeat: async (innertubeRequestBody) => {
+        const heartbeatResponse = await innertube.actions.execute("/player/heartbeat", {
+          ...innertubeRequestBody,
+          parse: true
+        });
+
+        if (!heartbeatResponse.playability_status || !heartbeatResponse.playability_status_memo) {
+          throw new Error("Invalid heartbeat response: missing playability_status");
+        }
+
+        const status = heartbeatResponse.playability_status.status as PlayabilityStatus;
+        const pollDelayMs = heartbeatResponse.poll_delay_ms;
+        const liveStreamability = heartbeatResponse.playability_status_memo?.getType(YTNodes.LiveStreamability).first();
+        const displayEndscreen = !!liveStreamability.display_endscreen;
+        const offlineSlate = liveStreamability.offline_slate;
+        const broadcastId = liveStreamability.broadcast_id;
+
+        return {
+          status,
+          displayEndscreen,
+          offlineSlatePresent: !!offlineSlate,
+          offlineSlateButtonsPresent: !!offlineSlate?.action_buttons.length,
+          broadcastId,
+          pollDelayMs
+        };
+      }
     }
   });
 
   // Handle player response reload events (e.g, when IP changes, or formats expire).
-  serverAbrStream.on("reloadPlayerResponse", async (reloadPlaybackContext) => {
-    const playerResponse = await makePlayerRequest(innertube, videoId, reloadPlaybackContext);
 
-    const serverAbrStreamingUrl = await innertube.session.player?.decipher(
-      playerResponse.streaming_data?.server_abr_streaming_url
-    );
-    const videoPlaybackUstreamerConfig =
-      playerResponse.player_config?.media_common_config.media_ustreamer_request_config?.video_playback_ustreamer_config;
-
-    if (serverAbrStreamingUrl && videoPlaybackUstreamerConfig) {
-      serverAbrStream.setStreamingURL(serverAbrStreamingUrl);
-      serverAbrStream.setUstreamerConfig(videoPlaybackUstreamerConfig);
-    }
-  });
-
-  const { videoStream, audioStream, selectedFormats } = await serverAbrStream.start(options);
+  const { videoStream, audioStream, selectedFormats } = serverAbrStream.start(options);
 
   return {
     innertube,
@@ -171,49 +205,5 @@ export async function createSabrStream(
       selectedFormats,
       videoTitle
     }
-  };
-}
-
-export async function generateWebPoToken(contentBinding: string) {
-  const requestKey = "O43z0dpjhgX20SCx4KAo";
-
-  if (!contentBinding) throw new Error("Could not get visitor data");
-
-  const dom = new JSDOM();
-
-  Object.assign(globalThis, {
-    window: dom.window,
-    document: dom.window.document
-  });
-
-  const bgConfig: BgConfig = {
-    fetch: (input: string | URL | globalThis.Request, init?: RequestInit) => fetch(input, init),
-    globalObj: globalThis,
-    identifier: contentBinding,
-    requestKey
-  };
-
-  const bgChallenge = await BG.Challenge.create(bgConfig);
-
-  if (!bgChallenge) throw new Error("Could not get challenge");
-
-  const interpreterJavascript = bgChallenge.interpreterJavascript.privateDoNotAccessOrElseSafeScriptWrappedValue;
-
-  if (interpreterJavascript) {
-    new Function(interpreterJavascript)();
-  } else throw new Error("Could not load VM");
-
-  const poTokenResult = await BG.PoToken.generate({
-    program: bgChallenge.program,
-    globalName: bgChallenge.globalName,
-    bgConfig
-  });
-
-  const placeholderPoToken = BG.PoToken.generateColdStartToken(contentBinding);
-
-  return {
-    visitorData: contentBinding,
-    placeholderPoToken,
-    poToken: poTokenResult.poToken
   };
 }
