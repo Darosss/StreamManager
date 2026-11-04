@@ -1,9 +1,10 @@
 import z from "zod";
 import { MoodSchema } from "@models";
 import { TagSchema } from "@models";
+import { zObjectId } from "../../utils/schemas";
 
 export const ChatCommandSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1),

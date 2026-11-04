@@ -1,10 +1,11 @@
+import { zObjectId } from "../../utils/schemas";
 import { MoodSchema } from "../moods/schemas";
 import { TagSchema } from "../tags/schemas";
 import z from "zod";
 
 export const TriggerModeSchema = z.enum(["WholeWord", "StartsWith", "All"]);
 export const TriggerSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1, "Trigger name must be at least 1 length"),

@@ -1,3 +1,4 @@
+import { zObjectId } from "../../utils/schemas";
 import { BadgeSchema } from "../badges/schemas";
 
 import z from "zod";
@@ -8,7 +9,7 @@ export const createDisplayBadgesSchema = <T extends z.ZodType>(badgeSchema: T) =
 // Generic function that creates the user schema
 export const createUserSchema = <T extends z.ZodType>(badgeSchema: T) =>
   z.object({
-    _id: z.string(),
+    _id: zObjectId(),
     createdAt: z.date(),
     updatedAt: z.date(),
     twitchId: z.string(),

@@ -1,8 +1,9 @@
+import { zObjectId } from "../../utils/schemas";
 import { UserSchemaWithBadgeModel, UserSchemaWithStringBadges } from "../users/schemas";
 import z from "zod";
 
 export const MessageSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   message: z.string().min(1, "Message must be at least 1 length"),

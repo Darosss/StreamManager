@@ -1,3 +1,4 @@
+import { zObjectId } from "../../utils/schemas";
 import { UserSchemaWithBadgeModel, UserSchemaWithStringBadges } from "../users/schemas";
 import z from "zod";
 
@@ -7,7 +8,7 @@ export const SessionEventSchema = z.object({
 });
 
 export const StreamSessionSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   sessionStart: z.date(),
