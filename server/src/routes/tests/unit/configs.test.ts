@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import request from "supertest";
 import { describe, expect, jest, it, beforeEach } from "@jest/globals";
 import * as ConfigController from "../../../controllers/configs";

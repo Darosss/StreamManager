@@ -51,8 +51,8 @@ export type AchievementDocument = AchievementModel & Document;
 
 export interface AchievementUserProgressModel<
   AchievementType extends
-    | Types.ObjectId
-    | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> = Types.ObjectId
+    Types.ObjectId | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> =
+    Types.ObjectId
 > extends BaseModel {
   userId: string | UserModel;
   achievement: AchievementType;
