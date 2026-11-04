@@ -52,7 +52,7 @@ export const addNewCommand = async (
 
   const createData = { name, description, enabled, aliases, tag, mood, messages, privilege };
   try {
-    const newChatCommand = await createChatCommand(flattenObject(createData));
+    const newChatCommand = await createChatCommand(createData);
 
     res.status(201).send({ message: "Chat command added successfully", data: newChatCommand });
   } catch (err) {
