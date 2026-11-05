@@ -165,10 +165,11 @@ describe("Achievement Stages Service", () => {
 
   describe("deleteAchievementStageById", () => {
     it("should throw when stage is used by achievements", async () => {
-      jest.mocked(getAchievements).mockResolvedValue([{ name: "Achievement 1" }] as never);
-
-      await expect(AchievementStagesService.deleteAchievementStageById(new Types.ObjectId())).rejects.toThrow(
-        "Achievement stage with id(stage-1) is used in achievement(s): [Achievement 1], cannot delete"
+      const achName = "Achievement 1";
+      jest.mocked(getAchievements).mockResolvedValue([{ name: achName }] as never);
+      const stageId = new Types.ObjectId();
+      await expect(AchievementStagesService.deleteAchievementStageById(stageId)).rejects.toThrow(
+        `Achievement stage with id(${stageId}) is used in achievement(s): [${achName}], cannot delete`
       );
     });
 
