@@ -2,6 +2,7 @@ import path from "path";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import duration from "dayjs/plugin/duration";
+import { Types } from "mongoose";
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
 
@@ -95,11 +96,15 @@ export const flattenObject = (obj: any, prefix = ""): Record<string, any> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return Object.keys(obj).reduce((acc: any, k) => {
     const pre = prefix.length ? prefix + "." : "";
-    if (obj[k] === undefined) return acc;
-    if (obj[k] !== null && typeof obj[k] === "object" && !Array.isArray(obj[k])) {
-      Object.assign(acc, flattenObject(obj[k], pre + k));
+    const currentObj = obj[k];
+
+    if (currentObj === undefined) return acc;
+    if (currentObj instanceof Types.ObjectId) {
+      acc[pre + k] = currentObj;
+    } else if (currentObj !== null && typeof currentObj === "object" && !Array.isArray(currentObj)) {
+      Object.assign(acc, flattenObject(currentObj, pre + k));
     } else {
-      acc[pre + k] = obj[k];
+      acc[pre + k] = currentObj;
     }
     return acc;
   }, {});
