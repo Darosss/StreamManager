@@ -156,7 +156,6 @@ describe("Achievements Service", () => {
         stages: createFakeStage()._id,
         tag: createFakeTag()._id
       });
-      console.log(result);
       expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({ isTime: false }));
       expect(result).toBe(fakeAchievement);
     });
