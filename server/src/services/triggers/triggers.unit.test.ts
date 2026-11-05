@@ -62,7 +62,7 @@ describe("Triggers Service", () => {
         sort: jest.fn<() => Promise<TriggerModel[]>>().mockResolvedValue(fakeTriggers)
       };
 
-      const findSpy = jest.spyOn(Trigger, "find").mockReturnValue(fakeTriggers as never);
+      const findSpy = jest.spyOn(Trigger, "find").mockReturnValue(queryChain as never);
 
       const result = await TriggersService.getTriggers(
         {},
