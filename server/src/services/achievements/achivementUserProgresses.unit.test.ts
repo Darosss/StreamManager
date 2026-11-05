@@ -228,6 +228,7 @@ describe("Achievement User Progresses Service", () => {
 
   describe("getDataForObtainAchievementEmit", () => {
     it("should build emit data with stages and gained progress", () => {
+      const finishedStageTimestamp = 1234567;
       const data: UpdateAchievementUserProgressProgressesReturnData = {
         foundAchievement: {
           name: "Test Achievement",
@@ -261,14 +262,15 @@ describe("Achievement User Progresses Service", () => {
           createdAt: new Date("2024-01-01T00:00:00.000Z"),
           updatedAt: new Date("2024-01-01T00:00:00.000Z")
         },
-        nowFinishedStages: [[1, 123456]],
+        nowFinishedStages: [[1, finishedStageTimestamp]],
         gainedProgress: { currentStageNumber: null, nextStageNumber: 1, progress: 6 }
       };
 
       const result = AchievementUserProgressesService.getDataForObtainAchievementEmit(data);
 
       expect(result.achievement).toEqual({ name: "Test Achievement", isTime: false });
-      expect(result.stages).toEqual([{ data: { stage: 1, goal: 5 }, timestamp: 123456 }]);
+      const stageData = data.foundAchievement.stages.stageData[0];
+      expect(result.stages).toEqual([{ data: stageData, timestamp: finishedStageTimestamp }]);
       expect(result.gainedProgress).toEqual(expect.objectContaining({ progress: 6 }));
     });
   });
