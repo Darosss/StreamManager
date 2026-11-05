@@ -14,6 +14,7 @@ import {
 import { AppError, checkExistResource, logger } from "@utils";
 import { filterAchievementsByUrlParams } from "./filters";
 import { CustomAchievementAction } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getManyAchievements = async (
   req: Request<{}, {}, {}, RequestSearch>,
@@ -48,16 +49,12 @@ export const getManyAchievements = async (
 };
 
 export const getAchievementsProgressesByUserId = async (
-  req: Request<RequestParams, {}, {}, {}>,
+  req: RequestWithObjectId,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
-
-  if (!id) throw new AppError(400, "Id not provided");
-
   try {
-    const achievements = await getAchievementsProgressesByUserIdService(id);
+    const achievements = await getAchievementsProgressesByUserIdService(req.objectId);
 
     res.status(200).send({
       data: achievements

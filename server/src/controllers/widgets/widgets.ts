@@ -9,6 +9,7 @@ import {
 } from "@services";
 import { RequestParams, RequestSearch } from "../types";
 import { WidgetsCreateData, WidgetsUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getWidgetsList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = "1", limit = "25", sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -33,11 +34,9 @@ export const getWidgetsList = async (req: Request<{}, {}, {}, RequestSearch>, re
   }
 };
 
-export const getWidgetById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const getWidgetById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    const widget = await getWidgetByIdService(id, {});
+    const widget = await getWidgetByIdService(req.objectId, {});
 
     res.status(200).send({
       data: widget
@@ -65,16 +64,15 @@ export const addNewWidget = async (
 };
 
 export const editWidgetById = async (
-  req: Request<RequestParams, {}, WidgetsUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, WidgetsUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { name, layout, toolbox } = req.body;
 
   const updateData = { name, layout, toolbox };
   try {
-    const updatedWidget = await updateWidgetById(id, updateData);
+    const updatedWidget = await updateWidgetById(req.objectId, updateData);
 
     res.status(200).send({
       message: "Widget updated successfully",
@@ -85,11 +83,9 @@ export const editWidgetById = async (
   }
 };
 
-export const removeWidgetById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const removeWidgetById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    await deleteWidgetById(id);
+    await deleteWidgetById(req.objectId);
 
     res.status(200).send({ message: "Widget deleted successfully" });
   } catch (err) {

@@ -5,6 +5,7 @@ import { filterTimersByUrlParams } from "./filters";
 import { createTimer, deleteTimerById, getTimers, getTimersCount, updateTimerById } from "@services";
 import { minDelayTimer } from "@configs";
 import { TimerCreateData, TimerUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getTimersList = async (req: Request<{}, {}, {}, RequestTimerQuery>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50, sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -71,11 +72,10 @@ export const addNewTimer = async (req: Request<{}, {}, TimerCreateData, {}>, res
 };
 
 export const editTimerById = async (
-  req: Request<RequestParams, {}, TimerUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, TimerUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const {
     name,
     messages,
@@ -101,7 +101,7 @@ export const editTimerById = async (
     mood
   };
   try {
-    const updatedTimer = await updateTimerById(id, updateData);
+    const updatedTimer = await updateTimerById(req.objectId, updateData);
 
     res.status(200).send({
       message: "Timmer updated successfully",
@@ -112,11 +112,9 @@ export const editTimerById = async (
   }
 };
 
-export const deleteTimer = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const deleteTimer = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    await deleteTimerById(id);
+    await deleteTimerById(req.objectId);
 
     res.status(200).send({ message: "Timmer deleted successfully" });
   } catch (err) {

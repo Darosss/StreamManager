@@ -8,16 +8,16 @@ import {
   getLatestEldestUserMessages,
   getUsersByIds
 } from "@controllers";
-import { checkSearchParams, isParamObjectId } from "@middlewares";
+import { checkSearchParams, isParamObjectId, withObjectId } from "@middlewares";
 
 const usersRouter = Router();
 
 usersRouter.get("/", checkSearchParams, getUsersList);
 usersRouter.get("/by-ids/:id", checkSearchParams, getUsersByIds);
-usersRouter.get("/:id", isParamObjectId, getUsersProfile);
+usersRouter.get("/:id", withObjectId(getUsersProfile));
 usersRouter.get("/:id/messages", isParamObjectId, getUserMessages);
 usersRouter.get("/:id/redemptions", isParamObjectId, getUserRedemptions);
 usersRouter.get("/:id/messages/latest-eldest", isParamObjectId, getLatestEldestUserMessages);
-usersRouter.patch("/:id", isParamObjectId, editUserProfile);
+usersRouter.patch("/:id", withObjectId(editUserProfile));
 
 export default usersRouter;

@@ -24,7 +24,7 @@ import {
   deleteCustomAchievementById,
   editAchievementById
 } from "@controllers";
-import { checkSearchParams, isParamObjectId } from "@middlewares";
+import { checkSearchParams, isParamObjectId, withObjectId } from "@middlewares";
 import { Router } from "express";
 
 const achievementsRouter = Router();
@@ -57,7 +57,7 @@ achievementsRouter.delete("/badges/delete/:id", isParamObjectId, deleteBadgeById
 achievementsRouter.get("/badges/:id", isParamObjectId, getBadgeById);
 achievementsRouter.patch("/badges/:id", isParamObjectId, editBadgeById);
 
-achievementsRouter.get("/user/:id", isParamObjectId, getAchievementsProgressesByUserId);
+achievementsRouter.get("/user/:id", withObjectId(getAchievementsProgressesByUserId));
 
 achievementsRouter.patch("/:id", isParamObjectId, editAchievementById);
 
