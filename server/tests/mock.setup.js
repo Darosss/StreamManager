@@ -36,3 +36,18 @@ jest.mock("googlevideo/utils", () => ({
 jest.mock("jsdom", () => ({
   JSDOM: jest.fn()
 }));
+
+jest.mock("bgutils-js/botguard", () => ({
+  BotGuardClient: jest.fn()
+}));
+
+jest.mock("bgutils-js/webpo", () => ({
+  WebPoMinter: jest.fn()
+}));
+
+jest.mock("bgutils-js/utils", () => ({
+  getHeaders: jest.fn(),
+  buildURL: jest.fn(),
+  USER_AGENT: jest.fn(),
+  parseLooseJSON: jest.fn()
+}));
