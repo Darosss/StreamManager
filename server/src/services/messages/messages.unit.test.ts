@@ -118,15 +118,14 @@ describe("Messages Service", () => {
 
   describe("getMessagesFromDateToDate", () => {
     it("should call getMessages with the date range filter", async () => {
-      const getMessagesSpy = jest
-        .spyOn(MessagesService, "getMessages")
-        .mockResolvedValue([createFakeMessage()] as never);
+      const massage = createFakeMessage();
+      const getMessagesSpy = jest.spyOn(MessagesService, "getMessages").mockResolvedValue([massage] as never);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await MessagesService.getMessagesFromDateToDate(startDate);
 
       expect(getMessagesSpy).toHaveBeenCalled();
-      expect(result).toEqual([createFakeMessage()]);
+      expect(result).toEqual([massage]);
     });
   });
 
