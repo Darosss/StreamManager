@@ -12,6 +12,7 @@ import {
 import { percentChance, randomWithMax, triggerLogger } from "@utils";
 import { ConfigManager } from "./ConfigManager";
 import { SocketHandler } from "@socket";
+import { Types } from "mongoose";
 
 class TriggersHandler {
   private configs: ConfigModel = ConfigManager.getInstance().getConfig();
@@ -147,11 +148,10 @@ class TriggersHandler {
 
   private async getMessageAndUpdateTriggerLogic(trigger: TriggerModel) {
     const { _id, name, mood, messages, delay } = trigger;
-    const id = _id.toString();
     const triggerMessage = await this.getTriggerMessage(mood as MoodModel, messages);
-    await this.updateTrigerAfterUsage(id);
+    await this.updateTrigerAfterUsage(_id);
 
-    await this.setTimeoutRefreshTriggerDelay(id, name, delay);
+    await this.setTimeoutRefreshTriggerDelay(_id, name, delay);
     triggerLogger.info(`Use ${name} trigger, delay: ${delay}s`);
 
     return triggerMessage;
@@ -221,7 +221,7 @@ class TriggersHandler {
     }
   }
 
-  private async updateTrigerAfterUsage(id: string) {
+  private async updateTrigerAfterUsage(id: Types.ObjectId) {
     const updatedTrigger = await updateTriggerById(id, {
       onDelay: true,
       $inc: { uses: 1 }
@@ -229,7 +229,7 @@ class TriggersHandler {
     return updatedTrigger;
   }
 
-  private async setTimeoutRefreshTriggerDelay(id: string, name: string, delay: number) {
+  private async setTimeoutRefreshTriggerDelay(id: Types.ObjectId, name: string, delay: number) {
     this.triggersOnDelay.set(
       name,
       setTimeout(async () => {

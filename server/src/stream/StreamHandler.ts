@@ -115,7 +115,7 @@ class StreamHandler {
         timestamp: Number(userstate["tmi-sent-ts"]) || new Date().getTime()
       });
 
-      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id.toString(), user.username, new Date(), {
+      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id, user.username, new Date(), {
         emotes: !!userstate.emotes,
         message
       });

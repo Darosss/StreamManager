@@ -12,13 +12,14 @@ import { ConfigModel, TimerModel, UserModel } from "@models";
 import { ConfigManager } from "./ConfigManager";
 import { minDelayTimer } from "@configs";
 import { SocketHandler } from "@socket";
+import { Types } from "mongoose";
 
 type OnTimerExecute = (message: string) => void;
 
 class TimersHandler {
   private configs: ConfigModel = ConfigManager.getInstance().getConfig();
   private timers: TimerModel[] = [];
-  private timersTimeouts: Map<string, NodeJS.Timeout> = new Map();
+  private timersTimeouts: Map<Types.ObjectId, NodeJS.Timeout> = new Map();
   private affixesMultipler = { prefixMult: 1, suffixMult: 1 };
   private _onTimerExecute: OnTimerExecute;
 
@@ -70,11 +71,11 @@ class TimersHandler {
   private async setTimersTimeouts() {
     this.timers.map((timer) => {
       const { _id, name, delay } = timer;
-      this.setTimerTimeout(_id.toString(), name, delay);
+      this.setTimerTimeout(_id, name, delay);
     });
   }
 
-  private setTimerTimeout(id: string, name: string, delay: number) {
+  private setTimerTimeout(id: Types.ObjectId, name: string, delay: number) {
     const timerDelay = delay >= minDelayTimer ? delay : minDelayTimer;
     this.timersTimeouts.set(
       id,
@@ -97,7 +98,7 @@ class TimersHandler {
     this.affixesMultipler.suffixMult = suffixesMultipler;
   }
 
-  private async getTimerMessage(id: string) {
+  private async getTimerMessage(id: Types.ObjectId) {
     const timer = await getTimerById(id, {}, { populate: { path: "mood" } });
     if (!timer) return "";
 
@@ -149,7 +150,7 @@ class TimersHandler {
         if (this._onTimerExecute) this._onTimerExecute(timerMessage);
         else timerLogger.warn("In order to execute timer message provide and set _onTimerExecute in TimersHandler");
 
-        await this.updateTimerAfterUsage(_id.toString());
+        await this.updateTimerAfterUsage(_id);
       }, index * 2000);
     });
   }
@@ -191,7 +192,7 @@ class TimersHandler {
     return updatedTimers;
   }
 
-  private async updateTimerAfterUsage(id: string) {
+  private async updateTimerAfterUsage(id: Types.ObjectId) {
     const updatedTrigger = await updateTimerById(id, {
       $inc: { uses: 1 },
       points: 0

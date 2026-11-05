@@ -75,7 +75,7 @@ class YoutubeMusic extends YoutubeApiHandler {
     const addedByUser = await getOneUser({ $or: [{ username: usernameWhoAdded }, { twitchId: botId }] }, {});
     const createdSong = await createSong({
       duration: duration,
-      whoAdded: String(addedByUser!._id),
+      whoAdded: addedByUser!._id,
       title: name,
       youtubeId: id,
       tags: this.convertTopicDetailsIntoTags(topicDetails),
