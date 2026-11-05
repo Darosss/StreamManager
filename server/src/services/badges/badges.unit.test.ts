@@ -143,10 +143,12 @@ describe("Badges Service", () => {
 
   describe("deleteBadgeById", () => {
     it("should throw when the badge is used in achievement stages", async () => {
-      jest.mocked(getAchievementStages).mockResolvedValue([{ name: "Stage 1" }] as never);
+      const stageName = "Stage 1";
+      jest.mocked(getAchievementStages).mockResolvedValue([{ name: stageName }] as never);
 
-      await expect(BadgesService.deleteBadgeById(new Types.ObjectId())).rejects.toThrow(
-        "Badge with id(badge-1) is used in stage(s): [Stage 1], cannot delete"
+      const badgeId = new Types.ObjectId();
+      await expect(BadgesService.deleteBadgeById(badgeId)).rejects.toThrow(
+        `Badge with id(${badgeId}) is used in stage(s): [${stageName}], cannot delete`
       );
     });
 
