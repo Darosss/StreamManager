@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -15,15 +14,33 @@ jest.mock("@services", () => ({
   getUserById: jest.fn()
 }));
 
-import { AchievementUserProgress, AchievementUserProgressModel, AchievementWithBadgePopulated } from "@models";
-import { getUserById } from "@services";
+import {
+  AchievementUserProgress,
+  AchievementUserProgressModel,
+  AchievementWithBadgePopulated,
+  BadgeModel
+} from "@models";
+import { getUserById, UpdateAchievementUserProgressProgressesReturnData } from "@services";
 import * as AchievementUserProgressesService from "./achivementUserProgresses";
+import mongoose, { Types } from "mongoose";
 
 const createFakeTag = () => ({
-  _id: "tag-1"
+  _id: new Types.ObjectId()
+});
+const createFakeBadge = (): BadgeModel => ({
+  _id: new mongoose.Types.ObjectId(),
+  createdAt: new Date("2024-01-01T00:00:00.000Z"),
+  updatedAt: new Date("2024-01-01T00:00:00.000Z"),
+  name: "badge-name",
+  imagesUrls: {
+    x32: "x32.png",
+    x64: "x64.png",
+    x96: "x96.png",
+    x128: "x128.png"
+  }
 });
 const createFakeAchievement = (): AchievementWithBadgePopulated => ({
-  _id: "achievement-1" as any, // no need to be a valid ObjectId for testing
+  _id: new Types.ObjectId(),
   name: "Test Achievement",
   stages: {
     stageData: [
@@ -31,44 +48,22 @@ const createFakeAchievement = (): AchievementWithBadgePopulated => ({
         stage: 1,
         goal: 5,
         name: "badge-1",
-        badge: {
-          _id: "badge-id-1",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          name: "badge-name-1",
-          imagesUrls: {
-            x32: "x32.png",
-            x64: "x64.png",
-            x96: "x96.png",
-            x128: "x128.png"
-          }
-        },
+        badge: createFakeBadge(),
         showTimeMs: 500
       },
       {
         stage: 2,
         goal: 10,
         name: "badge-2",
-        badge: {
-          _id: "badge-id-2",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          name: "badge-name-2",
-          imagesUrls: {
-            x32: "x32.png",
-            x64: "x64.png",
-            x96: "x96.png",
-            x128: "x128.png"
-          }
-        },
+        badge: createFakeBadge(),
         showTimeMs: 1000
       }
     ],
     name: "stage-name",
-    _id: "stage-id" as any, // no need to be a valid ObjectId for testing
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }, // no need to be a valid ObjectId for testing
+    _id: new Types.ObjectId(),
+    createdAt: new Date("2024-01-01T00:00:00.000Z"),
+    updatedAt: new Date("2024-01-01T00:00:00.000Z")
+  },
   tag: createFakeTag()._id,
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z"),
@@ -78,9 +73,9 @@ const createFakeAchievement = (): AchievementWithBadgePopulated => ({
 });
 
 const createFakeProgress = (): AchievementUserProgressModel => ({
-  _id: "progress-1" as any, // no need to be a valid ObjectId for testing,
-  achievement: createFakeAchievement()._id as any, // no need to be a valid ObjectId for testing,
-  userId: "user-1",
+  _id: new Types.ObjectId(),
+  achievement: createFakeAchievement()._id,
+  userId: new Types.ObjectId(),
   value: 5,
   progresses: [],
   progressesLength: 0,
@@ -104,7 +99,7 @@ describe("Achievement User Progresses Service", () => {
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockResolvedValue(fakeProgresses as never)
       };
-      const findSpy = jest.spyOn(AchievementUserProgress, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(AchievementUserProgress, "find").mockReturnValue(queryChain as never);
 
       const result = await AchievementUserProgressesService.getAchievementUserProgresses(
         {},
@@ -121,7 +116,7 @@ describe("Achievement User Progresses Service", () => {
   describe("getOneAchievementUserProgress", () => {
     it("should return a single achievement progress", async () => {
       const fakeProgress = createFakeProgress();
-      const findOneSpy = jest.spyOn(AchievementUserProgress, "findOne").mockResolvedValue(fakeProgress as any);
+      const findOneSpy = jest.spyOn(AchievementUserProgress, "findOne").mockResolvedValue(fakeProgress as never);
 
       const result = await AchievementUserProgressesService.getOneAchievementUserProgress({
         achievement: createFakeAchievement()._id
@@ -137,7 +132,7 @@ describe("Achievement User Progresses Service", () => {
       const fakeProgress = createFakeProgress();
       jest
         .spyOn(AchievementUserProgressesService, "getOneAchievementUserProgress")
-        .mockResolvedValue(fakeProgress as any);
+        .mockResolvedValue(fakeProgress as never);
 
       const result = await AchievementUserProgressesService.createAchievementUserProgress({
         achievement: fakeProgress.achievement,
@@ -148,9 +143,9 @@ describe("Achievement User Progresses Service", () => {
     });
 
     it("should create a new progress when none exists", async () => {
-      jest.spyOn(AchievementUserProgressesService, "getOneAchievementUserProgress").mockResolvedValue(null as any);
+      jest.spyOn(AchievementUserProgressesService, "getOneAchievementUserProgress").mockResolvedValue(null);
       const fakeProgress = createFakeProgress();
-      const createSpy = jest.spyOn(AchievementUserProgress, "create").mockResolvedValue(fakeProgress as any);
+      const createSpy = jest.spyOn(AchievementUserProgress, "create").mockResolvedValue(fakeProgress as never);
 
       const result = await AchievementUserProgressesService.createAchievementUserProgress({
         achievement: fakeProgress.achievement,
@@ -164,20 +159,21 @@ describe("Achievement User Progresses Service", () => {
 
   describe("updateOneAchievementUserProgress", () => {
     it("should update progress and set progressesLength when progresses are passed", async () => {
+      const updateVal = { progresses: [[1, 100]] };
       const fakeProgress = createFakeProgress();
-      jest
-        .spyOn(AchievementUserProgress, "findOne")
-        .mockResolvedValue({ ...fakeProgress, progresses: [[1, 100]] } as any);
-      const updateSpy = jest.spyOn(AchievementUserProgress, "findByIdAndUpdate").mockResolvedValue(fakeProgress as any);
+      jest.spyOn(AchievementUserProgress, "findOne").mockResolvedValue({ ...fakeProgress, ...updateVal } as never);
+      const updateSpy = jest
+        .spyOn(AchievementUserProgress, "findByIdAndUpdate")
+        .mockResolvedValue(fakeProgress as never);
 
       const result = await AchievementUserProgressesService.updateOneAchievementUserProgress(
         { _id: fakeProgress._id },
-        { progresses: [[1, 100]] }
+        updateVal
       );
 
       expect(updateSpy).toHaveBeenCalledWith(
         fakeProgress._id,
-        expect.objectContaining({ progresses: [[1, 100]], $set: { progressesLength: 1 } }),
+        expect.objectContaining({ ...updateVal, $set: { progressesLength: 1 } }),
         { new: true }
       );
       expect(result).toEqual(fakeProgress);
@@ -187,16 +183,17 @@ describe("Achievement User Progresses Service", () => {
   describe("getAchievementsProgressesByUserId", () => {
     it("should return progress documents when the user exists", async () => {
       const fakeProgresses = [createFakeProgress()];
-      jest.mocked(getUserById).mockResolvedValue({ id: "user-1" } as any);
+      const userId = new Types.ObjectId();
+      jest.mocked(getUserById).mockResolvedValue({ id: userId } as never);
       const queryChain = {
         populate: jest.fn().mockResolvedValue(fakeProgresses as never)
       };
-      const findSpy = jest.spyOn(AchievementUserProgress, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(AchievementUserProgress, "find").mockReturnValue(queryChain as never);
 
-      const result = await AchievementUserProgressesService.getAchievementsProgressesByUserId("user-1");
+      const result = await AchievementUserProgressesService.getAchievementsProgressesByUserId(userId);
 
-      expect(getUserById).toHaveBeenCalledWith("user-1", {});
-      expect(findSpy).toHaveBeenCalledWith({ userId: "user-1" });
+      expect(getUserById).toHaveBeenCalledWith(userId, {});
+      expect(findSpy).toHaveBeenCalledWith({ userId });
       expect(queryChain.populate).toHaveBeenCalledWith({
         path: "achievement",
         populate: {
@@ -213,10 +210,10 @@ describe("Achievement User Progresses Service", () => {
   describe("updateFinishedStagesDependsOnProgress", () => {
     it("should finish stages when progress passes stage goals", async () => {
       const fakeAchievement = createFakeAchievement();
-      const userProgress = { _id: fakeAchievement.stages._id, progresses: [] } as any;
+      const userProgress = createFakeProgress();
       jest
         .spyOn(AchievementUserProgressesService, "updateOneAchievementUserProgress")
-        .mockResolvedValue(userProgress as any);
+        .mockResolvedValue(userProgress as never);
 
       const result = await AchievementUserProgressesService.updateFinishedStagesDependsOnProgress(
         fakeAchievement,
@@ -231,20 +228,42 @@ describe("Achievement User Progresses Service", () => {
 
   describe("getDataForObtainAchievementEmit", () => {
     it("should build emit data with stages and gained progress", () => {
-      const data = {
+      const data: UpdateAchievementUserProgressProgressesReturnData = {
         foundAchievement: {
           name: "Test Achievement",
           isTime: false,
           stages: {
             stageData: [
-              { stage: 1, goal: 5 },
-              { stage: 2, goal: 10 }
-            ]
-          }
+              {
+                stage: 1,
+                goal: 5,
+                name: "Stage name",
+                badge: createFakeBadge(),
+                showTimeMs: 0
+              },
+              {
+                stage: 2,
+                goal: 10,
+                name: "Stage name 2",
+                badge: createFakeBadge(),
+                showTimeMs: 0
+              }
+            ],
+            name: "",
+            _id: new Types.ObjectId(),
+            createdAt: new Date("2024-01-01T00:00:00.000Z"),
+            updatedAt: new Date("2024-01-01T00:00:00.000Z")
+          },
+          description: "",
+          tag: new Types.ObjectId(),
+          enabled: false,
+          _id: new Types.ObjectId(),
+          createdAt: new Date("2024-01-01T00:00:00.000Z"),
+          updatedAt: new Date("2024-01-01T00:00:00.000Z")
         },
         nowFinishedStages: [[1, 123456]],
         gainedProgress: { currentStageNumber: null, nextStageNumber: 1, progress: 6 }
-      } as any;
+      };
 
       const result = AchievementUserProgressesService.getDataForObtainAchievementEmit(data);
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { SongCreateData, SongModel } from "@models";
 
@@ -23,12 +22,13 @@ jest.mock("@services", () => ({
 import { Songs } from "@models";
 import { getUserById } from "@services";
 import * as SongsService from "./songs";
+import { Types } from "mongoose";
 
 const createFakeSong = (): SongModel => ({
-  _id: "song-1",
+  _id: new Types.ObjectId(),
   title: "Test Song",
   youtubeId: "youtube-1",
-  whoAdded: "user-1",
+  whoAdded: new Types.ObjectId(),
   likes: {},
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z"),
@@ -62,10 +62,10 @@ describe("Songs Service", () => {
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeSongs as never)
+        sort: jest.fn<() => Promise<SongModel[]>>().mockResolvedValue(fakeSongs)
       };
 
-      const findSpy = jest.spyOn(Songs, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Songs, "find").mockReturnValue(queryChain as never);
 
       const result = await SongsService.getSongs(
         {},
@@ -84,7 +84,7 @@ describe("Songs Service", () => {
 
   describe("getSongsCount", () => {
     it("should return the count of songs for a filter", async () => {
-      const countSpy = jest.spyOn(Songs, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(Songs, "countDocuments").mockResolvedValue(4);
 
       const result = await SongsService.getSongsCount({ title: "Test Song" });
 
@@ -100,22 +100,23 @@ describe("Songs Service", () => {
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockResolvedValue(null as never)
       };
-      jest.spyOn(Songs, "findOne").mockReturnValue(queryChain as any);
-      jest.spyOn(Songs, "create").mockResolvedValue(fakeSong as any);
-      jest.mocked(getUserById).mockResolvedValue({ _id: "user-1" } as any);
+      jest.spyOn(Songs, "findOne").mockReturnValue(queryChain as never);
+      jest.spyOn(Songs, "create").mockResolvedValue(fakeSong as never);
+      const userId = new Types.ObjectId();
+      jest.mocked(getUserById).mockResolvedValue({ _id: userId } as never);
 
       const createData: SongCreateData = {
         title: "Test Song",
         youtubeId: "youtube",
-        whoAdded: "user-1",
+        whoAdded: userId,
         duration: 300
       };
 
       const result = await SongsService.createSong(createData);
 
-      expect(getUserById).toHaveBeenCalledWith("user-1", { select: { _id: true } });
+      expect(getUserById).toHaveBeenCalledWith(userId, { select: { _id: true } });
       expect(Songs.create).toHaveBeenCalledWith(
-        expect.objectContaining({ title: "Test Song", whoAdded: "user-1", youtubeId: "youtube" })
+        expect.objectContaining({ title: createData.title, whoAdded: userId, youtubeId: createData.youtubeId })
       );
       expect(result).toEqual({ isNew: true, song: fakeSong });
     });
@@ -123,7 +124,7 @@ describe("Songs Service", () => {
 
   describe("updateSongs", () => {
     it("should update many songs for a filter", async () => {
-      const updateSpy = jest.spyOn(Songs, "updateMany").mockResolvedValue({ acknowledged: true } as any);
+      const updateSpy = jest.spyOn(Songs, "updateMany").mockResolvedValue({ acknowledged: true } as never);
 
       await SongsService.updateSongs({ title: "Test Song" }, { $set: { title: "Updated" } });
 
@@ -134,11 +135,11 @@ describe("Songs Service", () => {
   describe("updateSongById", () => {
     it("should return the updated song by id", async () => {
       const fakeSong = createFakeSong();
-      const updateSpy = jest.spyOn(Songs, "findByIdAndUpdate").mockResolvedValue(fakeSong as any);
+      const updateSpy = jest.spyOn(Songs, "findByIdAndUpdate").mockResolvedValue(fakeSong);
 
-      const result = await SongsService.updateSongById(fakeSong._id, { $set: { title: "Updated" } });
+      const result = await SongsService.updateSongById(fakeSong._id.toString(), { $set: { title: "Updated" } });
 
-      expect(updateSpy).toHaveBeenCalledWith(fakeSong._id, { $set: { title: "Updated" } }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(fakeSong._id.toString(), { $set: { title: "Updated" } }, { new: true });
       expect(result).toEqual(fakeSong);
     });
   });
@@ -146,11 +147,15 @@ describe("Songs Service", () => {
   describe("manageSongLikesById", () => {
     it("should set the user like value for a song", async () => {
       const fakeSong = createFakeSong();
-      const updateSpy = jest.spyOn(Songs, "findOneAndUpdate").mockResolvedValue(fakeSong as any);
+      const updateSpy = jest.spyOn(Songs, "findOneAndUpdate").mockResolvedValue(fakeSong);
 
-      const result = await SongsService.manageSongLikesById({ id: fakeSong._id }, "like", "user-1");
+      const result = await SongsService.manageSongLikesById({ id: fakeSong._id.toString() }, "like", "user-1");
 
-      expect(updateSpy).toHaveBeenCalledWith({ _id: fakeSong._id }, { $set: { "likes.user-1": 1 } }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(
+        { _id: fakeSong._id.toString() },
+        { $set: { "likes.user-1": 1 } },
+        { new: true }
+      );
       expect(result).toEqual(fakeSong);
     });
   });
@@ -158,11 +163,11 @@ describe("Songs Service", () => {
   describe("deleteSongById", () => {
     it("should delete a song by id and return it", async () => {
       const fakeSong = createFakeSong();
-      const deleteSpy = jest.spyOn(Songs, "findByIdAndDelete").mockResolvedValue(fakeSong as any);
+      const deleteSpy = jest.spyOn(Songs, "findByIdAndDelete").mockResolvedValue(fakeSong);
 
-      const result = await SongsService.deleteSongById(fakeSong._id);
+      const result = await SongsService.deleteSongById(fakeSong._id.toString());
 
-      expect(deleteSpy).toHaveBeenCalledWith(fakeSong._id);
+      expect(deleteSpy).toHaveBeenCalledWith(fakeSong._id.toString());
       expect(result).toEqual(fakeSong);
     });
   });
@@ -170,11 +175,11 @@ describe("Songs Service", () => {
   describe("getSongById", () => {
     it("should find a song by id", async () => {
       const fakeSong = createFakeSong();
-      const getSpy = jest.spyOn(Songs, "findById").mockResolvedValue(fakeSong as any);
+      const getSpy = jest.spyOn(Songs, "findById").mockResolvedValue(fakeSong);
 
-      const result = await SongsService.getSongById(fakeSong._id);
+      const result = await SongsService.getSongById(fakeSong._id.toString());
 
-      expect(getSpy).toHaveBeenCalledWith(fakeSong._id, {});
+      expect(getSpy).toHaveBeenCalledWith(fakeSong._id.toString(), {});
       expect(result).toEqual(fakeSong);
     });
   });
@@ -184,13 +189,13 @@ describe("Songs Service", () => {
       const fakeSong = createFakeSong();
       const queryChain = {
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeSong as never)
+        populate: jest.fn<() => Promise<SongModel>>().mockResolvedValue(fakeSong)
       };
-      const findOneSpy = jest.spyOn(Songs, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(Songs, "findOne").mockReturnValue(queryChain as never);
+      const title = "Test Song";
+      const result = await SongsService.getOneSong({ title });
 
-      const result = await SongsService.getOneSong({ title: "Test Song" });
-
-      expect(findOneSpy).toHaveBeenCalledWith({ title: "Test Song" });
+      expect(findOneSpy).toHaveBeenCalledWith({ title });
       expect(result).toEqual(fakeSong);
     });
   });
@@ -198,12 +203,12 @@ describe("Songs Service", () => {
   describe("updateSongUsesById", () => {
     it("should increment the use counters for a song", async () => {
       const fakeSong = createFakeSong();
-      const updateSpy = jest.spyOn(Songs, "findByIdAndUpdate").mockResolvedValue(fakeSong as any);
+      const updateSpy = jest.spyOn(Songs, "findByIdAndUpdate").mockResolvedValue(fakeSong);
 
-      const result = await SongsService.updateSongUsesById(fakeSong._id, "botUses");
+      const result = await SongsService.updateSongUsesById(fakeSong._id.toString(), "botUses");
 
       expect(updateSpy).toHaveBeenCalledWith(
-        fakeSong._id,
+        fakeSong._id.toString(),
         { $inc: { botUses: 1, songRequestUses: 0, uses: 1 } },
         { new: true }
       );

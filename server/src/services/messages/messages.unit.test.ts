@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { MessageCreateData, MessageModel } from "@models";
 
@@ -13,12 +12,13 @@ jest.mock("@models", () => ({
 
 import { Message } from "@models";
 import * as MessagesService from "./messages";
+import { Types } from "mongoose";
 
-const createFakeMessage = (): MessageModel & { owner: string } => ({
-  _id: "message-1",
+const createFakeMessage = (): MessageModel & { owner: Types.ObjectId } => ({
+  _id: new Types.ObjectId(),
   message: "hello world",
   date: new Date("2024-01-01T00:00:00.000Z"),
-  owner: "user-1",
+  owner: new Types.ObjectId(),
   ownerUsername: "tester",
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z")
@@ -41,10 +41,10 @@ describe("Messages Service", () => {
         skip: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeMessages as never)
+        sort: jest.fn<() => Promise<MessageModel[]>>().mockResolvedValue(fakeMessages)
       };
 
-      const findSpy = jest.spyOn(Message, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Message, "find").mockReturnValue(queryChain as never);
 
       const result = await MessagesService.getMessages(
         {},
@@ -64,7 +64,7 @@ describe("Messages Service", () => {
   describe("createMessage", () => {
     it("should create a message using MessageCreateData", async () => {
       const fakeMessage = createFakeMessage();
-      const createSpy = jest.spyOn(Message, "create").mockResolvedValue(fakeMessage as any);
+      const createSpy = jest.spyOn(Message, "create").mockResolvedValue(fakeMessage as never);
       const createData: MessageCreateData = {
         message: fakeMessage.message,
         date: fakeMessage.date,
@@ -81,7 +81,7 @@ describe("Messages Service", () => {
 
   describe("getMessagesCount", () => {
     it("should return the count of messages for a filter", async () => {
-      const countSpy = jest.spyOn(Message, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(Message, "countDocuments").mockResolvedValue(4);
 
       const result = await MessagesService.getMessagesCount({ owner: "user-1" });
 
@@ -94,7 +94,7 @@ describe("Messages Service", () => {
     it("should aggregate the most active users by message count", async () => {
       const aggregateSpy = jest
         .spyOn(Message, "aggregate")
-        .mockResolvedValue([{ _id: "user-1", username: "tester", messageCount: 2 }] as any);
+        .mockResolvedValue([{ _id: "user-1", username: "tester", messageCount: 2 }]);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await MessagesService.getMostActiveUsersByMsgs(3, startDate);
@@ -106,7 +106,7 @@ describe("Messages Service", () => {
 
   describe("getMostUsedWord", () => {
     it("should aggregate the most used words", async () => {
-      const aggregateSpy = jest.spyOn(Message, "aggregate").mockResolvedValue([{ _id: "hello", count: 2 }] as any);
+      const aggregateSpy = jest.spyOn(Message, "aggregate").mockResolvedValue([{ _id: "hello", count: 2 }]);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await MessagesService.getMostUsedWord(3, startDate);
@@ -118,7 +118,9 @@ describe("Messages Service", () => {
 
   describe("getMessagesFromDateToDate", () => {
     it("should call getMessages with the date range filter", async () => {
-      const getMessagesSpy = jest.spyOn(MessagesService, "getMessages").mockResolvedValue([createFakeMessage()] as any);
+      const getMessagesSpy = jest
+        .spyOn(MessagesService, "getMessages")
+        .mockResolvedValue([createFakeMessage()] as never);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await MessagesService.getMessagesFromDateToDate(startDate);
@@ -130,7 +132,7 @@ describe("Messages Service", () => {
 
   describe("getMessagesCountByDate", () => {
     it("should call getMessagesCount with the date range filter", async () => {
-      const countSpy = jest.spyOn(MessagesService, "getMessagesCount").mockResolvedValue(2 as any);
+      const countSpy = jest.spyOn(MessagesService, "getMessagesCount").mockResolvedValue(2);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await MessagesService.getMessagesCountByDate(startDate);

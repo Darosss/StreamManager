@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   CustomAchievementAction: jest.requireActual<any>("../../models/achievements/enums")
     .CustomAchievementAction as typeof CustomAchievementAction,
   Achievement: {
@@ -13,27 +13,31 @@ jest.mock("@models", () => ({
     findOneAndDelete: jest.fn()
   }
 }));
-import { Achievement, CustomAchievementAction, AchievementStageModel } from "@models";
+import { Achievement, CustomAchievementAction, AchievementStageModel, AchievementModel } from "@models";
 import * as AchievementsService from "./achievements";
-
-const createFakeAchievement = () => ({
-  _id: "achievement-1",
-  name: "Test Achievement",
-  stages: [],
-  tag: { name: "test", enabled: true },
-  createdAt: new Date("2024-01-01T00:00:00.000Z"),
-  updatedAt: new Date("2024-01-01T00:00:00.000Z")
+import { Types } from "mongoose";
+import { AchievementCreateData } from "./types";
+const createFakeTag = () => ({
+  _id: new Types.ObjectId()
 });
 
 const createFakeStage = (): AchievementStageModel => ({
-  _id: "stages-1" as any, // no need to be a valid ObjectId for testing,
+  _id: new Types.ObjectId(),
   name: "",
   stageData: [],
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z")
 });
-const createFakeTag = () => ({
-  _id: "tag-1"
+const createFakeAchievement = (): AchievementModel => ({
+  _id: new Types.ObjectId(),
+  name: "Test Achievement",
+  stages: [] as never,
+  tag: createFakeTag()._id,
+  createdAt: new Date("2024-01-01T00:00:00.000Z"),
+  updatedAt: new Date("2024-01-01T00:00:00.000Z"),
+  description: "Test achievement desc",
+  isTime: false,
+  enabled: false
 });
 
 describe("Achievements Service", () => {
@@ -53,10 +57,10 @@ describe("Achievements Service", () => {
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeAchievements as never)
+        sort: jest.fn<() => Promise<AchievementModel[]>>().mockResolvedValue(fakeAchievements)
       };
 
-      const findSpy = jest.spyOn(Achievement, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Achievement, "find").mockReturnValue(queryChain as never);
 
       const result = await AchievementsService.getAchievements(
         {},
@@ -77,18 +81,23 @@ describe("Achievements Service", () => {
   describe("createAchievement", () => {
     it("should create a new achievement", async () => {
       const fakeAchievement = createFakeAchievement();
-      const createSpy = jest.spyOn(Achievement, "create").mockResolvedValue(fakeAchievement as any);
+      const createSpy = jest.spyOn(Achievement, "create").mockResolvedValue(fakeAchievement as never);
+      const achCreateData: AchievementCreateData = {
+        name: fakeAchievement.name,
+        description: fakeAchievement.description,
+        stages: fakeAchievement.stages,
+        tag: fakeAchievement.tag
+      };
+      const result = await AchievementsService.createAchievement(achCreateData);
 
-      const result = await AchievementsService.createAchievement({ name: "Test Achievement" } as any);
-
-      expect(createSpy).toHaveBeenCalledWith({ name: "Test Achievement" });
+      expect(createSpy).toHaveBeenCalledWith(achCreateData);
       expect(result).toBe(fakeAchievement);
     });
   });
 
   describe("getAchievementsCount", () => {
     it("should return the count of achievements", async () => {
-      const countSpy = jest.spyOn(Achievement, "countDocuments").mockResolvedValue(7 as any);
+      const countSpy = jest.spyOn(Achievement, "countDocuments").mockResolvedValue(7);
 
       const result = await AchievementsService.getAchievementsCount({ name: "Test Achievement" });
 
@@ -102,10 +111,10 @@ describe("Achievements Service", () => {
       const fakeAchievement = createFakeAchievement();
       const queryChain = {
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeAchievement as never)
+        populate: jest.fn<() => Promise<AchievementModel>>().mockResolvedValue(fakeAchievement)
       };
 
-      const findOneSpy = jest.spyOn(Achievement, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(Achievement, "findOne").mockReturnValue(queryChain as never);
 
       const result = await AchievementsService.getOneAchievement({}, { select: { __v: 0 } }, true);
 
@@ -119,7 +128,7 @@ describe("Achievements Service", () => {
   describe("updateOneAchievement", () => {
     it("should update an achievement and return it", async () => {
       const fakeAchievement = createFakeAchievement();
-      const updateSpy = jest.spyOn(Achievement, "findOneAndUpdate").mockResolvedValue(fakeAchievement as any);
+      const updateSpy = jest.spyOn(Achievement, "findOneAndUpdate").mockResolvedValue(fakeAchievement);
 
       const result = await AchievementsService.updateOneAchievement(
         { name: "Test Achievement" },
@@ -138,7 +147,7 @@ describe("Achievements Service", () => {
   describe("createCustomAchievement", () => {
     it("should create a custom achievement with valid includes action", async () => {
       const fakeAchievement = createFakeAchievement();
-      const createSpy = jest.spyOn(Achievement, "create").mockResolvedValue(fakeAchievement as any);
+      const createSpy = jest.spyOn(Achievement, "create").mockResolvedValue(fakeAchievement as never);
 
       const result = await AchievementsService.createCustomAchievement({
         name: "Custom Achievement",
@@ -179,7 +188,7 @@ describe("Achievements Service", () => {
 
   describe("deleteOneAchievement", () => {
     it("should delete an achievement by filter and return a success message", async () => {
-      const deleteSpy = jest.spyOn(Achievement, "findOneAndDelete").mockResolvedValue(createFakeAchievement() as any);
+      const deleteSpy = jest.spyOn(Achievement, "findOneAndDelete").mockResolvedValue(createFakeAchievement() as never);
 
       const result = await AchievementsService.deleteOneAchievement({ name: "Test Achievement" });
 
@@ -190,7 +199,7 @@ describe("Achievements Service", () => {
 
   describe("deleteCustomAchievementById", () => {
     it("should delete a custom achievement by id", async () => {
-      const deleteSpy = jest.spyOn(Achievement, "findOneAndDelete").mockResolvedValue(createFakeAchievement() as any);
+      const deleteSpy = jest.spyOn(Achievement, "findOneAndDelete").mockResolvedValue(createFakeAchievement() as never);
 
       const result = await AchievementsService.deleteCustomAchievementById("achievement-1");
 

@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, jest, it, beforeEach, afterEach } from "@jest/globals";
 import * as ConfigsService from "./configs";
 import { Config, ConfigModel, ConfigUpdateData } from "../../models/configs";
 import { configDefaults } from "../../defaults/configsDefaults";
-import { Error } from "mongoose";
+import { Error, Types } from "mongoose";
 
 describe("Configs Services", () => {
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe("Configs Services", () => {
       const createNewConfigSpy = jest.spyOn(ConfigsService, "createNewConfig");
       jest.spyOn(Config, "findOne").mockReturnValue({
         select: jest.fn().mockResolvedValue(configDefaults as never)
-      } as any);
+      } as never);
       const result = await ConfigsService.getConfigs();
 
       expect(createNewConfigSpy).toHaveBeenCalledTimes(0);
@@ -30,7 +29,7 @@ describe("Configs Services", () => {
       const createNewConfigSpy = jest.spyOn(ConfigsService, "createNewConfig");
       jest.spyOn(Config, "findOne").mockReturnValue({
         select: jest.fn().mockResolvedValue(undefined as never)
-      } as any);
+      } as never);
       jest.spyOn(Config, "create").mockReturnValue(configDefaults as never);
       const result = await ConfigsService.getConfigs();
 
@@ -48,7 +47,7 @@ describe("Configs Services", () => {
   });
   describe("createNewConfig", () => {
     it("should save new default configs to the database and return them", async () => {
-      const dbSaveSpy = jest.spyOn(Config, "create").mockResolvedValue(configDefaults as any);
+      const dbSaveSpy = jest.spyOn(Config, "create").mockResolvedValue(configDefaults as never);
 
       const result = await ConfigsService.createNewConfig();
 
@@ -68,7 +67,7 @@ describe("Configs Services", () => {
   });
   describe("updateConfigs", () => {
     it("should save new default configs to the database and return them", async () => {
-      const dbSaveSpy = jest.spyOn(Config, "create").mockResolvedValue(configDefaults as any);
+      const dbSaveSpy = jest.spyOn(Config, "create").mockResolvedValue(configDefaults as never);
 
       const result = await ConfigsService.createNewConfig();
 
@@ -94,13 +93,13 @@ describe("Configs Services", () => {
         }
       };
       const fakeUpdatedDoc: ConfigModel = {
-        _id: "123",
+        _id: new Types.ObjectId(),
         ...configDefaults,
         createdAt: new Date(),
         updatedAt: new Date()
       };
 
-      const dbSpy = jest.spyOn(Config, "findOneAndUpdate").mockResolvedValue(fakeUpdatedDoc as any);
+      const dbSpy = jest.spyOn(Config, "findOneAndUpdate").mockResolvedValue(fakeUpdatedDoc);
 
       const result = await ConfigsService.updateConfigs(fakeUpdateData);
 

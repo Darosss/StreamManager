@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -18,6 +17,7 @@ jest.mock("./achievements", () => ({
 }));
 
 jest.mock("fs", () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actualFs = jest.requireActual<any>("fs");
   return {
     ...actualFs,
@@ -32,16 +32,17 @@ import { promises as fsPromises } from "fs";
 import { AchievementStage, AchievementStageModel } from "@models";
 import { getAchievements } from "./achievements";
 import * as AchievementStagesService from "./achievementStages";
+import { Types } from "mongoose";
 
 const createFakeStage = (): AchievementStageModel => ({
-  _id: "stage-1" as any, // no need to be a valid ObjectId for testing
+  _id: new Types.ObjectId(),
   name: "Stage 1",
   stageData: [
     {
       name: "Stage 1",
       stage: 1,
       goal: 10,
-      badge: "badge id" as any, // no need to be a valid ObjectId for testing
+      badge: new Types.ObjectId(),
       showTimeMs: 2000
     }
   ],
@@ -65,10 +66,10 @@ describe("Achievement Stages Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeStages as never)
+        sort: jest.fn<() => Promise<AchievementStageModel[]>>().mockResolvedValue(fakeStages)
       };
 
-      const findSpy = jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as never);
 
       const result = await AchievementStagesService.getAchievementStages(
         {},
@@ -87,7 +88,7 @@ describe("Achievement Stages Service", () => {
   describe("createAchievementStage", () => {
     it("should create a new achievement stage", async () => {
       const fakeStage = createFakeStage();
-      const createSpy = jest.spyOn(AchievementStage, "create").mockResolvedValue(fakeStage as any);
+      const createSpy = jest.spyOn(AchievementStage, "create").mockResolvedValue(fakeStage as never);
 
       const result = await AchievementStagesService.createAchievementStage({
         name: fakeStage.name,
@@ -101,7 +102,7 @@ describe("Achievement Stages Service", () => {
 
   describe("getAchievementStagesCount", () => {
     it("should return the count of achievement stages", async () => {
-      const countSpy = jest.spyOn(AchievementStage, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(AchievementStage, "countDocuments").mockResolvedValue(4);
 
       const result = await AchievementStagesService.getAchievementStagesCount({ name: "Stage 1" });
 
@@ -114,10 +115,10 @@ describe("Achievement Stages Service", () => {
     it("should find one achievement stage by filter", async () => {
       const fakeStage = createFakeStage();
       const queryChain = {
-        select: jest.fn().mockResolvedValue(fakeStage as never)
+        select: jest.fn<() => Promise<AchievementStageModel>>().mockResolvedValue(fakeStage)
       };
 
-      const findOneSpy = jest.spyOn(AchievementStage, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(AchievementStage, "findOne").mockReturnValue(queryChain as never);
 
       const result = await AchievementStagesService.getOneAchievementStage({}, { select: { __v: 0 } });
 
@@ -130,7 +131,7 @@ describe("Achievement Stages Service", () => {
   describe("updateOneAchievementStage", () => {
     it("should update an achievement stage and return it", async () => {
       const fakeStage = createFakeStage();
-      const updateSpy = jest.spyOn(AchievementStage, "findOneAndUpdate").mockResolvedValue(fakeStage as any);
+      const updateSpy = jest.spyOn(AchievementStage, "findOneAndUpdate").mockResolvedValue(fakeStage);
 
       const result = await AchievementStagesService.updateOneAchievementStage(
         { name: "Stage 1" },
@@ -146,9 +147,9 @@ describe("Achievement Stages Service", () => {
     it("should find a stage by id and populate badge when requested", async () => {
       const fakeStage = createFakeStage();
       const queryChain = {
-        populate: jest.fn().mockResolvedValue(fakeStage as never)
+        populate: jest.fn<() => Promise<AchievementStageModel>>().mockResolvedValue(fakeStage)
       };
-      const findByIdSpy = jest.spyOn(AchievementStage, "findById").mockReturnValue(queryChain as any);
+      const findByIdSpy = jest.spyOn(AchievementStage, "findById").mockReturnValue(queryChain as never);
 
       const result = await AchievementStagesService.getAchievementStagesById(
         fakeStage._id.toString(),
@@ -164,7 +165,7 @@ describe("Achievement Stages Service", () => {
 
   describe("deleteAchievementStageById", () => {
     it("should throw when stage is used by achievements", async () => {
-      jest.mocked(getAchievements).mockResolvedValue([{ name: "Achievement 1" }] as any);
+      jest.mocked(getAchievements).mockResolvedValue([{ name: "Achievement 1" }] as never);
 
       await expect(AchievementStagesService.deleteAchievementStageById("stage-1")).rejects.toThrow(
         "Achievement stage with id(stage-1) is used in achievement(s): [Achievement 1], cannot delete"
@@ -172,8 +173,8 @@ describe("Achievement Stages Service", () => {
     });
 
     it("should delete the stage when it is not used", async () => {
-      jest.mocked(getAchievements).mockResolvedValue([] as any);
-      const deleteSpy = jest.spyOn(AchievementStage, "findByIdAndDelete").mockResolvedValue(null as any);
+      jest.mocked(getAchievements).mockResolvedValue([]);
+      const deleteSpy = jest.spyOn(AchievementStage, "findByIdAndDelete").mockResolvedValue(null);
 
       const result = await AchievementStagesService.deleteAchievementStageById("stage-1");
 
@@ -190,7 +191,7 @@ describe("Achievement Stages Service", () => {
         select: jest.fn().mockReturnThis(),
         sort: jest.fn().mockResolvedValue([{ name: "Stage 1" }] as never)
       };
-      jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as any);
+      jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as never);
 
       await expect(AchievementStagesService.deleteAchievementSound("sound.mp3")).rejects.toThrow(
         "Achievement stage sound  with name: (sound.mp3) is used in ahchievement stage sound(s): [Stage 1], cannot delete"
@@ -204,8 +205,8 @@ describe("Achievement Stages Service", () => {
         select: jest.fn().mockReturnThis(),
         sort: jest.fn().mockResolvedValue([] as never)
       };
-      jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as any);
-      const unlinkSpy = jest.spyOn(fsPromises, "unlink").mockResolvedValue(undefined as any);
+      jest.spyOn(AchievementStage, "find").mockReturnValue(queryChain as never);
+      const unlinkSpy = jest.spyOn(fsPromises, "unlink").mockResolvedValue(undefined);
 
       const result = await AchievementStagesService.deleteAchievementSound("sound.mp3");
 

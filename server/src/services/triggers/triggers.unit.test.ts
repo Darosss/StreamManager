@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { TriggerModel, TriggerCreateData } from "@models";
 jest.mock("@models", () => ({
@@ -21,9 +20,10 @@ jest.mock("../aggregations", () => ({
 
 import { Trigger } from "@models";
 import * as TriggersService from "./triggers";
+import { Types } from "mongoose";
 
-const createFakeTrigger = (): TriggerModel => ({
-  _id: "trigger-1",
+const createFakeTrigger = (): TriggerModel & { mood: Types.ObjectId; tag: Types.ObjectId } => ({
+  _id: new Types.ObjectId(),
   enabled: true,
   words: ["hello"],
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
@@ -39,8 +39,8 @@ const createFakeTrigger = (): TriggerModel => ({
   tag: createFakeTag()._id
 });
 
-const createFakeMood = () => ({ _id: "mood-1" as any });
-const createFakeTag = () => ({ _id: "tag-1" as any });
+const createFakeMood = () => ({ _id: new Types.ObjectId() });
+const createFakeTag = () => ({ _id: new Types.ObjectId() });
 
 describe("Triggers Service", () => {
   beforeEach(() => {
@@ -59,10 +59,10 @@ describe("Triggers Service", () => {
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeTriggers as never)
+        sort: jest.fn<() => Promise<TriggerModel[]>>().mockResolvedValue(fakeTriggers)
       };
 
-      const findSpy = jest.spyOn(Trigger, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Trigger, "find").mockReturnValue(fakeTriggers as never);
 
       const result = await TriggersService.getTriggers(
         {},
@@ -81,7 +81,7 @@ describe("Triggers Service", () => {
 
   describe("getTriggersCount", () => {
     it("should return the count of triggers for a filter", async () => {
-      const countSpy = jest.spyOn(Trigger, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(Trigger, "countDocuments").mockResolvedValue(4);
 
       const result = await TriggersService.getTriggersCount({ enabled: true });
 
@@ -93,14 +93,14 @@ describe("Triggers Service", () => {
   describe("createTrigger", () => {
     it("should create a trigger and return it", async () => {
       const fakeTrigger = createFakeTrigger();
-      const createSpy = jest.spyOn(Trigger, "create").mockResolvedValue(fakeTrigger as any);
+      const createSpy = jest.spyOn(Trigger, "create").mockResolvedValue(fakeTrigger as never);
       const createData: TriggerCreateData = {
-        name: "triggers-1",
-        words: ["hello"],
-        enabled: true,
-        messages: ["message", "message2"],
-        mood: "mood-id",
-        tag: "tag-id"
+        name: fakeTrigger.name,
+        words: fakeTrigger.words,
+        enabled: fakeTrigger.enabled,
+        messages: fakeTrigger.messages,
+        mood: fakeTrigger.mood,
+        tag: fakeTrigger.tag
       };
 
       const result = await TriggersService.createTrigger(createData);
@@ -112,7 +112,7 @@ describe("Triggers Service", () => {
 
   describe("updateTriggers", () => {
     it("should update many triggers with the given filter and data", async () => {
-      const updateManySpy = jest.spyOn(Trigger, "updateMany").mockResolvedValue({} as any);
+      const updateManySpy = jest.spyOn(Trigger, "updateMany").mockResolvedValue({} as never);
 
       await TriggersService.updateTriggers({ enabled: true }, { enabled: false });
 
@@ -123,7 +123,7 @@ describe("Triggers Service", () => {
   describe("updateTriggerById", () => {
     it("should update a trigger and return it", async () => {
       const fakeTrigger = createFakeTrigger();
-      const updateSpy = jest.spyOn(Trigger, "findByIdAndUpdate").mockResolvedValue(fakeTrigger as any);
+      const updateSpy = jest.spyOn(Trigger, "findByIdAndUpdate").mockResolvedValue(fakeTrigger);
 
       const result = await TriggersService.updateTriggerById(fakeTrigger._id, { enabled: false });
 
@@ -135,7 +135,7 @@ describe("Triggers Service", () => {
   describe("deleteTriggerById", () => {
     it("should delete a trigger and return it", async () => {
       const fakeTrigger = createFakeTrigger();
-      const deleteSpy = jest.spyOn(Trigger, "findByIdAndDelete").mockResolvedValue(fakeTrigger as any);
+      const deleteSpy = jest.spyOn(Trigger, "findByIdAndDelete").mockResolvedValue(fakeTrigger);
 
       const result = await TriggersService.deleteTriggerById(fakeTrigger._id);
 
@@ -147,7 +147,7 @@ describe("Triggers Service", () => {
   describe("getTriggerById", () => {
     it("should return a trigger when one exists", async () => {
       const fakeTrigger = createFakeTrigger();
-      const findByIdSpy = jest.spyOn(Trigger, "findById").mockResolvedValue(fakeTrigger as any);
+      const findByIdSpy = jest.spyOn(Trigger, "findById").mockResolvedValue(fakeTrigger);
 
       const result = await TriggersService.getTriggerById(fakeTrigger._id, { enabled: 1 });
 
@@ -163,7 +163,7 @@ describe("Triggers Service", () => {
       const populateMock = jest.fn().mockResolvedValue(fakeTrigger as never);
       const findOneSpy = jest
         .spyOn(Trigger, "findOne")
-        .mockReturnValue({ select: selectMock, populate: populateMock } as any);
+        .mockReturnValue({ select: selectMock, populate: populateMock } as never);
 
       const result = await TriggersService.getOneTrigger({ enabled: true }, { populate: ["user"], select: { __v: 0 } });
 
@@ -176,7 +176,7 @@ describe("Triggers Service", () => {
 
   describe("getTriggersWords", () => {
     it("should aggregate and sort trigger words by length", async () => {
-      const aggregateSpy = jest.spyOn(Trigger, "aggregate").mockResolvedValue([{ words: ["hello", "hi"] }] as any);
+      const aggregateSpy = jest.spyOn(Trigger, "aggregate").mockResolvedValue([{ words: ["hello", "hi"] }]);
 
       const result = await TriggersService.getTriggersWords(false);
 
