@@ -242,7 +242,7 @@ describe("Stream Sessions Service", () => {
       const updateSpy = jest.spyOn(StreamSession, "findByIdAndUpdate").mockResolvedValue(fakeSession);
 
       const timestamp = new Date().getTime();
-      const result = await StreamSessionsService.updateStreamSessionById("session-1", {
+      const result = await StreamSessionsService.updateStreamSessionById(fakeSession._id, {
         $set: { [`viewers.${timestamp}`]: 320 }
       });
 

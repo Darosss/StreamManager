@@ -308,7 +308,7 @@ class StreamHandler {
     viewersPeek.set(String(new Date().getTime()), streamInfo.viewers);
     const timestamp = Date.now();
 
-    updateStreamSessionById(currentSession.id, {
+    updateStreamSessionById(currentSession._id, {
       $set: { [`viewers.${timestamp}`]: streamInfo.viewers }
     });
   }

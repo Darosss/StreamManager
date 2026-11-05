@@ -154,7 +154,7 @@ export const createStreamSession = async (createData: StreamSessionCreateData) =
   }
 };
 
-export const updateStreamSessionById = async (id: string, updateData: UpdateQuery<StreamSessionUpdateData>) => {
+export const updateStreamSessionById = async (id: Types.ObjectId, updateData: UpdateQuery<StreamSessionUpdateData>) => {
   try {
     const streamSession = await StreamSession.findByIdAndUpdate(id, updateData, {
       new: true
