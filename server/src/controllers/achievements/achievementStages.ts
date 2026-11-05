@@ -17,6 +17,7 @@ import path from "path";
 import { achievementsStagesSoundsPath, publicEndpointPath } from "@configs";
 import multer from "multer";
 import type { ParamsDictionary } from "express-serve-static-core";
+import { RequestWithObjectId } from "@middlewares";
 
 export interface RequestParamsSoundName extends ParamsDictionary {
   soundName: string;
@@ -64,12 +65,8 @@ export const getManyAchievementStages = async (
   }
 };
 
-export const deleteAchievementStageById = async (
-  req: Request<RequestParams, {}, {}, {}>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
+export const deleteAchievementStageById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteAchievementStageByIdService(id);
@@ -81,12 +78,8 @@ export const deleteAchievementStageById = async (
   }
 };
 
-export const getAchievementStageById = async (
-  req: Request<RequestParams, {}, {}, {}>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
+export const getAchievementStageById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
   try {
     const achievementStage = await getAchievementStagesById(id, { select: { __v: 0 } }, { stageDataBadge: true });
 
@@ -100,11 +93,11 @@ export const getAchievementStageById = async (
 };
 
 export const editAchievementStageById = async (
-  req: Request<RequestParams, {}, AchievementStageUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, AchievementStageUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, stageData } = req.body;
   const updateData = { name, stageData };
   //TODO: add handling for rarirty 1-10

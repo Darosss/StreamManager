@@ -112,9 +112,9 @@ describe("Affixes Service", () => {
       const fakeAffix = createFakeAffix();
       const updateSpy = jest.spyOn(Affix, "findByIdAndUpdate").mockResolvedValue(fakeAffix);
 
-      const result = await AffixesService.updateAffixById("affix-1", { enabled: false });
+      const result = await AffixesService.updateAffixById(fakeAffix._id, { enabled: false });
 
-      expect(updateSpy).toHaveBeenCalledWith("affix-1", { enabled: false }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(fakeAffix._id, { enabled: false }, { new: true });
       expect(result).toBe(fakeAffix);
     });
   });
@@ -128,9 +128,9 @@ describe("Affixes Service", () => {
       jest.mocked(getTimersCount).mockResolvedValue(0);
       jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
 
-      const result = await AffixesService.deleteAffixById("affix-1");
+      const result = await AffixesService.deleteAffixById(fakeAffix._id);
 
-      expect(deleteSpy).toHaveBeenCalledWith("affix-1");
+      expect(deleteSpy).toHaveBeenCalledWith(fakeAffix._id);
       expect(result).toBe(fakeAffix);
     });
 
@@ -140,7 +140,7 @@ describe("Affixes Service", () => {
       jest.mocked(getTimersCount).mockResolvedValue(0);
       jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
 
-      await expect(AffixesService.deleteAffixById("affix-1")).rejects.toThrow();
+      await expect(AffixesService.deleteAffixById(new Types.ObjectId())).rejects.toThrow();
     });
   });
 
@@ -148,10 +148,10 @@ describe("Affixes Service", () => {
     it("should return an affix when one exists", async () => {
       const fakeAffix = createFakeAffix();
       const findByIdSpy = jest.spyOn(Affix, "findById").mockResolvedValue(fakeAffix);
+      const affixId = new Types.ObjectId();
+      const result = await AffixesService.getAffixById(affixId, { enabled: 1 });
 
-      const result = await AffixesService.getAffixById("affix-1", { enabled: 1 });
-
-      expect(findByIdSpy).toHaveBeenCalledWith("affix-1", { enabled: 1 });
+      expect(findByIdSpy).toHaveBeenCalledWith(affixId, { enabled: 1 });
       expect(result).toBe(fakeAffix);
     });
   });

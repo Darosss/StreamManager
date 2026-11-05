@@ -83,7 +83,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
     if (isYoutubeSong) await youtubeMusic.downloadSongAndUpdateDBData(songData);
 
     if (!createData) return musicLogger.error("Couldn't handle _handleDBSongLogic, no creteData");
-    await updateSongUsesById(createData.song._id.toString(), "botUses");
+    await updateSongUsesById(createData.song._id, "botUses");
   }
 
   //TODO: add possibility to take more than 50 items of playlist

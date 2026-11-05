@@ -179,7 +179,7 @@ class CommandsHandler {
 
       randomCommandMsg = this.formatCommandMessageUserData(user, randomCommandMsg);
 
-      this.updateUsesCommand(foundCommand.id);
+      this.updateUsesCommand(foundCommand._id);
 
       return randomCommandMsg;
     }
@@ -199,7 +199,7 @@ class CommandsHandler {
     return foundCommand;
   }
 
-  private async updateUsesCommand(id: string) {
+  private async updateUsesCommand(id: Types.ObjectId) {
     const updatedCommand = await updateChatCommandById(id, {
       $inc: { uses: 1 }
     });

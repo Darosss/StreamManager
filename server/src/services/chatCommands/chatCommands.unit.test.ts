@@ -137,7 +137,7 @@ describe("Chat Commands Service", () => {
       const selectMock = jest.fn().mockResolvedValue(fakeCommand as never);
       const findByIdSpy = jest.spyOn(ChatCommand, "findById").mockReturnValue({ select: selectMock } as never);
 
-      const result = await ChatCommandsService.getChatCommandById(fakeCommand._id.toString(), { select: { __v: 0 } });
+      const result = await ChatCommandsService.getChatCommandById(fakeCommand._id, { select: { __v: 0 } });
 
       expect(findByIdSpy).toHaveBeenCalledWith(fakeCommand._id);
       expect(selectMock).toHaveBeenCalledWith({ __v: 0 });
@@ -150,7 +150,7 @@ describe("Chat Commands Service", () => {
       const fakeCommand = createFakeChatCommand();
       const updateSpy = jest.spyOn(ChatCommand, "findByIdAndUpdate").mockResolvedValue(fakeCommand);
 
-      const result = await ChatCommandsService.updateChatCommandById(fakeCommand._id.toString(), { enabled: false });
+      const result = await ChatCommandsService.updateChatCommandById(fakeCommand._id, { enabled: false });
 
       expect(updateSpy).toHaveBeenCalledWith(fakeCommand._id, { enabled: false }, { new: true });
       expect(result).toBe(fakeCommand);
@@ -174,7 +174,7 @@ describe("Chat Commands Service", () => {
       const fakeCommand = createFakeChatCommand();
       const deleteSpy = jest.spyOn(ChatCommand, "findByIdAndDelete").mockResolvedValue(fakeCommand);
 
-      const result = await ChatCommandsService.deleteChatCommandById(fakeCommand._id.toString());
+      const result = await ChatCommandsService.deleteChatCommandById(fakeCommand._id);
 
       expect(deleteSpy).toHaveBeenCalledWith(fakeCommand._id);
       expect(result).toBe(fakeCommand);

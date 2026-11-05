@@ -152,7 +152,7 @@ describe("Achievement Stages Service", () => {
       const findByIdSpy = jest.spyOn(AchievementStage, "findById").mockReturnValue(queryChain as never);
 
       const result = await AchievementStagesService.getAchievementStagesById(
-        fakeStage._id.toString(),
+        fakeStage._id,
         {},
         { stageDataBadge: true }
       );
@@ -167,7 +167,7 @@ describe("Achievement Stages Service", () => {
     it("should throw when stage is used by achievements", async () => {
       jest.mocked(getAchievements).mockResolvedValue([{ name: "Achievement 1" }] as never);
 
-      await expect(AchievementStagesService.deleteAchievementStageById("stage-1")).rejects.toThrow(
+      await expect(AchievementStagesService.deleteAchievementStageById(new Types.ObjectId())).rejects.toThrow(
         "Achievement stage with id(stage-1) is used in achievement(s): [Achievement 1], cannot delete"
       );
     });
@@ -175,10 +175,10 @@ describe("Achievement Stages Service", () => {
     it("should delete the stage when it is not used", async () => {
       jest.mocked(getAchievements).mockResolvedValue([]);
       const deleteSpy = jest.spyOn(AchievementStage, "findByIdAndDelete").mockResolvedValue(null);
+      const stageId = new Types.ObjectId();
+      const result = await AchievementStagesService.deleteAchievementStageById(stageId);
 
-      const result = await AchievementStagesService.deleteAchievementStageById("stage-1");
-
-      expect(deleteSpy).toHaveBeenCalledWith("stage-1");
+      expect(deleteSpy).toHaveBeenCalledWith(stageId);
       expect(result).toEqual({ message: "Successfully removed achievement stage" });
     });
   });

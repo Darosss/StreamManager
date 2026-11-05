@@ -1,7 +1,7 @@
 import { Badge, BadgeCreateData, BadgeDocument, BadgeUpdateData } from "@models";
 import { AppError, checkExistResource, handleAppError, logger } from "@utils";
 import { BadgeFindOptions, DeleteBadgeImagesFn, ManyBadgesFindOptions } from "./types";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { getAchievementStages } from "@services";
 import { promises as fsPromises } from "fs";
 import path from "path";
@@ -42,7 +42,7 @@ export const createBadge = async (createData: BadgeCreateData) => {
   }
 };
 
-export const getBadgeById = async (id: string, findOptions: BadgeFindOptions) => {
+export const getBadgeById = async (id: Types.ObjectId, findOptions: BadgeFindOptions) => {
   const { select = { __v: 0 } } = findOptions;
 
   try {
@@ -57,7 +57,7 @@ export const getBadgeById = async (id: string, findOptions: BadgeFindOptions) =>
   }
 };
 
-export const updateBadgeById = async (id: string, updateData: UpdateQuery<BadgeUpdateData>) => {
+export const updateBadgeById = async (id: Types.ObjectId, updateData: UpdateQuery<BadgeUpdateData>) => {
   try {
     const updatedBadge = await Badge.findByIdAndUpdate(id, updateData, {
       new: true
@@ -72,7 +72,7 @@ export const updateBadgeById = async (id: string, updateData: UpdateQuery<BadgeU
   }
 };
 
-export const deleteBadgeById = async (id: string) => {
+export const deleteBadgeById = async (id: Types.ObjectId) => {
   try {
     const countBadgesInStages = (await getAchievementStages({ "stageData.badge": id }, {})) || [];
 

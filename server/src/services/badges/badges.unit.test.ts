@@ -121,7 +121,7 @@ describe("Badges Service", () => {
 
       const findByIdSpy = jest.spyOn(Badge, "findById").mockReturnValue(queryChain as never);
 
-      const result = await BadgesService.getBadgeById(fakeBadge._id.toString(), { select: { __v: 0 } });
+      const result = await BadgesService.getBadgeById(fakeBadge._id, { select: { __v: 0 } });
 
       expect(findByIdSpy).toHaveBeenCalledWith(fakeBadge._id);
       expect(queryChain.select).toHaveBeenCalledWith({ __v: 0 });
@@ -134,7 +134,7 @@ describe("Badges Service", () => {
       const fakeBadge = createFakeBadge();
       const updateSpy = jest.spyOn(Badge, "findByIdAndUpdate").mockResolvedValue(fakeBadge);
 
-      const result = await BadgesService.updateBadgeById(fakeBadge._id.toString(), { $set: { name: "Updated" } });
+      const result = await BadgesService.updateBadgeById(fakeBadge._id, { $set: { name: "Updated" } });
 
       expect(updateSpy).toHaveBeenCalledWith(fakeBadge._id, { $set: { name: "Updated" } }, { new: true });
       expect(result).toEqual(fakeBadge);
@@ -145,7 +145,7 @@ describe("Badges Service", () => {
     it("should throw when the badge is used in achievement stages", async () => {
       jest.mocked(getAchievementStages).mockResolvedValue([{ name: "Stage 1" }] as never);
 
-      await expect(BadgesService.deleteBadgeById("badge-1")).rejects.toThrow(
+      await expect(BadgesService.deleteBadgeById(new Types.ObjectId())).rejects.toThrow(
         "Badge with id(badge-1) is used in stage(s): [Stage 1], cannot delete"
       );
     });
@@ -153,10 +153,10 @@ describe("Badges Service", () => {
     it("should delete the badge when it is not used", async () => {
       jest.mocked(getAchievementStages).mockResolvedValue([]);
       const deleteSpy = jest.spyOn(Badge, "findByIdAndDelete").mockResolvedValue(null);
+      const badgeId = new Types.ObjectId();
+      const result = await BadgesService.deleteBadgeById(badgeId);
 
-      const result = await BadgesService.deleteBadgeById("badge-1");
-
-      expect(deleteSpy).toHaveBeenCalledWith("badge-1");
+      expect(deleteSpy).toHaveBeenCalledWith(badgeId);
       expect(result).toEqual({ message: "Successfully deleted badge" });
     });
   });

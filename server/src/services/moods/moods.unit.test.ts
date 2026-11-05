@@ -107,9 +107,10 @@ describe("Moods Service", () => {
       const fakeMood = createFakeMood();
       const updateSpy = jest.spyOn(Mood, "findByIdAndUpdate").mockResolvedValue(fakeMood);
 
-      const result = await MoodsService.updateMoodById("mood-1", { name: "Excited" });
+      const moodId = new Types.ObjectId();
+      const result = await MoodsService.updateMoodById(moodId, { name: "Excited" });
 
-      expect(updateSpy).toHaveBeenCalledWith("mood-1", { name: "Excited" }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(moodId, { name: "Excited" }, { new: true });
       expect(result).toBe(fakeMood);
     });
   });
@@ -122,31 +123,36 @@ describe("Moods Service", () => {
       jest.mocked(getChatCommandsCount).mockResolvedValue(0);
       jest.mocked(getTimersCount).mockResolvedValue(0);
       jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
+      const moodId = new Types.ObjectId();
 
-      const result = await MoodsService.deleteMoodById("mood-1");
+      const result = await MoodsService.deleteMoodById(moodId);
 
-      expect(deleteSpy).toHaveBeenCalledWith("mood-1");
+      expect(deleteSpy).toHaveBeenCalledWith(moodId);
       expect(result).toBe(fakeMood);
     });
 
     it("should throw when the mood is used by another document", async () => {
+      const moodId = new Types.ObjectId();
+
       jest.mocked(getTriggersCount).mockResolvedValue(1);
       jest.mocked(getChatCommandsCount).mockResolvedValue(0);
       jest.mocked(getTimersCount).mockResolvedValue(0);
       jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
 
-      await expect(MoodsService.deleteMoodById("mood-1")).rejects.toThrow();
+      await expect(MoodsService.deleteMoodById(moodId)).rejects.toThrow();
     });
   });
 
   describe("getMoodById", () => {
     it("should return a mood when one exists", async () => {
+      const moodId = new Types.ObjectId();
+
       const fakeMood = createFakeMood();
       const findByIdSpy = jest.spyOn(Mood, "findById").mockResolvedValue(fakeMood);
 
-      const result = await MoodsService.getMoodById("mood-1", { name: 1 });
+      const result = await MoodsService.getMoodById(moodId, { name: 1 });
 
-      expect(findByIdSpy).toHaveBeenCalledWith("mood-1", { name: 1 });
+      expect(findByIdSpy).toHaveBeenCalledWith(moodId, { name: 1 });
       expect(result).toBe(fakeMood);
     });
   });

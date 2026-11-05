@@ -11,6 +11,7 @@ import {
 } from "@services";
 import { ChatCommandCreateData, ChatCommandUpdateData } from "@models";
 import { flattenObject } from "@utils";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getChatCommandsList = async (
   req: Request<{}, {}, {}, RequestCommandsQuery>,
@@ -61,11 +62,11 @@ export const addNewCommand = async (
 };
 
 export const editChatCommandById = async (
-  req: Request<RequestParams, {}, ChatCommandUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, ChatCommandUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, description, enabled, aliases, messages, privilege, tag, mood } = req.body;
 
   const updateData = { name, description, enabled, aliases, tag, mood, messages, privilege };
@@ -82,8 +83,8 @@ export const editChatCommandById = async (
   }
 };
 
-export const deleteCommandById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const deleteCommandById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteChatCommandById(id);

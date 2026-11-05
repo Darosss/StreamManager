@@ -65,11 +65,11 @@ export const getAchievementsProgressesByUserId = async (
 };
 
 export const editAchievementById = async (
-  req: Request<RequestParams, {}, AchievementUpdateDataController, {}>,
+  req: RequestWithObjectId<RequestParams, {}, AchievementUpdateDataController>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { enabled, description, tag, stages, hidden } = req.body;
   const updateData = { enabled, description, stages, tag, hidden };
 
@@ -116,11 +116,11 @@ export const addCustomAchievement = async (
 };
 
 export const deleteCustomAchievementById = async (
-  req: Request<RequestParams, {}, {}, {}>,
+  req: RequestWithObjectId<RequestParams>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
 
   try {
     await deleteCustomAchievementByIdService(id);
@@ -133,11 +133,11 @@ export const deleteCustomAchievementById = async (
 };
 
 export const editCustomAchievementById = async (
-  req: Request<RequestParams, {}, CustomAchievementUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, CustomAchievementUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, enabled, description, custom, stages, tag, hidden } = req.body;
   const updateData = {
     name,

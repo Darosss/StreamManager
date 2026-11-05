@@ -103,7 +103,7 @@ describe("Message Categories Service", () => {
         .spyOn(MessageCategory, "findById")
         .mockReturnValue({ select: selectMock, populate: populateMock } as never);
 
-      const result = await MessageCategoriesService.getMessageCategoryById(fakeCategory._id.toString(), {
+      const result = await MessageCategoriesService.getMessageCategoryById(fakeCategory._id, {
         select: { __v: 0 },
         populate: ["user"]
       });
@@ -143,8 +143,7 @@ describe("Message Categories Service", () => {
       const aggregateSpy = jest
         .spyOn(MessageCategory, "aggregate")
         .mockResolvedValue([{ leastUsedMessages: ["hello"] }]);
-
-      const result = await MessageCategoriesService.getLeastUsedMessagesFromMessageCategory("category-1", 3);
+      const result = await MessageCategoriesService.getLeastUsedMessagesFromMessageCategory(new Types.ObjectId(), 3);
 
       expect(aggregateSpy).toHaveBeenCalled();
       expect(result).toEqual(["hello"]);
@@ -191,7 +190,7 @@ describe("Message Categories Service", () => {
       jest.spyOn(MessageCategoriesService, "getMessageCategoryById").mockResolvedValue(fakeCategory as never);
       const updateSpy = jest.spyOn(MessageCategory, "findByIdAndUpdate").mockResolvedValue(fakeCategory);
 
-      const result = await MessageCategoriesService.updateMessageCategoryById(fakeCategory._id.toString(), {
+      const result = await MessageCategoriesService.updateMessageCategoryById(fakeCategory._id, {
         messages: ["hello", "hi"]
       });
 
@@ -204,8 +203,7 @@ describe("Message Categories Service", () => {
     it("should increment the usage count for the matching message", async () => {
       const fakeCategory = createFakeCategory();
       const updateSpy = jest.spyOn(MessageCategory, "findOneAndUpdate").mockResolvedValue(fakeCategory);
-
-      const result = await MessageCategoriesService.findCategoryAndUpdateMessageUse("category-1", "hello");
+      const result = await MessageCategoriesService.findCategoryAndUpdateMessageUse(fakeCategory._id, "hello");
 
       expect(updateSpy).toHaveBeenCalledWith(
         { _id: fakeCategory._id, "messages.0": { $exists: true } },
@@ -225,7 +223,7 @@ describe("Message Categories Service", () => {
       const fakeCategory = createFakeCategory();
       const deleteSpy = jest.spyOn(MessageCategory, "findByIdAndDelete").mockResolvedValue(fakeCategory);
 
-      const result = await MessageCategoriesService.deleteMessageCategory(fakeCategory._id.toString());
+      const result = await MessageCategoriesService.deleteMessageCategory(fakeCategory._id);
 
       expect(deleteSpy).toHaveBeenCalledWith(fakeCategory._id);
       expect(result).toBe(fakeCategory);

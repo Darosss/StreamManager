@@ -44,7 +44,7 @@ export const getUsersList = async (req: Request<{}, {}, {}, RequestQueryUser>, r
   }
 };
 
-export const getUsersByIds = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
+export const getUsersByIds = async (req: Request<RequestParams>, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   if (!id) throw new AppError(400, "Id not provided");
@@ -91,11 +91,11 @@ export const editUserProfile = async (
 };
 
 export const getUserMessages = async (
-  req: Request<RequestParams, {}, {}, RequestQueryMessage>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestQueryMessage>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { page = 1, limit = 50 } = req.query;
 
   const searchFilter = Object.assign({ owner: id }, await filterMessagesByUrlParams(req.query));
@@ -121,11 +121,11 @@ export const getUserMessages = async (
 };
 
 export const getUserRedemptions = async (
-  req: Request<RequestParams, {}, {}, RequestRedemptionQuery>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestRedemptionQuery>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { page = 1, limit = 50 } = req.query;
 
   const searchFilter = Object.assign({ userId: id }, filterRedemptionsByUrlParams(req.query));
@@ -151,11 +151,11 @@ export const getUserRedemptions = async (
 };
 
 export const getLatestEldestUserMessages = async (
-  req: Request<RequestParams, {}, {}, RequestQueryLatestEldestMsgs>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestQueryLatestEldestMsgs>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { limit = 6 } = req.query;
 
   try {

@@ -99,7 +99,7 @@ class TriggersHandler {
   private async getRandomMessage() {
     try {
       const messagesWord = await getLeastMessagesFromEnabledCategories(true, 3);
-
+      if (!messagesWord.length) return;
       const [randomMessage, categoryId] = messagesWord[randomWithMax(messagesWord.length)];
 
       const [prefix, suffix] = await this.getRandomEnabledAFfixes();
@@ -129,7 +129,7 @@ class TriggersHandler {
     return false;
   }
 
-  private async updateUsedMessageInCategory(id: string, word: string) {
+  private async updateUsedMessageInCategory(id: Types.ObjectId, word: string) {
     const updatedCat = findCategoryAndUpdateMessageUse(id, word);
     return updatedCat;
   }

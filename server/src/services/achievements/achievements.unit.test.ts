@@ -201,9 +201,10 @@ describe("Achievements Service", () => {
     it("should delete a custom achievement by id", async () => {
       const deleteSpy = jest.spyOn(Achievement, "findOneAndDelete").mockResolvedValue(createFakeAchievement() as never);
 
-      const result = await AchievementsService.deleteCustomAchievementById("achievement-1");
+      const achievementId = new Types.ObjectId();
+      const result = await AchievementsService.deleteCustomAchievementById(achievementId);
 
-      expect(deleteSpy).toHaveBeenCalledWith({ _id: "achievement-1", custom: { $exists: true } });
+      expect(deleteSpy).toHaveBeenCalledWith({ _id: achievementId, custom: { $exists: true } });
       expect(result).toEqual({ message: "Successfully removed custom achievement" });
     });
   });

@@ -1,7 +1,7 @@
 import { modesPipeline, getLeastMessagePipeline } from "../aggregations";
 import { MessageCategory, MessageCategoryCreateData, MessageCategoryDocument } from "@models";
 import { handleAppError, checkExistResource, logger } from "@utils";
-import mongoose, { QueryFilter, PipelineStage, UpdateQuery } from "mongoose";
+import mongoose, { QueryFilter, PipelineStage, UpdateQuery, Types } from "mongoose";
 import { ManyMessageCategoriesFindOptions, MessageCategoryFindOptions } from "./types";
 
 export const getMessageCategories = async (
@@ -29,7 +29,7 @@ export const getMessageCategoriesCount = async (filter: QueryFilter<MessageCateg
   return count;
 };
 
-export const getMessageCategoryById = async (id: string, findOptions: MessageCategoryFindOptions) => {
+export const getMessageCategoryById = async (id: Types.ObjectId, findOptions: MessageCategoryFindOptions) => {
   const { select = { __v: 0 }, populate = [] } = findOptions;
   try {
     const foundCategory = await MessageCategory.findById(id).select(select).populate(populate);
@@ -73,7 +73,10 @@ export const getRandomCategoryMessage = async (modesEnabled = false) => {
   }
 };
 
-export const getLeastUsedMessagesFromMessageCategory = async (id: string, divideMessagesBy = 3): Promise<string[]> => {
+export const getLeastUsedMessagesFromMessageCategory = async (
+  id: Types.ObjectId,
+  divideMessagesBy = 3
+): Promise<string[]> => {
   const categorySortedMsgs = await MessageCategory.aggregate<{
     leastUsedMessages: string[];
   }>([
@@ -105,7 +108,7 @@ export const getLeastUsedMessagesFromMessageCategory = async (id: string, divide
 export const getLeastMessagesFromEnabledCategories = async (
   modesEnabled = false,
   divideMessagesBy = 3
-): Promise<[string, string][]> => {
+): Promise<[string, Types.ObjectId][]> => {
   const pipeline: PipelineStage[] = [
     { $match: { enabled: true } },
     ...getLeastMessagePipeline(divideMessagesBy),
@@ -139,12 +142,12 @@ export const getLeastMessagesFromEnabledCategories = async (
   }
 
   const categorySortedMsgs = await MessageCategory.aggregate<{
-    leastUsedMessages: [string, string][][];
+    leastUsedMessages: [string, Types.ObjectId][][];
   }>(pipeline);
   if (categorySortedMsgs.length > 0) {
     return categorySortedMsgs[0].leastUsedMessages.flat(1);
   } else {
-    return [["", ""]];
+    return [];
   }
 };
 
@@ -162,7 +165,10 @@ export const createMessageCategories = async (createData: MessageCategoryCreateD
   }
 };
 
-export const updateMessageCategoryById = async (id: string, updateData: UpdateQuery<MessageCategoryCreateData>) => {
+export const updateMessageCategoryById = async (
+  id: Types.ObjectId,
+  updateData: UpdateQuery<MessageCategoryCreateData>
+) => {
   const updateMessages = updateData.messages as string[];
   try {
     const newMessages = await compareUpdateMessagesWithExisting(id, updateMessages);
@@ -182,7 +188,7 @@ export const updateMessageCategoryById = async (id: string, updateData: UpdateQu
   }
 };
 
-export const findCategoryAndUpdateMessageUse = async (id: string, word: string) => {
+export const findCategoryAndUpdateMessageUse = async (id: Types.ObjectId, word: string) => {
   const updatedCategory = await MessageCategory.findOneAndUpdate(
     { _id: id, "messages.0": { $exists: true } },
     { $inc: { "messages.$[elem].1": 1 } },
@@ -195,7 +201,7 @@ export const findCategoryAndUpdateMessageUse = async (id: string, word: string) 
   return updatedCategory;
 };
 
-export const deleteMessageCategory = async (id: string) => {
+export const deleteMessageCategory = async (id: Types.ObjectId) => {
   try {
     const deletedMessageCategory = await MessageCategory.findByIdAndDelete(id);
 
@@ -208,7 +214,7 @@ export const deleteMessageCategory = async (id: string) => {
   }
 };
 
-const compareUpdateMessagesWithExisting = async (id: string, updateMessages: string[]) => {
+const compareUpdateMessagesWithExisting = async (id: Types.ObjectId, updateMessages: string[]) => {
   const existingCategory = await getMessageCategoryById(id, {});
   const existingMessages = existingCategory?.messages;
   if (!existingCategory || !existingMessages) return;
