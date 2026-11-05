@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import request from "supertest";
 import app from "../../../app";
-import { ChatCommand, Mood, Tag } from "@models";
+import { ChatCommand, ChatCommandModel, Mood, Tag } from "@models";
 import { beforeEach, describe, it, expect, afterAll, test, beforeAll } from "@jest/globals";
 import { initMongoDataBase } from "@configs";
 import { createTestTag, createTestTagAndMood } from "@tests";
@@ -23,14 +23,27 @@ beforeEach(async () => {
   await clearTagsAndMoodsTables();
 });
 
-const testCommandData = (tagId?: string, moodId?: string) => ({
-  aliases: [],
-  messages: ["test message1", "test message2"],
-  name: "test chat command",
-  privilege: 0,
-  mood: moodId,
-  tag: tagId
-});
+const testCommandDataWithNoTagMood = (): Omit<ChatCommandModel, "tag" | "mood"> => {
+  const date = new Date(2026, 10, 10);
+  return {
+    aliases: [],
+    messages: ["test message1", "test message2"],
+    name: "test chat command",
+    privilege: 0,
+    _id: new Types.ObjectId(),
+    createdAt: date,
+    updatedAt: date,
+    uses: 0
+  };
+};
+
+const testCommandData = (tagId: Types.ObjectId, moodId: Types.ObjectId): ChatCommandModel => {
+  return {
+    ...testCommandDataWithNoTagMood(),
+    mood: moodId,
+    tag: tagId
+  };
+};
 
 const clearTagsAndMoodsTables = async () => {
   await Tag.deleteMany({});
@@ -71,7 +84,7 @@ describe("Chat commands API", () => {
       expect(foundCommand!.name).toBe(commandData.name);
     });
     it("should fail while creating without tag & mood body data", async () => {
-      const commandData = testCommandData();
+      const commandData = testCommandDataWithNoTagMood();
       const res = await request(appInstance).post("/chat-commands/create").send(commandData);
 
       expect(res.statusCode).toEqual(400);
