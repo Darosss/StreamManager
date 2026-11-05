@@ -7,7 +7,7 @@ import {
   getTriggersCount
 } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, Types, UpdateQuery } from "mongoose";
 import { ManyTagsFindOptions } from "./types";
 
 export const getTags = async (filter: QueryFilter<TagDocument> = {}, findOptions: ManyTagsFindOptions) => {
@@ -54,7 +54,7 @@ export const updateTags = async (filter: QueryFilter<TagDocument> = {}, updateDa
   }
 };
 
-export const updateTagById = async (id: string, updateData: UpdateQuery<TagUpdateData>) => {
+export const updateTagById = async (id: Types.ObjectId, updateData: UpdateQuery<TagUpdateData>) => {
   try {
     const updatedTag = await Tag.findByIdAndUpdate(id, updateData, {
       new: true
@@ -69,7 +69,7 @@ export const updateTagById = async (id: string, updateData: UpdateQuery<TagUpdat
   }
 };
 
-export const deleteTagById = async (id: string) => {
+export const deleteTagById = async (id: Types.ObjectId) => {
   try {
     const filter = { tag: id };
     const countTagsInDocs = await Promise.all([
@@ -95,7 +95,7 @@ export const deleteTagById = async (id: string) => {
   }
 };
 
-export const getTagById = async (id: string, projection: ProjectionType<TagDocument> = {}) => {
+export const getTagById = async (id: Types.ObjectId, projection: ProjectionType<TagDocument> = {}) => {
   try {
     const foundTag = await Tag.findById(id, projection);
 

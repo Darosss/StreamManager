@@ -1,7 +1,7 @@
 import { Trigger, TriggerCreateData, TriggerDocument, TriggerUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { modesPipeline } from "../aggregations";
-import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType, Types } from "mongoose";
 import { ManyTriggersFindOptions, TriggerFindOptions } from "./types";
 
 export const getTriggers = async (filter: QueryFilter<TriggerDocument> = {}, findOptions: ManyTriggersFindOptions) => {
@@ -52,7 +52,7 @@ export const updateTriggers = async (
   }
 };
 
-export const updateTriggerById = async (id: string, updateData: UpdateQuery<TriggerUpdateData>) => {
+export const updateTriggerById = async (id: Types.ObjectId, updateData: UpdateQuery<TriggerUpdateData>) => {
   try {
     const updatedTrigger = await Trigger.findByIdAndUpdate(id, updateData, {
       new: true
@@ -67,7 +67,7 @@ export const updateTriggerById = async (id: string, updateData: UpdateQuery<Trig
   }
 };
 
-export const deleteTriggerById = async (id: string) => {
+export const deleteTriggerById = async (id: Types.ObjectId) => {
   try {
     const deletedTrigger = await Trigger.findByIdAndDelete(id);
 
@@ -80,7 +80,7 @@ export const deleteTriggerById = async (id: string) => {
   }
 };
 
-export const getTriggerById = async (id: string, projection: ProjectionType<TriggerDocument> = {}) => {
+export const getTriggerById = async (id: Types.ObjectId, projection: ProjectionType<TriggerDocument> = {}) => {
   try {
     const foundTrigger = await Trigger.findById(id, projection);
 
