@@ -55,7 +55,7 @@ export interface AchievementUserProgressModel<
     Types.ObjectId | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> =
     Types.ObjectId
 > extends BaseModel {
-  userId: string | UserModel;
+  userId: Types.ObjectId | UserModel;
   achievement: AchievementType;
   value: number;
   progresses: [number, number][];

@@ -8,7 +8,6 @@ import {
 } from "./schemas";
 
 export type SessionEventModel = z.infer<typeof SessionEventSchema>;
-
 export type StreamSessionModel = z.infer<typeof StreamSessionSchema>;
 export type StreamSessionDocument = StreamSessionModel & Document;
 export type StreamSessionUpdateData = z.infer<typeof StreamSessionUpdateSchema>;
