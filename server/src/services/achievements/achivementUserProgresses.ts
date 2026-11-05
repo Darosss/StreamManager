@@ -8,7 +8,7 @@ import {
   AchievementWithBadgePopulated
 } from "@models";
 import { logger, handleAppError, checkExistResource } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { getOneAchievement, getUserById } from "@services";
 import {
   AchievementUserProgressCreate,
@@ -114,7 +114,7 @@ export const updateOneAchievementUserProgress = async (
   }
 };
 
-export const getAchievementsProgressesByUserId = async (userId: string) => {
+export const getAchievementsProgressesByUserId = async (userId: Types.ObjectId) => {
   try {
     const foundUser = await getUserById(userId, {});
     if (!foundUser) return;
@@ -179,9 +179,9 @@ export const updateAchievementUserProgressProgresses = async ({
 > => {
   const foundAchievement = await getOneAchievement({ name: achievementName }, {}, true);
 
-  //FIXME:                                          Fix this assertion
+  //TODO: FIXME:                                          Fix this assertion temporary solution
   //TODO: refactor this - most of these logic should go into AchievementsHandler - dunno.
-  if (!foundAchievement || !(foundAchievement.tag as TagModel).enabled || !foundAchievement.enabled) return; //TODO: add handling
+  if (!foundAchievement || !(foundAchievement.tag as unknown as TagModel).enabled || !foundAchievement.enabled) return; //TODO: add handling
   const userProgress = await createAchievementUserProgress({
     userId: userId,
     achievement: foundAchievement._id

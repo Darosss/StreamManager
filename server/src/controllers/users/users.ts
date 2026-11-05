@@ -17,6 +17,8 @@ import { RequestRedemptionQuery, filterRedemptionsByUrlParams } from "../redempt
 import { RequestParams } from "../types";
 import { RequestQueryMessage } from "../messages";
 import { UserUpdateData } from "@models";
+import mongoose from "mongoose";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getUsersList = async (req: Request<{}, {}, {}, RequestQueryUser>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50, sortBy = "lastSeen", sortOrder = "desc" } = req.query;
@@ -42,11 +44,12 @@ export const getUsersList = async (req: Request<{}, {}, {}, RequestQueryUser>, r
   }
 };
 
-export const getUsersByIds = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
+export const getUsersByIds = async (req: Request<RequestParams>, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   if (!id) throw new AppError(400, "Id not provided");
-  const usersByIdFilter = { _id: { $in: id.split(",") } };
+  const ids = id.split(",").filter(mongoose.isValidObjectId);
+  const usersByIdFilter = { _id: { $in: ids } };
 
   try {
     const users = await getUsers(usersByIdFilter, {});
@@ -62,10 +65,9 @@ export const getUsersByIds = async (req: Request<RequestParams, {}, {}, {}>, res
   }
 };
 
-export const getUsersProfile = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const getUsersProfile = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    const user = await getUserById(id, { select: { __v: 0 } });
+    const user = await getUserById(req.objectId, { select: { __v: 0 } });
 
     res.status(200).send({ data: user });
   } catch (err) {
@@ -74,15 +76,14 @@ export const getUsersProfile = async (req: Request<RequestParams, {}, {}, {}>, r
 };
 
 export const editUserProfile = async (
-  req: Request<RequestParams, {}, UserUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, UserUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { notes } = req.body;
 
   try {
-    await updateUserById(id, { notes });
+    await updateUserById(req.objectId, { notes });
     res.status(200).send({ message: "User updated successfully" });
   } catch (err) {
     next(err);
@@ -90,11 +91,11 @@ export const editUserProfile = async (
 };
 
 export const getUserMessages = async (
-  req: Request<RequestParams, {}, {}, RequestQueryMessage>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestQueryMessage>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { page = 1, limit = 50 } = req.query;
 
   const searchFilter = Object.assign({ owner: id }, await filterMessagesByUrlParams(req.query));
@@ -120,11 +121,11 @@ export const getUserMessages = async (
 };
 
 export const getUserRedemptions = async (
-  req: Request<RequestParams, {}, {}, RequestRedemptionQuery>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestRedemptionQuery>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { page = 1, limit = 50 } = req.query;
 
   const searchFilter = Object.assign({ userId: id }, filterRedemptionsByUrlParams(req.query));
@@ -150,11 +151,11 @@ export const getUserRedemptions = async (
 };
 
 export const getLatestEldestUserMessages = async (
-  req: Request<RequestParams, {}, {}, RequestQueryLatestEldestMsgs>,
+  req: RequestWithObjectId<RequestParams, {}, {}, RequestQueryLatestEldestMsgs>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { limit = 6 } = req.query;
 
   try {

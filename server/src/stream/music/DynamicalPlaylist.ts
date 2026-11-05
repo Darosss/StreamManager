@@ -7,6 +7,7 @@ import path from "path";
 import { createSong, updateSongUsesById, getOneUser } from "@services";
 import { YoutubeSongProperties } from "./types";
 import { SongProperties } from "@socket";
+import { Types } from "mongoose";
 
 interface PlaylistDetails {
   id: string;
@@ -16,7 +17,7 @@ interface PlaylistDetails {
 }
 
 export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
-  private botDatabaseId: string | null = null;
+  private botDatabaseId: Types.ObjectId | null = null;
   private playlistDetails: PlaylistDetails = {
     id: "",
     name: "",
@@ -28,7 +29,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
 
     getOneUser({ twitchId: botId }, {}).then((user) => {
       if (!user) throw new Error(`DynamicalPlaylist -> Bot user not found in db`);
-      this.botDatabaseId = String(user._id);
+      this.botDatabaseId = user._id;
     });
   }
   /**
@@ -71,7 +72,7 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
     const isYoutubeSong = this.playlistDetails.type !== "local";
     const createData = await createSong({
       duration: songData.duration,
-      whoAdded: String(this.botDatabaseId),
+      whoAdded: this.botDatabaseId,
       title: songData.name,
       youtubeId: isYoutubeSong ? songData.id : undefined,
       localSong: !isYoutubeSong ? true : undefined,
@@ -79,10 +80,10 @@ export class DynamicalPlaylist extends QueueHandler<YoutubeSongProperties> {
       tags: youtubeMusic.convertTopicDetailsIntoTags(songData.topicDetails)
     });
 
-    if (isYoutubeSong) await youtubeMusic.downloadSongAndUpdateDBData(songData, this.botDatabaseId);
+    if (isYoutubeSong) await youtubeMusic.downloadSongAndUpdateDBData(songData);
 
     if (!createData) return musicLogger.error("Couldn't handle _handleDBSongLogic, no creteData");
-    await updateSongUsesById(createData.song._id.toString(), "botUses");
+    await updateSongUsesById(createData.song._id, "botUses");
   }
 
   //TODO: add possibility to take more than 50 items of playlist

@@ -1,6 +1,6 @@
 import { UserDocument, User, UserModel, UserCreateData, UserUpdateData } from "@models";
 import { checkExistResource, handleAppError, logger } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { ManyUsersFindOptions, UserFindOptions, UserReturnType } from "./types";
 
 export const getUsers = async (filter: QueryFilter<UserDocument> = {}, findOptions: ManyUsersFindOptions) => {
@@ -36,7 +36,7 @@ export const getOneUser = async (filter: QueryFilter<UserDocument> = {}, findOpt
   }
 };
 
-export const getUserById = async (id: string, findOptions: UserFindOptions) => {
+export const getUserById = async (id: Types.ObjectId, findOptions: UserFindOptions) => {
   const { select = { __v: 0 } } = findOptions;
   try {
     const userById = await User.findById(id).select(select);
@@ -50,7 +50,7 @@ export const getUserById = async (id: string, findOptions: UserFindOptions) => {
   }
 };
 
-export const updateUserById = async (id: string, updateData: UpdateQuery<UserUpdateData>) => {
+export const updateUserById = async (id: Types.ObjectId, updateData: UpdateQuery<UserUpdateData>) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true

@@ -1,7 +1,7 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface AuthModel {
-  _id: string;
+  _id: Types.ObjectId;
   accessToken: string;
   authTag: Buffer;
   ivAccessToken: Buffer;

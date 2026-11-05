@@ -420,7 +420,7 @@ class MusicHeadHandler {
     await manageSongLikesById(
       currentSong.type === "yt" ? { youtubeId: currentSong.id } : { id: currentSong.id },
       action,
-      foundUser.id
+      foundUser._id
     );
   }
   public async handleIfSongRequestRewardIsRedeemed({

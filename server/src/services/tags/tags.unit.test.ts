@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -31,9 +30,10 @@ import {
   getTriggersCount
 } from "@services";
 import * as TagsService from "./tags";
+import { Types } from "mongoose";
 
 const createFakeTag = (): TagModel => ({
-  _id: "tag-1",
+  _id: new Types.ObjectId(),
   name: "Test Tag",
   enabled: true,
   createdAt: new Date(),
@@ -56,10 +56,10 @@ describe("Tags Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeTags as never)
+        sort: jest.fn<() => Promise<TagModel[]>>().mockResolvedValue(fakeTags)
       };
 
-      const findSpy = jest.spyOn(Tag, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Tag, "find").mockReturnValue(queryChain as never);
 
       const result = await TagsService.getTags({}, { limit: 2, skip: 2, sort: { createdAt: -1 }, select: { __v: 0 } });
 
@@ -74,7 +74,7 @@ describe("Tags Service", () => {
 
   describe("getTagsCount", () => {
     it("should return the count of tags for a filter", async () => {
-      const countSpy = jest.spyOn(Tag, "countDocuments").mockResolvedValue(3 as any);
+      const countSpy = jest.spyOn(Tag, "countDocuments").mockResolvedValue(3);
 
       const result = await TagsService.getTagsCount({ name: "Test Tag" });
 
@@ -86,7 +86,7 @@ describe("Tags Service", () => {
   describe("createTag", () => {
     it("should create a tag and return it", async () => {
       const fakeTag = createFakeTag();
-      const createSpy = jest.spyOn(Tag, "create").mockResolvedValue(fakeTag as any);
+      const createSpy = jest.spyOn(Tag, "create").mockResolvedValue(fakeTag as never);
       const createData: TagCreateData = { name: fakeTag.name, enabled: fakeTag.enabled };
 
       const result = await TagsService.createTag(createData);
@@ -98,7 +98,7 @@ describe("Tags Service", () => {
 
   describe("updateTags", () => {
     it("should update many tags with the given filter and data", async () => {
-      const updateManySpy = jest.spyOn(Tag, "updateMany").mockResolvedValue({} as any);
+      const updateManySpy = jest.spyOn(Tag, "updateMany").mockResolvedValue({} as never);
 
       await TagsService.updateTags({ name: "Test Tag" }, { name: "Updated Tag" });
 
@@ -109,7 +109,7 @@ describe("Tags Service", () => {
   describe("updateTagById", () => {
     it("should update a tag and return it", async () => {
       const fakeTag = createFakeTag();
-      const updateSpy = jest.spyOn(Tag, "findByIdAndUpdate").mockResolvedValue(fakeTag as any);
+      const updateSpy = jest.spyOn(Tag, "findByIdAndUpdate").mockResolvedValue(fakeTag);
 
       const result = await TagsService.updateTagById(fakeTag._id, { name: "Updated Tag" });
 
@@ -121,12 +121,12 @@ describe("Tags Service", () => {
   describe("deleteTagById", () => {
     it("should delete a tag when it is not used elsewhere", async () => {
       const fakeTag = createFakeTag();
-      const deleteSpy = jest.spyOn(Tag, "findByIdAndDelete").mockResolvedValue(fakeTag as any);
-      jest.mocked(getTriggersCount).mockResolvedValue(0 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
-      jest.mocked(getAchievementsCount).mockResolvedValue(0 as any);
+      const deleteSpy = jest.spyOn(Tag, "findByIdAndDelete").mockResolvedValue(fakeTag);
+      jest.mocked(getTriggersCount).mockResolvedValue(0);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
+      jest.mocked(getAchievementsCount).mockResolvedValue(0);
 
       const result = await TagsService.deleteTagById(fakeTag._id);
 
@@ -135,20 +135,20 @@ describe("Tags Service", () => {
     });
 
     it("should throw when the tag is used by another document", async () => {
-      jest.mocked(getTriggersCount).mockResolvedValue(1 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
-      jest.mocked(getAchievementsCount).mockResolvedValue(0 as any);
+      jest.mocked(getTriggersCount).mockResolvedValue(1);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
+      jest.mocked(getAchievementsCount).mockResolvedValue(0);
 
-      await expect(TagsService.deleteTagById("tag-1")).rejects.toThrow();
+      await expect(TagsService.deleteTagById(new Types.ObjectId())).rejects.toThrow();
     });
   });
 
   describe("getTagById", () => {
     it("should return a tag when one exists", async () => {
       const fakeTag = createFakeTag();
-      const findByIdSpy = jest.spyOn(Tag, "findById").mockResolvedValue(fakeTag as any);
+      const findByIdSpy = jest.spyOn(Tag, "findById").mockResolvedValue(fakeTag);
 
       const result = await TagsService.getTagById(fakeTag._id, { name: 1 });
 
@@ -160,7 +160,7 @@ describe("Tags Service", () => {
   describe("getOneTag", () => {
     it("should return the first matching tag", async () => {
       const fakeTag = createFakeTag();
-      jest.spyOn(Tag, "findOne").mockResolvedValue(fakeTag as any);
+      jest.spyOn(Tag, "findOne").mockResolvedValue(fakeTag as never);
 
       const result = await TagsService.getOneTag({ name: "Test Tag" });
 

@@ -6,6 +6,7 @@ import AchievementsHandler from "./AchievementsHandler";
 import MusicHeadHandler from "./music/MusicHeadHandler";
 import { ConfigManager } from "./ConfigManager";
 import { SocketHandler } from "@socket";
+import { Types } from "mongoose";
 
 class CommandsHandler {
   private configs: ConfigModel = ConfigManager.getInstance().getConfig();
@@ -65,7 +66,7 @@ class CommandsHandler {
     if (!isCommand) return false;
 
     await AchievementsHandler.getInstance().incrementCommandAchievements({
-      userId: user._id.toString(),
+      userId: user._id,
       username: user.username
     });
 
@@ -92,13 +93,7 @@ class CommandsHandler {
       message.toLowerCase().startsWith(this.configs.commandsConfigs.commandsPrefix + alias)
     );
     if (defaultMusicAlias) {
-      return this.onMessageMusicCommand(
-        defaultMusicAlias,
-        user.privileges,
-        user.username,
-        user._id.toString(),
-        message
-      );
+      return this.onMessageMusicCommand(defaultMusicAlias, user.privileges, user.username, user._id, message);
     }
   }
 
@@ -106,7 +101,7 @@ class CommandsHandler {
     musicCommand: MusicPlayerCommands,
     privilege: number,
     username: string,
-    userId: string,
+    userId: Types.ObjectId,
     message: string
   ) {
     const commandPrivilege = this.defaultsMusicAliases.get(musicCommand);
@@ -184,7 +179,7 @@ class CommandsHandler {
 
       randomCommandMsg = this.formatCommandMessageUserData(user, randomCommandMsg);
 
-      this.updateUsesCommand(foundCommand.id);
+      this.updateUsesCommand(foundCommand._id);
 
       return randomCommandMsg;
     }
@@ -204,7 +199,7 @@ class CommandsHandler {
     return foundCommand;
   }
 
-  private async updateUsesCommand(id: string) {
+  private async updateUsesCommand(id: Types.ObjectId) {
     const updatedCommand = await updateChatCommandById(id, {
       $inc: { uses: 1 }
     });

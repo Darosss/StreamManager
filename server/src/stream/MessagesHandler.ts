@@ -2,6 +2,7 @@ import { createMessage, updateUser } from "@services";
 import { ConfigModel, MessageCreateData } from "@models";
 import { ConfigManager } from "./ConfigManager";
 import AchievementsHandler from "./AchievementsHandler";
+import { Types } from "mongoose";
 
 class MessagesHandler {
   private configs: ConfigModel = ConfigManager.getInstance().getConfig();
@@ -14,7 +15,7 @@ class MessagesHandler {
   }
 
   public async saveMessageAndUpdateUser(
-    userId: string,
+    userId: Types.ObjectId,
     userName: string,
     date: Date,
     messageData: { message: string; emotes?: boolean }
@@ -46,7 +47,7 @@ class MessagesHandler {
     }
   }
 
-  private async updateUserStatistics(userId: string) {
+  private async updateUserStatistics(userId: Types.ObjectId) {
     const updateData = {
       $inc: { points: this.configs.pointsConfigs.pointsIncrement.message, messageCount: 1 },
       // add points by message,       count messages

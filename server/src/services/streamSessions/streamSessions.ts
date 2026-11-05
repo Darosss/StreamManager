@@ -13,7 +13,7 @@ import {
   getFollowersCount
 } from "@services";
 import { checkExistResource, handleAppError, getLastNItemsFromMap, logger } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { StreamSessionStatisticOptions, ManyStreamSessionsFindOptions, StreamSessionFindOptions } from "./types/";
 
 export const getStreamSessions = async (
@@ -35,7 +35,7 @@ export const getStreamSessions = async (
   }
 };
 
-export const getStreamSessionById = async (id: string, findOptions: StreamSessionFindOptions) => {
+export const getStreamSessionById = async (id: Types.ObjectId, findOptions: StreamSessionFindOptions) => {
   const { select = { __v: 0 } } = findOptions;
 
   try {
@@ -154,7 +154,7 @@ export const createStreamSession = async (createData: StreamSessionCreateData) =
   }
 };
 
-export const updateStreamSessionById = async (id: string, updateData: UpdateQuery<StreamSessionUpdateData>) => {
+export const updateStreamSessionById = async (id: Types.ObjectId, updateData: UpdateQuery<StreamSessionUpdateData>) => {
   try {
     const streamSession = await StreamSession.findByIdAndUpdate(id, updateData, {
       new: true

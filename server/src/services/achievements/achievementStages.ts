@@ -1,5 +1,5 @@
 import { AchievementStage, AchievementStageDocument } from "@models";
-import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, Types, UpdateQuery } from "mongoose";
 import {
   AchievementStageCreateData,
   AchievementStageUpdateData,
@@ -85,7 +85,7 @@ export const updateOneAchievementStage = async (
 };
 //TOOD: add select opts instead alone populateOptions
 export const getAchievementStagesById = async (
-  id: string,
+  id: Types.ObjectId,
   projection: ProjectionType<AchievementStageDocument> = {},
   populateOptions?: AchievementStagesPopulateOptions
 ) => {
@@ -102,7 +102,7 @@ export const getAchievementStagesById = async (
   }
 };
 
-export const deleteAchievementStageById = async (id: string) => {
+export const deleteAchievementStageById = async (id: Types.ObjectId) => {
   try {
     const containingAchievements = (await getAchievements({ stages: id }, {})) || [];
 

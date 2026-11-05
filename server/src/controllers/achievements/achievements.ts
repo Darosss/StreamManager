@@ -14,6 +14,7 @@ import {
 import { AppError, checkExistResource, logger } from "@utils";
 import { filterAchievementsByUrlParams } from "./filters";
 import { CustomAchievementAction } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getManyAchievements = async (
   req: Request<{}, {}, {}, RequestSearch>,
@@ -48,16 +49,12 @@ export const getManyAchievements = async (
 };
 
 export const getAchievementsProgressesByUserId = async (
-  req: Request<RequestParams, {}, {}, {}>,
+  req: RequestWithObjectId,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
-
-  if (!id) throw new AppError(400, "Id not provided");
-
   try {
-    const achievements = await getAchievementsProgressesByUserIdService(id);
+    const achievements = await getAchievementsProgressesByUserIdService(req.objectId);
 
     res.status(200).send({
       data: achievements
@@ -68,11 +65,11 @@ export const getAchievementsProgressesByUserId = async (
 };
 
 export const editAchievementById = async (
-  req: Request<RequestParams, {}, AchievementUpdateDataController, {}>,
+  req: RequestWithObjectId<RequestParams, {}, AchievementUpdateDataController>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { enabled, description, tag, stages, hidden } = req.body;
   const updateData = { enabled, description, stages, tag, hidden };
 
@@ -119,11 +116,11 @@ export const addCustomAchievement = async (
 };
 
 export const deleteCustomAchievementById = async (
-  req: Request<RequestParams, {}, {}, {}>,
+  req: RequestWithObjectId<RequestParams>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
 
   try {
     await deleteCustomAchievementByIdService(id);
@@ -136,11 +133,11 @@ export const deleteCustomAchievementById = async (
 };
 
 export const editCustomAchievementById = async (
-  req: Request<RequestParams, {}, CustomAchievementUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, CustomAchievementUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, enabled, description, custom, stages, tag, hidden } = req.body;
   const updateData = {
     name,

@@ -10,6 +10,7 @@ import {
   updateSongById
 } from "@services";
 import { SongCreateData, SongUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getSongsList = async (req: Request<{}, {}, {}, RequestSongsQuery>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 25, sortBy = "createdAt", sortOrder = "desc" } = req.query;
@@ -46,11 +47,11 @@ export const addNewSong = async (req: Request<{}, {}, SongCreateData, {}>, res: 
 };
 
 export const editSongById = async (
-  req: Request<RequestParams, {}, SongUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, SongUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const {
     botUses,
     customId,
@@ -96,8 +97,8 @@ export const editSongById = async (
   }
 };
 
-export const deleteSongById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const deleteSongById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteSongByIdService(id);

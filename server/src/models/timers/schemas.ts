@@ -1,9 +1,10 @@
+import { zObjectId } from "../../utils/schemas";
 import { MoodSchema } from "../moods/schemas";
 import { TagSchema } from "../tags/schemas";
 import z from "zod";
 
 export const TimerSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1, "Timer name must be at least 1 length"),
@@ -16,8 +17,8 @@ export const TimerSchema = z.object({
   uses: z.number(),
   messages: z.array(z.string()),
   description: z.string(),
-  mood: z.union([z.string(), MoodSchema]),
-  tag: z.union([z.string(), TagSchema])
+  mood: z.union([zObjectId(), MoodSchema]),
+  tag: z.union([zObjectId(), TagSchema])
 });
 
 export const TimerUpdateSchema = TimerSchema.omit({
@@ -28,8 +29,8 @@ export const TimerUpdateSchema = TimerSchema.omit({
   mood: true
 })
   .extend({
-    mood: z.string(),
-    tag: z.string()
+    mood: zObjectId(),
+    tag: zObjectId()
   })
   .partial();
 

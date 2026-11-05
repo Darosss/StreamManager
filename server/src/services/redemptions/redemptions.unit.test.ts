@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { RedemptionCreateData } from "./types";
 
@@ -11,16 +10,21 @@ jest.mock("@models", () => ({
   }
 }));
 
-import { Redemption } from "@models";
+import { Redemption, RedemptionModel } from "@models";
 import * as RedemptionsService from "./redemptions";
+import { Types } from "mongoose";
 
-const createFakeRedemption = () => ({
-  _id: "redemption-1",
-  userId: "user-1",
+const createFakeRedemption = (): RedemptionModel => ({
+  _id: new Types.ObjectId(),
+  userId: new Types.ObjectId(),
   rewardCost: 100,
   redemptionDate: new Date("2024-01-01T00:00:00.000Z"),
-  createdAt: new Date("2024-01-01T00:00:00.000Z"),
-  updatedAt: new Date("2024-01-01T00:00:00.000Z")
+  rewardId: "reward-id",
+  twitchId: "twitch-0d",
+  userName: "username",
+  userDisplayName: "user-display-name",
+  rewardTitle: "reward-title",
+  rewardImage: "reward-image"
 });
 
 const createFakeTwitch = () => ({ _id: "twitch-1" });
@@ -42,10 +46,10 @@ describe("Redemptions Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeRedemptions as never)
+        sort: jest.fn<() => Promise<RedemptionModel[]>>().mockResolvedValue(fakeRedemptions)
       };
 
-      const findSpy = jest.spyOn(Redemption, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Redemption, "find").mockReturnValue(queryChain as never);
 
       const result = await RedemptionsService.getRedemptions(
         {},
@@ -63,7 +67,7 @@ describe("Redemptions Service", () => {
 
   describe("getRedemptionsCount", () => {
     it("should return the count of redemptions for a filter", async () => {
-      const countSpy = jest.spyOn(Redemption, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(Redemption, "countDocuments").mockResolvedValue(4);
 
       const result = await RedemptionsService.getRedemptionsCount({ userId: "user-1" });
 
@@ -75,9 +79,9 @@ describe("Redemptions Service", () => {
   describe("createRedemption", () => {
     it("should create a redemption using RedemptionCreateData", async () => {
       const fakeRedemption = createFakeRedemption();
-      const createSpy = jest.spyOn(Redemption, "create").mockResolvedValue(fakeRedemption as any);
+      const createSpy = jest.spyOn(Redemption, "create").mockResolvedValue(fakeRedemption as never);
       const createData: RedemptionCreateData = {
-        userId: "user-1",
+        userId: new Types.ObjectId(),
         rewardCost: 100,
         redemptionDate: new Date("2024-01-01T00:00:00.000Z"),
         twitchId: createFakeTwitch()._id,
@@ -98,7 +102,7 @@ describe("Redemptions Service", () => {
     it("should aggregate the most active users by redemption cost", async () => {
       const aggregateSpy = jest
         .spyOn(Redemption, "aggregate")
-        .mockResolvedValue([{ _id: "user-1", username: "tester", redemptionsCount: 2, redemptionsCost: 200 }] as any);
+        .mockResolvedValue([{ _id: "user-1", username: "tester", redemptionsCount: 2, redemptionsCost: 200 }]);
       const startDate = new Date("2024-01-01T00:00:00.000Z");
 
       const result = await RedemptionsService.getMostActiveUsersByRedemptions(3, startDate);

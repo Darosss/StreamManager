@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkSearchParams, isParamObjectId } from "@middlewares";
+import { checkSearchParams, withObjectId } from "@middlewares";
 import {
   getMessageCategoriesList,
   editMessageCategoryById,
@@ -12,8 +12,8 @@ const messageCategoriesRouter = Router();
 
 messageCategoriesRouter.get("/", checkSearchParams, getMessageCategoriesList);
 messageCategoriesRouter.post("/create", addNewCategory);
-messageCategoriesRouter.patch("/:id", isParamObjectId, editMessageCategoryById);
-messageCategoriesRouter.patch("/:id/uses", isParamObjectId, updateUsesCategoryById);
-messageCategoriesRouter.delete("/delete/:id", isParamObjectId, deleteMessageCategoryById);
+messageCategoriesRouter.patch("/:id", withObjectId(editMessageCategoryById));
+messageCategoriesRouter.patch("/:id/uses", withObjectId(updateUsesCategoryById));
+messageCategoriesRouter.delete("/delete/:id", withObjectId(deleteMessageCategoryById));
 
 export default messageCategoriesRouter;

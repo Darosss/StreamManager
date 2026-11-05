@@ -1,8 +1,9 @@
+import { zObjectId } from "../../utils/schemas";
 import { LayoutBreakpointSchema } from "../layouts/schemas";
 import z from "zod";
 
 export const OverlaySchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1, "Overlay name must be at least 1 length"),

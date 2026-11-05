@@ -1,6 +1,6 @@
 import { Widgets, WidgetsCreateData, WidgetsDocument, WidgetsUpdateData } from "@models";
 import { AppError, handleAppError, logger, checkExistResource } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { WidgetsFindOptions, ManyWidgetsFindOptions } from "./types/";
 
 export const getWidgets = async (filter: QueryFilter<WidgetsDocument> = {}, findOptions: ManyWidgetsFindOptions) => {
@@ -38,7 +38,7 @@ export const createWidget = async (createData: WidgetsCreateData) => {
   }
 };
 
-export const getWidgetById = async (id: string, findOptions: WidgetsFindOptions) => {
+export const getWidgetById = async (id: Types.ObjectId, findOptions: WidgetsFindOptions) => {
   const { select = { __v: 0 } } = findOptions;
 
   try {
@@ -53,7 +53,7 @@ export const getWidgetById = async (id: string, findOptions: WidgetsFindOptions)
   }
 };
 
-export const updateWidgetById = async (id: string, updateData: UpdateQuery<WidgetsUpdateData>) => {
+export const updateWidgetById = async (id: Types.ObjectId, updateData: UpdateQuery<WidgetsUpdateData>) => {
   try {
     const updatedWidget = await Widgets.findByIdAndUpdate(id, updateData, {
       new: true
@@ -68,7 +68,7 @@ export const updateWidgetById = async (id: string, updateData: UpdateQuery<Widge
   }
 };
 
-export const deleteWidgetById = async (id: string) => {
+export const deleteWidgetById = async (id: Types.ObjectId) => {
   try {
     const deletedWidget = await Widgets.findByIdAndDelete(id);
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -15,9 +14,10 @@ jest.mock("@models", () => ({
 
 import { User, UserModel, UserCreateData } from "@models";
 import * as UsersService from "./users";
+import mongoose from "mongoose";
 
 const createFakeUser = (): UserModel => ({
-  _id: "user-1",
+  _id: new mongoose.Types.ObjectId(),
   username: "tester",
   twitchName: "testerTwitch",
   follower: new Date("2024-01-01T00:00:00.000Z"),
@@ -50,10 +50,10 @@ describe("Users Service", () => {
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         sort: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeUsers as never)
+        populate: jest.fn<() => Promise<UserModel[]>>().mockResolvedValue(fakeUsers)
       };
 
-      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as never);
 
       const result = await UsersService.getUsers(
         {},
@@ -75,10 +75,10 @@ describe("Users Service", () => {
       const fakeUser = createFakeUser();
       const queryChain = {
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeUser as never)
+        populate: jest.fn<() => Promise<UserModel>>().mockResolvedValue(fakeUser)
       };
 
-      const findOneSpy = jest.spyOn(User, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(User, "findOne").mockReturnValue(queryChain as never);
 
       const result = await UsersService.getOneUser({}, { select: { __v: 0 }, populate: { displayBadges: true } });
 
@@ -93,14 +93,14 @@ describe("Users Service", () => {
     it("should find a user by id", async () => {
       const fakeUser = createFakeUser();
       const queryChain = {
-        select: jest.fn().mockResolvedValue(fakeUser as never)
+        select: jest.fn<() => Promise<UserModel>>().mockResolvedValue(fakeUser)
       };
 
-      const findByIdSpy = jest.spyOn(User, "findById").mockReturnValue(queryChain as any);
+      const findByIdSpy = jest.spyOn(User, "findById").mockReturnValue(queryChain as never);
 
-      const result = await UsersService.getUserById("user-1", { select: { __v: 0 } });
+      const result = await UsersService.getUserById(fakeUser._id, { select: { __v: 0 } });
 
-      expect(findByIdSpy).toHaveBeenCalledWith("user-1");
+      expect(findByIdSpy).toHaveBeenCalledWith(fakeUser._id);
       expect(queryChain.select).toHaveBeenCalledWith({ __v: 0 });
       expect(result).toEqual(fakeUser);
     });
@@ -109,18 +109,18 @@ describe("Users Service", () => {
   describe("updateUserById", () => {
     it("should update a user by id", async () => {
       const fakeUser = createFakeUser();
-      const updateSpy = jest.spyOn(User, "findByIdAndUpdate").mockResolvedValue(fakeUser as any);
+      const updateSpy = jest.spyOn(User, "findByIdAndUpdate").mockResolvedValue(fakeUser);
 
-      const result = await UsersService.updateUserById("user-1", { $set: { username: "updated" } });
+      const result = await UsersService.updateUserById(fakeUser._id, { $set: { username: "updated" } });
 
-      expect(updateSpy).toHaveBeenCalledWith("user-1", { $set: { username: "updated" } }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(fakeUser._id, { $set: { username: "updated" } }, { new: true });
       expect(result).toEqual(fakeUser);
     });
   });
 
   describe("getUserCount", () => {
     it("should return the count of users for a filter", async () => {
-      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(4);
 
       const result = await UsersService.getUserCount({ username: "tester" });
 
@@ -136,11 +136,11 @@ describe("Users Service", () => {
         select: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue(fakeUsers as never)
+        exec: jest.fn<() => Promise<UserModel[]>>().mockResolvedValue(fakeUsers)
       };
 
-      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as any);
-      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(1 as any);
+      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as never);
+      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(1);
 
       const result = await UsersService.getUsernames(5, 2);
 
@@ -160,11 +160,11 @@ describe("Users Service", () => {
         select: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue(fakeUsers as never)
+        exec: jest.fn<() => Promise<UserModel[]>>().mockResolvedValue(fakeUsers)
       };
 
-      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as any);
-      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(1 as any);
+      const findSpy = jest.spyOn(User, "find").mockReturnValue(queryChain as never);
+      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(1);
 
       const result = await UsersService.getTwitchNames(3, 1);
 
@@ -181,10 +181,10 @@ describe("Users Service", () => {
     it("should return a lean user if found", async () => {
       const fakeUser = createFakeUser();
       const queryChain = {
-        lean: jest.fn().mockResolvedValue(fakeUser as never)
+        lean: jest.fn<() => Promise<UserModel>>().mockResolvedValue(fakeUser)
       };
 
-      const findOneSpy = jest.spyOn(User, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(User, "findOne").mockReturnValue(queryChain as never);
 
       const result = await UsersService.isUserInDB({ username: fakeUser.username });
 
@@ -196,7 +196,7 @@ describe("Users Service", () => {
   describe("createUser", () => {
     it("should create a user", async () => {
       const fakeUser = createFakeUser();
-      const createSpy = jest.spyOn(User, "create").mockResolvedValue(fakeUser as any);
+      const createSpy = jest.spyOn(User, "create").mockResolvedValue(fakeUser as never);
       const createData: UserCreateData = {
         twitchId: fakeUser.twitchId,
         username: fakeUser.username
@@ -212,10 +212,10 @@ describe("Users Service", () => {
     it("should upsert a user when requested", async () => {
       const fakeUser = createFakeUser();
       const queryChain = {
-        lean: jest.fn().mockResolvedValue(fakeUser as never)
+        lean: jest.fn<() => Promise<UserModel>>().mockResolvedValue(fakeUser)
       };
 
-      const findOneAndUpdateSpy = jest.spyOn(User, "findOneAndUpdate").mockReturnValue(queryChain as any);
+      const findOneAndUpdateSpy = jest.spyOn(User, "findOneAndUpdate").mockReturnValue(queryChain as never);
       const createData: UserCreateData = {
         twitchId: fakeUser.twitchId,
         username: fakeUser.username
@@ -234,7 +234,7 @@ describe("Users Service", () => {
   describe("updateUser", () => {
     it("should update a user by filter", async () => {
       const fakeUser = createFakeUser();
-      const updateSpy = jest.spyOn(User, "findOneAndUpdate").mockResolvedValue(fakeUser as any);
+      const updateSpy = jest.spyOn(User, "findOneAndUpdate").mockResolvedValue(fakeUser);
 
       const result = await UsersService.updateUser({ username: fakeUser.username }, { $set: { username: "updated" } });
 
@@ -249,7 +249,7 @@ describe("Users Service", () => {
 
   describe("getFollowersCount", () => {
     it("should count followers in a date range", async () => {
-      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(2 as any);
+      const countSpy = jest.spyOn(User, "countDocuments").mockResolvedValue(2);
 
       const result = await UsersService.getFollowersCount(
         new Date("2024-01-01T00:00:00.000Z"),

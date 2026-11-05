@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -17,6 +16,7 @@ jest.mock("@services", () => ({
 }));
 
 jest.mock("fs", () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const actualFs = jest.requireActual<any>("fs");
   return {
     ...actualFs,
@@ -30,9 +30,10 @@ import { Badge, BadgeModel, BadgeCreateData } from "@models";
 import { getAchievementStages } from "@services";
 import * as BadgesService from "./badges";
 import { promises as fsPromises } from "fs";
+import { Types } from "mongoose";
 
 const createFakeBadge = (): BadgeModel => ({
-  _id: "badge-1",
+  _id: new Types.ObjectId(),
   name: "Test Badge",
   imagesUrls: {
     x32: "test-32.png",
@@ -60,10 +61,10 @@ describe("Badges Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeBadges as never)
+        sort: jest.fn<() => Promise<BadgeModel[]>>().mockResolvedValue(fakeBadges)
       };
 
-      const findSpy = jest.spyOn(Badge, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Badge, "find").mockReturnValue(queryChain as never);
 
       const result = await BadgesService.getBadges(
         {},
@@ -81,7 +82,7 @@ describe("Badges Service", () => {
 
   describe("getBadgesCount", () => {
     it("should return the count of badges for a filter", async () => {
-      const countSpy = jest.spyOn(Badge, "countDocuments").mockResolvedValue(5 as any);
+      const countSpy = jest.spyOn(Badge, "countDocuments").mockResolvedValue(5);
 
       const result = await BadgesService.getBadgesCount({ name: "Test Badge" });
 
@@ -93,7 +94,7 @@ describe("Badges Service", () => {
   describe("createBadge", () => {
     it("should create a badge and return it", async () => {
       const fakeBadge = createFakeBadge();
-      const createSpy = jest.spyOn(Badge, "create").mockResolvedValue(fakeBadge as any);
+      const createSpy = jest.spyOn(Badge, "create").mockResolvedValue(fakeBadge as never);
       const createData: BadgeCreateData = {
         name: "Test Badge",
         imagesUrls: {
@@ -115,10 +116,10 @@ describe("Badges Service", () => {
     it("should find a badge by id and return it", async () => {
       const fakeBadge = createFakeBadge();
       const queryChain = {
-        select: jest.fn().mockResolvedValue(fakeBadge as never)
+        select: jest.fn<() => Promise<BadgeModel>>().mockResolvedValue(fakeBadge)
       };
 
-      const findByIdSpy = jest.spyOn(Badge, "findById").mockReturnValue(queryChain as any);
+      const findByIdSpy = jest.spyOn(Badge, "findById").mockReturnValue(queryChain as never);
 
       const result = await BadgesService.getBadgeById(fakeBadge._id, { select: { __v: 0 } });
 
@@ -131,7 +132,7 @@ describe("Badges Service", () => {
   describe("updateBadgeById", () => {
     it("should update a badge by id and return it", async () => {
       const fakeBadge = createFakeBadge();
-      const updateSpy = jest.spyOn(Badge, "findByIdAndUpdate").mockResolvedValue(fakeBadge as any);
+      const updateSpy = jest.spyOn(Badge, "findByIdAndUpdate").mockResolvedValue(fakeBadge);
 
       const result = await BadgesService.updateBadgeById(fakeBadge._id, { $set: { name: "Updated" } });
 
@@ -142,20 +143,22 @@ describe("Badges Service", () => {
 
   describe("deleteBadgeById", () => {
     it("should throw when the badge is used in achievement stages", async () => {
-      jest.mocked(getAchievementStages).mockResolvedValue([{ name: "Stage 1" }] as any);
+      const stageName = "Stage 1";
+      jest.mocked(getAchievementStages).mockResolvedValue([{ name: stageName }] as never);
 
-      await expect(BadgesService.deleteBadgeById("badge-1")).rejects.toThrow(
-        "Badge with id(badge-1) is used in stage(s): [Stage 1], cannot delete"
+      const badgeId = new Types.ObjectId();
+      await expect(BadgesService.deleteBadgeById(badgeId)).rejects.toThrow(
+        `Badge with id(${badgeId}) is used in stage(s): [${stageName}], cannot delete`
       );
     });
 
     it("should delete the badge when it is not used", async () => {
-      jest.mocked(getAchievementStages).mockResolvedValue([] as any);
-      const deleteSpy = jest.spyOn(Badge, "findByIdAndDelete").mockResolvedValue(null as any);
+      jest.mocked(getAchievementStages).mockResolvedValue([]);
+      const deleteSpy = jest.spyOn(Badge, "findByIdAndDelete").mockResolvedValue(null);
+      const badgeId = new Types.ObjectId();
+      const result = await BadgesService.deleteBadgeById(badgeId);
 
-      const result = await BadgesService.deleteBadgeById("badge-1");
-
-      expect(deleteSpy).toHaveBeenCalledWith("badge-1");
+      expect(deleteSpy).toHaveBeenCalledWith(badgeId);
       expect(result).toEqual({ message: "Successfully deleted badge" });
     });
   });
@@ -168,7 +171,7 @@ describe("Badges Service", () => {
         select: jest.fn().mockReturnThis(),
         sort: jest.fn().mockResolvedValue([{ name: "Test Badge" }] as never)
       };
-      jest.spyOn(Badge, "find").mockReturnValue(queryChain as any);
+      jest.spyOn(Badge, "find").mockReturnValue(queryChain as never);
 
       await expect(
         BadgesService.deleteBadgeImages({ name: "test", extension: ".png", sizesToDelete: [32, 64] })
@@ -180,10 +183,10 @@ describe("Badges Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue([] as never)
+        sort: jest.fn<() => Promise<BadgeModel[]>>().mockResolvedValue([] as never)
       };
-      jest.spyOn(Badge, "find").mockReturnValue(queryChain as any);
-      const unlinkSpy = jest.spyOn(fsPromises, "unlink").mockResolvedValue(undefined as any);
+      jest.spyOn(Badge, "find").mockReturnValue(queryChain as never);
+      const unlinkSpy = jest.spyOn(fsPromises, "unlink").mockResolvedValue(undefined);
 
       const result = await BadgesService.deleteBadgeImages({
         name: "test",

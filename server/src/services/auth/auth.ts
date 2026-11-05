@@ -1,6 +1,7 @@
 import { AuthModel, AuthToken } from "@models";
 import { AuthCreateData } from "./types";
 import { AppError, handleAppError, logger, checkExistResource } from "@utils";
+import { Types } from "mongoose";
 
 export const getAuthToken = async () => {
   try {
@@ -25,7 +26,7 @@ export const createNewAuth = async (createData: AuthCreateData): Promise<AuthMod
   }
 };
 
-export const updateAuthUserId = async (tokenId: string, userId: string) => {
+export const updateAuthUserId = async (tokenId: Types.ObjectId, userId: string) => {
   const updatedAuthToken = await AuthToken.findByIdAndUpdate(tokenId, { userId }, { new: true });
   return updatedAuthToken;
 };

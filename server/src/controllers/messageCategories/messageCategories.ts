@@ -10,6 +10,7 @@ import { RequestParams } from "../types";
 import { RequestQueryMessageCategories } from "./types";
 import { filterMessageCategoriesByUrlParams } from "./filters";
 import { MessageCategoryCreateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getMessageCategoriesList = async (
   req: Request<{}, {}, {}, RequestQueryMessageCategories>,
@@ -45,11 +46,11 @@ export const getMessageCategoriesList = async (
 };
 
 export const editMessageCategoryById = async (
-  req: Request<RequestParams, {}, MessageCategoryCreateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, MessageCategoryCreateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, messages, tag, mood, enabled } = req.body;
 
   const updateData = { name, messages, tag, mood, enabled };
@@ -65,12 +66,8 @@ export const editMessageCategoryById = async (
   }
 };
 
-export const updateUsesCategoryById = async (
-  req: Request<RequestParams, {}, {}, {}>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
+export const updateUsesCategoryById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     const updatedCategoryMessage = await updateMessageCategoryById(id, {
@@ -106,12 +103,8 @@ export const addNewCategory = async (
   }
 };
 
-export const deleteMessageCategoryById = async (
-  req: Request<RequestParams, {}, {}, {}>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
+export const deleteMessageCategoryById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteMessageCategory(id);

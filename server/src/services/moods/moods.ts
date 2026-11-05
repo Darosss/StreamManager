@@ -1,7 +1,7 @@
 import { Mood, MoodCreateData, MoodDocument, MoodUpdateData } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, Types, UpdateQuery } from "mongoose";
 import { ManyMoodsFindOptions } from "./types";
 
 export const getMoods = async (filter: QueryFilter<MoodDocument> = {}, findOptions: ManyMoodsFindOptions) => {
@@ -48,7 +48,7 @@ export const updateMoods = async (filter: QueryFilter<MoodDocument> = {}, update
   }
 };
 
-export const updateMoodById = async (id: string, updateData: UpdateQuery<MoodUpdateData>) => {
+export const updateMoodById = async (id: Types.ObjectId, updateData: UpdateQuery<MoodUpdateData>) => {
   try {
     const updatedMood = await Mood.findByIdAndUpdate(id, updateData, {
       new: true
@@ -63,7 +63,7 @@ export const updateMoodById = async (id: string, updateData: UpdateQuery<MoodUpd
   }
 };
 
-export const deleteMoodById = async (id: string) => {
+export const deleteMoodById = async (id: Types.ObjectId) => {
   try {
     const filter = { mood: id };
     const countMoodsInDocs = await Promise.all([
@@ -87,7 +87,7 @@ export const deleteMoodById = async (id: string) => {
   }
 };
 
-export const getMoodById = async (id: string, projection: ProjectionType<MoodDocument> = {}) => {
+export const getMoodById = async (id: Types.ObjectId, projection: ProjectionType<MoodDocument> = {}) => {
   try {
     const foundMood = await Mood.findById(id, projection);
 

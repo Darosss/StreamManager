@@ -4,6 +4,7 @@ import { RequestTriggerQuery } from "./types";
 import { filterTriggersByUrlParams } from "./filters";
 import { createTrigger, deleteTriggerById, getTriggers, getTriggersCount, updateTriggerById } from "@services";
 import { TriggerCreateData, TriggerUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getTriggersList = async (
   req: Request<{}, {}, {}, RequestTriggerQuery>,
@@ -54,16 +55,15 @@ export const addNewTrigger = async (
 };
 
 export const editTriggerById = async (
-  req: Request<RequestParams, {}, TriggerUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, TriggerUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { name, chance, tag, mood, delay, words, messages, enabled, mode } = req.body;
 
   const updateData = { name, chance, enabled, tag, mood, delay, messages, words, mode };
   try {
-    const updatedTrigger = await updateTriggerById(id, updateData);
+    const updatedTrigger = await updateTriggerById(req.objectId, updateData);
 
     res.status(200).send({
       message: "Trigger updated successfully",
@@ -74,11 +74,9 @@ export const editTriggerById = async (
   }
 };
 
-export const deleteTrigger = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const deleteTrigger = async (req: RequestWithObjectId<RequestParams>, res: Response, next: NextFunction) => {
   try {
-    await deleteTriggerById(id);
+    await deleteTriggerById(req.objectId);
 
     res.status(200).send({ message: "Trigger deleted successfully" });
   } catch (err) {

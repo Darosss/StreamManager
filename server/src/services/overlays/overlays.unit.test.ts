@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { Overlay } from "@models";
+import { Overlay, OverlayModel } from "@models";
 import * as OverlaysService from "./overlays";
+import { Types } from "mongoose";
 
-const createFakeOverlay = () => ({
-  _id: "overlay-1",
+const createFakeOverlay = (): OverlayModel => ({
+  _id: new Types.ObjectId(),
   name: "Test Overlay",
   layout: {},
   toolbox: {},
@@ -28,10 +28,10 @@ describe("Overlays Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeOverlays as never)
+        sort: jest.fn<() => Promise<OverlayModel[]>>().mockResolvedValue(fakeOverlays)
       };
 
-      const findSpy = jest.spyOn(Overlay, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Overlay, "find").mockReturnValue(queryChain as never);
 
       const result = await OverlaysService.getOverlays(
         {},
@@ -49,7 +49,7 @@ describe("Overlays Service", () => {
 
   describe("getOverlaysCount", () => {
     it("should return the count of overlays for a filter", async () => {
-      const countSpy = jest.spyOn(Overlay, "countDocuments").mockResolvedValue(3 as any);
+      const countSpy = jest.spyOn(Overlay, "countDocuments").mockResolvedValue(3);
 
       const result = await OverlaysService.getOverlaysCount({ name: "Test Overlay" });
 
@@ -61,7 +61,7 @@ describe("Overlays Service", () => {
   describe("createOverlay", () => {
     it("should create an overlay and return the created document", async () => {
       const fakeOverlay = createFakeOverlay();
-      const createSpy = jest.spyOn(Overlay, "create").mockResolvedValue(fakeOverlay as any);
+      const createSpy = jest.spyOn(Overlay, "create").mockResolvedValue(fakeOverlay as never);
       const createData = { name: "Test Overlay", layout: {}, toolbox: {} };
 
       const result = await OverlaysService.createOverlay(createData);
@@ -75,7 +75,7 @@ describe("Overlays Service", () => {
     it("should return an overlay when it exists", async () => {
       const fakeOverlay = createFakeOverlay();
       const selectMock = jest.fn().mockResolvedValue(fakeOverlay as never);
-      const findByIdSpy = jest.spyOn(Overlay, "findById").mockReturnValue({ select: selectMock } as any);
+      const findByIdSpy = jest.spyOn(Overlay, "findById").mockReturnValue({ select: selectMock } as never);
 
       const result = await OverlaysService.getOverlayById(fakeOverlay._id, { select: { __v: 0 } });
 
@@ -85,16 +85,16 @@ describe("Overlays Service", () => {
     });
 
     it("should throw when the overlay is not found", async () => {
-      jest.spyOn(Overlay, "findById").mockReturnValue({ select: jest.fn().mockResolvedValue(null as never) } as any);
+      jest.spyOn(Overlay, "findById").mockReturnValue({ select: jest.fn().mockResolvedValue(null as never) } as never);
 
-      await expect(OverlaysService.getOverlayById("missing-overlay", { select: { __v: 0 } })).rejects.toThrow();
+      await expect(OverlaysService.getOverlayById(new Types.ObjectId(), { select: { __v: 0 } })).rejects.toThrow();
     });
   });
 
   describe("updateOverlayById", () => {
     it("should update an overlay and return the updated document", async () => {
       const fakeOverlay = createFakeOverlay();
-      const updateSpy = jest.spyOn(Overlay, "findByIdAndUpdate").mockResolvedValue(fakeOverlay as any);
+      const updateSpy = jest.spyOn(Overlay, "findByIdAndUpdate").mockResolvedValue(fakeOverlay);
 
       const result = await OverlaysService.updateOverlayById(fakeOverlay._id, { name: "Updated Overlay" });
 
@@ -106,7 +106,7 @@ describe("Overlays Service", () => {
   describe("deleteOverlayById", () => {
     it("should delete an overlay and return the deleted document", async () => {
       const fakeOverlay = createFakeOverlay();
-      const deleteSpy = jest.spyOn(Overlay, "findByIdAndDelete").mockResolvedValue(fakeOverlay as any);
+      const deleteSpy = jest.spyOn(Overlay, "findByIdAndDelete").mockResolvedValue(fakeOverlay);
 
       const result = await OverlaysService.deleteOverlayById(fakeOverlay._id);
 

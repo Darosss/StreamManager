@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -22,12 +21,13 @@ jest.mock("@services", () => ({
   getTriggersCount: jest.fn()
 }));
 
-import { Affix } from "@models";
+import { Affix, AffixModel } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import * as AffixesService from "./affixes";
+import { Types } from "mongoose";
 
-const createFakeAffix = () => ({
-  _id: "affix-1",
+const createFakeAffix = (): AffixModel => ({
+  _id: new Types.ObjectId(),
   name: "Test Affix",
   enabled: true,
   prefixes: ["pre"],
@@ -54,10 +54,10 @@ describe("Affixes Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeAffixes as never)
+        sort: jest.fn<() => Promise<AffixModel[]>>().mockResolvedValue(fakeAffixes)
       };
 
-      const findSpy = jest.spyOn(Affix, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Affix, "find").mockReturnValue(queryChain as never);
 
       const result = await AffixesService.getAffixes(
         {},
@@ -75,7 +75,7 @@ describe("Affixes Service", () => {
 
   describe("getAffixesCount", () => {
     it("should return the count of affixes for a filter", async () => {
-      const countSpy = jest.spyOn(Affix, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(Affix, "countDocuments").mockResolvedValue(4);
 
       const result = await AffixesService.getAffixesCount({ enabled: true });
 
@@ -87,7 +87,7 @@ describe("Affixes Service", () => {
   describe("createAffix", () => {
     it("should create an affix and return it", async () => {
       const fakeAffix = createFakeAffix();
-      const createSpy = jest.spyOn(Affix, "create").mockResolvedValue(fakeAffix as any);
+      const createSpy = jest.spyOn(Affix, "create").mockResolvedValue(fakeAffix as never);
       const createData = { name: "Test Affix", enabled: true, prefixes: ["pre"], suffixes: ["suf"] };
 
       const result = await AffixesService.createAffix(createData);
@@ -99,7 +99,7 @@ describe("Affixes Service", () => {
 
   describe("updateAffixes", () => {
     it("should update many affixes with the given filter and data", async () => {
-      const updateManySpy = jest.spyOn(Affix, "updateMany").mockResolvedValue({} as any);
+      const updateManySpy = jest.spyOn(Affix, "updateMany").mockResolvedValue({} as never);
 
       await AffixesService.updateAffixes({ enabled: true }, { enabled: false });
 
@@ -110,11 +110,11 @@ describe("Affixes Service", () => {
   describe("updateAffixById", () => {
     it("should update an affix and return it", async () => {
       const fakeAffix = createFakeAffix();
-      const updateSpy = jest.spyOn(Affix, "findByIdAndUpdate").mockResolvedValue(fakeAffix as any);
+      const updateSpy = jest.spyOn(Affix, "findByIdAndUpdate").mockResolvedValue(fakeAffix);
 
-      const result = await AffixesService.updateAffixById("affix-1", { enabled: false });
+      const result = await AffixesService.updateAffixById(fakeAffix._id, { enabled: false });
 
-      expect(updateSpy).toHaveBeenCalledWith("affix-1", { enabled: false }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(fakeAffix._id, { enabled: false }, { new: true });
       expect(result).toBe(fakeAffix);
     });
   });
@@ -122,36 +122,36 @@ describe("Affixes Service", () => {
   describe("deleteAffixById", () => {
     it("should delete an affix when it is not used elsewhere", async () => {
       const fakeAffix = createFakeAffix();
-      const deleteSpy = jest.spyOn(Affix, "findByIdAndDelete").mockResolvedValue(fakeAffix as any);
-      jest.mocked(getTriggersCount).mockResolvedValue(0 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
+      const deleteSpy = jest.spyOn(Affix, "findByIdAndDelete").mockResolvedValue(fakeAffix);
+      jest.mocked(getTriggersCount).mockResolvedValue(0);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
 
-      const result = await AffixesService.deleteAffixById("affix-1");
+      const result = await AffixesService.deleteAffixById(fakeAffix._id);
 
-      expect(deleteSpy).toHaveBeenCalledWith("affix-1");
+      expect(deleteSpy).toHaveBeenCalledWith(fakeAffix._id);
       expect(result).toBe(fakeAffix);
     });
 
     it("should throw when the affix is used by another document", async () => {
-      jest.mocked(getTriggersCount).mockResolvedValue(1 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
+      jest.mocked(getTriggersCount).mockResolvedValue(1);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
 
-      await expect(AffixesService.deleteAffixById("affix-1")).rejects.toThrow();
+      await expect(AffixesService.deleteAffixById(new Types.ObjectId())).rejects.toThrow();
     });
   });
 
   describe("getAffixById", () => {
     it("should return an affix when one exists", async () => {
       const fakeAffix = createFakeAffix();
-      const findByIdSpy = jest.spyOn(Affix, "findById").mockResolvedValue(fakeAffix as any);
+      const findByIdSpy = jest.spyOn(Affix, "findById").mockResolvedValue(fakeAffix);
+      const affixId = new Types.ObjectId();
+      const result = await AffixesService.getAffixById(affixId, { enabled: 1 });
 
-      const result = await AffixesService.getAffixById("affix-1", { enabled: 1 });
-
-      expect(findByIdSpy).toHaveBeenCalledWith("affix-1", { enabled: 1 });
+      expect(findByIdSpy).toHaveBeenCalledWith(affixId, { enabled: 1 });
       expect(result).toBe(fakeAffix);
     });
   });
@@ -159,7 +159,7 @@ describe("Affixes Service", () => {
   describe("getOneAffix", () => {
     it("should return the first matching affix", async () => {
       const fakeAffix = createFakeAffix();
-      jest.spyOn(Affix, "findOne").mockResolvedValue(fakeAffix as any);
+      jest.spyOn(Affix, "findOne").mockResolvedValue(fakeAffix as never);
 
       const result = await AffixesService.getOneAffix({ enabled: true });
 
@@ -171,7 +171,7 @@ describe("Affixes Service", () => {
     it("should aggregate and deduplicate enabled suffixes and prefixes", async () => {
       const aggregateSpy = jest
         .spyOn(Affix, "aggregate")
-        .mockResolvedValue([{ prefixes: [["pre1", "pre2"]], suffixes: [["suf1", "suf2"]] }] as any);
+        .mockResolvedValue([{ prefixes: [["pre1", "pre2"]], suffixes: [["suf1", "suf2"]] }]);
 
       const result = await AffixesService.getEnabledSuffixesAndPrefixes();
 
@@ -184,7 +184,7 @@ describe("Affixes Service", () => {
     it("should aggregate multiplier values for enabled affixes", async () => {
       const aggregateSpy = jest
         .spyOn(Affix, "aggregate")
-        .mockResolvedValue([{ prefixesMultipler: 200, suffixesMultipler: 300 }] as any);
+        .mockResolvedValue([{ prefixesMultipler: 200, suffixesMultipler: 300 }]);
 
       const result = await AffixesService.getMultiperEnabledAfixesChances();
 
@@ -197,7 +197,7 @@ describe("Affixes Service", () => {
     it("should aggregate average chances for enabled affixes", async () => {
       const aggregateSpy = jest
         .spyOn(Affix, "aggregate")
-        .mockResolvedValue([{ prefixesChances: 20, suffixesChances: 30 }] as any);
+        .mockResolvedValue([{ prefixesChances: 20, suffixesChances: 30 }]);
 
       const result = await AffixesService.getAverageEnabledAffixesChances();
 

@@ -16,6 +16,7 @@ import {
   getRedemptionsCount
 } from "@services";
 import { RequestQuerySession } from "./types";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getStreamSessionsList = async (
   req: Request<{}, {}, {}, RequestQuerySession>,
@@ -59,11 +60,9 @@ export const getCurrentSession = async (req: Request, res: Response, next: NextF
   }
 };
 
-export const getSessionById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const getSessionById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    const streamSession = await getStreamSessionById(id, {});
+    const streamSession = await getStreamSessionById(req.objectId, {});
 
     res.status(200).send({
       data: streamSession
@@ -73,15 +72,9 @@ export const getSessionById = async (req: Request<RequestParams, {}, {}, {}>, re
   }
 };
 
-export const getSessionStatisticsById = async (
-  req: Request<RequestParams, {}, {}, {}>,
-  res: Response,
-  next: NextFunction
-) => {
-  const { id } = req.params;
-
+export const getSessionStatisticsById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    const streamSession = await getStreamSessionById(id, {});
+    const streamSession = await getStreamSessionById(req.objectId, {});
     if (streamSession) {
       const sessionStatstics = await getStreamSessionStatistics(streamSession, {
         limitMostUsedWords: 10,
@@ -202,15 +195,14 @@ export const getCurrentSessionStatistics = async (req: Request, res: Response, n
 };
 
 export const getSessionMessages = async (
-  req: Request<RequestParams, {}, {}, RequestQueryMessage>,
+  req: RequestWithObjectId<RequestParams, undefined, RequestQueryMessage>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { page = 1, limit = 50 } = req.query;
 
   try {
-    const session = await getStreamSessionById(id, { select: { __v: 0 } });
+    const session = await getStreamSessionById(req.objectId, { select: { __v: 0 } });
 
     const searchFilter = Object.assign(
       {
@@ -242,15 +234,14 @@ export const getSessionMessages = async (
 };
 
 export const getSessionRedemptions = async (
-  req: Request<RequestParams, {}, {}, RequestRedemptionQuery>,
+  req: RequestWithObjectId<RequestParams, undefined, RequestRedemptionQuery>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { page = 1, limit = 50 } = req.query;
 
   try {
-    const session = await getStreamSessionById(id, { select: { __v: 0 } });
+    const session = await getStreamSessionById(req.objectId, { select: { __v: 0 } });
 
     const searchFilter = Object.assign(
       {
