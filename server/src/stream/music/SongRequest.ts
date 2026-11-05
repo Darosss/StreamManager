@@ -206,7 +206,7 @@ class SongRequest extends QueueHandler<SongRequestListType> {
     if ("error" in data) error = data.error;
     else {
       songProperties = this.extractSongPropertiesFromModelHelper(data);
-      await updateSongUsesById(data._id.toString(), "songRequestUses");
+      await updateSongUsesById(data._id, "songRequestUses");
     }
 
     const added = songProperties ? await this.addRequestedSongToList(username, songProperties) : false;

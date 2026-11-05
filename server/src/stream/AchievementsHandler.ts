@@ -34,13 +34,14 @@ import { codeBlock } from "discord.js";
 import { SubscriptionTiers } from "./EventSubHandler";
 import { AchievementsQueueHandler } from "./AchievementsQueueHandler";
 import { ConfigManager } from "./ConfigManager";
+import { Types } from "mongoose";
 // TODO: PERFOMANCE
 // TODO: cache custom achievements names or _ids
 // TODO: cache basic achievements too maybe
 // TODO: add on refresh tag, achievement itd, refresh of these in cache
 
 interface CommonAchievementCheckType {
-  userId: string;
+  userId: Types.ObjectId;
   username: string;
 }
 
@@ -317,7 +318,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
 
   public async checkOnlineUserAchievements(user: UserModel) {
     const { _id, username, messageCount, watchTime, points, follower } = user;
-    const commonData = { userId: _id.toString(), username: username };
+    const commonData = { userId: _id, username: username };
 
     await this.updateAchievementUserProgressAndAddToQueue({
       ...commonData,
@@ -532,7 +533,9 @@ class AchievementsHandler extends AchievementsQueueHandler<
     if (!foundCustomMessageAchievements)
       return achievementsLogger.info("Not found any custom message achievements in checkCustomMessageAchievements");
     for await (const achievement of foundCustomMessageAchievements.filter(
-      (achivementFilter) => (achivementFilter.tag as TagModel).enabled
+      //TODO: FIX LATER after schemas.ts of achievements Note.
+      // The as unknown as TagModel, cuz { tag: true } in getAchievements populateOptions - multiple occurences heree of that
+      (achivementFilter) => (achivementFilter.tag as unknown as TagModel).enabled
     )) {
       const { name, custom } = achievement;
 
@@ -596,7 +599,9 @@ class AchievementsHandler extends AchievementsQueueHandler<
     if (!foundCustomWatchTimeAchievements)
       return achievementsLogger.info("Not found any custom message achievements in checkCustomWatchTimeAchievements");
     for (const achievement of foundCustomWatchTimeAchievements.filter(
-      (achivementFilter) => (achivementFilter.tag as TagModel).enabled
+      //TODO: FIX LATER after schemas.ts of achievements Note.
+      // The as unknown as TagModel, cuz { tag: true } in getAchievements populateOptions - multiple occurences heree of that
+      (achivementFilter) => (achivementFilter.tag as unknown as TagModel).enabled
     )) {
       const { name, custom } = achievement;
       const action = custom!.action; // assertion use custom: { $exists: true } in filter
@@ -643,7 +648,7 @@ class AchievementsHandler extends AchievementsQueueHandler<
   // for now I create dynamical choose badges.
   // latter it should be changeable by twitch command / discord command
   private async updateUsersDisplayBadgesDependsOnRarity(
-    userId: string,
+    userId: Types.ObjectId,
     progresses: AchievementUserProgressModel<AchievementWithBadgePopulated>[]
   ) {
     const bestBadges = progresses

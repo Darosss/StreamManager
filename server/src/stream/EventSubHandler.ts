@@ -2,7 +2,13 @@ import HeadHandler from "./HeadHandler";
 import { ApiClient } from "@twurple/api";
 import { EventSubWsListener } from "@twurple/eventsub-ws";
 import { eventsubLogger, retryWithCatch, getMp3AudioDuration } from "@utils";
-import { createStreamSession, updateCurrentStreamSession, createRedemption, createUserIfNotExist } from "@services";
+import {
+  createStreamSession,
+  updateCurrentStreamSession,
+  createRedemption,
+  createUserIfNotExist,
+  RedemptionCreateData
+} from "@services";
 import fs from "fs";
 import { alertSoundsPath, alertSoundPrefix } from "@configs";
 import path from "path";
@@ -82,7 +88,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelSubscription - error when trying to manipulate user data`);
         }
         await AchievementsHandler.getInstance().checkUserSubscribeForAchievements({
-          userId: userDB._id.toString(),
+          userId: userDB._id,
           username: userDB.username,
           tier,
           isGift
@@ -126,7 +132,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelFollow - error when trying to manipulate user data`);
 
         await AchievementsHandler.getInstance().checkUserSubscribeGiftsForAchievements({
-          userId: userDB._id.toString(),
+          userId: userDB._id,
           username: userDB.username,
           tier,
           amount: amount || 1,
@@ -158,7 +164,7 @@ class EventSubHandler extends HeadHandler {
           return eventsubLogger.error(`subscribeToChannelFollow - error when trying to manipulate user data`);
         }
         await AchievementsHandler.getInstance().checkUserFollowageForAchievement({
-          userId: userDB._id.toString(),
+          userId: userDB._id,
           username: userDB.username,
           dateProgress: followDate
         });
@@ -193,7 +199,7 @@ class EventSubHandler extends HeadHandler {
         }
         await AchievementsHandler.getInstance().checkRaidFromForAchievements({
           viewersAmount: viewers,
-          userId: userDB._id.toString(),
+          userId: userDB._id,
           username: userDB.username
         });
       } catch (err) {
@@ -233,7 +239,7 @@ class EventSubHandler extends HeadHandler {
           isAnonymous,
           bits,
           message,
-          userId: userDB?._id.toString(),
+          userId: userDB?._id,
           username: userDB?.username
         });
       } catch (err) {
@@ -292,7 +298,7 @@ class EventSubHandler extends HeadHandler {
       const reward = await e.getReward();
 
       const rewardData = {
-        userId: user?._id.toString(),
+        userId: user._id,
         rewardId: rewardId,
         twitchId: userId,
         userName: userName,
@@ -301,7 +307,7 @@ class EventSubHandler extends HeadHandler {
         rewardTitle: rewardTitle,
         rewardCost: rewardCost,
         rewardImage: reward.getImageUrl(4)
-      };
+      } satisfies RedemptionCreateData & RewardData;
 
       try {
         await createRedemption(rewardData);

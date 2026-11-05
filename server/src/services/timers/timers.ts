@@ -1,7 +1,7 @@
 import { modesPipeline } from "../aggregations";
 import { Timer, TimerCreateData, TimerDocument, TimerModel, TimerUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery, ProjectionType, Types } from "mongoose";
 import { ManyTimersFindOptions, TimerFindOptions } from "./types";
 
 export const getTimers = async (filter: QueryFilter<TimerDocument> = {}, findOptions: ManyTimersFindOptions) => {
@@ -76,7 +76,7 @@ export const updateEnabledTimersAndEnabledModes = async (
   }
 };
 
-export const updateTimerById = async (id: string, updateData: UpdateQuery<TimerUpdateData>) => {
+export const updateTimerById = async (id: Types.ObjectId, updateData: UpdateQuery<TimerUpdateData>) => {
   try {
     const updatedTimer = await Timer.findByIdAndUpdate(id, updateData, {
       new: true
@@ -91,7 +91,7 @@ export const updateTimerById = async (id: string, updateData: UpdateQuery<TimerU
   }
 };
 
-export const deleteTimerById = async (id: string) => {
+export const deleteTimerById = async (id: Types.ObjectId) => {
   try {
     const deletedTimer = await Timer.findByIdAndDelete(id);
 
@@ -105,7 +105,7 @@ export const deleteTimerById = async (id: string) => {
 };
 
 export const getTimerById = async (
-  id: string,
+  id: Types.ObjectId,
   projection: ProjectionType<TimerDocument> = {},
   findOptions: TimerFindOptions
 ) => {

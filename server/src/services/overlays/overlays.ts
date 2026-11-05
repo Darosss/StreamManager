@@ -1,6 +1,6 @@
 import { Overlay, OverlayCreateData, OverlayDocument, OverlayUpdateData } from "@models";
 import { AppError, handleAppError, checkExistResource, logger } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import { OverlaysFindOptions, ManyOverlaysFindOptions } from "./types/";
 
 export const getOverlays = async (filter: QueryFilter<OverlayDocument> = {}, findOptions: ManyOverlaysFindOptions) => {
@@ -39,7 +39,7 @@ export const createOverlay = async (createData: OverlayCreateData) => {
   }
 };
 
-export const getOverlayById = async (id: string, findOptions: OverlaysFindOptions) => {
+export const getOverlayById = async (id: Types.ObjectId, findOptions: OverlaysFindOptions = {}) => {
   const { select = { __v: 0 } } = findOptions;
 
   try {
@@ -54,7 +54,7 @@ export const getOverlayById = async (id: string, findOptions: OverlaysFindOption
   }
 };
 
-export const updateOverlayById = async (id: string, updateData: UpdateQuery<OverlayUpdateData>) => {
+export const updateOverlayById = async (id: Types.ObjectId, updateData: UpdateQuery<OverlayUpdateData>) => {
   try {
     const updatedOverlay = await Overlay.findByIdAndUpdate(id, updateData, {
       new: true
@@ -69,7 +69,7 @@ export const updateOverlayById = async (id: string, updateData: UpdateQuery<Over
   }
 };
 
-export const deleteOverlayById = async (id: string) => {
+export const deleteOverlayById = async (id: Types.ObjectId) => {
   try {
     const deletedOverlay = await Overlay.findByIdAndDelete(id);
 

@@ -1,7 +1,7 @@
 import {
   configExist,
   createNewConfig,
-  createChatCommand,
+  createChatCommands,
   getChatCommandsCount,
   createTag,
   getOneTag,
@@ -24,7 +24,7 @@ import {
   getDefaultMood,
   getDefaultTag
 } from "@defaults";
-import { AchievementStageModel, BadgeModel, TagModel } from "@models";
+import { AchievementStageModel, BadgeModel, ChatCommandCreateData, TagModel } from "@models";
 
 export const initMongoDataBase = async (uri: string) => {
   mongoose.set("strictQuery", false);
@@ -56,14 +56,14 @@ const createDefaultCommands = async () => {
     const [tag, mood] = modes;
     if (tag && mood) {
       const chatCommands = getDefaultChatCommands();
-      const chatCommandsWithModes = chatCommands.map((command) => {
+      const chatCommandsWithModes = chatCommands.map<ChatCommandCreateData>((command) => {
         return {
           ...command,
-          tag: tag.id,
-          mood: mood.id
+          tag: tag._id,
+          mood: mood._id
         };
       });
-      await createChatCommand(chatCommandsWithModes);
+      await createChatCommands(chatCommandsWithModes);
     }
   }
 };

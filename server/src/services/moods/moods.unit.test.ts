@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -24,9 +23,10 @@ jest.mock("@services", () => ({
 import { Mood, MoodModel, MoodCreateData } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import * as MoodsService from "./moods";
+import { Types } from "mongoose";
 
 const createFakeMood = (): MoodModel => ({
-  _id: "mood-1",
+  _id: new Types.ObjectId(),
   name: "Happy",
   createdAt: new Date("2024-01-01T00:00:00.000Z"),
   updatedAt: new Date("2024-01-01T00:00:00.000Z"),
@@ -49,10 +49,10 @@ describe("Moods Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeMoods as never)
+        sort: jest.fn<() => Promise<MoodModel[]>>().mockResolvedValue(fakeMoods)
       };
 
-      const findSpy = jest.spyOn(Mood, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Mood, "find").mockReturnValue(queryChain as never);
 
       const result = await MoodsService.getMoods(
         {},
@@ -70,7 +70,7 @@ describe("Moods Service", () => {
 
   describe("getMoodsCount", () => {
     it("should return the count of moods for a filter", async () => {
-      const countSpy = jest.spyOn(Mood, "countDocuments").mockResolvedValue(3 as any);
+      const countSpy = jest.spyOn(Mood, "countDocuments").mockResolvedValue(3);
 
       const result = await MoodsService.getMoodsCount({ name: "Happy" });
 
@@ -82,7 +82,7 @@ describe("Moods Service", () => {
   describe("createMood", () => {
     it("should create a mood and return it", async () => {
       const fakeMood = createFakeMood();
-      const createSpy = jest.spyOn(Mood, "create").mockResolvedValue(fakeMood as any);
+      const createSpy = jest.spyOn(Mood, "create").mockResolvedValue(fakeMood as never);
       const createData: MoodCreateData = { name: fakeMood.name, enabled: fakeMood.enabled };
 
       const result = await MoodsService.createMood(createData);
@@ -94,7 +94,7 @@ describe("Moods Service", () => {
 
   describe("updateMoods", () => {
     it("should update many moods with the given filter and data", async () => {
-      const updateManySpy = jest.spyOn(Mood, "updateMany").mockResolvedValue({} as any);
+      const updateManySpy = jest.spyOn(Mood, "updateMany").mockResolvedValue({} as never);
 
       await MoodsService.updateMoods({ name: "Happy" }, { name: "Excited" });
 
@@ -105,11 +105,12 @@ describe("Moods Service", () => {
   describe("updateMoodById", () => {
     it("should update a mood and return it", async () => {
       const fakeMood = createFakeMood();
-      const updateSpy = jest.spyOn(Mood, "findByIdAndUpdate").mockResolvedValue(fakeMood as any);
+      const updateSpy = jest.spyOn(Mood, "findByIdAndUpdate").mockResolvedValue(fakeMood);
 
-      const result = await MoodsService.updateMoodById("mood-1", { name: "Excited" });
+      const moodId = new Types.ObjectId();
+      const result = await MoodsService.updateMoodById(moodId, { name: "Excited" });
 
-      expect(updateSpy).toHaveBeenCalledWith("mood-1", { name: "Excited" }, { new: true });
+      expect(updateSpy).toHaveBeenCalledWith(moodId, { name: "Excited" }, { new: true });
       expect(result).toBe(fakeMood);
     });
   });
@@ -117,36 +118,41 @@ describe("Moods Service", () => {
   describe("deleteMoodById", () => {
     it("should delete a mood when it is not used elsewhere", async () => {
       const fakeMood = createFakeMood();
-      const deleteSpy = jest.spyOn(Mood, "findByIdAndDelete").mockResolvedValue(fakeMood as any);
-      jest.mocked(getTriggersCount).mockResolvedValue(0 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
+      const deleteSpy = jest.spyOn(Mood, "findByIdAndDelete").mockResolvedValue(fakeMood);
+      jest.mocked(getTriggersCount).mockResolvedValue(0);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
+      const moodId = new Types.ObjectId();
 
-      const result = await MoodsService.deleteMoodById("mood-1");
+      const result = await MoodsService.deleteMoodById(moodId);
 
-      expect(deleteSpy).toHaveBeenCalledWith("mood-1");
+      expect(deleteSpy).toHaveBeenCalledWith(moodId);
       expect(result).toBe(fakeMood);
     });
 
     it("should throw when the mood is used by another document", async () => {
-      jest.mocked(getTriggersCount).mockResolvedValue(1 as any);
-      jest.mocked(getChatCommandsCount).mockResolvedValue(0 as any);
-      jest.mocked(getTimersCount).mockResolvedValue(0 as any);
-      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0 as any);
+      const moodId = new Types.ObjectId();
 
-      await expect(MoodsService.deleteMoodById("mood-1")).rejects.toThrow();
+      jest.mocked(getTriggersCount).mockResolvedValue(1);
+      jest.mocked(getChatCommandsCount).mockResolvedValue(0);
+      jest.mocked(getTimersCount).mockResolvedValue(0);
+      jest.mocked(getMessageCategoriesCount).mockResolvedValue(0);
+
+      await expect(MoodsService.deleteMoodById(moodId)).rejects.toThrow();
     });
   });
 
   describe("getMoodById", () => {
     it("should return a mood when one exists", async () => {
+      const moodId = new Types.ObjectId();
+
       const fakeMood = createFakeMood();
-      const findByIdSpy = jest.spyOn(Mood, "findById").mockResolvedValue(fakeMood as any);
+      const findByIdSpy = jest.spyOn(Mood, "findById").mockResolvedValue(fakeMood);
 
-      const result = await MoodsService.getMoodById("mood-1", { name: 1 });
+      const result = await MoodsService.getMoodById(moodId, { name: 1 });
 
-      expect(findByIdSpy).toHaveBeenCalledWith("mood-1", { name: 1 });
+      expect(findByIdSpy).toHaveBeenCalledWith(moodId, { name: 1 });
       expect(result).toBe(fakeMood);
     });
   });
@@ -154,9 +160,9 @@ describe("Moods Service", () => {
   describe("getOneMood", () => {
     it("should return the first matching mood", async () => {
       const fakeMood = createFakeMood();
-      jest.spyOn(Mood, "findOne").mockResolvedValue(fakeMood as any);
+      jest.spyOn(Mood, "findOne").mockResolvedValue(fakeMood as never);
 
-      const result = await MoodsService.getOneMood({ name: "Happy" });
+      const result = await MoodsService.getOneMood({ name: fakeMood.name });
 
       expect(result).toBe(fakeMood);
     });

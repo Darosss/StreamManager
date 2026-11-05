@@ -32,13 +32,14 @@ export interface AchievementCustomModel {
 }
 
 export interface AchievementModel<
-  StageType extends AchievementStageModel<BadgeModel | Types.ObjectId> | Types.ObjectId = Types.ObjectId
+  StageType extends AchievementStageModel<BadgeModel | Types.ObjectId> | Types.ObjectId = Types.ObjectId,
+  TagType extends Types.ObjectId | TagModel = Types.ObjectId
 > extends BaseModel {
   name: string;
   description: string;
   stages: StageType;
   isTime: boolean;
-  tag: string | TagModel;
+  tag: TagType;
   enabled: boolean;
   custom?: AchievementCustomModel;
   hidden?: boolean;
@@ -51,10 +52,10 @@ export type AchievementDocument = AchievementModel & Document;
 
 export interface AchievementUserProgressModel<
   AchievementType extends
-    | Types.ObjectId
-    | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> = Types.ObjectId
+    Types.ObjectId | AchievementModel<AchievementStageModel<Types.ObjectId | BadgeModel> | Types.ObjectId> =
+    Types.ObjectId
 > extends BaseModel {
-  userId: string | UserModel;
+  userId: Types.ObjectId | UserModel;
   achievement: AchievementType;
   value: number;
   progresses: [number, number][];

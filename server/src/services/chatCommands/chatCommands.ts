@@ -1,6 +1,6 @@
 import { ChatCommand, ChatCommandCreateData, ChatCommandDocument, ChatCommandUpdateData } from "@models";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { QueryFilter, PipelineStage, UpdateQuery } from "mongoose";
+import { QueryFilter, PipelineStage, UpdateQuery, Types } from "mongoose";
 import { ChatCommandsFindOptions, ManyChatCommandsFindOptions } from "./types";
 import { modesPipeline } from "../aggregations";
 
@@ -53,7 +53,16 @@ export const getChatCommandsCount = async (filter: QueryFilter<ChatCommandDocume
   return await ChatCommand.countDocuments(filter);
 };
 
-export const createChatCommand = async (createData: UpdateQuery<ChatCommandCreateData>) => {
+export const createChatCommand = async (createData: ChatCommandCreateData) => {
+  try {
+    return await createChatCommands([createData]);
+  } catch (err) {
+    logger.error(`Error occured while creating chat command(s): ${err}`);
+    return handleAppError(err);
+  }
+};
+
+export const createChatCommands = async (createData: ChatCommandCreateData[]) => {
   try {
     const createdCommand = await ChatCommand.create(createData);
 
@@ -64,11 +73,11 @@ export const createChatCommand = async (createData: UpdateQuery<ChatCommandCreat
     return createdCommand;
   } catch (err) {
     logger.error(`Error occured while creating chat command(s): ${err}`);
-    handleAppError(err);
+    return handleAppError(err);
   }
 };
 
-export const getChatCommandById = async (id: string, findOptions: ChatCommandsFindOptions) => {
+export const getChatCommandById = async (id: Types.ObjectId, findOptions: ChatCommandsFindOptions) => {
   const { select = { __v: 0 } } = findOptions;
 
   try {
@@ -83,7 +92,7 @@ export const getChatCommandById = async (id: string, findOptions: ChatCommandsFi
   }
 };
 
-export const updateChatCommandById = async (id: string, updateData: UpdateQuery<ChatCommandUpdateData>) => {
+export const updateChatCommandById = async (id: Types.ObjectId, updateData: UpdateQuery<ChatCommandUpdateData>) => {
   try {
     const updatedChatCommand = await ChatCommand.findByIdAndUpdate(id, updateData, {
       new: true
@@ -116,7 +125,7 @@ export const updateChatCommands = async (
   }
 };
 
-export const deleteChatCommandById = async (id: string) => {
+export const deleteChatCommandById = async (id: Types.ObjectId) => {
   try {
     const deletedChatCommand = await ChatCommand.findByIdAndDelete(id);
 

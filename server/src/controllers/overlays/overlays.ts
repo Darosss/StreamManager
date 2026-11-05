@@ -9,6 +9,7 @@ import {
 } from "@services";
 import { RequestParams, RequestSearch } from "../types";
 import { OverlayCreateData, OverlayUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getOverlaysList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 25 } = req.query;
@@ -33,11 +34,9 @@ export const getOverlaysList = async (req: Request<{}, {}, {}, RequestSearch>, r
   }
 };
 
-export const getOverlayById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const getOverlayById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    const overlay = await getOverlayByIdService(id, {});
+    const overlay = await getOverlayByIdService(req.objectId);
 
     res.status(200).send({
       data: overlay
@@ -65,16 +64,15 @@ export const addNewOverlay = async (
 };
 
 export const editOverlayById = async (
-  req: Request<RequestParams, {}, OverlayUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, OverlayUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { name, layout, toolbox, styles } = req.body;
 
   const updateData = { name, layout, toolbox, styles };
   try {
-    const updatedOverlay = await updateOverlayById(id, updateData);
+    const updatedOverlay = await updateOverlayById(req.objectId, updateData);
 
     res.status(200).send({
       message: "Overlay updated successfully",
@@ -85,11 +83,9 @@ export const editOverlayById = async (
   }
 };
 
-export const removeOverlayById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const removeOverlayById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    await deleteOverlayById(id);
+    await deleteOverlayById(req.objectId);
 
     res.status(200).send({ message: "Overlay deleted successfully" });
   } catch (err) {

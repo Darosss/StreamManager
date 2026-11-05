@@ -3,6 +3,7 @@ import { RequestParams, RequestSearch } from "../types";
 import { filterAffixesByUrlParams } from "./filters";
 import { createAffix, deleteAffixById, getAffixes, getAffixesCount, updateAffixById } from "@services";
 import { AffixCreateData, AffixUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getAffixesList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50 } = req.query;
@@ -43,11 +44,11 @@ export const addNewAffix = async (req: Request<{}, {}, AffixCreateData, {}>, res
 };
 
 export const editAffixById = async (
-  req: Request<RequestParams, {}, AffixUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, AffixUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, enabled, prefixes, suffixes, prefixChance, suffixChance } = req.body;
 
   try {
@@ -62,8 +63,8 @@ export const editAffixById = async (
   }
 };
 
-export const deleteAffix = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const deleteAffix = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteAffixById(id);

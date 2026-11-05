@@ -1,10 +1,10 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 import { UserModel } from "../users";
 
 export interface RedemptionModel {
-  _id: string;
+  _id: Types.ObjectId;
   rewardId: string;
-  userId: string | UserModel;
+  userId: Types.ObjectId | UserModel;
   twitchId: string;
   userName: string;
   userDisplayName: string;

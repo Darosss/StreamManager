@@ -115,7 +115,7 @@ class StreamHandler {
         timestamp: Number(userstate["tmi-sent-ts"]) || new Date().getTime()
       });
 
-      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id.toString(), user.username, new Date(), {
+      await this.handlers.messagesHandler.saveMessageAndUpdateUser(user._id, user.username, new Date(), {
         emotes: !!userstate.emotes,
         message
       });
@@ -308,7 +308,7 @@ class StreamHandler {
     viewersPeek.set(String(new Date().getTime()), streamInfo.viewers);
     const timestamp = Date.now();
 
-    updateStreamSessionById(currentSession.id, {
+    updateStreamSessionById(currentSession._id, {
       $set: { [`viewers.${timestamp}`]: streamInfo.viewers }
     });
   }

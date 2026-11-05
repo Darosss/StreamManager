@@ -7,7 +7,7 @@ import {
   CustomAchievementAction
 } from "@models";
 import { AppError, checkExistResource, handleAppError, logger } from "@utils";
-import { QueryFilter, UpdateQuery } from "mongoose";
+import { QueryFilter, Types, UpdateQuery } from "mongoose";
 import {
   AchievementCreateData,
   AchievementsFindOptions,
@@ -182,7 +182,7 @@ export const deleteOneAchievement = async (filter: QueryFilter<AchievementDocume
   }
 };
 
-export const deleteCustomAchievementById = async (id: string) => {
+export const deleteCustomAchievementById = async (id: Types.ObjectId) => {
   try {
     await deleteOneAchievement({ _id: id, custom: { $exists: true } });
     return { message: "Successfully removed custom achievement" };

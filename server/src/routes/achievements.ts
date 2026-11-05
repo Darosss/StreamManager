@@ -24,7 +24,7 @@ import {
   deleteCustomAchievementById,
   editAchievementById
 } from "@controllers";
-import { checkSearchParams, isParamObjectId } from "@middlewares";
+import { checkSearchParams, withObjectId } from "@middlewares";
 import { Router } from "express";
 
 const achievementsRouter = Router();
@@ -32,8 +32,8 @@ const achievementsRouter = Router();
 achievementsRouter.get("/", checkSearchParams, getManyAchievements);
 
 achievementsRouter.post("/custom/create", addCustomAchievement);
-achievementsRouter.patch("/custom/:id", isParamObjectId, editCustomAchievementById);
-achievementsRouter.delete("/custom/:id", deleteCustomAchievementById);
+achievementsRouter.patch("/custom/:id", withObjectId(editCustomAchievementById));
+achievementsRouter.delete("/custom/:id", withObjectId(deleteCustomAchievementById));
 
 /* STAGES RELATED */
 achievementsRouter.get("/stages", checkSearchParams, getManyAchievementStages);
@@ -42,9 +42,9 @@ achievementsRouter.get("/stages/available-sounds", getAchievementStageSoundsList
 achievementsRouter.get("/stages/available-sounds/base-path", getAchievementStageSoundsBaseUrl);
 achievementsRouter.post("/stages/sounds/upload", uploadAchievementStageSounds);
 achievementsRouter.delete("/stages/sounds/:soundName/delete", deleteAchievementStageSoundById);
-achievementsRouter.delete("/stages/delete/:id", isParamObjectId, deleteAchievementStageById);
-achievementsRouter.get("/stages/:id", isParamObjectId, getAchievementStageById);
-achievementsRouter.patch("/stages/:id", isParamObjectId, editAchievementStageById);
+achievementsRouter.delete("/stages/delete/:id", withObjectId(deleteAchievementStageById));
+achievementsRouter.get("/stages/:id", withObjectId(getAchievementStageById));
+achievementsRouter.patch("/stages/:id", withObjectId(editAchievementStageById));
 
 /* BADGE RELATED */
 achievementsRouter.get("/badges", checkSearchParams, getManyBadges);
@@ -53,12 +53,12 @@ achievementsRouter.get("/badges/available-images/base-path", getBadgesBaseUrl);
 achievementsRouter.post("/badges/create", addNewBadge);
 achievementsRouter.post("/badges/images/upload", uploadBadgeImages);
 achievementsRouter.delete("/badges/images/:badgeName/delete", deleteBadgeImageByName);
-achievementsRouter.delete("/badges/delete/:id", isParamObjectId, deleteBadgeById);
-achievementsRouter.get("/badges/:id", isParamObjectId, getBadgeById);
-achievementsRouter.patch("/badges/:id", isParamObjectId, editBadgeById);
+achievementsRouter.delete("/badges/delete/:id", withObjectId(deleteBadgeById));
+achievementsRouter.get("/badges/:id", withObjectId(getBadgeById));
+achievementsRouter.patch("/badges/:id", withObjectId(editBadgeById));
 
-achievementsRouter.get("/user/:id", isParamObjectId, getAchievementsProgressesByUserId);
+achievementsRouter.get("/user/:id", withObjectId(getAchievementsProgressesByUserId));
 
-achievementsRouter.patch("/:id", isParamObjectId, editAchievementById);
+achievementsRouter.patch("/:id", withObjectId(editAchievementById));
 
 export default achievementsRouter;

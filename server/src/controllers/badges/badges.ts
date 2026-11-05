@@ -26,6 +26,7 @@ import type { ParamsDictionary } from "express-serve-static-core";
 
 import { BadgeUpdateData, BadgeCreateData } from "@models";
 import { getBadgeModelIMagesUrlsSizesNumbers, SEPARATOR_BADGE_IMAGE_SIZE } from "../../services/badges/utils";
+import { RequestWithObjectId } from "@middlewares";
 export interface RequestParamsBadgeName extends ParamsDictionary {
   badgeName: string;
 }
@@ -171,11 +172,11 @@ export const getBadgesImagesList = (req: Request, res: Response, next: NextFunct
 };
 
 export const editBadgeById = async (
-  req: Request<RequestParams, {}, BadgeUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, BadgeUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, imagesUrls, description } = req.body;
 
   const updateData = { name, imagesUrls, description };
@@ -206,8 +207,8 @@ export const addNewBadge = async (req: Request<{}, {}, BadgeCreateData, {}>, res
   }
 };
 
-export const deleteBadgeById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const deleteBadgeById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteBadgeByIdService(id);
@@ -219,8 +220,8 @@ export const deleteBadgeById = async (req: Request<RequestParams, {}, {}, {}>, r
   }
 };
 
-export const getBadgeById = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const getBadgeById = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
   try {
     const badge = await getBadgeByIdService(id, { select: { __v: 0 } });
 

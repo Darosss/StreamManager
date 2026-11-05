@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -10,11 +9,12 @@ jest.mock("@models", () => ({
   }
 }));
 
-import { AuthToken } from "@models";
+import { AuthModel, AuthToken } from "@models";
 import * as AuthService from "./auth";
+import { Types } from "mongoose";
 
-const createFakeAuth = () => ({
-  _id: "auth-1",
+const createFakeAuth = (): AuthModel => ({
+  _id: new Types.ObjectId(),
   accessToken: "access-token",
   refreshToken: "refresh-token",
   expiresIn: 3600,
@@ -39,7 +39,7 @@ describe("Auth Service", () => {
   describe("getAuthToken", () => {
     it("should return the auth token document when one exists", async () => {
       const fakeAuth = createFakeAuth();
-      const findOneSpy = jest.spyOn(AuthToken, "findOne").mockResolvedValue(fakeAuth as any);
+      const findOneSpy = jest.spyOn(AuthToken, "findOne").mockResolvedValue(fakeAuth as never);
 
       const result = await AuthService.getAuthToken();
 
@@ -51,7 +51,7 @@ describe("Auth Service", () => {
   describe("createNewAuth", () => {
     it("should create a new auth document and return it", async () => {
       const fakeAuth = createFakeAuth();
-      const createSpy = jest.spyOn(AuthToken, "create").mockResolvedValue(fakeAuth as any);
+      const createSpy = jest.spyOn(AuthToken, "create").mockResolvedValue(fakeAuth as never);
       const createData = {
         accessToken: "access-token",
         refreshToken: "refresh-token",
@@ -71,7 +71,7 @@ describe("Auth Service", () => {
   describe("updateAuthUserId", () => {
     it("should update the user id on the auth token", async () => {
       const fakeAuth = createFakeAuth();
-      const updateSpy = jest.spyOn(AuthToken, "findByIdAndUpdate").mockResolvedValue(fakeAuth as any);
+      const updateSpy = jest.spyOn(AuthToken, "findByIdAndUpdate").mockResolvedValue(fakeAuth);
 
       const result = await AuthService.updateAuthUserId(fakeAuth._id, "user-2");
 
@@ -83,7 +83,7 @@ describe("Auth Service", () => {
   describe("removeAuthToken", () => {
     it("should remove and return the auth token when one exists", async () => {
       const fakeAuth = createFakeAuth();
-      const deleteSpy = jest.spyOn(AuthToken, "findOneAndDelete").mockResolvedValue(fakeAuth as any);
+      const deleteSpy = jest.spyOn(AuthToken, "findOneAndDelete").mockResolvedValue(fakeAuth as never);
 
       const result = await AuthService.removeAuthToken();
 
@@ -92,7 +92,7 @@ describe("Auth Service", () => {
     });
 
     it("should throw when no auth token exists", async () => {
-      jest.spyOn(AuthToken, "findOneAndDelete").mockResolvedValue(null as any);
+      jest.spyOn(AuthToken, "findOneAndDelete").mockResolvedValue(null);
 
       await expect(AuthService.removeAuthToken()).rejects.toThrow();
     });

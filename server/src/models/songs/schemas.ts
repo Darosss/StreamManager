@@ -1,3 +1,4 @@
+import { zObjectId } from "../../utils/schemas";
 import { UserSchemaWithBadgeModel, UserSchemaWithStringBadges } from "../users/schemas";
 import z from "zod";
 
@@ -12,7 +13,7 @@ export const CustomTitleSchema = z.object({
 });
 
 export const SongSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   title: z.string().min(1, "Song title must be at least 1 length"),
@@ -27,7 +28,7 @@ export const SongSchema = z.object({
   usersUses: z.record(z.string(), z.number()),
   botUses: z.number().min(0),
   songRequestUses: z.number().min(0),
-  whoAdded: z.union([z.string(), UserSchemaWithStringBadges, UserSchemaWithBadgeModel]),
+  whoAdded: z.union([zObjectId(), UserSchemaWithStringBadges, UserSchemaWithBadgeModel]),
   likes: z.record(z.string(), z.number()),
   enabled: z.boolean(),
   lastUsed: z.date().optional(),
@@ -41,7 +42,7 @@ export const SongUpdateSchema = SongSchema.omit({
   whoAdded: true
 })
   .extend({
-    whoAdded: z.string()
+    whoAdded: zObjectId()
   })
   .partial();
 

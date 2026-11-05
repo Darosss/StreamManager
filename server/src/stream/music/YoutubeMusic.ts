@@ -27,11 +27,16 @@ type SearchForYoutubeSongParams = {
 class YoutubeMusic extends YoutubeApiHandler {
   private static readonly validateIdRegex = /^[a-zA-Z0-9-_]{11}$/;
   private readonly downloadOptions: SabrPlaybackOptions = {
-    preferWebM: true,
-    preferOpus: true,
-    videoQuality: "480p",
-    audioQuality: "AUDIO_QUALITY_MEDIUM",
-    enabledTrackTypes: EnabledTrackTypes.AUDIO_ONLY
+    videoPreferences: {
+      container: "webm"
+    },
+    audioPreferences: {
+      container: "webm",
+      preferredAudioCodec: "opus",
+      quality: "AUDIO_QUALITY_MEDIUM"
+    },
+    enabledTrackTypes: EnabledTrackTypes.AUDIO_ONLY,
+    isPostLiveDvr: false
   };
   constructor() {
     super();
@@ -70,7 +75,7 @@ class YoutubeMusic extends YoutubeApiHandler {
     const addedByUser = await getOneUser({ $or: [{ username: usernameWhoAdded }, { twitchId: botId }] }, {});
     const createdSong = await createSong({
       duration: duration,
-      whoAdded: String(addedByUser!._id),
+      whoAdded: addedByUser!._id,
       title: name,
       youtubeId: id,
       tags: this.convertTopicDetailsIntoTags(topicDetails),

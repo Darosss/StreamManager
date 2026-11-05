@@ -5,6 +5,7 @@ import { AchievementModel, StageDataWithBadgePopulated } from "../../models/achi
 import { UserModel } from "../../models/users/types";
 import { UpdateAchievementUserProgressProgressesArgs } from "../../services/achievements/types/shared";
 import { CommonUserstate, DeleteUserstate } from "tmi.js";
+import { Types } from "mongoose";
 
 export type SongType = "yt" | "local";
 
@@ -110,7 +111,7 @@ export interface CustomRewardData {
 
 export interface RewardData {
   rewardId: string;
-  userId: string;
+  userId: Types.ObjectId;
   userName: string;
   userDisplayName: string;
   redemptionDate: Date;

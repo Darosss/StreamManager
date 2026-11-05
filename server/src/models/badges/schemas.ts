@@ -1,4 +1,5 @@
 import z from "zod";
+import { zObjectId } from "../../utils/schemas";
 
 export const BadgeImagesUrlsSchema = z.object({
   x32: z.string(),
@@ -8,7 +9,7 @@ export const BadgeImagesUrlsSchema = z.object({
 });
 
 export const BadgeSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1),

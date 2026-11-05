@@ -1,5 +1,6 @@
 import { minDelayTimer } from "@configs";
 import z from "zod";
+import { zObjectId } from "../../utils/schemas";
 
 export const CommandsConfigsSchema = z.object({
   commandsPrefix: z.string().min(1)
@@ -72,7 +73,7 @@ export const HeadConfigsSchema = z.object({
 });
 
 export const ConfigSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   commandsConfigs: CommandsConfigsSchema,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { TimerModel, TimerCreateData } from "@models";
 jest.mock("@models", () => ({
@@ -21,9 +20,10 @@ jest.mock("../aggregations", () => ({
 
 import { Timer } from "@models";
 import * as TimersService from "./timers";
+import { Types } from "mongoose";
 
-const createFakeTimer = (): TimerModel & { tag: string; mood: string } => ({
-  _id: "timer-1",
+const createFakeTimer = (): TimerModel & { tag: Types.ObjectId; mood: Types.ObjectId } => ({
+  _id: new Types.ObjectId(),
   enabled: true,
   points: 10,
   reqPoints: 15,
@@ -40,8 +40,8 @@ const createFakeTimer = (): TimerModel & { tag: string; mood: string } => ({
   updatedAt: new Date("2024-01-01T00:00:00.000Z")
 });
 
-const createFakeMood = () => ({ _id: "mood-1" as any });
-const createFakeTag = () => ({ _id: "tag-1" as any });
+const createFakeMood = () => ({ _id: new Types.ObjectId() });
+const createFakeTag = () => ({ _id: new Types.ObjectId() });
 
 describe("Timers Service", () => {
   beforeEach(() => {
@@ -60,10 +60,10 @@ describe("Timers Service", () => {
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeTimers as never)
+        sort: jest.fn<() => Promise<TimerModel[]>>().mockResolvedValue(fakeTimers)
       };
 
-      const findSpy = jest.spyOn(Timer, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Timer, "find").mockReturnValue(queryChain as never);
 
       const result = await TimersService.getTimers(
         {},
@@ -82,7 +82,7 @@ describe("Timers Service", () => {
 
   describe("getTimersCount", () => {
     it("should return the count of timers for a filter", async () => {
-      const countSpy = jest.spyOn(Timer, "countDocuments").mockResolvedValue(5 as any);
+      const countSpy = jest.spyOn(Timer, "countDocuments").mockResolvedValue(5);
 
       const result = await TimersService.getTimersCount({ enabled: true });
 
@@ -94,7 +94,7 @@ describe("Timers Service", () => {
   describe("createTimer", () => {
     it("should create a timer and return it", async () => {
       const fakeTimer = createFakeTimer();
-      const createSpy = jest.spyOn(Timer, "create").mockResolvedValue(fakeTimer as any);
+      const createSpy = jest.spyOn(Timer, "create").mockResolvedValue(fakeTimer as never);
       const createData: TimerCreateData = {
         messages: fakeTimer.messages,
         name: fakeTimer.name,
@@ -112,7 +112,7 @@ describe("Timers Service", () => {
 
   describe("updateTimers", () => {
     it("should update many timers with the given filter and data", async () => {
-      const updateManySpy = jest.spyOn(Timer, "updateMany").mockResolvedValue({ acknowledged: true } as any);
+      const updateManySpy = jest.spyOn(Timer, "updateMany").mockResolvedValue({ acknowledged: true } as never);
 
       const result = await TimersService.updateTimers({ enabled: true }, { enabled: false });
 
@@ -124,7 +124,7 @@ describe("Timers Service", () => {
   describe("updateEnabledTimersAndEnabledModes", () => {
     it("should aggregate timers for enabled updates", async () => {
       const fakeTimers = [createFakeTimer()];
-      const aggregateSpy = jest.spyOn(Timer, "aggregate").mockResolvedValue(fakeTimers as any);
+      const aggregateSpy = jest.spyOn(Timer, "aggregate").mockResolvedValue(fakeTimers);
 
       const result = await TimersService.updateEnabledTimersAndEnabledModes(5, { enabled: true });
 
@@ -136,7 +136,7 @@ describe("Timers Service", () => {
   describe("updateTimerById", () => {
     it("should update a timer and return it", async () => {
       const fakeTimer = createFakeTimer();
-      const updateSpy = jest.spyOn(Timer, "findByIdAndUpdate").mockResolvedValue(fakeTimer as any);
+      const updateSpy = jest.spyOn(Timer, "findByIdAndUpdate").mockResolvedValue(fakeTimer);
 
       const result = await TimersService.updateTimerById(fakeTimer._id, { enabled: false });
 
@@ -148,7 +148,7 @@ describe("Timers Service", () => {
   describe("deleteTimerById", () => {
     it("should delete a timer and return it", async () => {
       const fakeTimer = createFakeTimer();
-      const deleteSpy = jest.spyOn(Timer, "findByIdAndDelete").mockResolvedValue(fakeTimer as any);
+      const deleteSpy = jest.spyOn(Timer, "findByIdAndDelete").mockResolvedValue(fakeTimer);
 
       const result = await TimersService.deleteTimerById(fakeTimer._id);
 
@@ -164,7 +164,7 @@ describe("Timers Service", () => {
       const populateMock = jest.fn().mockResolvedValue(fakeTimer as never);
       const findByIdSpy = jest
         .spyOn(Timer, "findById")
-        .mockReturnValue({ select: selectMock, populate: populateMock } as any);
+        .mockReturnValue({ select: selectMock, populate: populateMock } as never);
 
       const result = await TimersService.getTimerById(
         fakeTimer._id,
@@ -182,7 +182,7 @@ describe("Timers Service", () => {
   describe("getOneTimer", () => {
     it("should return the first matching timer", async () => {
       const fakeTimer = createFakeTimer();
-      jest.spyOn(Timer, "findOne").mockResolvedValue(fakeTimer as any);
+      jest.spyOn(Timer, "findOne").mockResolvedValue(fakeTimer as never);
 
       const result = await TimersService.getOneTimer({ enabled: true });
 
@@ -193,7 +193,7 @@ describe("Timers Service", () => {
   describe("getTimersDataWithModesEnabled", () => {
     it("should aggregate timers data for enabled modes", async () => {
       const fakeTimers = [createFakeTimer()];
-      const aggregateSpy = jest.spyOn(Timer, "aggregate").mockResolvedValue(fakeTimers as any);
+      const aggregateSpy = jest.spyOn(Timer, "aggregate").mockResolvedValue(fakeTimers);
 
       const result = await TimersService.getTimersDataWithModesEnabled();
 

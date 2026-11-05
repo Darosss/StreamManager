@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { Widgets } from "@models";
+import { Widgets, WidgetsModel } from "@models";
 import * as WidgetsService from "./widgets";
+import { Types } from "mongoose";
 
-const createFakeWidget = () => ({
-  _id: "widget-1",
+const createFakeWidget = (): WidgetsModel => ({
+  _id: new Types.ObjectId(),
   name: "Test Widget",
   layout: {},
   toolbox: {},
@@ -28,10 +28,10 @@ describe("Widgets Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeWidgets as never)
+        sort: jest.fn<() => Promise<WidgetsModel[]>>().mockResolvedValue(fakeWidgets)
       };
 
-      const findSpy = jest.spyOn(Widgets, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(Widgets, "find").mockReturnValue(queryChain as never);
 
       const result = await WidgetsService.getWidgets(
         {},
@@ -49,7 +49,7 @@ describe("Widgets Service", () => {
 
   describe("getWidgetsCount", () => {
     it("should return the count of widgets for a filter", async () => {
-      const countSpy = jest.spyOn(Widgets, "countDocuments").mockResolvedValue(3 as any);
+      const countSpy = jest.spyOn(Widgets, "countDocuments").mockResolvedValue(3);
 
       const result = await WidgetsService.getWidgetsCount({ name: "Test Widget" });
 
@@ -61,7 +61,7 @@ describe("Widgets Service", () => {
   describe("createWidget", () => {
     it("should create a widget and return the created document", async () => {
       const fakeWidget = createFakeWidget();
-      const createSpy = jest.spyOn(Widgets, "create").mockResolvedValue(fakeWidget as any);
+      const createSpy = jest.spyOn(Widgets, "create").mockResolvedValue(fakeWidget as never);
       const createData = { name: "Test Widget", layout: {}, toolbox: {} };
 
       const result = await WidgetsService.createWidget(createData);
@@ -75,7 +75,7 @@ describe("Widgets Service", () => {
     it("should return a widget when it exists", async () => {
       const fakeWidget = createFakeWidget();
       const selectMock = jest.fn().mockResolvedValue(fakeWidget as never);
-      const findByIdSpy = jest.spyOn(Widgets, "findById").mockReturnValue({ select: selectMock } as any);
+      const findByIdSpy = jest.spyOn(Widgets, "findById").mockReturnValue({ select: selectMock } as never);
 
       const result = await WidgetsService.getWidgetById(fakeWidget._id, { select: { __v: 0 } });
 
@@ -85,16 +85,16 @@ describe("Widgets Service", () => {
     });
 
     it("should throw when the widget is not found", async () => {
-      jest.spyOn(Widgets, "findById").mockReturnValue({ select: jest.fn().mockResolvedValue(null as never) } as any);
+      jest.spyOn(Widgets, "findById").mockReturnValue({ select: jest.fn().mockResolvedValue(null as never) } as never);
 
-      await expect(WidgetsService.getWidgetById("missing-widget", { select: { __v: 0 } })).rejects.toThrow();
+      await expect(WidgetsService.getWidgetById(new Types.ObjectId(), { select: { __v: 0 } })).rejects.toThrow();
     });
   });
 
   describe("updateWidgetById", () => {
     it("should update a widget and return the updated document", async () => {
       const fakeWidget = createFakeWidget();
-      const updateSpy = jest.spyOn(Widgets, "findByIdAndUpdate").mockResolvedValue(fakeWidget as any);
+      const updateSpy = jest.spyOn(Widgets, "findByIdAndUpdate").mockResolvedValue(fakeWidget);
 
       const result = await WidgetsService.updateWidgetById(fakeWidget._id, { name: "Updated Widget" });
 
@@ -106,7 +106,7 @@ describe("Widgets Service", () => {
   describe("deleteWidgetById", () => {
     it("should delete a widget and return the deleted document", async () => {
       const fakeWidget = createFakeWidget();
-      const deleteSpy = jest.spyOn(Widgets, "findByIdAndDelete").mockResolvedValue(fakeWidget as any);
+      const deleteSpy = jest.spyOn(Widgets, "findByIdAndDelete").mockResolvedValue(fakeWidget);
 
       const result = await WidgetsService.deleteWidgetById(fakeWidget._id);
 

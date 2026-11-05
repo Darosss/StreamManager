@@ -3,6 +3,7 @@ import { RequestParams, RequestSearch } from "../types";
 import { filterTagsByUrlParams } from "./filters";
 import { createTag, deleteTagById, getTags, getTagsCount, updateTagById } from "@services";
 import { TagCreateData, TagUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getTagsList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50 } = req.query;
@@ -41,16 +42,15 @@ export const addNewTag = async (req: Request<{}, {}, TagCreateData, {}>, res: Re
 };
 
 export const editTagById = async (
-  req: Request<RequestParams, {}, TagUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, TagUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
   const { name, enabled } = req.body;
 
   const updateData = { name, enabled };
   try {
-    const updatedTag = await updateTagById(id, updateData);
+    const updatedTag = await updateTagById(req.objectId, updateData);
 
     res.status(200).send({
       message: "Tag updated successfully",
@@ -61,11 +61,9 @@ export const editTagById = async (
   }
 };
 
-export const deleteTag = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
+export const deleteTag = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
   try {
-    await deleteTagById(id);
+    await deleteTagById(req.objectId);
 
     res.status(200).send({ message: "Tag deleted successfully" });
   } catch (err) {

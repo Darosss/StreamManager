@@ -1,10 +1,11 @@
+import { zObjectId } from "../../utils/schemas";
 import { MoodSchema } from "../moods/schemas";
 import { TagSchema } from "../tags/schemas";
 import z from "zod";
 
 export const TriggerModeSchema = z.enum(["WholeWord", "StartsWith", "All"]);
 export const TriggerSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1, "Trigger name must be at least 1 length"),
@@ -16,8 +17,8 @@ export const TriggerSchema = z.object({
   words: z.array(z.string()),
   messages: z.array(z.string()),
   mode: TriggerModeSchema,
-  mood: z.union([z.string(), MoodSchema]),
-  tag: z.union([z.string(), TagSchema])
+  mood: z.union([zObjectId(), MoodSchema]),
+  tag: z.union([zObjectId(), TagSchema])
 });
 
 export const TriggerUpdateSchema = TriggerSchema.omit({
@@ -28,8 +29,8 @@ export const TriggerUpdateSchema = TriggerSchema.omit({
   mood: true
 })
   .extend({
-    mood: z.string(),
-    tag: z.string()
+    mood: zObjectId(),
+    tag: zObjectId()
   })
   .partial();
 

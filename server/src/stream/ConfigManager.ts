@@ -1,10 +1,16 @@
 import { configDefaults } from "@defaults";
 import { ConfigModel } from "@models";
 import { getConfigs } from "@services";
+import { Types } from "mongoose";
 
 export class ConfigManager {
   private static instance: ConfigManager;
-  private config: ConfigModel = { _id: "defaultId", createdAt: new Date(), updatedAt: new Date(), ...configDefaults };
+  private config: ConfigModel = {
+    _id: new Types.ObjectId(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...configDefaults
+  };
   private observers: Set<(config: ConfigModel) => void> = new Set();
 
   private constructor() {

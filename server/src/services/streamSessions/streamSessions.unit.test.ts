@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@models", () => ({
@@ -29,9 +28,10 @@ import {
   getMostActiveUsersByRedemptions,
   getFollowersCount
 } from "@services";
+import { Types } from "mongoose";
 
 const createFakeStreamSession = (): StreamSessionModel => ({
-  _id: "session-1",
+  _id: new Types.ObjectId(),
   sessionStart: new Date("2024-01-01T00:00:00.000Z"),
   sessionEnd: new Date("2024-01-01T23:59:59.000Z"),
   viewers: { "viewer-1": 10, "viewer-2": 7 },
@@ -66,10 +66,10 @@ describe("Stream Sessions Service", () => {
         limit: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        sort: jest.fn().mockResolvedValue(fakeSessions as never)
+        sort: jest.fn<() => Promise<StreamSessionModel[]>>().mockResolvedValue(fakeSessions)
       };
 
-      const findSpy = jest.spyOn(StreamSession, "find").mockReturnValue(queryChain as any);
+      const findSpy = jest.spyOn(StreamSession, "find").mockReturnValue(queryChain as never);
 
       const result = await StreamSessionsService.getStreamSessions(
         {},
@@ -90,10 +90,10 @@ describe("Stream Sessions Service", () => {
       const fakeSession = createFakeStreamSession();
       const queryChain = {
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeSession as never)
+        populate: jest.fn<() => Promise<StreamSessionModel>>().mockResolvedValue(fakeSession)
       };
 
-      const findByIdSpy = jest.spyOn(StreamSession, "findById").mockReturnValue(queryChain as any);
+      const findByIdSpy = jest.spyOn(StreamSession, "findById").mockReturnValue(queryChain as never);
 
       const result = await StreamSessionsService.getStreamSessionById(fakeSession._id, { select: { __v: 0 } });
 
@@ -111,10 +111,10 @@ describe("Stream Sessions Service", () => {
         sort: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeSession as never)
+        populate: jest.fn<() => Promise<StreamSessionModel>>().mockResolvedValue(fakeSession)
       };
 
-      const findOneSpy = jest.spyOn(StreamSession, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(StreamSession, "findOne").mockReturnValue(queryChain as never);
 
       const result = await StreamSessionsService.getCurrentStreamSession({ select: { __v: 0 } });
 
@@ -133,8 +133,8 @@ describe("Stream Sessions Service", () => {
       const timestamp = new Date().getTime();
       const updatedSession = { ...fakeSession, viewers: { ...fakeSession.viewers, [`${timestamp}`]: 320 } };
 
-      jest.spyOn(StreamSessionsService, "getCurrentStreamSession").mockResolvedValue(fakeSession as any);
-      const updateSpy = jest.spyOn(StreamSession, "findByIdAndUpdate").mockResolvedValue(updatedSession as any);
+      jest.spyOn(StreamSessionsService, "getCurrentStreamSession").mockResolvedValue(fakeSession as never);
+      const updateSpy = jest.spyOn(StreamSession, "findByIdAndUpdate").mockResolvedValue(updatedSession);
 
       const result = await StreamSessionsService.updateCurrentStreamSession({
         $set: { [`viewers.${timestamp}`]: 320 }
@@ -156,10 +156,10 @@ describe("Stream Sessions Service", () => {
         sort: jest.fn().mockReturnThis(),
         limit: jest.fn().mockReturnThis(),
         select: jest.fn().mockReturnThis(),
-        populate: jest.fn().mockResolvedValue(fakeSession as never)
+        populate: jest.fn<() => Promise<StreamSessionModel>>().mockResolvedValue(fakeSession)
       };
 
-      const findOneSpy = jest.spyOn(StreamSession, "findOne").mockReturnValue(queryChain as any);
+      const findOneSpy = jest.spyOn(StreamSession, "findOne").mockReturnValue(queryChain as never);
 
       const result = await StreamSessionsService.getLatestStreamSession({ select: { __v: 0 } });
 
@@ -175,17 +175,15 @@ describe("Stream Sessions Service", () => {
   describe("getStreamSessionStatistics", () => {
     it("should aggregate session statistics from the related services", async () => {
       const fakeSession = createFakeStreamSession();
-      jest.mocked(getMessagesCountByDate).mockResolvedValue(3 as any);
-      jest
-        .mocked(getMostActiveUsersByMsgs)
-        .mockResolvedValue([{ _id: "user-1", username: "tester", messageCount: 2 }] as any);
+      jest.mocked(getMessagesCountByDate).mockResolvedValue(3);
+      jest.mocked(getMostActiveUsersByMsgs).mockResolvedValue([{ _id: "user-1", username: "tester", messageCount: 2 }]);
       jest
         .mocked(getMostActiveUsersByRedemptions)
-        .mockResolvedValue([{ _id: "user-2", username: "redeemer", redemptionsCount: 1 }] as any);
-      jest.mocked(getMostUsedWord).mockResolvedValue([{ _id: "hello", count: 2 }] as any);
-      jest.mocked(getFollowersCount).mockResolvedValue(4 as any);
+        .mockResolvedValue([{ _id: "user-2", username: "redeemer", redemptionsCount: 1 }]);
+      jest.mocked(getMostUsedWord).mockResolvedValue([{ _id: "hello", count: 2 }]);
+      jest.mocked(getFollowersCount).mockResolvedValue(4);
 
-      const result = await StreamSessionsService.getStreamSessionStatistics(fakeSession as any, {
+      const result = await StreamSessionsService.getStreamSessionStatistics(fakeSession, {
         limitTopRedemptionsUsers: 1,
         limitMostUsedWords: 1,
         limitTopMessageUsers: 1,
@@ -210,7 +208,7 @@ describe("Stream Sessions Service", () => {
 
   describe("getStreamSessionsCount", () => {
     it("should return the count of stream sessions for a filter", async () => {
-      const countSpy = jest.spyOn(StreamSession, "countDocuments").mockResolvedValue(4 as any);
+      const countSpy = jest.spyOn(StreamSession, "countDocuments").mockResolvedValue(4);
 
       const result = await StreamSessionsService.getStreamSessionsCount({ sessionStart: { $exists: true } });
 
@@ -222,7 +220,7 @@ describe("Stream Sessions Service", () => {
   describe("createStreamSession", () => {
     it("should create a new stream session", async () => {
       const fakeSession = createFakeStreamSession();
-      const createSpy = jest.spyOn(StreamSession, "create").mockResolvedValue(fakeSession as any);
+      const createSpy = jest.spyOn(StreamSession, "create").mockResolvedValue(fakeSession as never);
 
       const createData: StreamSessionCreateData = {
         sessionStart: fakeSession.sessionStart,
@@ -241,12 +239,12 @@ describe("Stream Sessions Service", () => {
   describe("updateStreamSessionById", () => {
     it("should update a stream session by id", async () => {
       const fakeSession = createFakeStreamSession();
-      const updateSpy = jest.spyOn(StreamSession, "findByIdAndUpdate").mockResolvedValue(fakeSession as any);
+      const updateSpy = jest.spyOn(StreamSession, "findByIdAndUpdate").mockResolvedValue(fakeSession);
 
       const timestamp = new Date().getTime();
-      const result = await StreamSessionsService.updateStreamSessionById("session-1", {
+      const result = await StreamSessionsService.updateStreamSessionById(fakeSession._id, {
         $set: { [`viewers.${timestamp}`]: 320 }
-      } as any);
+      });
 
       expect(updateSpy).toHaveBeenCalledWith(
         fakeSession._id,

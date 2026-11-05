@@ -1,9 +1,10 @@
 import z from "zod";
 import { MoodSchema } from "@models";
 import { TagSchema } from "@models";
+import { zObjectId } from "../../utils/schemas";
 
 export const ChatCommandSchema = z.object({
-  _id: z.string(),
+  _id: zObjectId(),
   createdAt: z.date(),
   updatedAt: z.date(),
   name: z.string().min(1),
@@ -11,8 +12,8 @@ export const ChatCommandSchema = z.object({
   enabled: z.boolean().default(true).optional(),
   uses: z.number(),
   messages: z.array(z.string()),
-  tag: z.union([z.string(), TagSchema]),
-  mood: z.union([z.string(), MoodSchema]),
+  tag: z.union([zObjectId(), TagSchema]),
+  mood: z.union([zObjectId(), MoodSchema]),
   aliases: z.array(z.string()),
   privilege: z.number().min(0).max(10)
 });
@@ -26,8 +27,8 @@ export const ChatCommandCreateSchema = ChatCommandSchema.omit({
   mood: true,
   uses: true
 }).extend({
-  tag: z.string(),
-  mood: z.string(),
+  tag: zObjectId(),
+  mood: zObjectId(),
   privilege: z.number().min(0).max(10).optional()
 });
 

@@ -3,6 +3,7 @@ import { RequestParams, RequestSearch } from "../types";
 import { filterMoodsByUrlParams } from "./filters";
 import { createMood, deleteMoodById, getMoods, getMoodsCount, updateMoodById } from "@services";
 import { MoodCreateData, MoodUpdateData } from "@models";
+import { RequestWithObjectId } from "@middlewares";
 
 export const getMoodsList = async (req: Request<{}, {}, {}, RequestSearch>, res: Response, next: NextFunction) => {
   const { page = 1, limit = 50 } = req.query;
@@ -41,11 +42,11 @@ export const addNewMood = async (req: Request<{}, {}, MoodCreateData, {}>, res: 
 };
 
 export const editMoodById = async (
-  req: Request<RequestParams, {}, MoodUpdateData, {}>,
+  req: RequestWithObjectId<RequestParams, {}, MoodUpdateData>,
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const id = req.objectId;
   const { name, enabled } = req.body;
 
   const updateData = { name, enabled };
@@ -61,8 +62,8 @@ export const editMoodById = async (
   }
 };
 
-export const deleteMood = async (req: Request<RequestParams, {}, {}, {}>, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+export const deleteMood = async (req: RequestWithObjectId, res: Response, next: NextFunction) => {
+  const id = req.objectId;
 
   try {
     await deleteMoodById(id);

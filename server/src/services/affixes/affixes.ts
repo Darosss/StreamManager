@@ -1,7 +1,7 @@
 import { Affix, AffixCreateData, AffixDocument, AffixUpdateData } from "@models";
 import { getChatCommandsCount, getMessageCategoriesCount, getTimersCount, getTriggersCount } from "@services";
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, Types, UpdateQuery } from "mongoose";
 import { ManyAffixesFindOptions } from "./types";
 
 export const getAffixes = async (filter: QueryFilter<AffixDocument> = {}, findOptions: ManyAffixesFindOptions) => {
@@ -51,7 +51,7 @@ export const updateAffixes = async (
   }
 };
 
-export const updateAffixById = async (id: string, updateData: UpdateQuery<AffixUpdateData>) => {
+export const updateAffixById = async (id: Types.ObjectId, updateData: UpdateQuery<AffixUpdateData>) => {
   try {
     const updatedAffix = await Affix.findByIdAndUpdate(id, updateData, {
       new: true
@@ -66,7 +66,7 @@ export const updateAffixById = async (id: string, updateData: UpdateQuery<AffixU
   }
 };
 
-export const deleteAffixById = async (id: string) => {
+export const deleteAffixById = async (id: Types.ObjectId) => {
   try {
     const filter = { affix: id };
     const countAffixesInDocs = await Promise.all([
@@ -91,7 +91,7 @@ export const deleteAffixById = async (id: string) => {
   }
 };
 
-export const getAffixById = async (id: string, projection: ProjectionType<AffixDocument> = {}) => {
+export const getAffixById = async (id: Types.ObjectId, projection: ProjectionType<AffixDocument> = {}) => {
   try {
     const foundAffix = await Affix.findById(id, projection);
 

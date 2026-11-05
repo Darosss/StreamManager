@@ -1,5 +1,5 @@
 import { checkExistResource, AppError, handleAppError, logger } from "@utils";
-import { ProjectionType, QueryFilter, UpdateQuery } from "mongoose";
+import { ProjectionType, QueryFilter, Types, UpdateQuery } from "mongoose";
 import {
   CreateSongReturn,
   ManageSongLikesAction,
@@ -58,7 +58,7 @@ const handleExistingSongCreate = async (createData: SongCreateData): Promise<Cre
   );
 
   if (foundSong) {
-    const updatedSong = await updateSongById(foundSong._id.toString(), createData);
+    const updatedSong = await updateSongById(foundSong._id, createData);
     return { isNew: false, song: updatedSong! };
   }
 };
@@ -101,7 +101,7 @@ export const updateSongs = async (filter: QueryFilter<SongDocument> = {}, update
   }
 };
 
-export const updateSongById = async (id: string, updateData: UpdateQuery<SongUpdateData>) => {
+export const updateSongById = async (id: Types.ObjectId, updateData: UpdateQuery<SongUpdateData>) => {
   try {
     const updatedSong = await Songs.findByIdAndUpdate(id, updateData, {
       new: true
@@ -119,7 +119,7 @@ export const updateSongById = async (id: string, updateData: UpdateQuery<SongUpd
 export const manageSongLikesById = async (
   idData: ManageSongLikesByIds,
   action: ManageSongLikesAction,
-  userId: string
+  userId: Types.ObjectId
 ) => {
   const filter: QueryFilter<SongDocument> =
     "id" in idData
@@ -144,7 +144,7 @@ export const manageSongLikesById = async (
   }
 };
 
-export const deleteSongById = async (id: string) => {
+export const deleteSongById = async (id: Types.ObjectId) => {
   try {
     const deletedSong = await Songs.findByIdAndDelete(id);
 
@@ -157,7 +157,7 @@ export const deleteSongById = async (id: string) => {
   }
 };
 
-export const getSongById = async (id: string, projection: ProjectionType<SongDocument> = {}) => {
+export const getSongById = async (id: Types.ObjectId, projection: ProjectionType<SongDocument> = {}) => {
   try {
     const foundSong = await Songs.findById(id, projection);
 
@@ -181,7 +181,7 @@ export const getOneSong = async (filter: QueryFilter<SongDocument> = {}, findOpt
     handleAppError(err);
   }
 };
-export const updateSongUsesById = async (id: string, useType: UsesType) => {
+export const updateSongUsesById = async (id: Types.ObjectId, useType: UsesType) => {
   const incrementData = {
     botUses: useType === "botUses" ? 1 : 0,
     songRequestUses: useType === "songRequestUses" ? 1 : 0,
