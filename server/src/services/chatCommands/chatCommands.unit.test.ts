@@ -126,7 +126,7 @@ describe("Chat Commands Service", () => {
 
       const result = await ChatCommandsService.createChatCommand(createData);
 
-      expect(createSpy).toHaveBeenCalledWith(createData);
+      expect(createSpy).toHaveBeenCalledWith([createData]);
       expect(result).toBe(fakeCommand);
     });
   });
