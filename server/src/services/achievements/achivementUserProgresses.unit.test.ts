@@ -117,12 +117,12 @@ describe("Achievement User Progresses Service", () => {
     it("should return a single achievement progress", async () => {
       const fakeProgress = createFakeProgress();
       const findOneSpy = jest.spyOn(AchievementUserProgress, "findOne").mockResolvedValue(fakeProgress as never);
-
+      const fakeAch = createFakeAchievement();
       const result = await AchievementUserProgressesService.getOneAchievementUserProgress({
-        achievement: createFakeAchievement()._id
+        achievement: fakeAch._id
       });
 
-      expect(findOneSpy).toHaveBeenCalledWith({ achievement: createFakeAchievement()._id });
+      expect(findOneSpy).toHaveBeenCalledWith({ achievement: fakeAch._id });
       expect(result).toEqual(fakeProgress);
     });
   });
