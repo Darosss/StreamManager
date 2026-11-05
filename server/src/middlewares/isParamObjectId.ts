@@ -17,12 +17,14 @@ export const isParamObjectId = (req: Request<RequestParams>, res: Response, next
 // any - same as for express generic
 //  Request<P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = QueryString.ParsedQs, Locals extends Record<string, any> = Record<string, any>>
 // import Request
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type RequestWithObjectId<P extends RequestParams = RequestParams, ResBody = any, ReqQuery = Query> = Request<
-  P,
-  ResBody,
-  ReqQuery
-> & { objectId: Types.ObjectId };
+export type RequestWithObjectId<
+  P extends RequestParams = RequestParams,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ResBody = any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ReqBody = any,
+  ReqQuery = Query
+> = Request<P, ResBody, ReqBody, ReqQuery> & { objectId: Types.ObjectId };
 
 type HandlerWithObjectId = (req: RequestWithObjectId, res: Response, next: NextFunction) => unknown;
 
