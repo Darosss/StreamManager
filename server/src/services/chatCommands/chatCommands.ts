@@ -1,5 +1,5 @@
 import { ChatCommand, ChatCommandCreateData, ChatCommandDocument, ChatCommandUpdateData } from "@models";
-import { checkExistResource, AppError, handleAppError, logger, flattenObject } from "@utils";
+import { checkExistResource, AppError, handleAppError, logger } from "@utils";
 import { QueryFilter, PipelineStage, UpdateQuery, Types } from "mongoose";
 import { ChatCommandsFindOptions, ManyChatCommandsFindOptions } from "./types";
 import { modesPipeline } from "../aggregations";
@@ -53,11 +53,18 @@ export const getChatCommandsCount = async (filter: QueryFilter<ChatCommandDocume
   return await ChatCommand.countDocuments(filter);
 };
 
-export const createChatCommand = async (createData: ChatCommandCreateData) => createChatCommands([createData]);
+export const createChatCommand = async (createData: ChatCommandCreateData) => {
+  try {
+    return await createChatCommands([createData]);
+  } catch (err) {
+    logger.error(`Error occured while creating chat command(s): ${err}`);
+    return handleAppError(err);
+  }
+};
 
 export const createChatCommands = async (createData: ChatCommandCreateData[]) => {
   try {
-    const createdCommand = await ChatCommand.create(flattenObject(createData));
+    const createdCommand = await ChatCommand.create(createData);
 
     if (!createdCommand) {
       throw new AppError(400, "Couldn't create chat commands");
