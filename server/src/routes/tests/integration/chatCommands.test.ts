@@ -68,7 +68,7 @@ describe("Chat commands API", () => {
 
       expect(res.statusCode).toEqual(200);
       expect(res.body.count).toBeGreaterThanOrEqual(1);
-      expect(res.body.data[0]._id).toEqual(command._id.toString());
+      expect(res.body.data[0]._id.toString()).toEqual(command._id.toString());
       expect(res.body.data[0].messages).toEqual(expect.arrayContaining(command.messages));
     });
   });
@@ -125,7 +125,7 @@ describe("Chat commands API", () => {
         tag: newTag._id
       });
       expect(res.statusCode).toEqual(200);
-      expect(res.body.data.tag).toEqual(newTag._id.toString());
+      expect(res.body.data.tag.toString()).toEqual(newTag._id.toString());
     });
     it("should update mood chat command correctly", async () => {
       const { tag, mood } = await createTestTagAndMood();
@@ -136,7 +136,7 @@ describe("Chat commands API", () => {
         mood: newMood._id
       });
       expect(res.statusCode).toEqual(200);
-      expect(res.body.data.mood).toEqual(newMood._id.toString());
+      expect(res.body.data.mood.toString()).toEqual(newMood._id.toString());
     });
   });
 
