@@ -1,7 +1,7 @@
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
+import eslintReact from "@eslint-react/eslint-plugin";
 import json from "@eslint/json";
 import css from "@eslint/css";
 import { defineConfig } from "eslint/config";
@@ -24,7 +24,7 @@ export default defineConfig([
     },
   },
   tseslint.configs.recommended,
-  pluginReact.configs.flat["jsx-runtime"],
+  eslintReact.configs.recommended,
   {
     files: ["**/*.json"],
     plugins: { json },
