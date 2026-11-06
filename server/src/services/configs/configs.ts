@@ -1,5 +1,5 @@
 import { Config, ConfigUpdateData } from "@models";
-import { handleAppError, logger } from "@utils";
+import { flattenObject, handleAppError, logger } from "@utils";
 import { UpdateQuery } from "mongoose";
 
 export const getConfigs = async () => {
@@ -31,7 +31,7 @@ export const createNewConfig = async () => {
 
 export const updateConfigs = async (updateData: UpdateQuery<ConfigUpdateData>) => {
   try {
-    const config = await Config.findOneAndUpdate({}, updateData, {
+    const config = await Config.findOneAndUpdate({}, flattenObject(updateData), {
       new: true,
       upsert: true
     });

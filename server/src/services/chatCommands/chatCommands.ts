@@ -1,5 +1,5 @@
 import { ChatCommand, ChatCommandCreateData, ChatCommandDocument, ChatCommandUpdateData } from "@models";
-import { checkExistResource, AppError, handleAppError, logger } from "@utils";
+import { checkExistResource, AppError, handleAppError, logger, flattenObject } from "@utils";
 import { QueryFilter, PipelineStage, UpdateQuery, Types } from "mongoose";
 import { ChatCommandsFindOptions, ManyChatCommandsFindOptions } from "./types";
 import { modesPipeline } from "../aggregations";
@@ -94,7 +94,7 @@ export const getChatCommandById = async (id: Types.ObjectId, findOptions: ChatCo
 
 export const updateChatCommandById = async (id: Types.ObjectId, updateData: UpdateQuery<ChatCommandUpdateData>) => {
   try {
-    const updatedChatCommand = await ChatCommand.findByIdAndUpdate(id, updateData, {
+    const updatedChatCommand = await ChatCommand.findByIdAndUpdate(id, flattenObject(updateData), {
       new: true
     });
 

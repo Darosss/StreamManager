@@ -10,7 +10,6 @@ import {
   updateChatCommandById
 } from "@services";
 import { ChatCommandCreateData, ChatCommandUpdateData } from "@models";
-import { flattenObject } from "@utils";
 import { RequestWithObjectId } from "@middlewares";
 
 export const getChatCommandsList = async (
@@ -72,7 +71,7 @@ export const editChatCommandById = async (
   const updateData = { name, description, enabled, aliases, tag, mood, messages, privilege };
 
   try {
-    const updatedChatCommand = await updateChatCommandById(id, flattenObject(updateData));
+    const updatedChatCommand = await updateChatCommandById(id, updateData);
 
     res.status(200).send({
       message: "Chat command updated successfully",
