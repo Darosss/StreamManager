@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields, commonChatFeaturesFields, descriptionField } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { ChatCommandDocument } from "./types";
 
 const ChatCommandSchema = new Schema<ChatCommandDocument>(
@@ -18,4 +18,4 @@ const ChatCommandSchema = new Schema<ChatCommandDocument>(
   { timestamps: true }
 );
 
-export const ChatCommand: Model<ChatCommandDocument> = model("ChatCommands", ChatCommandSchema);
+export const ChatCommand = model("ChatCommands", ChatCommandSchema);

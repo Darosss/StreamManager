@@ -1,5 +1,5 @@
 import { nameField } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { WidgetsDocument } from "./types";
 import { LayoutBreakpointSchema } from "../layouts";
 
@@ -20,4 +20,4 @@ const WidgetsModel: Schema<WidgetsDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Widgets: Model<WidgetsDocument> = model("Widgets", WidgetsModel);
+export const Widgets = model("Widgets", WidgetsModel);

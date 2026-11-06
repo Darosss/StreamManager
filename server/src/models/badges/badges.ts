@@ -1,4 +1,4 @@
-import { Model, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { BadgeDocument } from "./types";
 
 const badgeSchema = new Schema<BadgeDocument>(
@@ -15,4 +15,4 @@ const badgeSchema = new Schema<BadgeDocument>(
   { timestamps: true }
 );
 
-export const Badge: Model<BadgeDocument> = model("Badge", badgeSchema);
+export const Badge = model("Badge", badgeSchema);

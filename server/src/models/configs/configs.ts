@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { configDefaults } from "@defaults";
 import { prefixChanceField, suffixChanceField } from "@utils";
 import { ConfigDocument } from "./types";
@@ -165,4 +165,4 @@ const ConfigSchema = new Schema<ConfigDocument>(
   }
 );
 
-export const Config: Model<ConfigDocument> = model("Configs", ConfigSchema);
+export const Config = model("Configs", ConfigSchema);

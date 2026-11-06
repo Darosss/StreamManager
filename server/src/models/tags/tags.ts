@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TagDocument } from "./types";
 
 const TagSchema: Schema<TagDocument> = new Schema(
@@ -9,4 +9,4 @@ const TagSchema: Schema<TagDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Tag: Model<TagDocument> = model("Tags", TagSchema);
+export const Tag = model("Tags", TagSchema);

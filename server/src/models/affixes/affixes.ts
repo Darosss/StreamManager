@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields, prefixChanceField, prefixesField, suffixChanceField, suffixesField } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { AffixDocument } from "./types";
 
 const AffixSchema: Schema<AffixDocument> = new Schema(
@@ -13,4 +13,4 @@ const AffixSchema: Schema<AffixDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Affix: Model<AffixDocument> = model("Affixes", AffixSchema);
+export const Affix = model("Affixes", AffixSchema);

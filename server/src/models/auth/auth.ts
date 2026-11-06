@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { AuthDocument } from "./types";
 import { encryptionKey } from "@configs";
 import { encryptToken } from "@utils";
@@ -45,4 +45,4 @@ AuthSchema.pre("save", async function () {
   }
 });
 
-export const AuthToken: Model<AuthDocument> = model("AuthTokens", AuthSchema);
+export const AuthToken = model("AuthTokens", AuthSchema);

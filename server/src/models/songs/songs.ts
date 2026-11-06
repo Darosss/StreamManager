@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { SongDocument } from "./types";
 
 const SongsSchema: Schema<SongDocument> = new Schema(
@@ -70,4 +70,4 @@ const SongsSchema: Schema<SongDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Songs: Model<SongDocument> = model("Songs", SongsSchema);
+export const Songs = model("Songs", SongsSchema);

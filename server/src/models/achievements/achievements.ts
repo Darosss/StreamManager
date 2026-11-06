@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import {
   AchievementCustomModel,
   AchievementDocument,
@@ -62,9 +62,6 @@ const AchievementUserProgressSchema = new Schema<AchievementUserProgressDocument
   { timestamps: true }
 );
 
-export const AchievementUserProgress: Model<AchievementUserProgressDocument> = model(
-  "AchievementProgress",
-  AchievementUserProgressSchema
-);
-export const AchievementStage: Model<AchievementStageDocument> = model("AchievementStage", AchievementStageSchema);
-export const Achievement: Model<AchievementDocument> = model("Achievement", AchivementSchema);
+export const AchievementUserProgress = model("AchievementProgress", AchievementUserProgressSchema);
+export const AchievementStage = model("AchievementStage", AchievementStageSchema);
+export const Achievement = model("Achievement", AchivementSchema);

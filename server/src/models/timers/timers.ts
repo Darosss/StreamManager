@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields, commonChatFeaturesFields, delayField, descriptionField } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TimerDocument } from "./types";
 
 const TimerSchema: Schema<TimerDocument> = new Schema(
@@ -16,4 +16,4 @@ const TimerSchema: Schema<TimerDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Timer: Model<TimerDocument> = model("Timers", TimerSchema);
+export const Timer = model("Timers", TimerSchema);

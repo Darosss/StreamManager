@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { RedemptionDocument } from "./types";
 
 const RedemptionSchema: Schema<RedemptionDocument> = new Schema({
@@ -14,4 +14,4 @@ const RedemptionSchema: Schema<RedemptionDocument> = new Schema({
   message: { type: String }
 });
 
-export const Redemption: Model<RedemptionDocument> = model("Redemptions", RedemptionSchema);
+export const Redemption = model("Redemptions", RedemptionSchema);

@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { MessageDocument } from "./types";
 
 const MessageSchema: Schema<MessageDocument> = new Schema({
@@ -8,4 +8,4 @@ const MessageSchema: Schema<MessageDocument> = new Schema({
   ownerUsername: { type: String, required: true }
 });
 
-export const Message: Model<MessageDocument> = model("Message", MessageSchema);
+export const Message = model("Message", MessageSchema);

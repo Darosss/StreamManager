@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { SessionEventModel, StreamSessionDocument } from "./types";
 
 const EventsSchema = new Schema<SessionEventModel>(
@@ -40,4 +40,4 @@ const StreamSessionSchema: Schema<StreamSessionDocument> = new Schema({
   events: [EventsSchema]
 });
 
-export const StreamSession: Model<StreamSessionDocument> = model("Sessions", StreamSessionSchema);
+export const StreamSession = model("Sessions", StreamSessionSchema);

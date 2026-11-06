@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { UserDocument } from "./types";
 
 const UserSchema: Schema<UserDocument> = new Schema(
@@ -23,4 +23,4 @@ const UserSchema: Schema<UserDocument> = new Schema(
   { timestamps: true }
 );
 
-export const User: Model<UserDocument> = model("User", UserSchema);
+export const User = model("User", UserSchema);

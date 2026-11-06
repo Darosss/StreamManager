@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { MoodDocument } from "./types";
 
 const MoodSchema: Schema<MoodDocument> = new Schema(
@@ -9,4 +9,4 @@ const MoodSchema: Schema<MoodDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Mood: Model<MoodDocument> = model("Moods", MoodSchema);
+export const Mood = model("Moods", MoodSchema);

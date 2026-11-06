@@ -1,5 +1,5 @@
 import { baseChatFeaturesFields, commonChatFeaturesFields, delayField } from "@utils";
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TriggerDocument } from "./types";
 
 const TriggerSchema: Schema<TriggerDocument> = new Schema(
@@ -15,4 +15,4 @@ const TriggerSchema: Schema<TriggerDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Trigger: Model<TriggerDocument> = model("Triggers", TriggerSchema);
+export const Trigger = model("Triggers", TriggerSchema);

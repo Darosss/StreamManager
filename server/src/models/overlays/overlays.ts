@@ -1,4 +1,4 @@
-import { Model, model, Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { OverlayDocument } from "./types";
 import { nameField } from "@utils";
 import { LayoutBreakpointSchema } from "../layouts";
@@ -25,4 +25,4 @@ const OverlaySchema: Schema<OverlayDocument> = new Schema(
   { timestamps: true }
 );
 
-export const Overlay: Model<OverlayDocument> = model("Overlays", OverlaySchema);
+export const Overlay = model("Overlays", OverlaySchema);
