@@ -123,6 +123,18 @@ export const updateOneAchievement = async (
     handleAppError(err);
   }
 };
+export const updateOneCustomAchievement = async (
+  filter: QueryFilter<AchievementDocument>,
+  updateData: UpdateQuery<AchievementUpdateData>
+) => {
+  try {
+    const updatedAchievement = await updateOneAchievement({ ...filter, custom: { $exists: true } }, updateData);
+    return updatedAchievement;
+  } catch (err) {
+    logger.error(`Error occured while updating achievement with (${JSON.stringify(filter)}). ${err}`);
+    handleAppError(err);
+  }
+};
 
 export const createCustomAchievement = async (createData: CustomAchievementCreateData) => {
   try {

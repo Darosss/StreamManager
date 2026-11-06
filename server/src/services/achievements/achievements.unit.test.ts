@@ -143,6 +143,23 @@ describe("Achievements Service", () => {
       expect(result).toEqual(fakeAchievement);
     });
   });
+  describe("updateOneCustomAchievement", () => {
+    it("should update a custom achievement and return it", async () => {
+      const fakeAchievement = createFakeAchievement();
+      const updateSpy = jest.spyOn(Achievement, "findOneAndUpdate").mockResolvedValue(fakeAchievement);
+      const result = await AchievementsService.updateOneCustomAchievement(
+        { name: "Custom Test Achievement" },
+        { $set: { name: "Updated" } }
+      );
+
+      expect(updateSpy).toHaveBeenCalledWith(
+        { name: "Custom Test Achievement", custom: { $exists: true } },
+        { $set: { name: "Updated" } },
+        { new: true }
+      );
+      expect(result).toEqual(fakeAchievement);
+    });
+  });
 
   describe("createCustomAchievement", () => {
     it("should create a custom achievement with valid includes action", async () => {

@@ -9,7 +9,8 @@ import {
   getAchievementsCount,
   getAchievementsProgressesByUserId as getAchievementsProgressesByUserIdService,
   deleteCustomAchievementById as deleteCustomAchievementByIdService,
-  updateOneAchievement
+  updateOneAchievement,
+  updateOneCustomAchievement
 } from "@services";
 import { AppError, checkExistResource, logger } from "@utils";
 import { filterAchievementsByUrlParams } from "./filters";
@@ -151,7 +152,7 @@ export const editCustomAchievementById = async (
   };
 
   try {
-    const updatedAchievement = await updateOneAchievement({ _id: id }, updateData);
+    const updatedAchievement = await updateOneCustomAchievement({ _id: id }, updateData);
 
     const foundAchievement = checkExistResource(updatedAchievement, "Achievement");
     res.status(200).send({
