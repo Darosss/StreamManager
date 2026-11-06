@@ -1,8 +1,13 @@
 import { QueryObserverResult } from "@tanstack/react-query";
-import { Affix, useGetAffixes } from "src/services/affixes";
-import { PaginationData } from "src/services/api";
-import { Mood, useGetMoods } from "src/services/moods";
-import { Tag, useGetTags } from "src/services/tags";
+import {
+  Affix,
+  useGetAffixes,
+  PaginationData,
+  Mood,
+  Tag,
+  useGetMoods,
+  useGetTags,
+} from "@services";
 
 export interface AllModesReturn {
   tags: Tag[];

@@ -7,18 +7,18 @@ import { useMemo } from "react";
 import {
   BaseOverlayAchievementsRarity,
   OverlayAchievementsStyleParsed,
-} from "src/layout/overlays/types";
+} from "@layout";
 
 export const useObtainedAchievementContentData = (
   data: ObtainAchievementDataWithCollectedAchievement | null,
-  styles: OverlayAchievementsStyleParsed
+  styles: OverlayAchievementsStyleParsed,
 ) =>
   useMemo(() => {
     if (!data) return null;
     const { achievement, stage } = data;
     const currentRarity = stage.data.rarity;
     const rarityStyle = Object.keys(styles).find(
-      (key) => key.includes("rarity") && key.includes(`${currentRarity}`)
+      (key) => key.includes("rarity") && key.includes(`${currentRarity}`),
     ) as keyof typeof styles;
 
     const currentRarityStyle = rarityStyle
@@ -59,7 +59,7 @@ export const useObtainedAchievementContentData = (
 
 export const useProgressContentData = (
   data: ObtainAchievementDataWithProgressOnly | null,
-  styles: OverlayAchievementsStyleParsed
+  styles: OverlayAchievementsStyleParsed,
 ) =>
   useMemo(() => {
     if (!data) return null;
@@ -69,7 +69,7 @@ export const useProgressContentData = (
     } = data;
     const currentRarity = currentStage?.rarity;
     const rarityStyle = Object.keys(styles).find(
-      (key) => key.includes("rarity") && key.includes(`${currentRarity}`)
+      (key) => key.includes("rarity") && key.includes(`${currentRarity}`),
     ) as keyof typeof styles;
 
     const currentRarityStyle = rarityStyle
