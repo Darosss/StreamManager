@@ -11,6 +11,7 @@ import PreviewImageSelector from "./PreviewImageSelector";
 import StyleCSSEditor from "./StyleCSSEditor";
 import { useSocketContext } from "@socket";
 import {
+  Overlay as OverlayType,
   useEditOverlay,
   useGetOverlayById,
   useRefetchOverlayById,
@@ -27,6 +28,7 @@ import { RootStore } from "@redux/store";
 import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import { ResponsiveLayouts } from "react-grid-layout";
 
 const components = new Map([
   [overlaysKeys.overlayRedemptions, Redemptions],
@@ -94,8 +96,8 @@ export default function Overlay(params: { editor?: boolean }) {
   if (isLoading || !overlayData) return <Loading />;
 
   const handleOnEditOverlay = (
-    layoutState: ReactGridLayout.Layouts,
-    toolboxState: ReactGridLayout.Layouts,
+    layoutState: ResponsiveLayouts,
+    toolboxState: ResponsiveLayouts,
   ) => {
     if (!overlayId) {
       addNotify({
@@ -105,13 +107,26 @@ export default function Overlay(params: { editor?: boolean }) {
       });
       return;
     }
-    dispatch(setLayout(layoutState));
-    dispatch(setToolbox(toolboxState));
+
+    const filteredLayout: OverlayType["layout"] = {};
+    for (const [key, layoutItem] of Object.entries(layoutState)) {
+      if (!layoutItem) continue;
+
+      filteredLayout[key] = [...layoutItem];
+    }
+    const filteredToolbox: OverlayType["toolbox"] = {};
+    for (const [key, toolboxItem] of Object.entries(toolboxState)) {
+      if (!toolboxItem) continue;
+
+      filteredToolbox[key] = [...toolboxItem];
+    }
+    dispatch(setLayout(filteredLayout));
+    dispatch(setToolbox(filteredToolbox));
     editOverlayMutation.mutate({
       id: overlayId,
       updatedOverlay: {
-        layout: layoutState,
-        toolbox: toolboxState,
+        layout: filteredLayout,
+        toolbox: filteredToolbox,
       },
     });
   };
