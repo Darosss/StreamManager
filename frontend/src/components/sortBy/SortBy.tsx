@@ -59,7 +59,7 @@ export default function SortBy<OptionsKeys extends string>({
       <div className="sort-by__content">
         {Object.entries(options).map(([key, value]) => {
           return (
-            <div>
+            <div key={key}>
               <Button
                 {...buttonsProps}
                 className="sort-by__button"

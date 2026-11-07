@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
+import React, { JSX, useCallback, useEffect, useState } from "react";
 import {
   Layout,
   LayoutItem,
@@ -10,6 +10,7 @@ import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
 import { Button } from "@components/ui/button";
 import Modal from "@components/modal";
+import LayoutItems from "./LayoutItems";
 
 type CurrentBreakpointState = [
   string,
@@ -25,6 +26,8 @@ interface ReactGridProps {
   onEdit: (layout: ResponsiveLayouts, toolbox: ResponsiveLayouts) => void;
   showMenu?: boolean;
 }
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 export default function ReactGrid({
   layoutName,
@@ -92,10 +95,6 @@ export default function ReactGrid({
     setToolbox({ ...toolboxState });
   }, [toolboxState]);
 
-  const ResponsiveReactGridLayout = useMemo(
-    () => WidthProvider(Responsive),
-    [],
-  );
   const onLayoutChange = (currLayout: Layout) => {
     setLayout((prevLayouts) => ({
       ...prevLayouts,
@@ -146,33 +145,6 @@ export default function ReactGrid({
       };
     });
   };
-
-  const generateLayoutItems = () => {
-    return layout[currentBreakpoint]?.map((item) => {
-      const MapComponent = componentsMap.get(item.i);
-      if (!MapComponent) return null;
-      return (
-        <div key={item.i} className={`${isEdit ? "react-grid-item-edit" : ""}`}>
-          {isEdit ? (
-            <>
-              <div
-                className="grid-hide-button common-button"
-                onClick={() => onPutItem(item)}
-              >
-                &times;
-              </div>
-
-              <div className="grid-name-div"> {item.i} </div>
-            </>
-          ) : null}
-          <span>
-            <MapComponent />
-          </span>
-        </div>
-      );
-    });
-  };
-
   return (
     <div>
       {showMenu ? (
@@ -186,7 +158,6 @@ export default function ReactGrid({
           editFn={() => onEdit(layout, toolbox)}
         />
       ) : null}
-
       <ResponsiveReactGridLayout
         onLayoutChange={onLayoutChange}
         style={{ marginRight: "1rem" }}
@@ -206,7 +177,13 @@ export default function ReactGrid({
           xxs: [2, 2],
         }}
       >
-        {generateLayoutItems()}
+        {LayoutItems({
+          layout,
+          currentBreakpoint,
+          isEdit,
+          onPutItem,
+          componentsMap,
+        })}
       </ResponsiveReactGridLayout>
     </div>
   );

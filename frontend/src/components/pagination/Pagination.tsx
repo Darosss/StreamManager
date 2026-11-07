@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { usePagination, DOTS, useLocalStorage } from "@hooks";
 import { useSearchParams } from "react-router";
+import PageSizeSelect from "./PageSizeSelect";
 
 export interface PaginationProps {
   totalCount?: number;
@@ -66,39 +67,11 @@ export default function Pagination({
     currentPageLoc,
   );
 
-  const PageSizeSelect = () => {
-    return (
-      <select
-        name="page-size"
-        className="page-size common-button primary-button"
-        value={pageSizeT}
-        onChange={(e) => {
-          setPageSize(Number(e.target.value));
-        }}
-      >
-        <option value={pageSizeT}>{pageSizeT}</option>
-        <option value={5}>5</option>
-        <option value={20}>20</option>
-        <option value={50}>50</option>
-        <option value={100}>100</option>
-        <option value={500}>500</option>
-      </select>
-    );
-  };
-
-  const TotalResults = () => {
-    return (
-      <div className="total-count">
-        Results: <span>{totalCount}</span>
-      </div>
-    );
-  };
-
   if (!paginationRange) {
     return (
       <div className="pagination-wrapper">
         Page size
-        <PageSizeSelect />
+        <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
       </div>
     );
   }
@@ -106,10 +79,10 @@ export default function Pagination({
   if (currentPage === 0 || paginationRange.length < 2) {
     return (
       <div className="pagination-wrapper">
-        <TotalResults />
+        <TotalResults totalCount={totalCount} />
         <div className="page-size-single">
           <label>Page size</label>
-          <PageSizeSelect />
+          <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
         </div>
       </div>
     );
@@ -134,17 +107,17 @@ export default function Pagination({
         >
           <div className="arrow left" />
         </li>
-        {paginationRange.map((pageNumber, index) => {
+        {paginationRange.map((pageNumber) => {
           if (pageNumber === DOTS) {
             return (
-              <li key={pageNumber + index} className="pagination-item dots">
+              <li key={pageNumber} className="pagination-item dots">
                 &#8230;
               </li>
             );
           }
           return (
             <li
-              key={index}
+              key={pageNumber}
               className={`pagination-item ${
                 pageNumber === currentPage ? "selected" : ""
               }`}
@@ -165,9 +138,19 @@ export default function Pagination({
         >
           <div className="arrow right" />
         </li>
-        <PageSizeSelect />
-        <TotalResults />
+        <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
+        <TotalResults totalCount={totalCount} />
       </ul>
+    </div>
+  );
+}
+interface TotalResultsProps {
+  totalCount: number;
+}
+function TotalResults({ totalCount }: TotalResultsProps) {
+  return (
+    <div className="total-count">
+      Results: <span>{totalCount}</span>
     </div>
   );
 }
