@@ -39,15 +39,17 @@ export default function Achievements() {
   const [itemsQueLength, setItemsQueLength] = useState(0);
 
   useEffect(() => {
+    let showAchQueueTimeout: null | number = null;
     const showQueueInterval = setInterval(() => {
       setShowAchievementsQueue(true);
 
-      setTimeout(() => {
+      showAchQueueTimeout = setTimeout(() => {
         setShowAchievementsQueue(false);
       }, 1000 * 5);
     }, 1000 * 30);
 
     return () => {
+      if (showAchQueueTimeout) clearTimeout(showAchQueueTimeout);
       clearInterval(showQueueInterval);
     };
   }, []);
