@@ -79,6 +79,7 @@ export default function BadgesImages() {
               {choosenBadge &&
                 badgeImagesResponseData.data.availableSizes.map(
                   (size, index) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     <React.Fragment key={index}>
                       <div>{size}</div>
                       <div>

@@ -25,7 +25,7 @@ export default function AudioInformation(props: AudioInformationProps) {
 
   const showCurrentSongProgress = () => {
     const [maxMinutes, maxSeconds] = convertSecondsToMS(
-      audioData?.duration || 0
+      audioData?.duration || 0,
     );
 
     const [currMinutes, currSeconds] = convertSecondsToMS(timer);
@@ -62,6 +62,7 @@ export default function AudioInformation(props: AudioInformationProps) {
           {[...songsInQue].map((song, index) => {
             const [songName, requester] = song;
             return (
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               <div key={index} className="audio-playlist-audio-list">
                 <div>{songName}</div>
                 <div>{`${requester ? `${requester}` : `default`}`}</div>

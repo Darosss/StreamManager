@@ -22,7 +22,7 @@ export default function AudioFolderCreate() {
   const handleDeleteFolder = (name: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the folder with name: ${name}?`
+        `Are you sure you want to delete the folder with name: ${name}?`,
       )
     )
       return;
@@ -38,9 +38,9 @@ export default function AudioFolderCreate() {
         </Button>
       </div>
       <div className="folders-create-list">
-        {foldersData?.data.map((folder, index) => {
+        {foldersData?.data.map((folder) => {
           return (
-            <div key={index} className="folder-file list-with-x-buttons">
+            <div key={folder} className="folder-file list-with-x-buttons">
               <div>
                 <Button
                   variant="danger"

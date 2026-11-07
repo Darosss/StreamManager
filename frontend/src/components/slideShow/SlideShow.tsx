@@ -22,7 +22,7 @@ export default function Slideshow({
   const [slideShowOn, setSlideShowOn] = useState(true);
 
   const toggleSlideShow = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setSlideShowOn(!slideShowOn);
     e.currentTarget.innerHTML = `${slideShowOn ? "&#9632;" : "&#9654;"}`;
@@ -39,9 +39,9 @@ export default function Slideshow({
       timeoutRef.current = setTimeout(
         () =>
           setIndex((prevIndex) =>
-            prevIndex === arrayChildren.length - 1 ? 0 : prevIndex + 1
+            prevIndex === arrayChildren.length - 1 ? 0 : prevIndex + 1,
           ),
-        SLIDE_DELAY
+        SLIDE_DELAY,
       );
     };
     if (slideShowOn) {
@@ -67,6 +67,7 @@ export default function Slideshow({
         >
           <div className="slide">
             {arrayChildren.map((children, index) => (
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               <React.Fragment key={index}>{children}</React.Fragment>
             ))}
           </div>
@@ -75,6 +76,7 @@ export default function Slideshow({
         <div className="slideshow-dots">
           {arrayChildren.map((_, arrayChildrenIndex) => (
             <div
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={arrayChildrenIndex}
               className={`slideshow-dot${
                 index === arrayChildrenIndex ? " active" : ""

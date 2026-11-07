@@ -68,11 +68,11 @@ function StyleCssEditorModalData() {
     <div className="style-css-editor-modal-data-wrapper">
       <div className="style-css-editor-head-menu">
         {styles
-          ? Object.keys(styles).map((key, index) => {
+          ? Object.keys(styles).map((key) => {
               const keyAsserted = key as keyof OverlayKeysStylesParsedType;
               const value = styles?.[keyAsserted];
               return (
-                <React.Fragment key={index}>
+                <React.Fragment key={key}>
                   <Button
                     variant={
                       choosenOverlayEdit[0] === keyAsserted

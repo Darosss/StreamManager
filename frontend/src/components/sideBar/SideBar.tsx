@@ -66,8 +66,8 @@ export default function SideBar() {
         <li>
           <ChangeTheme />
         </li>
-        {routes.map((route, index) => (
-          <li key={index} className="sidebar__sub-sidebar">
+        {routes.map((route) => (
+          <li key={route.title} className="sidebar__sub-sidebar">
             <SidebarSection
               content={{ route }}
               onClickHeader={() => handleHeaderClick(route.title)}

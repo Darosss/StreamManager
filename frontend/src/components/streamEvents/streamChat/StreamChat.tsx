@@ -67,9 +67,9 @@ export default function StreamChat() {
     <div id="stream-chat" className="stream-chat">
       <div className="widget-header chat-header">STREAM CHAT</div>
       <div className="stream-chat-messages" ref={messagesRef}>
-        {messagesDB.map((msg, index) => (
+        {messagesDB.map((msg) => (
           <Message
-            key={index}
+            key={msg._id}
             date={msg.date}
             username={msg.ownerUsername}
             message={msg.message}
@@ -77,9 +77,9 @@ export default function StreamChat() {
           />
         ))}
 
-        {messagesData.map(({ messageData, user }, index) => (
+        {messagesData.map(({ messageData, user }) => (
           <Message
-            key={index}
+            key={messageData.id}
             date={messageData.timestamp}
             username={user.username}
             message={messageData.message}

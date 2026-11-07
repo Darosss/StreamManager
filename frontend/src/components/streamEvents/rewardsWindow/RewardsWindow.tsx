@@ -94,9 +94,9 @@ export default function MessagesWindow() {
         <div>
           <Button onClick={() => dispatch(openModal())}>New alert sound</Button>
         </div>
-        {alertSounds?.map((reward, index) => (
+        {alertSounds?.map((reward) => (
           <div
-            key={index}
+            key={reward.id}
             style={{
               background: `${
                 isAlertSoundMp3OnServer(reward.title) ? "green" : "red"

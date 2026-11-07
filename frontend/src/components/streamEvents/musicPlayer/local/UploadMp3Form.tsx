@@ -13,7 +13,7 @@ export default function UploadMp3Form() {
   const { data: foldersData } = useGetFoldersList();
 
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
-    uploadMp3Data.endpoint(folderName)
+    uploadMp3Data.endpoint(folderName),
   );
 
   useEffect(() => {
@@ -44,11 +44,11 @@ export default function UploadMp3Form() {
         <div className="upload-folder-buttons-wrapper">
           <div>Upload to:</div>
           <div className="upload-folder-buttons">
-            {folders.map((folder, index) => {
+            {folders.map((folder) => {
               return (
                 <Button
                   variant={folderName === folder ? "primary" : "danger"}
-                  key={index}
+                  key={folder}
                   onClick={() => setFolderName(folder)}
                 >
                   {folder}
@@ -78,8 +78,8 @@ export default function UploadMp3Form() {
         <div className="upload-files-list">
           {fileList ? (
             <ul>
-              {[...fileList].map((file, i) => (
-                <li key={i}>
+              {[...fileList].map((file) => (
+                <li key={file.name}>
                   {file.name} - {file.type}
                 </li>
               ))}

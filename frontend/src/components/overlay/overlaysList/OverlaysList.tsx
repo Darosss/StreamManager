@@ -44,7 +44,7 @@ export default function OverlaysList() {
   const handleDeleteOverlay = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the overlay with ID: ${id}?`
+        `Are you sure you want to delete the overlay with ID: ${id}?`,
       )
     )
       return;
@@ -63,13 +63,13 @@ export default function OverlaysList() {
           />
           <Button onClick={handleCreateOverlay}>Create</Button>
         </CardboxItem>
-        {overlays.map((overlay, index) => (
+        {overlays.map((overlay) => (
           <CardboxItem
             title={overlay.name}
             onClickX={() => {
               handleDeleteOverlay(overlay._id);
             }}
-            key={index}
+            key={overlay._id}
           >
             <Link
               className="common-button primary-button"

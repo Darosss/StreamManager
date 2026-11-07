@@ -56,6 +56,7 @@ export default function AvailableBadgeImages({
           })
           .map(([name, extension], index) => (
             <div
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={index}
               className="one-badge-image-wrapper"
               onClick={() =>

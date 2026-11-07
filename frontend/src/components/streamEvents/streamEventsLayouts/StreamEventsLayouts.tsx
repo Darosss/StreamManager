@@ -42,7 +42,7 @@ export default function StreamNotifications() {
   const handleDeleteWidget = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the widget with ID: ${id}?`
+        `Are you sure you want to delete the widget with ID: ${id}?`,
       )
     )
       return;
@@ -61,13 +61,13 @@ export default function StreamNotifications() {
           />
           <Button onClick={handleCreateWidget}>Create</Button>
         </CardboxItem>
-        {layouts.map((layout, index) => (
+        {layouts.map((layout) => (
           <CardboxItem
             title={layout.name}
             onClickX={() => {
               handleDeleteWidget(layout._id);
             }}
-            key={index}
+            key={layout._id}
           >
             <Link className="common-button primary-button" to={`${layout._id}`}>
               Show

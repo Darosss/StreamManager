@@ -114,8 +114,8 @@ const MessagesDetails = ({ messages }: MessagesDetailsProp) => (
         </th>
       </tr>
     }
-    tbodyChildren={messages.map((message, index) => (
-      <tr key={index}>
+    tbodyChildren={messages.map((message) => (
+      <tr key={message._id}>
         <td className="message-time">
           <DateTooltip date={message.date} />
         </td>

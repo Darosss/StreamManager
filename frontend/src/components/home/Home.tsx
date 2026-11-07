@@ -52,8 +52,8 @@ export default function Home() {
           </section>
 
           <section className="home-navigation">
-            {routes.map((category, categoryIndex) => (
-              <div key={categoryIndex} className="nav-category">
+            {routes.map((category) => (
+              <div key={category.title} className="nav-category">
                 <div className="nav-category-header">
                   <h3 className="nav-category-title">{category.title}</h3>
                   <p className="nav-category-description">
@@ -62,9 +62,9 @@ export default function Home() {
                   <div className="nav-category-bg"></div>
                 </div>
                 <div className="nav-category-grid">
-                  {category.routes.map((route, routeIndex) => (
+                  {category.routes.map((route) => (
                     <Link
-                      key={routeIndex}
+                      key={route.path}
                       to={route.path}
                       className={`nav-card ${
                         route.path === "/" ? "nav-card-disabled" : ""
@@ -178,6 +178,7 @@ function ChatBackground() {
     <div className="home-chat-bg prevent-select">
       {messages.map((message, index) => {
         return (
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <div key={index} className="typewriter">
             <Message
               date={message.date}

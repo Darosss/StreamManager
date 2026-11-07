@@ -23,7 +23,7 @@ export default function AchievementStageEditData({
   onClickBadge,
 }: AchievementStageEditDataProps) {
   const { isSoundModalOpen, isGoalTime, stage } = useSelector(
-    (root: RootStore) => root.stages
+    (root: RootStore) => root.stages,
   );
 
   const [currentChoosenStageIndex, setCurrentChoosenStageIndex] = useState(-1);
@@ -48,6 +48,7 @@ export default function AchievementStageEditData({
   return (
     <>
       {stage.stageData.map((data, index) => (
+        // eslint-disable-next-line @eslint-react/no-array-index-key
         <tr key={index} className="stage-data-content stage-data-edit">
           <td className="stage-data-content-nr-delete-td">
             {index + 1}
@@ -71,7 +72,7 @@ export default function AchievementStageEditData({
                         index,
                         keyName: "name",
                         value: e.target.value,
-                      })
+                      }),
                     )
                   }
                 />
@@ -96,7 +97,7 @@ export default function AchievementStageEditData({
                         index,
                         keyName: "rarity",
                         value,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -114,7 +115,7 @@ export default function AchievementStageEditData({
                         index,
                         keyName: "goal",
                         value,
-                      })
+                      }),
                     )
                   }
                 />
@@ -129,7 +130,7 @@ export default function AchievementStageEditData({
                       index,
                       keyName: "goal",
                       value: e.target.valueAsNumber,
-                    })
+                    }),
                   )
                 }
               />
@@ -149,7 +150,7 @@ export default function AchievementStageEditData({
                     index,
                     keyName: "showTimeMs",
                     value: value * 1000,
-                  })
+                  }),
                 );
               }}
             />
@@ -190,7 +191,7 @@ export default function AchievementStageEditData({
                 index: currentChoosenStageIndex,
                 keyName: "sound",
                 value: `${basePath}\\${soundName}`,
-              })
+              }),
             );
           }}
           currentSoundPath={stage.stageData.at(currentChoosenStageIndex)?.sound}

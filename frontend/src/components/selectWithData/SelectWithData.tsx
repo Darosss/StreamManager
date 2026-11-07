@@ -8,7 +8,7 @@ interface SelectWithDataProps<T> {
   defaultValue: HTMLSelectElement["value"];
   nameKey: keyof T;
   valueKey: keyof T;
-  idKey?: keyof T;
+  idKey: keyof T;
   onChangeSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   searchName: string;
   onChangeSearchName: (name: string) => void;
@@ -43,9 +43,9 @@ export default function SelectWithData<T>({
         />
       </div>
       <select value={defaultValue} onChange={onChangeSelect}>
-        {data.map((value, index) => (
+        {data.map((value) => (
           <CustomSelectOption
-            key={idKey ? String(value[idKey]) : index}
+            key={String(value[idKey])}
             name={String(value[nameKey])}
             value={String(value[valueKey])}
           />
@@ -85,9 +85,9 @@ function SelectPagination({
   return (
     <div className="select-pagination-wrapper">
       <div className="select-pagination-pages">
-        {paginationRange?.map((val, index) => (
+        {paginationRange?.map((val) => (
           <Button
-            key={index}
+            key={val}
             variant={val === page ? "primary" : "secondary"}
             onClick={() => {
               const valAsNumber = Number(val);

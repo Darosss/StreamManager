@@ -40,6 +40,7 @@ export default function Message({
     if (!emotes || Object.keys(emotes).length === 0) return message;
     const data = getMessagesWithEmotes({ message, emotes });
     return data?.map(({ value, emoteId }, index) => (
+      // eslint-disable-next-line @eslint-react/no-array-index-key
       <React.Fragment key={index}>
         {emoteId ? (
           <img
@@ -89,6 +90,7 @@ function MessageBadges({ paths, style }: MessageBadgesProps) {
       {paths.map((path, index) =>
         path ? (
           <img
+            // eslint-disable-next-line @eslint-react/no-array-index-key
             key={index}
             src={`${viteBackendUrl}\\${path}`}
             alt="[]"
@@ -98,7 +100,7 @@ function MessageBadges({ paths, style }: MessageBadgesProps) {
               boxShadow: style?.boxShadow,
             }}
           />
-        ) : null
+        ) : null,
       )}
     </>
   );

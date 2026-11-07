@@ -33,9 +33,9 @@ export default function AchievementStageLists({
         </div>
       </div>
       {showSection || expandAll
-        ? achievement.stages.stageData.map((stage, index) => (
+        ? achievement.stages.stageData.map((stage) => (
             <AchievementStage
-              key={index}
+              key={stage.name + stage.stage}
               achievementId={achievement._id}
               stage={stage}
             />
@@ -52,18 +52,18 @@ interface AchievementStageProps {
 function AchievementStage({ achievementId, stage }: AchievementStageProps) {
   const { userId } = useParams();
   const { data: achivementsProgressData } = useGetUserAchievementsProgresses(
-    userId || ""
+    userId || "",
   );
 
   const foundProgresses = useMemo(
     () =>
       achivementsProgressData?.data.find(
-        (progress) => progress.achievement._id === achievementId
+        (progress) => progress.achievement._id === achievementId,
       ),
-    [achievementId, achivementsProgressData]
+    [achievementId, achivementsProgressData],
   );
   const foundProgress = foundProgresses?.progresses.find(
-    ([progressStage]) => progressStage === stage.stage
+    ([progressStage]) => progressStage === stage.stage,
   );
 
   return (

@@ -49,8 +49,8 @@ export default function SongUsersUses({ uses }: UsersUsesProps) {
           if (sortDescending) return b.uses - a.uses;
           return a.uses - b.uses;
         })
-        .map(({ username, userId, uses }, index) => (
-          <div key={index} className="song-users-data-list">
+        .map(({ username, userId, uses }) => (
+          <div key={userId} className="song-users-data-list">
             <div>
               <Link to={`/users/${userId}`} target="_blank">
                 {username}

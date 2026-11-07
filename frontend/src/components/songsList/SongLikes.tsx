@@ -65,8 +65,8 @@ export default function SongLikes({ likes }: SongLikesProps) {
 
           return false;
         })
-        .map(({ username, action, userId }, index) => (
-          <div key={index} className="song-users-data-list">
+        .map(({ username, action, userId }) => (
+          <div key={userId} className="song-users-data-list">
             <div>
               <Link to={`/users/${userId}`} target="_blank">
                 {username}
@@ -77,8 +77,8 @@ export default function SongLikes({ likes }: SongLikesProps) {
                 action === -1
                   ? "disliked-song"
                   : action === 0
-                  ? "unliked-song"
-                  : "liked-song"
+                    ? "unliked-song"
+                    : "liked-song"
               }`}
             >
               {SongLikesEnumActions[action]}

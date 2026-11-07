@@ -73,9 +73,9 @@ export default function ConfigsList() {
       </div>
 
       <div className="configs-list-tab-list-wrapper">
-        {Object.values(ConfigsListTabNames).map((tabName, index) => (
+        {Object.values(ConfigsListTabNames).map((tabName) => (
           <Button
-            key={index}
+            key={tabName}
             variant={currentTab === tabName ? "primary" : "danger"}
             onClick={() => setCurrentTab(tabName)}
           >

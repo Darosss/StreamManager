@@ -62,6 +62,7 @@ export default function AvailableAchievementSounds({
           })
           .map((path, index) => (
             <div
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={index}
               className={`one-achievement-stage-sounds-wrapper ${
                 currentSoundPath?.includes(path) ? "current-sound" : ""
@@ -91,7 +92,7 @@ function UploadAchievementStageSoundButtons({
   const [showUploadSound, setShowUploadSound] = useState(false);
 
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
-    "achievements/stages/sounds/upload"
+    "achievements/stages/sounds/upload",
   );
 
   useEffect(() => {

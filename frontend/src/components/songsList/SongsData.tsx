@@ -89,10 +89,10 @@ export default function SongsData({ data }: SongsDataProps) {
             </th>
           </tr>
         }
-        tbodyChildren={data.map((song, index) => {
+        tbodyChildren={data.map((song) => {
           return (
             <tr
-              key={index}
+              key={song._id}
               className="songs-data-table-song-details"
               onClick={() => {
                 setPrevievedSong(song);

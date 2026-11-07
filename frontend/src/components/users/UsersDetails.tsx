@@ -17,8 +17,8 @@ export default function UsersDetails({ users }: UsersDetailsProps) {
     <table id="table-users-list">
       <thead>
         <tr>
-          {userSortByData.map((data, index) => (
-            <th key={index}>
+          {userSortByData.map((data) => (
+            <th key={data.sortBy}>
               <SortByParamsButton
                 buttonText={data.buttonText}
                 sortBy={data.sortBy}
@@ -30,19 +30,16 @@ export default function UsersDetails({ users }: UsersDetailsProps) {
 
       <tbody>
         {users.map(
-          (
-            {
-              _id,
-              username,
-              lastSeen,
-              createdAt,
-              messageCount,
-              points,
-              watchTime,
-            },
-            index
-          ) => (
-            <tr key={index}>
+          ({
+            _id,
+            username,
+            lastSeen,
+            createdAt,
+            messageCount,
+            points,
+            watchTime,
+          }) => (
+            <tr key={_id}>
               <td className="users-list-username">
                 <Link to={`./${_id}`}> {username}</Link>
               </td>
@@ -71,7 +68,7 @@ export default function UsersDetails({ users }: UsersDetailsProps) {
                 {points ? Math.round(points) : null}
               </td>
             </tr>
-          )
+          ),
         )}
       </tbody>
     </table>

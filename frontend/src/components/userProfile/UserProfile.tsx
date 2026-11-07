@@ -111,8 +111,8 @@ export default function UserProfile() {
                 </div>
               ) : (
                 <ul>
-                  {data.notes?.map((note, index) => {
-                    return <li key={index}>{note}</li>;
+                  {data.notes?.map((note) => {
+                    return <li key={note}>{note}</li>;
                   })}
                 </ul>
               )}

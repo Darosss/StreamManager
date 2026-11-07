@@ -50,7 +50,7 @@ export default function StreamChatters() {
           className={`user-chatter ${
             index + 1 === LIMIT_LAST_CHATTERS ? "limit" : ""
           }`}
-          key={index}
+          key={chatter}
         >
           <div className="user-chatter-username">{chatter}</div>
           <div className="user-chatter-last-seen">
