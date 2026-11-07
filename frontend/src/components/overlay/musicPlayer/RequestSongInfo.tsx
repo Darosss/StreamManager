@@ -23,7 +23,7 @@ export default function RequestSongInfo({
     null,
   );
 
-  const showRequestsTimeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const showRequestsTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const {
     color,
     boxShadow,
@@ -63,9 +63,9 @@ export default function RequestSongInfo({
   }, [socket]);
 
   useEffect(() => {
-    if (showRequestsTimeout.current || requestedSongs.length === 0) return;
+    if (showRequestsTimeoutRef.current || requestedSongs.length === 0) return;
 
-    showRequestsTimeout.current = setInterval(() => {
+    showRequestsTimeoutRef.current = setInterval(() => {
       setRequestedSongs((prevState) => {
         if (prevState.length === 0) return prevState;
 

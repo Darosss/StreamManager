@@ -37,22 +37,22 @@ export const useAchievementQueue = (
 ) => {
   const [start, setStart] = useState(new Date().getTime());
   const [end, setEnd] = useState(new Date().getTime() + 2500);
-  const queue = useRef<
+  const queueRef = useRef<
     (
       | ObtainAchievementDataWithCollectedAchievement
       | ObtainAchievementDataWithProgressOnly
     )[]
   >([]);
-  const isProcessing = useRef(false);
+  const isProcessingRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const processNext = useCallback(async () => {
-    if (queue.current.length === 0 || isProcessing.current) return;
-    isProcessing.current = true;
+    if (queueRef.current.length === 0 || isProcessingRef.current) return;
+    isProcessingRef.current = true;
 
-    const data = queue.current.shift();
+    const data = queueRef.current.shift();
     if (!data) {
-      isProcessing.current = false;
+      isProcessingRef.current = false;
       return;
     }
     setObtainedAchievements((prev) => [data, ...prev]);
@@ -72,7 +72,7 @@ export const useAchievementQueue = (
     setTimeout(() => {
       audioRef.current?.pause();
 
-      isProcessing.current = false;
+      isProcessingRef.current = false;
       processNext();
     }, delay);
   }, [options]);
@@ -83,7 +83,7 @@ export const useAchievementQueue = (
         | ObtainAchievementDataWithCollectedAchievement
         | ObtainAchievementDataWithProgressOnly,
     ) => {
-      queue.current.push(data);
+      queueRef.current.push(data);
 
       processNext();
     };
@@ -95,5 +95,5 @@ export const useAchievementQueue = (
     };
   }, [socket?.events, options.enabled, processNext]);
 
-  return { start, end, isActive: isProcessing.current };
+  return { start, end, isActive: isProcessingRef.current };
 };

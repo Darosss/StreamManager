@@ -20,14 +20,14 @@ const chatMessages = [
 ];
 
 export default function Home() {
-  const homeWrapper = useRef<HTMLDivElement>(null);
+  const homeWrapperRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () =>
-    homeWrapper.current?.scrollTo({
+    homeWrapperRef.current?.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   return (
-    <div ref={homeWrapper} className="home-wrapper">
+    <div ref={homeWrapperRef} className="home-wrapper">
       <CustomTitle title="Home" />
 
       <ChatBackground />
