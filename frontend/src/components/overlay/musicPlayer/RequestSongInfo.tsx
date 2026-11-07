@@ -76,6 +76,10 @@ export default function RequestSongInfo({
         return prevState.slice(1);
       });
     }, SHOW_REQUEST_MS);
+    return () => {
+      if (showRequestsTimeoutRef.current)
+        clearInterval(showRequestsTimeoutRef.current);
+    };
   }, [requestedSongs]);
 
   useEffect(() => {
