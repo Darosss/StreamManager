@@ -66,7 +66,7 @@ export const NotificationsContextProvider = ({
     [],
   );
   return (
-    <NotificationsContext.Provider
+    <NotificationsContext
       value={{
         addNotify: addNotification,
       }}
@@ -77,7 +77,7 @@ export const NotificationsContextProvider = ({
           <OneNotification key={n.id} notification={n} />
         ))}
       </div>
-    </NotificationsContext.Provider>
+    </NotificationsContext>
   );
 };
 

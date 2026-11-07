@@ -1,4 +1,4 @@
-import React, { JSX, useContext, useEffect, useMemo } from "react";
+import React, { JSX, use, useEffect, useMemo } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   ServerToClientEvents,
@@ -47,19 +47,15 @@ export const SocketContextProvider = ({
     };
   }, [events]);
 
-  return (
-    <SocketContext.Provider value={{ emits, events }}>
-      {children}
-    </SocketContext.Provider>
-  );
+  return <SocketContext value={{ emits, events }}>{children}</SocketContext>;
 };
 
 export const useSocketContext = (): Required<SocketContexType> => {
-  const socketContext = useContext(SocketContext);
+  const socketContext = use(SocketContext);
 
   if (!socketContext) {
     throw new Error(
-      "useSocketContext must be used within a SocketContextProvider"
+      "useSocketContext must be used within a SocketContextProvider",
     );
   }
 
