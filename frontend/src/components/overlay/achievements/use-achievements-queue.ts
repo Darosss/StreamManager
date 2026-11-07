@@ -35,8 +35,8 @@ export const useAchievementQueue = (
   ) => void,
   options: Options,
 ) => {
-  const [start, setStart] = useState(new Date().getTime());
-  const [end, setEnd] = useState(new Date().getTime() + 2500);
+  const [start, setStart] = useState(() => new Date().getTime());
+  const [end, setEnd] = useState(() => new Date().getTime() + 2500);
   const queueRef = useRef<
     (
       | ObtainAchievementDataWithCollectedAchievement

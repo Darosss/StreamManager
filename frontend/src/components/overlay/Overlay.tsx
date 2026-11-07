@@ -49,7 +49,7 @@ export default function Overlay(params: { editor?: boolean }) {
   const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
   const { isEditor, overlay: overlayState } = overlaysStateRedux;
 
-  const [currentBreakpoint, setCurrentBreakpoint] = useState(
+  const [currentBreakpoint, setCurrentBreakpoint] = useState(() =>
     getInitialCurrentBreakpoint(),
   );
   const editOverlayMutation = useEditOverlay();

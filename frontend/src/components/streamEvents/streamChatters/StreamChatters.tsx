@@ -8,7 +8,9 @@ export default function StreamChatters() {
 
   const socketContext = useSocketContext();
 
-  const [lastChatters, setLastChatters] = useState(new Map<string, Date>());
+  const [lastChatters, setLastChatters] = useState(
+    () => new Map<string, Date>(),
+  );
 
   useEffect(() => {
     const {

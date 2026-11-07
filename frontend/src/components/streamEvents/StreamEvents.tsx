@@ -42,7 +42,7 @@ export default function StreamEvents(params: { editor?: boolean }) {
   const [toolbox, setToolbox] = useState<ResponsiveLayouts>(
     initialToolboxWidgets,
   );
-  const [currentBreakpoint, setCurrentBreakpoint] = useState(
+  const [currentBreakpoint, setCurrentBreakpoint] = useState(() =>
     getInitialCurrentBreakpoint(),
   );
 

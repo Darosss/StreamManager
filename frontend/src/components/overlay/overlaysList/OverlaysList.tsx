@@ -18,7 +18,7 @@ export default function OverlaysList() {
   const { addNotify } = useNotifications();
   const { data, isLoading, error } = useGetOverlays(queryParams);
 
-  const [overlayName, setLayoutName] = useState<string>("");
+  const [overlayName, setOverlayName] = useState<string>("");
 
   const createOverlayMutation = useCreateOverlay();
   const deleteOverlayMutation = useDeleteOverlay();
@@ -59,7 +59,7 @@ export default function OverlaysList() {
             type="text"
             placeholder="Name"
             value={overlayName}
-            onChange={(e) => setLayoutName(e.target.value)}
+            onChange={(e) => setOverlayName(e.target.value)}
           />
           <Button onClick={handleCreateOverlay}>Create</Button>
         </CardboxItem>
