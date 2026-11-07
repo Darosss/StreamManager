@@ -69,7 +69,7 @@ export default function DownloadedSongPlayer({
       if (!audioRef.current) return;
       audioRef.current.volume = Number((volume / 100).toFixed(2));
     },
-    [audioRef]
+    [audioRef],
   );
 
   useEffect(() => {
@@ -93,17 +93,18 @@ export default function DownloadedSongPlayer({
     if (audioRef.current) {
       audioRef.current.src = URL.createObjectURL(mediaSource);
     }
-
-    mediaSource.addEventListener("sourceopen", () => {
+    const onSourceOpen = () => {
       if (mediaSourceRef.current)
         sourceBufferRef.current =
           mediaSourceRef.current.addSourceBuffer("audio/mpeg");
-    });
+    };
+    mediaSource.addEventListener("sourceopen", onSourceOpen);
 
     return () => {
       if (sourceBufferRef.current) {
         sourceBufferRef.current.abort();
       }
+      mediaSource.removeEventListener("sourceopen", onSourceOpen);
     };
   }, [data.audioData.id]);
 
