@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import ReactGridLayout from "react-grid-layout";
+import { ResponsiveLayouts } from "react-grid-layout/legacy";
 
 import StreamChat from "./streamChat";
 import StreamChatters from "./streamChatters";
@@ -38,8 +38,8 @@ export default function StreamEvents(params: { editor?: boolean }) {
   const { eventsId } = useParams();
   const { addNotify } = useNotifications();
   const [layoutWidgets, setLayoutWidgets] =
-    useState<ReactGridLayout.Layouts>(initialLayoutWidgets);
-  const [toolbox, setToolbox] = useState<ReactGridLayout.Layouts>(
+    useState<ResponsiveLayouts>(initialLayoutWidgets);
+  const [toolbox, setToolbox] = useState<ResponsiveLayouts>(
     initialToolboxWidgets,
   );
   const [currentBreakpoint, setCurrentBreakpoint] = useState(
@@ -64,8 +64,8 @@ export default function StreamEvents(params: { editor?: boolean }) {
   if (error) return <Error error={error} />;
   if (!widgetData || isLoading) return <Loading />;
   const handleUpdateWidget = (
-    layoutState: ReactGridLayout.Layouts,
-    toolboxState: ReactGridLayout.Layouts,
+    layoutState: ResponsiveLayouts,
+    toolboxState: ResponsiveLayouts,
   ) => {
     if (!eventsId) {
       addNotify({
