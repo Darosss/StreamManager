@@ -18,29 +18,25 @@ export default function MessagesWindow() {
 
   const [alertSounds, setAlertSounds] = useState<CustomRewardData[]>();
 
-  const [alertSoundsServer, setAlertSoundsServer] = useState([""]);
-
   const { data: mp3AlertSounds, refetch: refetchMp3AlertSounds } =
     useGetAlertSoundsMp3Names();
 
   const deleteAlertSoundName = useDeleteAlertSound();
 
-  const handleDeleteAlertSoundName = (name: string) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete the alert sound name: ${name}?`,
+  const handleDeleteAlertSoundName = useCallback(
+    (name: string) => {
+      if (
+        !window.confirm(
+          `Are you sure you want to delete the alert sound name: ${name}?`,
+        )
       )
-    )
-      return;
-    deleteAlertSoundName.mutate(name, {
-      onSuccess: () => refetchMp3AlertSounds(),
-    });
-  };
-
-  useEffect(() => {
-    if (!mp3AlertSounds) return;
-    setAlertSoundsServer(mp3AlertSounds.data);
-  }, [mp3AlertSounds]);
+        return;
+      deleteAlertSoundName.mutate(name, {
+        onSuccess: () => refetchMp3AlertSounds(),
+      });
+    },
+    [deleteAlertSoundName, refetchMp3AlertSounds],
+  );
 
   useEffect(() => {
     const {
@@ -80,11 +76,11 @@ export default function MessagesWindow() {
         });
       });
     },
-    [socketContext, addNotify],
+    [socketContext, handleDeleteAlertSoundName, addNotify],
   );
 
   const isAlertSoundMp3OnServer = (rewardTitle: string) => {
-    return alertSoundsServer.some((snd) => snd.includes(rewardTitle));
+    return mp3AlertSounds?.data.some((snd) => snd.includes(rewardTitle));
   };
 
   return (

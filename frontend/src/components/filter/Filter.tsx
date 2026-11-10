@@ -1,7 +1,7 @@
 import Modal from "@components/modal";
 import { Button } from "@components/ui/button";
 import UrlParamsInputs, { FilterBarInput } from "@components/urlParamsInputs";
-import { InputHTMLAttributes, useEffect, useState } from "react";
+import { InputHTMLAttributes, useState } from "react";
 import { useSearchParams } from "react-router";
 
 type PossibleCommonFields = "start_date" | "end_date" | "search_name";
@@ -31,22 +31,21 @@ export default function Filter<OptionsKeys extends string>({
   options,
 }: FilterProps<OptionsKeys>) {
   const [showModal, setShowModal] = useState(false);
+
+  const [searchParams] = useSearchParams();
   const [currentFilters, setCurrentFilters] =
-    useState<Filters<OptionsKeys> | null>(null);
+    useState<Filters<OptionsKeys> | null>(() => {
+      const newFilters = {} as Filters<OptionsKeys>;
+      for (const key of Object.keys(options)) {
+        if (!searchParams.has(key)) continue;
+
+        newFilters[key as OptionsKeys] = searchParams.get(key)!;
+      }
+      return newFilters;
+    });
   const appliedFilters = currentFilters
     ? Object.keys(currentFilters).length
     : 0;
-  const [searchParams] = useSearchParams();
-  useEffect(() => {
-    const newFilters = {} as Filters<OptionsKeys>;
-    for (const key of Object.keys(options)) {
-      if (!searchParams.has(key)) continue;
-
-      newFilters[key as OptionsKeys] = searchParams.get(key)!;
-    }
-
-    setCurrentFilters(newFilters);
-  }, [options, searchParams]);
   return (
     <div>
       <Button size="small" onClick={() => setShowModal(true)}>

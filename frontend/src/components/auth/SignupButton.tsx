@@ -1,7 +1,7 @@
 import { Button } from "@components/ui/button";
 import { useGetAuthorizeUrl } from "@services";
 import { useSocketContext } from "@socket";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 
 interface SignupButtonProps {
@@ -21,7 +21,7 @@ export default function SignupButton({ onlyIcon }: SignupButtonProps) {
 
   const [loggedUser, setLoggedUser] = useState<string>("");
 
-  const handleSetLoggedUserInfo = useCallback(() => {
+  useEffect(() => {
     getLoggedUserInfo((username) => {
       if (!username) return;
       setLoggedUser(username);
@@ -36,11 +36,6 @@ export default function SignupButton({ onlyIcon }: SignupButtonProps) {
       sendLoggedUserInfo.off();
     };
   }, [sendLoggedUserInfo]);
-
-  useEffect(() => {
-    handleSetLoggedUserInfo();
-  }, [handleSetLoggedUserInfo]);
-
   if (loggedUser) {
     return (
       <>

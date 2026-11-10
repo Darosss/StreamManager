@@ -45,7 +45,7 @@ export default function StreamStatistics() {
     }, FETCH_INTERVAL * 1000);
 
     return () => clearInterval(statisticInterval);
-  }, []);
+  }, [refetch]);
 
   if (error) return <Error error={error} />;
   if (isLoading) return <Loading />;

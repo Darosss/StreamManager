@@ -103,7 +103,7 @@ function UploadAchievementStageSoundButtons({
       });
       onSuccessCallback();
     }
-  }, [addNotify, success]);
+  }, [addNotify, onSuccessCallback, success]);
 
   useEffect(() => {
     if (error)

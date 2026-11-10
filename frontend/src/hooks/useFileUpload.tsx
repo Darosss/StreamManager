@@ -33,6 +33,7 @@ export const useFileUpload = (url: string): UseFileUploadReturnType => {
     },
     formInputName: string,
   ) => {
+    setSuccess(undefined);
     const { event, fileList, bodySingleFileName } = props;
 
     const formData = new FormData();

@@ -42,7 +42,7 @@ export default function AudioFoldersList() {
     if (!folderName) return;
 
     refetchFolderFilesAudioData(folderName);
-  }, [folderName]);
+  }, [folderName, refetchFolderFilesAudioData]);
 
   useEffect(() => {
     socket.emits.getAudioData((cb) => {

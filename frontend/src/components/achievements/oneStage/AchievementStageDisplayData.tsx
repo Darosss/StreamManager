@@ -62,7 +62,7 @@ export default function AchievementStageDisplayData({
               {data.sound ? (
                 <audio
                   className="stage-data-sound"
-                  src={`${viteBackendUrl}/${data.sound}`}
+                  src={`${viteBackendUrl}/achievements/stagesSounds/${data.sound}`}
                   controls
                 />
               ) : null}

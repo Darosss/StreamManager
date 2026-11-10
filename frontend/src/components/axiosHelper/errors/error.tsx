@@ -16,38 +16,39 @@ const MAX_TRIES = 3;
 const DEFAULT_COUNTDOWN = 5;
 
 export default function Error({ error, onRefresh }: ErrorsProps) {
+  const isNetworkError =
+    error instanceof AxiosError && error.code === KnownErrorCodes.ERROR_NETWORK;
+
   const [currentTry, setCurrentTry] = useState(0);
   const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
   const [isActiveCountdown, setIsActiveCountdown] = useState(
-    currentTry < MAX_TRIES
+    currentTry < MAX_TRIES,
   );
 
   useEffect(() => {
-    if (
-      error instanceof AxiosError &&
-      error.code === KnownErrorCodes.ERROR_NETWORK &&
-      isActiveCountdown
-    ) {
+    if (isNetworkError && isActiveCountdown) {
       const timer = setInterval(() => {
         setCountdown((countdown) => countdown - 1);
       }, 1000);
 
       return () => clearInterval(timer);
     }
-  }, [error, isActiveCountdown]);
+  }, [error, isActiveCountdown, isNetworkError]);
+
   const handleRefresh = useCallback(() => {
-    if (onRefresh) {
-      setCountdown(DEFAULT_COUNTDOWN * (currentTry + 1));
-      setCurrentTry((prevState) => prevState + 1);
-      onRefresh();
-    } else window.location.reload();
+    setCurrentTry((prev) => prev + 1);
+    if (onRefresh) onRefresh();
+    else window.location.reload();
   }, [onRefresh]);
 
   useEffect(() => {
-    if (countdown != 0) return;
+    if (countdown !== 0 || !isNetworkError) return;
 
-    handleRefresh();
-  }, [countdown, handleRefresh]);
+    const t = setTimeout(() => {
+      handleRefresh();
+    }, 0);
+    return () => clearTimeout(t);
+  }, [countdown, handleRefresh, isNetworkError, onRefresh]);
 
   const stopRefresh = () => {
     setIsActiveCountdown(false);

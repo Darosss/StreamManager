@@ -1,5 +1,4 @@
 import { Button } from "@components/ui/button";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 interface SortByParamsButtonProps {
@@ -7,28 +6,20 @@ interface SortByParamsButtonProps {
   sortBy: string;
 }
 
+//TODO: NOTE: replace this into usage of SortBy or similar common component. For now it stays
+// cuz many  chagnes in tables. Now its simply almost  ismilar to SortBy component. Tho used mostly  for tables
 export default function SortByParamsButton({
   buttonText,
   sortBy,
 }: SortByParamsButtonProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentSearch, setCurrentSearch] = useState("");
-
-  useEffect(() => {
-    const sortByParam = searchParams.get("sortBy");
-    const sortOrderParam = searchParams.get("sortOrder");
-    if (sortOrderParam === "asc") {
-      setCurrentSearch("\u2191");
-    } else {
-      setCurrentSearch("\u2193");
-    }
-
-    if (sortByParam !== sortBy) setCurrentSearch("");
-  }, [searchParams, sortBy]);
-
-  useEffect(() => {
-    if (!currentSearch) return;
-  }, [currentSearch]);
+  const sortOrderParam = searchParams.get("sortOrder");
+  const currentSearch =
+    sortOrderParam === "asc"
+      ? "\u2191"
+      : sortOrderParam === "desc"
+        ? "\u2193"
+        : null;
 
   const handleOnClickSortBtn = () => {
     setSearchParams((prevState) => {
@@ -44,7 +35,6 @@ export default function SortByParamsButton({
     if (sortOrder === "asc") {
       return "desc";
     }
-    setCurrentSearch("\u2193");
     return "asc";
   };
 
@@ -52,7 +42,7 @@ export default function SortByParamsButton({
     setSearchParams((prevState) => {
       prevState.delete("sortOrder");
       prevState.delete("sortBy");
-      return prevState;
+      return new URLSearchParams(prevState);
     });
   };
 

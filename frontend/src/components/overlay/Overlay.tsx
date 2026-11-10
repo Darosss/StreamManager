@@ -72,7 +72,7 @@ export default function Overlay(params: { editor?: boolean }) {
 
   useEffect(() => {
     dispatch(setIsEditor(editor));
-  }, [editor]);
+  }, [dispatch, editor]);
 
   useEffect(() => {
     refreshOverlayLayoutEvent.on((id) => {
@@ -82,7 +82,7 @@ export default function Overlay(params: { editor?: boolean }) {
     return () => {
       refreshOverlayLayoutEvent.off();
     };
-  }, [refreshOverlayLayoutEvent]);
+  }, [refetchOverlayById, refreshOverlayLayoutEvent]);
 
   useEffect(() => {
     if (!overlayData) return;
@@ -130,9 +130,17 @@ export default function Overlay(params: { editor?: boolean }) {
       },
     });
   };
+  //so tahts for initial data, when widget data in backend does not have defaults somehow
+  // and cuz of force rerender when overlayData changes.
+
+  const { layout, toolbox, name } = overlayData.data || {
+    layout: overlayState.layout,
+    toolbox: overlayState.toolbox,
+    name: overlayState.name,
+  };
   return (
     <div>
-      <CustomTitle title={"Overlay " + overlayState.name} />
+      <CustomTitle title={"Overlay " + name} />
       {editor ? (
         <div className="overlay-editor-actions-wrapper">
           <StyleCSSEditor />
@@ -140,9 +148,9 @@ export default function Overlay(params: { editor?: boolean }) {
         </div>
       ) : null}
       <ReactGrid
-        layoutName={overlayState.name}
-        layoutState={overlayState.layout}
-        toolboxState={overlayState.toolbox}
+        layoutName={name}
+        layoutState={layout}
+        toolboxState={toolbox}
         currentBreakpointState={[currentBreakpoint, setCurrentBreakpoint]}
         componentsMap={components}
         onEdit={handleOnEditOverlay}

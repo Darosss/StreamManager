@@ -22,12 +22,12 @@ export default function SideBar() {
     },
   );
 
-  const toggleIsOpen = () => {
+  const toggleIsOpen = useCallback(() => {
     setSidebarStatus((prevState) => ({
       ...prevState,
       isOpen: !prevState.isOpen,
     }));
-  };
+  }, [setSidebarStatus]);
   const handleHeaderClick = (name: string) => {
     console.log(name);
     setSidebarStatus((prevState) => ({
@@ -38,12 +38,15 @@ export default function SideBar() {
       },
     }));
   };
-  const handleMenuShortcuts = useCallback((ev: KeyboardEvent) => {
-    if (ev.ctrlKey && ev.key === "b") {
-      ev.preventDefault();
-      toggleIsOpen();
-    }
-  }, []);
+  const handleMenuShortcuts = useCallback(
+    (ev: KeyboardEvent) => {
+      if (ev.ctrlKey && ev.key === "b") {
+        ev.preventDefault();
+        toggleIsOpen();
+      }
+    },
+    [toggleIsOpen],
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", handleMenuShortcuts);

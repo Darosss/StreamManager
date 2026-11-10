@@ -36,8 +36,10 @@ export default function OneAchievementStageData() {
   if (isLoading || !achievementStageData) return <Loading />;
 
   return (
-    <>
-      <NavigateButton />
+    <div>
+      <div className="base-header-wrapper">
+        <NavigateButton />
+      </div>
       <div className="one-achievement-stage-data">
         <div className="default-data">
           {id ? (
@@ -84,7 +86,7 @@ export default function OneAchievementStageData() {
               updateStageStageDataBadgeByIndex({
                 index: currentEditingStageData,
                 badge,
-              })
+              }),
             );
 
             setCurrentEditingStageData(-1);
@@ -92,6 +94,6 @@ export default function OneAchievementStageData() {
           }}
         />
       </Modal>
-    </>
+    </div>
   );
 }

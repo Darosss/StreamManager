@@ -56,7 +56,7 @@ export default function Achievements() {
 
   useEffect(() => {
     if (isEditor) setObtainedAchievements(getExampleAchievementsData());
-  }, [isEditor]);
+  }, [isEditor, setObtainedAchievements]);
 
   //TODO: add progressBar via those.
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -39,7 +39,7 @@ export default function ConfigsList() {
   useEffect(() => {
     if (!configs) return;
     dispatch(setConfigState(configs.data));
-  }, [configs]);
+  }, [configs, dispatch]);
 
   if (error) return <Error error={error} />;
   if (isLoading || !configs) return <Loading />;

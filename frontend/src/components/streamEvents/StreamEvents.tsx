@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ResponsiveLayouts } from "react-grid-layout/legacy";
 
 import StreamChat from "./streamChat";
@@ -37,11 +37,6 @@ export default function StreamEvents(params: { editor?: boolean }) {
   const { editor = false } = params;
   const { eventsId } = useParams();
   const { addNotify } = useNotifications();
-  const [layoutWidgets, setLayoutWidgets] =
-    useState<ResponsiveLayouts>(initialLayoutWidgets);
-  const [toolbox, setToolbox] = useState<ResponsiveLayouts>(
-    initialToolboxWidgets,
-  );
   const [currentBreakpoint, setCurrentBreakpoint] = useState(() =>
     getInitialCurrentBreakpoint(),
   );
@@ -52,14 +47,6 @@ export default function StreamEvents(params: { editor?: boolean }) {
     isLoading,
     error,
   } = useGetWidgetById(eventsId || "");
-
-  useEffect(() => {
-    if (!widgetData) return;
-    const { data: layoutData } = widgetData;
-
-    setLayoutWidgets(layoutData.layout);
-    setToolbox(layoutData.toolbox);
-  }, [widgetData]);
 
   if (error) return <Error error={error} />;
   if (!widgetData || isLoading) return <Loading />;
@@ -75,20 +62,24 @@ export default function StreamEvents(params: { editor?: boolean }) {
       });
       return;
     }
-    setLayoutWidgets(layoutState);
-    setToolbox(toolboxState);
     updateWidgetMutation.mutate({
       id: eventsId,
       updatedWidget: { layout: layoutState, toolbox: toolboxState },
     });
+  };
+
+  //so tahts for initial data, when widget data in backend does not have defaults somehow
+  const { layout, toolbox } = widgetData.data || {
+    layout: initialLayoutWidgets,
+    toolbox: initialToolboxWidgets,
   };
   return (
     <div>
       <CustomTitle title={"Events " + widgetData.data.name} />
       <ReactGrid
         layoutName={widgetData.data.name}
-        layoutState={layoutWidgets}
-        toolboxState={toolbox}
+        layoutState={{ ...layout }}
+        toolboxState={{ ...toolbox }}
         currentBreakpointState={[currentBreakpoint, setCurrentBreakpoint]}
         componentsMap={components}
         onEdit={handleUpdateWidget}

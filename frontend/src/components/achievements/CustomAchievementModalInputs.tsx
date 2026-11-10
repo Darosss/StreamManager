@@ -94,7 +94,7 @@ export default function CustomAchievementModalInputs() {
           </>
         );
     }
-  }, [achievement]);
+  }, [achievement.custom, achievement.isTime, dispatch]);
 
   return (
     <>

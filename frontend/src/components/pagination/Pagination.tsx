@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import { usePagination, DOTS, useLocalStorage } from "@hooks";
 import { useSearchParams } from "react-router";
 import PageSizeSelect from "./PageSizeSelect";
@@ -16,56 +14,45 @@ const DEFUALT_LOCAL_STORAGE_NAME = "pagination-default";
 export default function Pagination({
   totalCount = 1,
   siblingCount = 1,
-  currentPage = 1,
+  currentPage: defaultPage = 1,
   localStorageName,
   className,
 }: PaginationProps) {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [pageSizeT, setPageSize] = useLocalStorage<number>(
     localStorageName || DEFUALT_LOCAL_STORAGE_NAME,
     15,
   );
-  const [currentPageLoc, setCurrentPageLoc] = useState<number>(currentPage);
-
-  const onPageChangeSearchParam = (value: string) => {
-    setSearchParams((prevState) => {
-      prevState.set("page", value);
-      return prevState;
-    });
-  };
-
-  useEffect(() => {
-    setSearchParams((prevState) => {
-      prevState.set("limit", String(pageSizeT));
-      return prevState;
-    });
-    // Unnecessary rendering
-  }, [pageSizeT]);
-
-  useEffect(() => {
-    const checkIfPageIsTooBigAndSet = () => {
-      if (!paginationRange) return;
-
-      if (currentPageLoc - 1 > paginationRange.length) {
-        setCurrentPageLoc(Number(paginationRange[paginationRange.length - 1]));
-      }
-    };
-
-    checkIfPageIsTooBigAndSet();
-    setSearchParams((prevState) => {
-      prevState.set("page", String(currentPageLoc));
-      return prevState;
-    });
-    // Unnecessary rendering
-  }, [currentPageLoc]);
+  const limit = Number(searchParams.get("limit")) || pageSizeT;
+  const rawPage = Number(searchParams.get("page")) || defaultPage;
 
   const paginationRange = usePagination(
     totalCount,
-    pageSizeT,
+    limit,
     siblingCount,
-    currentPageLoc,
+    rawPage,
   );
+
+  const maxPage = Number(paginationRange?.[paginationRange.length - 1] ?? 1);
+  const currentPage = Math.min(rawPage, maxPage);
+
+  const updateParams = (updates: Record<string, string>) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      for (const [k, v] of Object.entries(updates)) next.set(k, v);
+      return next;
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    updateParams({ page: String(page) });
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    updateParams({ limit: String(size), page: "1" });
+  };
 
   if (!paginationRange) {
     return (
@@ -89,11 +76,11 @@ export default function Pagination({
   }
 
   const onNext = () => {
-    onPageChangeSearchParam(String(currentPageLoc + 1));
+    handlePageChange(currentPage + 1);
   };
 
   const onPrevious = () => {
-    onPageChangeSearchParam(String(currentPageLoc - 1));
+    handlePageChange(currentPage - 1);
   };
 
   const lastPage = paginationRange[paginationRange.length - 1];
@@ -103,7 +90,7 @@ export default function Pagination({
       <ul className={`pagination-container ${className || ""}`}>
         <li
           className={`pagination-item ${currentPage === 1 ? "disabled" : ""}`}
-          onClick={() => (currentPageLoc > 1 ? onPrevious() : "")}
+          onClick={() => (currentPage > 1 ? onPrevious() : "")}
         >
           <div className="arrow left" />
         </li>
@@ -122,7 +109,7 @@ export default function Pagination({
                 pageNumber === currentPage ? "selected" : ""
               }`}
               onClick={() => {
-                onPageChangeSearchParam(String(pageNumber));
+                handlePageChange(Number(pageNumber) || 1);
               }}
             >
               {pageNumber}
@@ -134,11 +121,11 @@ export default function Pagination({
           className={`pagination-item ${
             currentPage === lastPage ? "disabled" : ""
           }`}
-          onClick={() => (currentPageLoc < Number(lastPage) ? onNext() : "")}
+          onClick={() => (currentPage < Number(lastPage) ? onNext() : "")}
         >
           <div className="arrow right" />
         </li>
-        <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
+        <PageSizeSelect pageSize={limit} onSetPageSize={handlePageSizeChange} />
         <TotalResults totalCount={totalCount} />
       </ul>
     </div>

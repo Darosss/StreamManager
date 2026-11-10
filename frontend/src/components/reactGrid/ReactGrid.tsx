@@ -40,6 +40,7 @@ export default function ReactGrid({
 }: ReactGridProps) {
   const [layout, setLayout] = useState(layoutState);
   const [toolbox, setToolbox] = useState(toolboxState);
+
   const [currentBreakpoint, setCurrentBreakpoint] = currentBreakpointState;
   const [isEdit, setIsEdit] = useState(false);
   const setEditableInLayout = useCallback(
@@ -86,14 +87,6 @@ export default function ReactGrid({
       window.removeEventListener("keydown", keyboardSave);
     };
   }, [layout, onEdit, toggleEdit, toolbox]);
-
-  useEffect(() => {
-    setLayout({ ...layoutState });
-  }, [layoutState]);
-
-  useEffect(() => {
-    setToolbox({ ...toolboxState });
-  }, [toolboxState]);
 
   const onLayoutChange = (currLayout: Layout) => {
     setLayout((prevLayouts) => ({

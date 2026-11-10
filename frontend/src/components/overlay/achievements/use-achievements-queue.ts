@@ -75,7 +75,7 @@ export const useAchievementQueue = (
       isProcessingRef.current = false;
       processNext();
     }, delay);
-  }, [options]);
+  }, [options, setObtainedAchievements]);
 
   useEffect(() => {
     const handler = (
