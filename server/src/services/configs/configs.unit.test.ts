@@ -92,6 +92,9 @@ describe("Configs Services", () => {
           commandsPrefix: "!"
         }
       };
+      // cause - the updateConfigs should flattenObject update
+      const expectedFlattened = { "commandsConfigs.commandsPrefix": "!" };
+
       const fakeUpdatedDoc: ConfigModel = {
         _id: new Types.ObjectId(),
         ...configDefaults,
@@ -104,7 +107,7 @@ describe("Configs Services", () => {
       const result = await ConfigsService.updateConfigs(fakeUpdateData);
 
       expect(dbSpy).toHaveBeenCalledTimes(1);
-      expect(dbSpy).toHaveBeenCalledWith({}, fakeUpdateData, { new: true, upsert: true });
+      expect(dbSpy).toHaveBeenCalledWith({}, expectedFlattened, { new: true, upsert: true });
       expect(result).toBe(fakeUpdatedDoc);
     });
 
