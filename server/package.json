@@ -12,7 +12,11 @@
     "start:prod": "cross-env NODE_ENV=production node dist/index.js",
     "start:dev": "cross-env NODE_ENV=development tsc-watch --compileCommand tsc --onSuccess \"nodemon --inspect dist/index.js --ignore public/ --ignore '*.json'\"",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint src/**/*.ts --fix",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "lint:staged": "eslint --fix",
+    "format": "prettier . --check",
+    "format:write": "prettier . --write",
+    "format:staged": "prettier --write --ignore-unknown",
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
     "test:unit": "cross-env NODE_ENV=test jest --testTimeout=5000 --selectProjects unit",
     "test:integration": "cross-env NODE_ENV=test jest --testTimeout=5000 --selectProjects integration"
