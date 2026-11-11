@@ -28,18 +28,18 @@ export const queryKeysMoods = {
 };
 
 export const fetchMoods = async (
-  params?: QueryParams<keyof FetchMoodParams>
+  params?: QueryParams<keyof FetchMoodParams>,
 ): PromisePaginationData<Mood> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createMood = async (
-  newMood: MoodCreateData
+  newMood: MoodCreateData,
 ): PromiseBackendData<Mood> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newMood
+    newMood,
   );
   return response.data;
 };
@@ -53,14 +53,14 @@ export const editMood = async ({
 }): PromiseBackendData<Mood> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedMood
+    updatedMood,
   );
   return response.data;
 };
 
 export const deleteMood = async (id: string): PromiseBackendData<Mood> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -84,7 +84,7 @@ export const useEditMood = () => {
       onSuccess: () => {
         refetchMoods().then(() => socketConn.emit("changeModes"));
       },
-    }
+    },
   );
 };
 
@@ -100,7 +100,7 @@ export const useCreateMood = () => {
       onSuccess: () => {
         refetchMoods().then(() => socketConn.emit("changeModes"));
       },
-    }
+    },
   );
 };
 
@@ -116,7 +116,7 @@ export const useDeleteMood = () => {
       onSuccess: () => {
         refetchMoods().then(() => socketConn.emit("changeModes"));
       },
-    }
+    },
   );
 };
 
@@ -127,6 +127,6 @@ export const useRefetchMoodsData = (exact = false) => {
     "allMoods",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

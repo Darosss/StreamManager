@@ -32,7 +32,7 @@ export function CreateCustomAchievementButton() {
           dispatch(openModal());
 
           dispatch(
-            setCurrentAction(ManageAchievementsCurrentAction.CREATE_CUSTOM)
+            setCurrentAction(ManageAchievementsCurrentAction.CREATE_CUSTOM),
           );
           dispatch(setAchievementState(initialAchievementData));
           dispatch(setEditingId(""));

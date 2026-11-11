@@ -2,7 +2,7 @@ import { initialStylesState } from "./layoutStyles";
 import { OverlayKeysStylesParsedType, OverlayKeysType } from "./types";
 
 export const stringifyOverlayKeysType = (
-  data: OverlayKeysStylesParsedType
+  data: OverlayKeysStylesParsedType,
 ): OverlayKeysType => {
   return Object.keys(data).reduce<{
     [key in keyof OverlayKeysStylesParsedType]: string;
@@ -11,7 +11,7 @@ export const stringifyOverlayKeysType = (
       const keyAsOverlayKeysStylesParsedType =
         key as keyof OverlayKeysStylesParsedType;
       acc[keyAsOverlayKeysStylesParsedType] = JSON.stringify(
-        data[keyAsOverlayKeysStylesParsedType]
+        data[keyAsOverlayKeysStylesParsedType],
       );
       return acc;
     },
@@ -20,12 +20,12 @@ export const stringifyOverlayKeysType = (
       overlayMusicPlayer: "",
       overlayAchievements: "",
       overlayChat: "",
-    }
+    },
   );
 };
 
 export const parseOverlayKeysType = (
-  data: OverlayKeysType
+  data: OverlayKeysType,
 ): OverlayKeysStylesParsedType => {
   return Object.keys(data).reduce<OverlayKeysStylesParsedType>(
     (acc, key) => {
@@ -40,6 +40,6 @@ export const parseOverlayKeysType = (
         return acc;
       }
     },
-    { ...initialStylesState }
+    { ...initialStylesState },
   );
 };

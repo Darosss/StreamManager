@@ -35,11 +35,11 @@ describe("useLocalStorage", () => {
     expect(result.current[0]).toBe("new-value");
 
     expect(window.localStorage.getItem("test-key")).toBe(
-      JSON.stringify("new-value")
+      JSON.stringify("new-value"),
     );
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
       "test-key",
-      JSON.stringify("new-value")
+      JSON.stringify("new-value"),
     );
   });
 
@@ -52,7 +52,7 @@ describe("useLocalStorage", () => {
     });
 
     const storedValue = JSON.parse(
-      window.localStorage.getItem("user-key") || ""
+      window.localStorage.getItem("user-key") || "",
     );
     expect(storedValue.name).toBe("Alice");
   });

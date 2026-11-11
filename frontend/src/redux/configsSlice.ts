@@ -67,27 +67,27 @@ const initialState: ConfigsSliceType = {
 
 type CommandConfigPayload<K extends keyof CommandsConfigs> = [
   K,
-  CommandsConfigs[K]
+  CommandsConfigs[K],
 ];
 type TimersConfigsPayload<K extends keyof TimersConfigs> = [
   K,
-  TimersConfigs[K]
+  TimersConfigs[K],
 ];
 type ChatGamesConfigsPayload<K extends keyof ChatGamesConfigs> = [
   K,
-  ChatGamesConfigs[K]
+  ChatGamesConfigs[K],
 ];
 type TriggersConfigsPayload<K extends keyof TriggersConfigs> = [
   K,
-  TriggersConfigs[K]
+  TriggersConfigs[K],
 ];
 type PointsConfigsPayload<K extends keyof PointsConfigs> = [
   K,
-  PointsConfigs[K]
+  PointsConfigs[K],
 ];
 type LoyaltyConfigsPayload<K extends keyof LoyaltyConfigs> = [
   K,
-  LoyaltyConfigs[K]
+  LoyaltyConfigs[K],
 ];
 type MusicConfigsPayload<K extends keyof MusicConfigs> = [K, MusicConfigs[K]];
 type HeadConfigsPayload<K extends keyof HeadConfigs> = [K, HeadConfigs[K]];
@@ -104,7 +104,7 @@ const configsSlice = createSlice({
     },
     setCommandsConfigs<K extends keyof CommandsConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<CommandConfigPayload<K>>
+      action: PayloadAction<CommandConfigPayload<K>>,
     ) {
       state.config.commandsConfigs = {
         ...state.config.commandsConfigs,
@@ -113,7 +113,7 @@ const configsSlice = createSlice({
     },
     setLoyaltyConfigs<K extends keyof LoyaltyConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<LoyaltyConfigsPayload<K>>
+      action: PayloadAction<LoyaltyConfigsPayload<K>>,
     ) {
       state.config.loyaltyConfigs = {
         ...state.config.loyaltyConfigs,
@@ -123,7 +123,7 @@ const configsSlice = createSlice({
 
     setTimersConfigs<K extends keyof TimersConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<TimersConfigsPayload<K>>
+      action: PayloadAction<TimersConfigsPayload<K>>,
     ) {
       state.config.timersConfigs = {
         ...state.config.timersConfigs,
@@ -132,7 +132,7 @@ const configsSlice = createSlice({
     },
     setChatGamesConfigs<K extends keyof ChatGamesConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<ChatGamesConfigsPayload<K>>
+      action: PayloadAction<ChatGamesConfigsPayload<K>>,
     ) {
       state.config.chatGamesConfigs = {
         ...state.config.chatGamesConfigs,
@@ -141,7 +141,7 @@ const configsSlice = createSlice({
     },
     setTriggersConfigs<K extends keyof TriggersConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<TriggersConfigsPayload<K>>
+      action: PayloadAction<TriggersConfigsPayload<K>>,
     ) {
       state.config.triggersConfigs = {
         ...state.config.triggersConfigs,
@@ -150,7 +150,7 @@ const configsSlice = createSlice({
     },
     setPointsConfigs<K extends keyof PointsConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<PointsConfigsPayload<K>>
+      action: PayloadAction<PointsConfigsPayload<K>>,
     ) {
       state.config.pointsConfigs = {
         ...state.config.pointsConfigs,
@@ -159,7 +159,7 @@ const configsSlice = createSlice({
     },
     setMusicConfigs<K extends keyof MusicConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<MusicConfigsPayload<K>>
+      action: PayloadAction<MusicConfigsPayload<K>>,
     ) {
       state.config.musicConfigs = {
         ...state.config.musicConfigs,
@@ -168,7 +168,7 @@ const configsSlice = createSlice({
     },
     setHeadConfigs<K extends keyof HeadConfigs>(
       state: ConfigsSliceType,
-      action: PayloadAction<HeadConfigsPayload<K>>
+      action: PayloadAction<HeadConfigsPayload<K>>,
     ) {
       state.config.headConfigs = {
         ...state.config.headConfigs,

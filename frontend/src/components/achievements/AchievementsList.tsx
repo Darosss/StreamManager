@@ -28,7 +28,7 @@ import { CreateCustomAchievementButton } from "./CreateCustomAchievementButton";
 import SortBy, { SortByOptions } from "@components/sortBy";
 
 const getAchievementsStateDataHelper = (
-  achievement: Achievement
+  achievement: Achievement,
 ): AchievementSliceType["achievement"] => {
   return {
     ...achievement,
@@ -53,8 +53,8 @@ export default function AchievementsList() {
       setCurrentAction(
         achievement.custom
           ? ManageAchievementsCurrentAction.EDIT_CUSTOM
-          : ManageAchievementsCurrentAction.EDIT
-      )
+          : ManageAchievementsCurrentAction.EDIT,
+      ),
     );
     dispatch(setAchievementState(getAchievementsStateDataHelper(achievement)));
     dispatch({ type: "SET_STATE", payload: achievement });

@@ -33,18 +33,18 @@ export const queryKeysAffixes = {
 };
 
 export const fetchAffixes = async (
-  params?: QueryParams<keyof FetchAffixParams>
+  params?: QueryParams<keyof FetchAffixParams>,
 ): PromisePaginationData<Affix> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createAffix = async (
-  newAffix: AffixCreateData
+  newAffix: AffixCreateData,
 ): PromiseBackendData<Affix> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newAffix
+    newAffix,
   );
   return response.data;
 };
@@ -58,14 +58,14 @@ export const editAffix = async ({
 }): PromiseBackendData<Affix> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedAffix
+    updatedAffix,
   );
   return response.data;
 };
 
 export const deleteAffix = async (id: string): PromiseBackendData<Affix> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -91,7 +91,7 @@ export const useEditAffix = () => {
           socketConn.emit("changeModes");
         });
       },
-    }
+    },
   );
 };
 
@@ -109,7 +109,7 @@ export const useCreateAffix = () => {
           socketConn.emit("changeModes");
         });
       },
-    }
+    },
   );
 };
 
@@ -127,7 +127,7 @@ export const useDeleteAffix = () => {
           socketConn.emit("changeModes");
         });
       },
-    }
+    },
   );
 };
 export const useRefetchAffixesData = (exact = false) => {
@@ -137,6 +137,6 @@ export const useRefetchAffixesData = (exact = false) => {
     "allAffixes",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

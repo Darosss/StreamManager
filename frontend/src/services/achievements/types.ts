@@ -37,8 +37,10 @@ export interface AchievementStage<T = Badge> extends BaseModelProperties {
   stageData: AchievementStageData<T>[];
 }
 
-export interface AchievementStageCreateData
-  extends Pick<AchievementStage, "name"> {
+export interface AchievementStageCreateData extends Pick<
+  AchievementStage,
+  "name"
+> {
   stageData: AchievementStageData<string>[];
 }
 export type AchievementStageUpdateData = Partial<AchievementStageCreateData>;
@@ -60,23 +62,23 @@ export interface Achievement extends BaseModelProperties {
   custom?: AchievementCustomField;
   hidden?: boolean;
 }
-export interface AchievementUpdateData
-  extends Pick<Achievement, "description" | "enabled" | "hidden"> {
+export interface AchievementUpdateData extends Pick<
+  Achievement,
+  "description" | "enabled" | "hidden"
+> {
   stages: string;
   tag: string;
 }
 
 export interface CustomAchievementCreateData
-  extends Required<
-      Pick<Achievement, "description" | "name" | "enabled" | "custom">
-    >,
+  extends
+    Required<Pick<Achievement, "description" | "name" | "enabled" | "custom">>,
     Pick<Achievement, "hidden"> {
   stages: string;
   tag: string;
 }
 
-export interface CustomAchievementUpdateData
-  extends Partial<CustomAchievementCreateData> {}
+export interface CustomAchievementUpdateData extends Partial<CustomAchievementCreateData> {}
 
 export interface AchievementUserProgress extends BaseModelProperties {
   userId: string;
@@ -91,8 +93,9 @@ export interface GetBagesImagesResponseData {
   availableSizes: number[];
 }
 
-export interface FetchAchievementsParams
-  extends DefaultRequestParams<keyof Achievement> {
+export interface FetchAchievementsParams extends DefaultRequestParams<
+  keyof Achievement
+> {
   search_name?: string;
   custom_action: string;
 }
@@ -102,8 +105,9 @@ export interface FetchBadgesParams extends DefaultRequestParams<keyof Badge> {
   imagesUrls?: string;
 }
 
-export interface FetchStagesParams
-  extends DefaultRequestParams<keyof AchievementStage> {
+export interface FetchStagesParams extends DefaultRequestParams<
+  keyof AchievementStage
+> {
   search_name?: string;
   stageName?: string;
   sound?: string;

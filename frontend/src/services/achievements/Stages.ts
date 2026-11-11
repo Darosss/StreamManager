@@ -40,17 +40,17 @@ export const queryKeysStages = {
 };
 
 export const fetchAchievementStages = async (
-  params?: QueryParams<keyof FetchStagesParams>
+  params?: QueryParams<keyof FetchStagesParams>,
 ): PromisePaginationData<AchievementStage> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const deleteAchievementStage = async (
-  id: string
+  id: string,
 ): PromiseBackendData<AchievementStage> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -63,20 +63,20 @@ export const editAchievementStage = async ({
 }): PromiseBackendData<AchievementStage> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedAchievementStage
+    updatedAchievementStage,
   );
   return response.data;
 };
 
 export const createaAchievementStage = async (
-  data: AchievementStageCreateData
+  data: AchievementStageCreateData,
 ): PromiseBackendData<AchievementStage> => {
   const response = await customAxios.post(`/${baseEndpointName}/create`, data);
   return response.data;
 };
 
 export const getAchievementStageById = async (
-  id: string
+  id: string,
 ): PromiseBackendData<AchievementStage> => {
   const response = await customAxios.get(`/${baseEndpointName}/${id}`);
   return response.data;
@@ -85,7 +85,7 @@ export const getAchievementStageById = async (
 export const fetchAchievementStageSounds =
   async (): PromisePaginationData<string> => {
     const response = await customAxios.get(
-      `${baseEndpointName}/available-sounds`
+      `${baseEndpointName}/available-sounds`,
     );
     return response.data;
   };
@@ -93,22 +93,22 @@ export const fetchAchievementStageSounds =
 export const fetchAchievementStageSoundsBasePath =
   async (): PromiseBackendData<string> => {
     const response = await customAxios.get(
-      `${baseEndpointName}/available-sounds/base-path`
+      `${baseEndpointName}/available-sounds/base-path`,
     );
     return response.data;
   };
 
 export const deleteAchievementStageSound = async (
-  soundName: string
+  soundName: string,
 ): PromiseBackendData<boolean> => {
   const response = await customAxios.delete(
-    `${baseEndpointName}/sounds/${soundName}/delete`
+    `${baseEndpointName}/sounds/${soundName}/delete`,
   );
   return response.data;
 };
 
 export const useGetAchievementStages = (
-  params?: QueryParams<keyof FetchStagesParams>
+  params?: QueryParams<keyof FetchStagesParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysStages.allAchievementStages(params),
@@ -124,7 +124,7 @@ export const useDeleteAchievementStage = () => {
       entity: MutationEntity.ACHIEVEMENT_STAGE,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchAchievementStages }
+    { onSuccess: refetchAchievementStages },
   );
 };
 
@@ -143,7 +143,7 @@ export const useCreateAchievementStage = () => {
       entity: MutationEntity.ACHIEVEMENT_STAGE,
       action: MutationAction.CREATE,
     },
-    { onSuccess: refetchAchievementStages }
+    { onSuccess: refetchAchievementStages },
   );
 };
 
@@ -155,7 +155,7 @@ export const useEditAchievementStage = () => {
       entity: MutationEntity.ACHIEVEMENT_STAGE,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchAchievementStages }
+    { onSuccess: refetchAchievementStages },
   );
 };
 
@@ -181,7 +181,7 @@ export const useDeleteAchievementStageSound = () => {
       entity: MutationEntity.ACHIEVEMENT_STAGE_SOUND,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchAchievementStageSounds }
+    { onSuccess: refetchAchievementStageSounds },
   );
 };
 
@@ -193,7 +193,7 @@ export const useRefetchAchievementStagesData = (exact = false) => {
     "allAchievementStages",
     queryClient,
     [],
-    exact
+    exact,
   );
 };
 
@@ -204,7 +204,7 @@ export const useRefetchAchievementStageSoundsData = (exact = false) => {
     "achievementStageSounds",
     queryClient,
     null,
-    exact
+    exact,
   );
 };
 
@@ -216,6 +216,6 @@ export const useRefetchAchievementStageById = (exact = false) => {
       "achievementStagesById",
       queryClient,
       [id],
-      exact
+      exact,
     );
 };

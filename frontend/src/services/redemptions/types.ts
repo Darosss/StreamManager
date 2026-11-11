@@ -14,8 +14,9 @@ export interface Redemption {
   message?: string;
 }
 
-export interface FetchRedemptionsParams
-  extends DefaultRequestParams<keyof Redemption> {
+export interface FetchRedemptionsParams extends DefaultRequestParams<
+  keyof Redemption
+> {
   message?: string;
   receiver?: string;
   cost?: number;

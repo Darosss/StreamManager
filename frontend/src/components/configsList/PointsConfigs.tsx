@@ -24,7 +24,7 @@ export default function PointsConfigsWrapper() {
                 ...pointsConfigs.pointsIncrement,
                 message: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={pointsConfigs.pointsIncrement.message}
@@ -40,7 +40,7 @@ export default function PointsConfigsWrapper() {
                 ...pointsConfigs.pointsIncrement,
                 watch: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={pointsConfigs.pointsIncrement.watch}
@@ -56,7 +56,7 @@ export default function PointsConfigsWrapper() {
                 ...pointsConfigs.pointsIncrement,
                 watchMultipler: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={pointsConfigs.pointsIncrement.watchMultipler}

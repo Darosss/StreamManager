@@ -11,21 +11,20 @@ export interface MessageCategory extends BaseModelProperties {
   mood: Mood;
 }
 
-export interface MessageCategoryCreateData
-  extends Omit<
-    MessageCategory,
-    "_id" | "createdAt" | "updatedAt" | "uses" | "tag" | "mood" | "messages"
-  > {
+export interface MessageCategoryCreateData extends Omit<
+  MessageCategory,
+  "_id" | "createdAt" | "updatedAt" | "uses" | "tag" | "mood" | "messages"
+> {
   messages: string[];
   tag: string;
   mood: string;
 }
 
-export interface MessageCategoryUpdateData
-  extends Partial<MessageCategoryCreateData> {}
+export interface MessageCategoryUpdateData extends Partial<MessageCategoryCreateData> {}
 
-export interface FetchMessageCategoriesParams
-  extends DefaultRequestParams<keyof MessageCategory> {
+export interface FetchMessageCategoriesParams extends DefaultRequestParams<
+  keyof MessageCategory
+> {
   search_name?: string;
   messages?: string;
 }

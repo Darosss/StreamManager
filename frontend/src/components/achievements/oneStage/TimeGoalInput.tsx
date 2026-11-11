@@ -16,7 +16,7 @@ enum CurrentInputEnum {
 
 export function TimeGoalInput({ goal, onChangeCallback }: TimeGoalInputProps) {
   const [currentInput, setCurrentInput] = useState<CurrentInputEnum>(
-    CurrentInputEnum.MINUTES
+    CurrentInputEnum.MINUTES,
   );
   const [localGoalValue, setLocalGoalValue] = useState(goal);
   const onChangeFn = useCallback(
@@ -45,7 +45,7 @@ export function TimeGoalInput({ goal, onChangeCallback }: TimeGoalInputProps) {
 
       return time ? Math.round(time.diff(dayjs()) / 1000) : value;
     },
-    [currentInput]
+    [currentInput],
   );
   return (
     <>

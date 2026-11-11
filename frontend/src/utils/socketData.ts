@@ -15,7 +15,7 @@ interface GetMessagesWithEmotesReturnType {
 }
 
 type GetMessagesWithEmotesFn = (
-  params: GetMessagesWithEmotesParams
+  params: GetMessagesWithEmotesParams,
 ) => GetMessagesWithEmotesReturnType[] | undefined;
 
 enum TwitchEmoteUrlTheme {
@@ -56,7 +56,7 @@ export const getMessagesWithEmotes: GetMessagesWithEmotesFn = ({
       emotes[emoteId].map((value) => {
         const [startIndex, endIndex] = value.split("-").map(Number);
         return { startIndex, endIndex, emoteId };
-      })
+      }),
     )
     .flat()
     .sort((a, b) => a.startIndex - b.startIndex);
@@ -89,7 +89,7 @@ export const getMessagesWithEmotes: GetMessagesWithEmotesFn = ({
 export const isObtainedAchievement = (
   data:
     | ObtainAchievementDataWithCollectedAchievement
-    | ObtainAchievementDataWithProgressOnly
+    | ObtainAchievementDataWithProgressOnly,
 ): data is ObtainAchievementDataWithCollectedAchievement => {
   return (
     (data as ObtainAchievementDataWithCollectedAchievement).stage !==

@@ -29,7 +29,11 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint \"src/**/*.{js,jsx,tsx,ts}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,tsx,ts}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{js,jsx,tsx,ts}\" --fix",
+    "lint:staged": "eslint --fix",
+    "format": "prettier . --check",
+    "format:write": "prettier . --write",
+    "format:staged": "prettier --write --ignore-unknown"
   },
   "eslintConfig": {
     "extends": [
@@ -68,6 +72,7 @@
     "@vitest/browser-preview": "^5.1.0",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
+    "prettier": "3.10.0",
     "rollup-plugin-visualizer": "^7.1.2",
     "sass": "^1.108.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",

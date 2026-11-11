@@ -19,7 +19,7 @@ export default function ChatGamesConfigsWrapper() {
             setChatGamesConfigs([
               "activeUserTimeDelay",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={chatGamesConfigs.activeUserTimeDelay}
@@ -32,7 +32,7 @@ export default function ChatGamesConfigsWrapper() {
             setChatGamesConfigs([
               "chatGamesIntervalDelay",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={chatGamesConfigs.chatGamesIntervalDelay}
@@ -45,7 +45,7 @@ export default function ChatGamesConfigsWrapper() {
             setChatGamesConfigs([
               "minActiveUsersThreshold",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={chatGamesConfigs.minActiveUsersThreshold}

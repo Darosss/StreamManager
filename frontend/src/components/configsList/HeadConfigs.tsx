@@ -19,7 +19,7 @@ export default function HeadConfigsWrapper() {
             setHeadConfigs([
               "intervalCheckViewersPeek",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={headConfigs.intervalCheckViewersPeek}
@@ -38,7 +38,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.delayBetweenMessages,
                 min: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.delayBetweenMessages.min}
@@ -54,7 +54,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.delayBetweenMessages,
                 max: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.delayBetweenMessages.max}
@@ -71,7 +71,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.permissionLevels,
                 broadcaster: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.permissionLevels.broadcaster}
@@ -87,7 +87,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.permissionLevels,
                 mod: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.permissionLevels.mod}
@@ -103,7 +103,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.permissionLevels,
                 vip: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.permissionLevels.vip}
@@ -119,7 +119,7 @@ export default function HeadConfigsWrapper() {
                 ...headConfigs.permissionLevels,
                 all: e.currentTarget.valueAsNumber,
               },
-            ])
+            ]),
           )
         }
         value={headConfigs.permissionLevels.all}

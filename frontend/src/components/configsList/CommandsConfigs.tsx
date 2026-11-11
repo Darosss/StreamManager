@@ -15,7 +15,7 @@ export default function CommandsConfigsWrapper() {
         optionName="Commands prefix"
         setState={(e) =>
           dispatch(
-            setCommandsConfigs(["commandsPrefix", e.currentTarget.value])
+            setCommandsConfigs(["commandsPrefix", e.currentTarget.value]),
           )
         }
         value={commandsConfigs.commandsPrefix}

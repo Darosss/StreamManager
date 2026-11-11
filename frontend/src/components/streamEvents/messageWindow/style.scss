@@ -2,7 +2,10 @@
   height: 99%;
   overflow-x: hidden;
   button {
-    transition: font-weight 1s, color 1s, border-radius 1s;
+    transition:
+      font-weight 1s,
+      color 1s,
+      border-radius 1s;
 
     &:hover {
       font-weight: 900;

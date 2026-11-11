@@ -47,7 +47,7 @@ const achievementsSlice = createSlice({
     },
     setCurrentAction(
       state,
-      action: PayloadAction<ManageAchievementsCurrentAction>
+      action: PayloadAction<ManageAchievementsCurrentAction>,
     ) {
       state.currentAction = action.payload;
     },
@@ -81,7 +81,7 @@ const achievementsSlice = createSlice({
 
     setAchievementState(
       state,
-      action: PayloadAction<AchievementSliceDataType>
+      action: PayloadAction<AchievementSliceDataType>,
     ) {
       return { ...state, achievement: action.payload };
     },

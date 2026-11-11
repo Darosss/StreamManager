@@ -71,7 +71,7 @@ export default function SongModalData() {
               setCustomTitle({
                 title: songState.customTitle?.title || "",
                 band: e.target.value,
-              })
+              }),
             )
           }
         />
@@ -84,7 +84,7 @@ export default function SongModalData() {
               setCustomTitle({
                 title: e.target.value,
                 band: songState.customTitle?.band || "",
-              })
+              }),
             )
           }
         />

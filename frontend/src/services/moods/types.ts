@@ -7,8 +7,10 @@ export interface Mood extends BaseModelProperties {
   sufixes: string[];
 }
 
-export interface MoodCreateData
-  extends Pick<Mood, "name" | "enabled" | "prefixes" | "sufixes"> {}
+export interface MoodCreateData extends Pick<
+  Mood,
+  "name" | "enabled" | "prefixes" | "sufixes"
+> {}
 
 export interface MoodUpdateData extends Partial<MoodCreateData> {
   enabled?: boolean;

@@ -37,18 +37,18 @@ export const queryKeysTriggers = {
 };
 
 export const fetchTriggers = async (
-  params?: QueryParams<keyof FetchTriggerParams>
+  params?: QueryParams<keyof FetchTriggerParams>,
 ): PromisePaginationData<Trigger> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createTrigger = async (
-  newTrigger: TriggerCreateData
+  newTrigger: TriggerCreateData,
 ): PromiseBackendData<Trigger> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newTrigger
+    newTrigger,
   );
   return response.data;
 };
@@ -62,22 +62,22 @@ export const editTrigger = async ({
 }): PromiseBackendData<Trigger> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedTrigger
+    updatedTrigger,
   );
   return response.data;
 };
 
 export const deleteTrigger = async (
-  id: string
+  id: string,
 ): PromiseBackendData<Trigger> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 
 export const useGetTriggers = (
-  params?: QueryParams<keyof FetchTriggerParams>
+  params?: QueryParams<keyof FetchTriggerParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysTriggers.allTriggers(params),
@@ -97,7 +97,7 @@ export const useEditTrigger = () => {
       onSuccess: () => {
         refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
       },
-    }
+    },
   );
 };
 
@@ -113,7 +113,7 @@ export const useCreateTrigger = () => {
       onSuccess: () => {
         refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
       },
-    }
+    },
   );
 };
 
@@ -129,7 +129,7 @@ export const useDeleteTrigger = () => {
       onSuccess: () => {
         refetchTriggers().then(() => socketConn.emit("refreshTriggers"));
       },
-    }
+    },
   );
 };
 
@@ -140,6 +140,6 @@ export const useRefetchTriggersData = (exact = false) => {
     "allTriggers",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

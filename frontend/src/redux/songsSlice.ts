@@ -42,7 +42,7 @@ const songsSlice = createSlice({
     },
     setCustomTitle(
       state,
-      action: PayloadAction<{ title: string; band: string }>
+      action: PayloadAction<{ title: string; band: string }>,
     ) {
       state.song.customTitle = action.payload;
     },

@@ -18,7 +18,7 @@ import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
 const baseEndpointName = BaseEndpointNames.MESSAGE_CATEGORIES;
 export const queryKeysMessageCategories = {
   allMessageCategories: (
-    params?: QueryParams<keyof FetchMessageCategoriesParams>
+    params?: QueryParams<keyof FetchMessageCategoriesParams>,
   ) => [
     "message-categories",
     ...(params ? Object.entries(params).join(",") : []),
@@ -36,23 +36,23 @@ export const fetchMessageCategoriesDefaultParams: Required<FetchMessageCategorie
   };
 
 export const fetchMessageCategories = async (
-  params?: QueryParams<keyof FetchMessageCategoriesParams>
+  params?: QueryParams<keyof FetchMessageCategoriesParams>,
 ): PromisePaginationData<MessageCategory> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createMessageCategory = async (
-  newMessageCategory: MessageCategoryCreateData
+  newMessageCategory: MessageCategoryCreateData,
 ): PromiseBackendData<MessageCategory> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newMessageCategory
+    newMessageCategory,
   );
   return response.data;
 };
 export const incrementUsesMessageCategory = async (
-  id: string
+  id: string,
 ): PromiseBackendData<MessageCategory> => {
   const response = await customAxios.patch(`/${baseEndpointName}/${id}/uses`);
   return response.data;
@@ -67,22 +67,22 @@ export const editMessageCategory = async ({
 }): PromiseBackendData<MessageCategory> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedMessageCategory
+    updatedMessageCategory,
   );
   return response.data;
 };
 
 export const deleteMessageCategory = async (
-  id: string
+  id: string,
 ): PromiseBackendData<MessageCategory> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 
 export const useGetMessageCategories = (
-  params?: QueryParams<keyof FetchMessageCategoriesParams>
+  params?: QueryParams<keyof FetchMessageCategoriesParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysMessageCategories.allMessageCategories(params),
@@ -100,7 +100,7 @@ export const useEditMessageCategory = () => {
     },
     {
       onSuccess: refetchMessageCategories,
-    }
+    },
   );
 };
 
@@ -112,7 +112,7 @@ export const useIncrementUsesCategoryById = () => {
       entity: MutationEntity.MESSAGE_CATEGORY,
       action: MutationAction.INCREMENT_USES,
     },
-    { onSuccess: refetchMessageCategories }
+    { onSuccess: refetchMessageCategories },
   );
 };
 
@@ -124,7 +124,7 @@ export const useCreateMessageCategory = () => {
       entity: MutationEntity.MESSAGE_CATEGORY,
       action: MutationAction.CREATE,
     },
-    { onSuccess: refetchMessageCategories }
+    { onSuccess: refetchMessageCategories },
   );
 };
 
@@ -136,7 +136,7 @@ export const useDeleteMessageCategory = () => {
       entity: MutationEntity.MESSAGE_CATEGORY,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchMessageCategories }
+    { onSuccess: refetchMessageCategories },
   );
 };
 
@@ -147,6 +147,6 @@ export const useRefetchMessageCategoriesData = (exact = false) => {
     "allMessageCategories",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

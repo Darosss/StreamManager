@@ -18,7 +18,7 @@ import { SelectModes } from "@components/modesList";
 export default function CommandModalData() {
   const dispatch = useDispatch();
   const commandState = useSelector(
-    (state: RootStore) => state.commands.command
+    (state: RootStore) => state.commands.command,
   );
   const modes = useGetAllModes();
   const { tags, moods } = modes;
