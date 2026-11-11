@@ -6,7 +6,7 @@ import {
   TableListWrapper,
 } from "@components/tableWrapper";
 import SortByParamsButton from "@components/SortByParamsButton";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import {
   openModal,
   resetTimerState,
@@ -30,7 +30,7 @@ const getTimerStateDataHelper = (timer: Timer): TimerCreateData => {
 };
 
 export default function TimersData({ data }: TimersDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const deleteTimerMutation = useDeleteTimer();
   const handleDeleteTimer = (id: string) => {

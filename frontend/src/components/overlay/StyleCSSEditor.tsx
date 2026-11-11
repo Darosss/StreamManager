@@ -2,8 +2,8 @@ import { useState } from "react";
 import Modal from "@components/modal";
 import React from "react";
 import { OverlayKeysStylesParsedType } from "@layout";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { useEditOverlay } from "@services";
 import { setStyles } from "@redux/overlaysSlice";
 import { Button } from "@components/ui/button";
@@ -17,7 +17,7 @@ function StyleCSSEditor() {
   const {
     baseData,
     overlay: { styles },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const { addNotify } = useNotifications();
   const editOverlayMutation = useEditOverlay();
@@ -58,7 +58,7 @@ export default StyleCSSEditor;
 function StyleCssEditorModalData() {
   const {
     baseData: { styles },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const [choosenOverlayEdit, setChoosenOverlayEdit] = useState<
     [keyof OverlayKeysStylesParsedType, OverlayKeysType]
@@ -106,7 +106,7 @@ type KeyDataAsObject = { [index: string]: number | string };
 function CssEditInputs({ propertyKeyName }: CssEditInputsProps) {
   const {
     baseData: { styles },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const data = styles[propertyKeyName];
   const dataKeys = Object.keys(data);
@@ -168,8 +168,8 @@ function NestedInputData({
   propertyKeyName,
   overlayDataKey,
 }: NestedInputDataProps) {
-  const dispatch = useDispatch();
-  const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
+  const dispatch = useAppDispatch();
+  const overlaysStateRedux = useAppSelector((state) => state.overlays);
   const {
     baseData: { styles },
   } = overlaysStateRedux;
@@ -215,10 +215,10 @@ function SimpleInputData({
   overlayPropertyData,
   propertyKeyName,
 }: SimpleInputDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     baseData: { styles },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const data = styles[propertyKeyName];
   return (

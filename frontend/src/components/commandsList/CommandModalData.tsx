@@ -1,6 +1,6 @@
 import ModalDataWrapper from "@components/modalDataWrapper/ModalDataWrapper";
 import { useGetAllModes } from "@hooks";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   setName,
   setEnabled,
@@ -11,15 +11,13 @@ import {
   setAliases,
   setMessages,
 } from "@redux/commandsSlice";
-import { RootStore } from "@redux/store";
+
 import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 
 export default function CommandModalData() {
-  const dispatch = useDispatch();
-  const commandState = useSelector(
-    (state: RootStore) => state.commands.command,
-  );
+  const dispatch = useAppDispatch();
+  const commandState = useAppSelector((state) => state.commands.command);
   const modes = useGetAllModes();
   const { tags, moods } = modes;
   return (

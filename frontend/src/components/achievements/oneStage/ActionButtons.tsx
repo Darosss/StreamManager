@@ -2,8 +2,8 @@ import {
   useEditAchievementStage,
   useRefetchAchievementStageById,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { pushToStageData } from "@redux/stagesSlice";
 import { Button } from "@components/ui/button";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -22,9 +22,9 @@ export default function ActionButtons({
   onClickEdit,
   onClickSave,
 }: ActionButtonsProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { stage } = useSelector((root: RootStore) => root.stages);
+  const { stage } = useAppSelector((state) => state.stages);
   const { addNotify } = useNotifications();
   const editAchievementStageMutation = useEditAchievementStage();
   const handleOnClickAddStage = () => {

@@ -1,15 +1,15 @@
 import ConfigInput from "./ConfigInput";
 import ConfigButton from "./ConfigButton";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { setMusicConfigs } from "@redux/configsSlice";
 
 export default function MusicConfigsWrapper() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isUpdateMode,
     config: { musicConfigs },
-  } = useSelector((state: RootStore) => state.configs);
+  } = useAppSelector((state) => state.configs);
 
   return (
     <>

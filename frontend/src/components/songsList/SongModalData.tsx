@@ -1,7 +1,7 @@
 import ModalDataWrapper from "@components/modalDataWrapper/ModalDataWrapper";
 import SearchUsers from "./SearchUsers";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import {
   setTitle,
   setYoutubeId,
@@ -15,8 +15,8 @@ import {
 import { Button } from "@components/ui/button";
 
 export default function SongModalData() {
-  const dispatch = useDispatch();
-  const songState = useSelector((state: RootStore) => state.songs.song);
+  const dispatch = useAppDispatch();
+  const songState = useAppSelector((state) => state.songs.song);
   return (
     <ModalDataWrapper>
       <div>Title</div>

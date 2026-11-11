@@ -1,6 +1,6 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   setName,
   setPrefixChance,
@@ -8,11 +8,10 @@ import {
   setSuffixChance,
   setSuffixes,
 } from "@redux/affixesSlice";
-import { RootStore } from "@redux/store";
 
 export default function AffixModalData() {
-  const dispatch = useDispatch();
-  const affixState = useSelector((state: RootStore) => state.affixes.affix);
+  const dispatch = useAppDispatch();
+  const affixState = useAppSelector((state) => state.affixes.affix);
   const { name, prefixChance, suffixChance, suffixes, prefixes } = affixState;
   return (
     <ModalDataWrapper>

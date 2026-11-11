@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@redux";
 import { useSocketContext } from "@socket";
-import { RootStore } from "@redux/store";
+
 import useMusicPlayer from "@hooks/useMusicPlayer";
 import { AudioStreamData } from "@socketTypes";
 import { DownloadedSongPlayer, YoutubePlayer } from "@components/musicPlayers";
@@ -18,7 +18,7 @@ const editorTestData: AudioStreamData = {
 };
 
 export default function MusicPlayer() {
-  const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
+  const overlaysStateRedux = useAppSelector((state) => state.overlays);
   const {
     isEditor,
     baseData: {

@@ -1,11 +1,10 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { setName } from "@redux/moodsSlice";
-import { RootStore } from "@redux/store";
 
 export default function MoodModalData() {
-  const dispatch = useDispatch();
-  const moodState = useSelector((state: RootStore) => state.moods.mood);
+  const dispatch = useAppDispatch();
+  const moodState = useAppSelector((state) => state.moods.mood);
   const { name } = moodState;
   return (
     <ModalDataWrapper>

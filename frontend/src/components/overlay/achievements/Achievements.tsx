@@ -7,8 +7,8 @@ import { isObtainedAchievement } from "@utils";
 import { useEffect, useMemo, useState } from "react";
 import { getExampleAchievementsData } from "./exampleData";
 import { useLocalStorage } from "@hooks";
-import { useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppSelector } from "@redux";
+
 import { AchievementDataBlock } from "./Data-Blocks";
 import { useAchievementQueue } from "./use-achievements-queue";
 
@@ -29,7 +29,7 @@ export default function Achievements() {
     baseData: {
       styles: { overlayAchievements: styles },
     },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const [obtainedAchievements, setObtainedAchievements] = useLocalStorage<
     ObtainedAchievementStateType[]

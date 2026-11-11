@@ -9,10 +9,10 @@ import {
   useEditAffix,
   Affix,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { closeModal, resetAffixState, setEditingId } from "@redux/affixesSlice";
-import { RootStore } from "@redux/store";
+
 import AffixModalData from "./AffixModalData";
 import AffixesData from "./AffixesData";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -23,12 +23,12 @@ export default function Affixes() {
   const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchAffixesDefaultParams);
   const { data: affixes, isLoading, error } = useGetAffixes(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     affix: affixState,
     editingId,
-  } = useSelector((state: RootStore) => state.affixes);
+  } = useAppSelector((state) => state.affixes);
 
   const createAffixMutation = useCreateAffix();
   const updateAffixMutation = useEditAffix();

@@ -1,13 +1,13 @@
 import { setCommandsConfigs } from "@redux/configsSlice";
 import ConfigInput from "./ConfigInput";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 export default function CommandsConfigsWrapper() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isUpdateMode,
     config: { commandsConfigs },
-  } = useSelector((state: RootStore) => state.configs);
+  } = useAppSelector((state) => state.configs);
 
   return (
     <>

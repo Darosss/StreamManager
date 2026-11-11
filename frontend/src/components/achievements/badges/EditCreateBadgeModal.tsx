@@ -1,16 +1,16 @@
 import Modal from "@components/modal";
 import { useEditBadge, useCreateBadge } from "@services";
 import BadgeModalData from "./BadgesModalData";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { closeModal, setEditingId } from "@redux/badgesSlice";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 
 export default function EditCreateBadgeModal() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { addNotify } = useNotifications();
-  const { isModalOpen, badge, editingId } = useSelector(
-    (root: RootStore) => root.badges,
+  const { isModalOpen, badge, editingId } = useAppSelector(
+    (state) => state.badges,
   );
   const editBadgeMutation = useEditBadge();
   const createBadgeMutation = useCreateBadge();

@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import ConfigInput from "./ConfigInput";
-import { RootStore } from "@redux/store";
+
 import { setHeadConfigs } from "@redux/configsSlice";
 
 export default function HeadConfigsWrapper() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isUpdateMode,
     config: { headConfigs },
-  } = useSelector((state: RootStore) => state.configs);
+  } = useAppSelector((state) => state.configs);
 
   return (
     <>

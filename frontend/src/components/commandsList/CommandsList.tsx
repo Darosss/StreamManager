@@ -7,13 +7,13 @@ import {
   useEditChatCommand,
   useGetChatCommands,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   resetCommandState,
   setEditingId,
   closeModal,
 } from "@redux/commandsSlice";
-import { RootStore } from "@redux/store";
+
 import CommandModalData from "./CommandModalData";
 import CommandsData from "./CommandsData";
 import { Error, Loading } from "@components/axiosHelper";
@@ -24,14 +24,14 @@ import Filter from "@components/filter";
 import { getPossibleCommonField, Options } from "@components/filter/Filter";
 
 export default function CommandsList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const queryParams = useQueryParams(fetchChatCommandsDefaultParams);
   const { addNotify } = useNotifications();
   const {
     isModalOpen,
     command: commandState,
     editingId,
-  } = useSelector((state: RootStore) => state.commands);
+  } = useAppSelector((state) => state.commands);
 
   const createCommandMutation = useCreateChatCommand();
   const updateCommandMutation = useEditChatCommand();

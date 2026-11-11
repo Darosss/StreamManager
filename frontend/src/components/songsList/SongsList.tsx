@@ -8,10 +8,10 @@ import {
   useEditSong,
   Song,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { resetSongState, closeModal, setEditingId } from "@redux/songsSlice";
-import { RootStore } from "@redux/store";
+
 import SongModalData from "./SongModalData";
 import SongsData from "./SongsData";
 import { TableList } from "@components/tableWrapper";
@@ -24,9 +24,9 @@ export default function SongsList() {
   const { addNotify } = useNotifications();
   const { data: songs, isLoading, error } = useGetSongs(queryParams);
 
-  const dispatch = useDispatch();
-  const { isModalOpen, song, editingId } = useSelector(
-    (state: RootStore) => state.songs,
+  const dispatch = useAppDispatch();
+  const { isModalOpen, song, editingId } = useAppSelector(
+    (state) => state.songs,
   );
 
   const createSongMutation = useCreateSong();

@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import ModalDataWrapper from "@components/modalDataWrapper";
 import { TriggerMode } from "@services";
-import { RootStore } from "@redux/store";
+
 import {
   setChance,
   setDelay,
@@ -21,10 +21,8 @@ export default function TriggerModalData() {
   const modes = useGetAllModes();
   const { tags, moods } = modes;
 
-  const dispatch = useDispatch();
-  const triggerState = useSelector(
-    (state: RootStore) => state.triggers.trigger,
-  );
+  const dispatch = useAppDispatch();
+  const triggerState = useAppSelector((state) => state.triggers.trigger);
 
   return (
     <ModalDataWrapper>

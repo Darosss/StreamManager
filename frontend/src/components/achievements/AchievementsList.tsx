@@ -15,7 +15,6 @@ import Filter, {
 } from "@components/filter/Filter";
 import { AchievementCard, AchievementCardSkeleton } from "./AchievementCard";
 import Pagination from "@components/pagination";
-import { useDispatch } from "react-redux";
 import {
   AchievementSliceType,
   ManageAchievementsCurrentAction,
@@ -26,6 +25,7 @@ import {
 } from "@redux/achievementsSlice";
 import { CreateCustomAchievementButton } from "./CreateCustomAchievementButton";
 import SortBy, { SortByOptions } from "@components/sortBy";
+import { useAppDispatch } from "@redux";
 
 const getAchievementsStateDataHelper = (
   achievement: Achievement,
@@ -37,7 +37,7 @@ const getAchievementsStateDataHelper = (
   };
 };
 export default function AchievementsList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const queryParams = useQueryParams(fetchAchievementsDefaultParams);
   const {
     data: achievementsData,

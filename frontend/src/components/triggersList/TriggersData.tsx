@@ -12,7 +12,7 @@ import {
   setEditingId,
   setTriggerState,
 } from "@redux/triggersSlice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui/button";
 import { StatusLabel } from "@components/common/StatusLabel";
@@ -30,7 +30,7 @@ const getTriggerStateDataHelper = (trigger: Trigger): TriggerCreateData => {
 };
 
 export default function TriggersData({ data }: TriggersDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const deleteTriggerMutation = useDeleteTrigger();
   const handleDeleteTrigger = (id: string) => {

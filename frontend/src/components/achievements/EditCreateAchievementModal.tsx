@@ -7,8 +7,8 @@ import {
   useUpdateCustomAchievement,
 } from "@services";
 import CustomAchievementModalInputs from "./CustomAchievementModalInputs";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import {
   closeModal,
   ManageAchievementsCurrentAction,
@@ -23,10 +23,10 @@ import { Button } from "@components/ui/button";
 import { SelectModes } from "@components/modesList";
 
 export default function EditCreateAchievementModal() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { achievement, isModalOpen, currentAction, editingId } = useSelector(
-    (root: RootStore) => root.achievements,
+  const { achievement, isModalOpen, currentAction, editingId } = useAppSelector(
+    (state) => state.achievements,
   );
   const { data: tags } = useGetTags();
 

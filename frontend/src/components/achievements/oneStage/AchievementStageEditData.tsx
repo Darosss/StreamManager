@@ -5,8 +5,8 @@ import { viteBackendUrl } from "@configs/envVariables";
 import AvailableAchievementSounds from "./AvailableAchievementSounds";
 import { TableDataWrapper } from "@components/tableWrapper";
 import { Error, Loading } from "@components/axiosHelper";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import {
   removeStageDataByIndex,
   updateStageDataPropertyByIndex,
@@ -22,13 +22,13 @@ interface AchievementStageEditDataProps {
 export default function AchievementStageEditData({
   onClickBadge,
 }: AchievementStageEditDataProps) {
-  const { isSoundModalOpen, isGoalTime, stage } = useSelector(
-    (root: RootStore) => root.stages,
+  const { isSoundModalOpen, isGoalTime, stage } = useAppSelector(
+    (state) => state.stages,
   );
 
   const [currentChoosenStageIndex, setCurrentChoosenStageIndex] = useState(-1);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     data: stagesSoundResponseData,

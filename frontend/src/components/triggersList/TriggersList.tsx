@@ -10,9 +10,9 @@ import {
 import TriggersData from "./TriggersData";
 import TriggerModalData from "./TriggerModalData";
 import { Loading } from "@components/axiosHelper";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
-import { RootStore } from "@redux/store";
+
 import Error from "@components/axiosHelper/errors";
 import {
   closeModal,
@@ -28,12 +28,12 @@ export default function TriggersList() {
   const queryParams = useQueryParams(fetchTriggersDefaultParams);
   const { addNotify } = useNotifications();
   const { data: triggers, isLoading, error } = useGetTriggers(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     trigger: triggerState,
     editingId,
-  } = useSelector((state: RootStore) => state.triggers);
+  } = useAppSelector((state) => state.triggers);
 
   const createTriggerMutation = useCreateTrigger();
   const updateTriggerMutation = useEditTrigger();

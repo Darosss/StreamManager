@@ -13,7 +13,7 @@ import HeadConfigsWrapper from "./HeadConfigs";
 import EditConfigs from "./EditConfigs";
 import Error from "@components/axiosHelper/errors";
 import { Loading } from "@components/axiosHelper";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import { setConfigState } from "@redux/configsSlice";
 import { Button } from "@components/ui/button";
 
@@ -29,7 +29,7 @@ enum ConfigsListTabNames {
 }
 
 export default function ConfigsList() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [currentTab, setCurrentTab] = useState<ConfigsListTabNames>(
     ConfigsListTabNames.HEAD,

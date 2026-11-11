@@ -1,6 +1,6 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import {
   setDelay,
   setEnabled,
@@ -25,8 +25,8 @@ export default function TimerModalData() {
   const modes = useGetAllModes();
   const { tags, moods } = modes;
 
-  const dispatch = useDispatch();
-  const timerState = useSelector((state: RootStore) => state.timers.timer);
+  const dispatch = useAppDispatch();
+  const timerState = useAppSelector((state) => state.timers.timer);
   const [localDelay, setLocalDelay] = useState(timerState.delay);
   const debouncedDelay = useDebouncedValue(localDelay, 500);
 

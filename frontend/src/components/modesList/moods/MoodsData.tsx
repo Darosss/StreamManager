@@ -8,14 +8,14 @@ import {
   setMoodState,
 } from "@redux/moodsSlice";
 import { Mood, useDeleteMood } from "@services";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 
 interface MoodsDataProps {
   data: Mood[];
 }
 
 export default function MoodsData({ data }: MoodsDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const deleteMoodMutation = useDeleteMood();
   const handleDeleteMood = (id: string) => {
     if (

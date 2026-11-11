@@ -1,13 +1,12 @@
 import { AchievementCustomField, CustomAchievementAction } from "@services";
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { setCustom, setIsTime, setName } from "@redux/achievementsSlice";
 import { Button } from "@components/ui/button";
 
 export default function CustomAchievementModalInputs() {
-  const dispatch = useDispatch();
-  const { achievement } = useSelector((root: RootStore) => root.achievements);
+  const dispatch = useAppDispatch();
+  const { achievement } = useAppSelector((state) => state.achievements);
 
   const renderDataInputDependsOnAction = useMemo(() => {
     if (!achievement.custom) return;
