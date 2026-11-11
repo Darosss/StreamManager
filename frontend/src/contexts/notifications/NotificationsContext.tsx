@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useContext, useState } from "react";
+import React, { JSX, use, useCallback, useState } from "react";
 import { NotificationOpts, NotificationsContexType } from "./types";
 import {
   NOTIFICATION_CONTAINER,
@@ -63,10 +63,10 @@ export const NotificationsContextProvider = ({
         }
       });
     },
-    []
+    [],
   );
   return (
-    <NotificationsContext.Provider
+    <NotificationsContext
       value={{
         addNotify: addNotification,
       }}
@@ -77,7 +77,7 @@ export const NotificationsContextProvider = ({
           <OneNotification key={n.id} notification={n} />
         ))}
       </div>
-    </NotificationsContext.Provider>
+    </NotificationsContext>
   );
 };
 
@@ -115,11 +115,11 @@ const OneNotification = ({ notification }: OneNotificationProps) => {
 };
 
 export const useNotifications = (): Required<NotificationsContexType> => {
-  const notificationsContext = useContext(NotificationsContext);
+  const notificationsContext = use(NotificationsContext);
 
   if (!notificationsContext) {
     throw new Error(
-      "useNotifications must be used within a NotificationsContextProvider"
+      "useNotifications must be used within a NotificationsContextProvider",
     );
   }
 

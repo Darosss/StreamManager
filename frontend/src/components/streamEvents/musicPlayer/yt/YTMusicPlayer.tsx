@@ -1,7 +1,7 @@
 import { useState } from "react";
 import YTPlaylist from "./YTPlaylist";
 import Modal from "@components/modal";
-import { Button } from "@components/ui/button";
+import TabsButtons from "../TabsButtons";
 
 enum AvailableTabs {
   PLAYLISTS = "playlists",
@@ -18,26 +18,14 @@ export default function YTMusicPlayer() {
     }
   };
 
-  const TabsButtons = () => (
-    <>
-      {Object.values(AvailableTabs)
-        .filter((tab) => tab !== AvailableTabs.NONE)
-        .map((tab) => (
-          <Button
-            key={tab}
-            variant={activeTab === tab ? "primary" : "tertiary"}
-            className="switch-players-button"
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </Button>
-        ))}
-    </>
-  );
   return (
     <div>
       <div className="music-player-tabs-wrapper">
-        <TabsButtons />
+        <TabsButtons
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          possibleTabs={AvailableTabs}
+        />
       </div>
       <Modal
         title={activeTab}

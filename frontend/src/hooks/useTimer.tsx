@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface UseTimerProps {
   currentTime: number;
@@ -14,41 +14,46 @@ export const useTimer = ({
   enabled,
   updateMs = 1000,
 }: UseTimerProps) => {
-  const progressTimer = useRef<ReturnType<typeof setTimeout>>(null);
-  const [timer, setTimer] = useState(0);
-
-  const countTime = (newDuration: number) =>
-    setTimer((prev) => {
-      const newTime =
-        prev + updateMs / 1000 > newDuration
-          ? newDuration
-          : prev + updateMs / 1000;
-      return newTime;
-    });
-
-  useEffect(() => {
+  const progressTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const [prevKey, setPrevKey] = useState<readonly [number, number]>([
+    currentTime,
+    duration,
+  ]);
+  const [timer, setTimer] = useState(currentTime);
+  if (prevKey[0] !== currentTime || prevKey[1] !== duration) {
+    setPrevKey([currentTime, duration]);
     setTimer(currentTime);
+  }
 
-    // added duration for forcing setTimer (mostly duration will be different responsible for setting 'new' timer)
-  }, [currentTime, duration]);
+  const countTime = useCallback(
+    (newDuration: number) =>
+      setTimer((prev) => {
+        const newTime =
+          prev + updateMs / 1000 > newDuration
+            ? newDuration
+            : prev + updateMs / 1000;
+        return newTime;
+      }),
+    [updateMs],
+  );
 
   useEffect(() => {
-    if (progressTimer.current) clearInterval(progressTimer.current);
+    if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     if (!enabled) return;
 
-    progressTimer.current = setInterval(() => {
+    progressTimerRef.current = setInterval(() => {
       countTime(duration);
     }, updateMs);
 
     return () => {
-      if (progressTimer.current) clearInterval(progressTimer.current);
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     };
-  }, [duration, enabled]);
+  }, [duration, enabled, countTime, updateMs]);
 
   useEffect(() => {
     return () => {
-      if (progressTimer.current) clearInterval(progressTimer.current);
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
     };
-  }, [progressTimer]);
+  }, [progressTimerRef]);
   return timer;
 };

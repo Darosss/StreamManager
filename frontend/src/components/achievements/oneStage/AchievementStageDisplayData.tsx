@@ -15,6 +15,7 @@ export default function AchievementStageDisplayData({
   return (
     <>
       {stageData.map((data, index) => (
+        // eslint-disable-next-line @eslint-react/no-array-index-key
         <tr key={index} className="stage-data-content">
           <td className="stage-data-content-nr-emulate">
             <div>
@@ -61,7 +62,7 @@ export default function AchievementStageDisplayData({
               {data.sound ? (
                 <audio
                   className="stage-data-sound"
-                  src={`${viteBackendUrl}/${data.sound}`}
+                  src={`${viteBackendUrl}/achievements/stagesSounds/${data.sound}`}
                   controls
                 />
               ) : null}

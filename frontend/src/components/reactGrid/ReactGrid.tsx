@@ -1,9 +1,16 @@
-import React, { JSX, useCallback, useEffect, useMemo, useState } from "react";
-import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
+import React, { JSX, useCallback, useEffect, useState } from "react";
+import {
+  Layout,
+  LayoutItem,
+  Responsive,
+  ResponsiveLayouts,
+  WidthProvider,
+} from "react-grid-layout/legacy";
 import NavigateButton from "@components/navigateButton";
 import { getDefaultBreakpoints, getDefaultCols } from "@utils";
 import { Button } from "@components/ui/button";
 import Modal from "@components/modal";
+import LayoutItems from "./LayoutItems";
 
 type CurrentBreakpointState = [
   string,
@@ -12,16 +19,15 @@ type CurrentBreakpointState = [
 
 interface ReactGridProps {
   layoutName: string;
-  layoutState: ReactGridLayout.Layouts;
-  toolboxState: ReactGridLayout.Layouts;
+  layoutState: ResponsiveLayouts;
+  toolboxState: ResponsiveLayouts;
   currentBreakpointState: CurrentBreakpointState;
   componentsMap: Map<string, () => JSX.Element | null>;
-  onEdit: (
-    layout: ReactGridLayout.Layouts,
-    toolbox: ReactGridLayout.Layouts,
-  ) => void;
+  onEdit: (layout: ResponsiveLayouts, toolbox: ResponsiveLayouts) => void;
   showMenu?: boolean;
 }
+
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 export default function ReactGrid({
   layoutName,
@@ -34,18 +40,23 @@ export default function ReactGrid({
 }: ReactGridProps) {
   const [layout, setLayout] = useState(layoutState);
   const [toolbox, setToolbox] = useState(toolboxState);
+
   const [currentBreakpoint, setCurrentBreakpoint] = currentBreakpointState;
   const [isEdit, setIsEdit] = useState(false);
   const setEditableInLayout = useCallback(
     (editable: boolean) => {
-      setLayout((prevLayout) => ({
-        ...prevLayout,
-        [currentBreakpoint]: prevLayout[currentBreakpoint].map((item) => ({
-          ...item,
-          isDraggable: !editable,
-          isResizable: !editable,
-        })),
-      }));
+      setLayout((prevLayout) => {
+        const currentLayoutBreakpoint = prevLayout[currentBreakpoint];
+        if (!currentLayoutBreakpoint) return prevLayout;
+        return {
+          ...prevLayout,
+          [currentBreakpoint]: currentLayoutBreakpoint.map((item) => ({
+            ...item,
+            isDraggable: !editable,
+            isResizable: !editable,
+          })),
+        };
+      });
     },
     [currentBreakpoint],
   );
@@ -77,20 +88,7 @@ export default function ReactGrid({
     };
   }, [layout, onEdit, toggleEdit, toolbox]);
 
-  useEffect(() => {
-    setLayout({ ...layoutState });
-  }, [layoutState]);
-
-  useEffect(() => {
-    setToolbox({ ...toolboxState });
-  }, [toolboxState]);
-
-  const ResponsiveReactGridLayout = useMemo(
-    () => WidthProvider(Responsive),
-    [],
-  );
-
-  const onLayoutChange = (currLayout: ReactGridLayout.Layout[]) => {
+  const onLayoutChange = (currLayout: Layout) => {
     setLayout((prevLayouts) => ({
       ...prevLayouts,
       [currentBreakpoint]: currLayout,
@@ -99,14 +97,17 @@ export default function ReactGrid({
 
   const onBreakpointChange = (breakpoint: string) => {
     setCurrentBreakpoint(breakpoint);
-    setToolbox((prevToolbox) => ({
-      ...prevToolbox,
-      [breakpoint]:
-        prevToolbox[breakpoint] || [prevToolbox.currentBreakpoint] || [],
-    }));
+    setToolbox((prevToolbox) => {
+      const breakpointState =
+        prevToolbox[breakpoint] || prevToolbox.currentBreakpoint || [];
+      return {
+        ...prevToolbox,
+        [breakpoint]: breakpointState,
+      };
+    });
   };
 
-  const onPutItem = (item: ReactGridLayout.Layout) => {
+  const onPutItem = (item: LayoutItem) => {
     setToolbox((prevToolbox) => ({
       ...prevToolbox,
       [currentBreakpoint]: [...(prevToolbox[currentBreakpoint] || []), item],
@@ -114,52 +115,29 @@ export default function ReactGrid({
 
     setLayout((prevLayout) => ({
       ...prevLayout,
-      [currentBreakpoint]: prevLayout[currentBreakpoint].filter(
+      [currentBreakpoint]: prevLayout[currentBreakpoint]?.filter(
         ({ i }) => i !== item.i,
       ),
     }));
   };
 
-  const onTakeItem = (item: ReactGridLayout.Layout) => {
+  const onTakeItem = (item: LayoutItem) => {
     setToolbox((prevToolbox) => ({
       ...prevToolbox,
-      [currentBreakpoint]: prevToolbox[currentBreakpoint].filter(
+      [currentBreakpoint]: prevToolbox[currentBreakpoint]?.filter(
         ({ i }) => i !== item.i,
       ),
     }));
 
-    setLayout((prevLayout) => ({
-      ...prevLayout,
-      [currentBreakpoint]: [...prevLayout[currentBreakpoint], item],
-    }));
-  };
-
-  const generateLayoutItems = () => {
-    return layout[currentBreakpoint].map((item) => {
-      const MapComponent = componentsMap.get(item.i);
-      if (!MapComponent) return null;
-      return (
-        <div key={item.i} className={`${isEdit ? "react-grid-item-edit" : ""}`}>
-          {isEdit ? (
-            <>
-              <div
-                className="grid-hide-button common-button"
-                onClick={() => onPutItem(item)}
-              >
-                &times;
-              </div>
-
-              <div className="grid-name-div"> {item.i} </div>
-            </>
-          ) : null}
-          <span>
-            <MapComponent />
-          </span>
-        </div>
-      );
+    setLayout((prevLayout) => {
+      const prevLayoutCurrent = prevLayout[currentBreakpoint];
+      if (!prevLayoutCurrent) return prevLayout;
+      return {
+        ...prevLayout,
+        [currentBreakpoint]: [...prevLayoutCurrent, item],
+      };
     });
   };
-
   return (
     <div>
       {showMenu ? (
@@ -173,7 +151,6 @@ export default function ReactGrid({
           editFn={() => onEdit(layout, toolbox)}
         />
       ) : null}
-
       <ResponsiveReactGridLayout
         onLayoutChange={onLayoutChange}
         style={{ marginRight: "1rem" }}
@@ -193,15 +170,21 @@ export default function ReactGrid({
           xxs: [2, 2],
         }}
       >
-        {generateLayoutItems()}
+        {LayoutItems({
+          layout,
+          currentBreakpoint,
+          isEdit,
+          onPutItem,
+          componentsMap,
+        })}
       </ResponsiveReactGridLayout>
     </div>
   );
 }
 
 const ToolBox = (props: {
-  items: ReactGridLayout.Layout[];
-  onTakeItem: (item: ReactGridLayout.Layout) => void;
+  items: Layout;
+  onTakeItem: (item: LayoutItem) => void;
 }) => {
   const { items, onTakeItem } = props;
   return (
@@ -219,8 +202,8 @@ const ToolBox = (props: {
 };
 
 const ToolBoxItem = (props: {
-  item: ReactGridLayout.Layout;
-  onTakeItem: (item: ReactGridLayout.Layout) => void;
+  item: LayoutItem;
+  onTakeItem: (item: LayoutItem) => void;
 }) => {
   const { item, onTakeItem } = props;
   return (
@@ -232,9 +215,9 @@ const ToolBoxItem = (props: {
 
 function LayoutMenuActions(props: {
   layoutName: string;
-  toolbox: ReactGridLayout.Layouts;
+  toolbox: ResponsiveLayouts;
   currentBreakpoint: string;
-  onTakeItem: (item: ReactGridLayout.Layout) => void;
+  onTakeItem: (item: LayoutItem) => void;
   isEdit: boolean;
   toggleEdit: () => void;
   editFn: () => void;

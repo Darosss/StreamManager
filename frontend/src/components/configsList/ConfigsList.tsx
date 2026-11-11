@@ -39,7 +39,7 @@ export default function ConfigsList() {
   useEffect(() => {
     if (!configs) return;
     dispatch(setConfigState(configs.data));
-  }, [configs]);
+  }, [configs, dispatch]);
 
   if (error) return <Error error={error} />;
   if (isLoading || !configs) return <Loading />;
@@ -73,9 +73,9 @@ export default function ConfigsList() {
       </div>
 
       <div className="configs-list-tab-list-wrapper">
-        {Object.values(ConfigsListTabNames).map((tabName, index) => (
+        {Object.values(ConfigsListTabNames).map((tabName) => (
           <Button
-            key={index}
+            key={tabName}
             variant={currentTab === tabName ? "primary" : "danger"}
             onClick={() => setCurrentTab(tabName)}
           >

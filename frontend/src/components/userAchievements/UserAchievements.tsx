@@ -11,7 +11,7 @@ export default function UserAchievements() {
 
   const [expandAllSections, setExpandAllSections] = useLocalStorage(
     "expandAllAchievements",
-    false
+    false,
   );
 
   if (error) return <Error error={error} />;
@@ -39,9 +39,9 @@ export default function UserAchievements() {
         <div>Badge</div>
       </div>
       <div className="achievements-list-data-wrapper">
-        {data.map((achievement, index) => (
+        {data.map((achievement) => (
           <AchievementStageLists
-            key={index}
+            key={achievement._id}
             achievement={achievement}
             expandAll={expandAllSections}
           />

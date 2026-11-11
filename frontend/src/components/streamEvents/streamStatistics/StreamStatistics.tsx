@@ -45,7 +45,7 @@ export default function StreamStatistics() {
     }, FETCH_INTERVAL * 1000);
 
     return () => clearInterval(statisticInterval);
-  }, []);
+  }, [refetch]);
 
   if (error) return <Error error={error} />;
   if (isLoading) return <Loading />;
@@ -111,8 +111,8 @@ export function TopUsersMessages({ users }: TopUsersMessagesProps) {
         <div className="statistic-long">User</div>
         <div className="statistic-short">Count</div>
       </div>
-      {users?.map((user, index) => (
-        <div key={index} className="stats-wrapper">
+      {users?.map((user) => (
+        <div key={user._id} className="stats-wrapper">
           <div className="statistic-long"> {user.username}</div>
           <div className="statistic-short"> {user.messageCount}</div>
         </div>
@@ -131,8 +131,8 @@ export function MostRedemptions({ users }: TopRedemptionProps) {
         <div className="statistic-short">Cost</div>
       </div>
 
-      {users?.map((user, index) => (
-        <div key={index} className="stats-wrapper">
+      {users?.map((user) => (
+        <div key={user._id} className="stats-wrapper">
           <div className="statistic-long"> {user.username}</div>
           <div className="statistic-short"> {user.redemptionsCount}</div>
           <div className="statistic-short"> {user.redemptionsCost}</div>
@@ -150,8 +150,8 @@ export function MostUsedWords({ words }: TopUsedWordsProps) {
         <div className="statistic-long">Word</div>
         <div className="statistic-short"> Count</div>
       </div>
-      {words.map((word, index) => (
-        <div key={index} className="stats-wrapper">
+      {words.map((word) => (
+        <div key={word._id} className="stats-wrapper">
           <div className="statistic-long">{word._id}</div>
           <div className="statistic-short">{word.count}</div>
         </div>

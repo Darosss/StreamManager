@@ -56,6 +56,7 @@ export default function AvailableBadgeImages({
           })
           .map(([name, extension], index) => (
             <div
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={index}
               className="one-badge-image-wrapper"
               onClick={() =>
@@ -98,7 +99,6 @@ function UploadBadgeImageButtons({
   const { uploadProgress, handleFileUpload, error, success } = useFileUpload(
     uploadBadgesData.badgesImages,
   );
-
   useEffect(() => {
     if (success) {
       addNotify({
@@ -108,7 +108,7 @@ function UploadBadgeImageButtons({
       });
       onSuccessCallback();
     }
-  }, [success]);
+  }, [addNotify, onSuccessCallback, success]);
 
   useEffect(() => {
     if (error) addNotify({ title: error, type: NOTIFICATION_TYPE.DANGER });

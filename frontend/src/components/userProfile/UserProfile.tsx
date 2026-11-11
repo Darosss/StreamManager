@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import NavigateButton from "@components/navigateButton";
 import Message from "@components/message";
@@ -16,7 +16,11 @@ export default function UserProfile() {
   const [notes, setNotes] = useState("");
 
   const { data: userData, isLoading, error } = useGetUser(userId);
-
+  const [prevUserData, setPrevUserData] = useState(userData);
+  if (prevUserData !== userData) {
+    setPrevUserData(userData);
+    setNotes(userData?.data.notes?.join("\n") ?? "");
+  }
   const editUserMutation = useEditUser();
 
   const {
@@ -38,9 +42,11 @@ export default function UserProfile() {
     );
   };
 
-  useEffect(() => {
-    setNotes(userData?.data.notes?.join("\n") || "");
-  }, [userData]);
+  const [seeded, setSeeded] = useState(false);
+  if (!seeded && userData) {
+    setSeeded(true);
+    setNotes(userData.data.notes?.join("\n") ?? "");
+  }
 
   if (error || msgsError) return <Error error={error || msgsError} />;
   if (!userData || !msgsData || msgLoading || isLoading) return <Loading />;
@@ -111,8 +117,8 @@ export default function UserProfile() {
                 </div>
               ) : (
                 <ul>
-                  {data.notes?.map((note, index) => {
-                    return <li key={index}>{note}</li>;
+                  {data.notes?.map((note) => {
+                    return <li key={note}>{note}</li>;
                   })}
                 </ul>
               )}

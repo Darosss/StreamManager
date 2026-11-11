@@ -36,7 +36,7 @@ export default function TimersData({ data }: TimersDataProps) {
   const handleDeleteTimer = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the timer with ID: ${id}?`
+        `Are you sure you want to delete the timer with ID: ${id}?`,
       )
     )
       return;
@@ -89,10 +89,10 @@ export default function TimersData({ data }: TimersDataProps) {
             <th>Messages</th>
           </tr>
         }
-        tbodyChildren={data.map((timer, index) => {
+        tbodyChildren={data.map((timer) => {
           const { tag, mood } = timer;
           return (
-            <tr key={index}>
+            <tr key={timer._id}>
               <td>
                 <div>
                   <Button
@@ -152,6 +152,7 @@ export default function TimersData({ data }: TimersDataProps) {
               <td>
                 <TableItemsListWrapper>
                   {timer.messages.map((message, index) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     <div key={index}>{message}</div>
                   ))}
                 </TableItemsListWrapper>

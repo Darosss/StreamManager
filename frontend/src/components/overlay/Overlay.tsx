@@ -11,6 +11,7 @@ import PreviewImageSelector from "./PreviewImageSelector";
 import StyleCSSEditor from "./StyleCSSEditor";
 import { useSocketContext } from "@socket";
 import {
+  Overlay as OverlayType,
   useEditOverlay,
   useGetOverlayById,
   useRefetchOverlayById,
@@ -27,6 +28,7 @@ import { RootStore } from "@redux/store";
 import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
+import { ResponsiveLayouts } from "react-grid-layout";
 
 const components = new Map([
   [overlaysKeys.overlayRedemptions, Redemptions],
@@ -47,7 +49,7 @@ export default function Overlay(params: { editor?: boolean }) {
   const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
   const { isEditor, overlay: overlayState } = overlaysStateRedux;
 
-  const [currentBreakpoint, setCurrentBreakpoint] = useState(
+  const [currentBreakpoint, setCurrentBreakpoint] = useState(() =>
     getInitialCurrentBreakpoint(),
   );
   const editOverlayMutation = useEditOverlay();
@@ -70,7 +72,7 @@ export default function Overlay(params: { editor?: boolean }) {
 
   useEffect(() => {
     dispatch(setIsEditor(editor));
-  }, [editor]);
+  }, [dispatch, editor]);
 
   useEffect(() => {
     refreshOverlayLayoutEvent.on((id) => {
@@ -80,7 +82,7 @@ export default function Overlay(params: { editor?: boolean }) {
     return () => {
       refreshOverlayLayoutEvent.off();
     };
-  }, [refreshOverlayLayoutEvent]);
+  }, [refetchOverlayById, refreshOverlayLayoutEvent]);
 
   useEffect(() => {
     if (!overlayData) return;
@@ -94,8 +96,8 @@ export default function Overlay(params: { editor?: boolean }) {
   if (isLoading || !overlayData) return <Loading />;
 
   const handleOnEditOverlay = (
-    layoutState: ReactGridLayout.Layouts,
-    toolboxState: ReactGridLayout.Layouts,
+    layoutState: ResponsiveLayouts,
+    toolboxState: ResponsiveLayouts,
   ) => {
     if (!overlayId) {
       addNotify({
@@ -105,19 +107,40 @@ export default function Overlay(params: { editor?: boolean }) {
       });
       return;
     }
-    dispatch(setLayout(layoutState));
-    dispatch(setToolbox(toolboxState));
+
+    const filteredLayout: OverlayType["layout"] = {};
+    for (const [key, layoutItem] of Object.entries(layoutState)) {
+      if (!layoutItem) continue;
+
+      filteredLayout[key] = [...layoutItem];
+    }
+    const filteredToolbox: OverlayType["toolbox"] = {};
+    for (const [key, toolboxItem] of Object.entries(toolboxState)) {
+      if (!toolboxItem) continue;
+
+      filteredToolbox[key] = [...toolboxItem];
+    }
+    dispatch(setLayout(filteredLayout));
+    dispatch(setToolbox(filteredToolbox));
     editOverlayMutation.mutate({
       id: overlayId,
       updatedOverlay: {
-        layout: layoutState,
-        toolbox: toolboxState,
+        layout: filteredLayout,
+        toolbox: filteredToolbox,
       },
     });
   };
+  //so tahts for initial data, when widget data in backend does not have defaults somehow
+  // and cuz of force rerender when overlayData changes.
+
+  const { layout, toolbox, name } = overlayData.data || {
+    layout: overlayState.layout,
+    toolbox: overlayState.toolbox,
+    name: overlayState.name,
+  };
   return (
     <div>
-      <CustomTitle title={"Overlay " + overlayState.name} />
+      <CustomTitle title={"Overlay " + name} />
       {editor ? (
         <div className="overlay-editor-actions-wrapper">
           <StyleCSSEditor />
@@ -125,9 +148,9 @@ export default function Overlay(params: { editor?: boolean }) {
         </div>
       ) : null}
       <ReactGrid
-        layoutName={overlayState.name}
-        layoutState={overlayState.layout}
-        toolboxState={overlayState.toolbox}
+        layoutName={name}
+        layoutState={layout}
+        toolboxState={toolbox}
         currentBreakpointState={[currentBreakpoint, setCurrentBreakpoint]}
         componentsMap={components}
         onEdit={handleOnEditOverlay}

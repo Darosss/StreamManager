@@ -37,7 +37,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (isEditor) setMessagesData(getExampleChatData());
-  }, [isEditor]);
+  }, [isEditor, setMessagesData]);
 
   useEffect(() => {
     messageServerDelete.on((data) => {

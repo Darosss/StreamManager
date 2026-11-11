@@ -17,22 +17,17 @@ export default function Redemptions() {
       styles: { overlayRedemptions: styles },
     },
   } = useSelector((state: RootStore) => state.overlays);
-
-  const [redemptionInfo, setRedemptionInfo] = useState("");
-  const [redemptionImg, setRedemptionImg] = useState("");
-  const [showRedemption, setShowRedemption] = useState(false);
-
-  useEffect(() => {
-    if (isEditor) {
-      setShowRedemption(true);
-      setRedemptionImg(getTwitchEmoteUrl({ id: "25" }));
-      setRedemptionInfo(
-        `${
+  const [redemptionInfo, setRedemptionInfo] = useState(() =>
+    isEditor
+      ? `${
           commonData.nicknames[randomWithMax(commonData.nicknames.length - 1)]
-        } has redeemed - Reward`,
-      );
-    }
-  }, [isEditor]);
+        } has redeemed - Reward`
+      : "",
+  );
+  const [redemptionImg, setRedemptionImg] = useState(() =>
+    isEditor ? getTwitchEmoteUrl({ id: "25" }) : "",
+  );
+  const [showRedemption, setShowRedemption] = useState(isEditor ? true : false);
 
   useEffect(() => {
     let source: AudioBufferSourceNode | null = null;

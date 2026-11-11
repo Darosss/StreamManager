@@ -18,7 +18,7 @@ export default function UrlParamsInput({
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const inputsWrapper = useRef<HTMLDivElement>(null);
+  const inputsWrapperRef = useRef<HTMLDivElement>(null);
 
   const clearFilters = () => {
     setSearchParams("");
@@ -28,7 +28,7 @@ export default function UrlParamsInput({
     const onKeyDownInput = (
       key: string,
       queryString: string,
-      value: string
+      value: string,
     ) => {
       if (key === "Enter") {
         onBlurOrKeySearchParamsChange(queryString, value);
@@ -36,7 +36,7 @@ export default function UrlParamsInput({
     };
     const onBlurOrKeySearchParamsChange = (
       queryName?: string,
-      value?: string
+      value?: string,
     ) => {
       setSearchParams((prevState) => {
         if (queryName) {
@@ -49,7 +49,7 @@ export default function UrlParamsInput({
         return prevState;
       });
     };
-    const childrensWrapper = inputsWrapper.current;
+    const childrensWrapper = inputsWrapperRef.current;
     if (childrensWrapper) {
       const allInputs = [...childrensWrapper.querySelectorAll("input")];
       for (let i = 0; i < allInputs.length; i++) {
@@ -87,7 +87,7 @@ export default function UrlParamsInput({
         className={`filter-inputs ${
           type === "horizontal" ? "horizontal" : "vertical"
         }`}
-        ref={inputsWrapper}
+        ref={inputsWrapperRef}
       >
         {children}
       </div>

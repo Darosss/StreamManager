@@ -15,6 +15,7 @@ import {
   BadgeCreateData,
 } from "./types";
 import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
+import { useCallback } from "react";
 
 const baseEndpointName = `${BaseEndpointNames.ACHIEVEMENTS}/${BaseEndpointNames.BADGES}`;
 
@@ -32,7 +33,7 @@ export const uploadBadgesData = {
 };
 
 export const fetchBadges = async (
-  params?: QueryParams<keyof FetchBadgesParams>
+  params?: QueryParams<keyof FetchBadgesParams>,
 ): PromisePaginationData<Badge> => {
   const response = await customAxios.get(`/${baseEndpointName}/`, { params });
   return response.data;
@@ -41,7 +42,7 @@ export const fetchBadges = async (
 export const fetchBadgesImages =
   async (): PromiseBackendData<GetBagesImagesResponseData> => {
     const response = await customAxios.get(
-      `/${baseEndpointName}/available-images`
+      `/${baseEndpointName}/available-images`,
     );
     return response.data;
   };
@@ -49,7 +50,7 @@ export const fetchBadgesImages =
 export const fetchBadgesImagesBasePath =
   async (): PromiseBackendData<string> => {
     const response = await customAxios.get(
-      `/${baseEndpointName}/available-images/base-path`
+      `/${baseEndpointName}/available-images/base-path`,
     );
     return response.data;
   };
@@ -63,7 +64,7 @@ export const editBadge = async ({
 }): PromiseBackendData<Badge> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedBadge
+    updatedBadge,
   );
   return response.data;
 };
@@ -74,21 +75,21 @@ export const createBadge = async ({
 }): PromiseBackendData<Badge> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newBadge
+    newBadge,
   );
   return response.data;
 };
 export const deleteBadge = async (id: string): PromiseBackendData<Badge> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 export const deleteBadgeImage = async (
-  name: string
+  name: string,
 ): PromiseBackendData<boolean> => {
   const response = await customAxios.delete(
-    `${baseEndpointName}/images/${name}/delete`
+    `${baseEndpointName}/images/${name}/delete`,
   );
   return response.data;
 };
@@ -121,7 +122,7 @@ export const useEditBadge = () => {
       entity: MutationEntity.BADGE,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchBadges }
+    { onSuccess: refetchBadges },
   );
 };
 export const useCreateBadge = () => {
@@ -132,7 +133,7 @@ export const useCreateBadge = () => {
       entity: MutationEntity.BADGE,
       action: MutationAction.CREATE,
     },
-    { onSuccess: refetchBadges }
+    { onSuccess: refetchBadges },
   );
 };
 export const useDeleteBadge = () => {
@@ -143,7 +144,7 @@ export const useDeleteBadge = () => {
       entity: MutationEntity.BADGE,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchBadges }
+    { onSuccess: refetchBadges },
   );
 };
 export const useDeleteBadgeImage = () => {
@@ -154,17 +155,21 @@ export const useDeleteBadgeImage = () => {
       entity: MutationEntity.BADGE_IMAGE,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchBadges }
+    { onSuccess: refetchBadges },
   );
 };
 
 export const useRefetchBadgeData = (exact = false) => {
   const queryClient = useQueryClient();
-  return refetchDataFunctionHelper(
-    queryKeysBadges,
-    "allBadges",
-    queryClient,
-    [],
-    exact
+  return useCallback(
+    () =>
+      refetchDataFunctionHelper(
+        queryKeysBadges,
+        "badgesImages",
+        queryClient,
+        null,
+        exact,
+      )(),
+    [exact, queryClient],
   );
 };

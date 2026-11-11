@@ -20,7 +20,7 @@ export default function MoodsData({ data }: MoodsDataProps) {
   const handleDeleteMood = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the mood with ID: ${id}?`
+        `Are you sure you want to delete the mood with ID: ${id}?`,
       )
     )
       return;
@@ -45,14 +45,14 @@ export default function MoodsData({ data }: MoodsDataProps) {
           Create
         </Button>
       </CardboxItem>
-      {data.map((mood, index) => {
+      {data.map((mood) => {
         return (
           <CardboxItem
             title={mood.name}
             onClickX={() => {
               handleDeleteMood(mood._id);
             }}
-            key={index}
+            key={mood._id}
           >
             <Button
               onClick={() => handleShowModal({ type: "edit", data: mood })}

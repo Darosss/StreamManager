@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import ReactGridLayout from "react-grid-layout";
+import { LayoutItem, ResponsiveLayouts } from "react-grid-layout";
 import {
   initialLayoutOverlays,
   initialStylesState,
@@ -23,7 +23,7 @@ export interface OverlaysSliceType {
 
 export interface SetCurrentLayout {
   breakpoint: string;
-  layout: ReactGridLayout.Layout[];
+  layout: ResponsiveLayouts;
 }
 
 export interface SetLayoutOnBreakpointChange {
@@ -33,7 +33,7 @@ export interface SetLayoutOnBreakpointChange {
 
 export interface SetLayoutOnTakePutItem {
   currentBreakpoint: string;
-  item: ReactGridLayout.Layout;
+  item: LayoutItem;
 }
 
 export interface SetEditableInLayout {
@@ -68,11 +68,11 @@ const overlaysSlice = createSlice({
     setId(state, action: PayloadAction<string>) {
       state.baseData._id = action.payload;
     },
-    setLayout(state, action: PayloadAction<ReactGridLayout.Layouts>) {
+    setLayout(state, action: PayloadAction<OverlayCreateData["layout"]>) {
       state.overlay.layout = action.payload;
     },
 
-    setToolbox(state, action: PayloadAction<ReactGridLayout.Layouts>) {
+    setToolbox(state, action: PayloadAction<OverlayCreateData["toolbox"]>) {
       state.overlay.toolbox = action.payload;
     },
     setStyles(state, action: PayloadAction<OverlayKeysStylesParsedType>) {

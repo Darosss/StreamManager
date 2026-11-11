@@ -21,7 +21,7 @@ interface SongsDataProps {
 
 export default function SongsData({ data }: SongsDataProps) {
   const dispatch = useDispatch();
-  const [previewedSong, setPrevievedSong] = useState<Song | null>(null);
+  const [previewedSong, setPreviewedSong] = useState<Song | null>(null);
 
   const deleteSongMutation = useDeleteSong();
   const handleDeleteSong = (id: string) => {
@@ -89,13 +89,13 @@ export default function SongsData({ data }: SongsDataProps) {
             </th>
           </tr>
         }
-        tbodyChildren={data.map((song, index) => {
+        tbodyChildren={data.map((song) => {
           return (
             <tr
-              key={index}
+              key={song._id}
               className="songs-data-table-song-details"
               onClick={() => {
-                setPrevievedSong(song);
+                setPreviewedSong(song);
               }}
             >
               <td>
@@ -148,7 +148,7 @@ export default function SongsData({ data }: SongsDataProps) {
       {previewedSong ? (
         <PreviewSongModal
           song={previewedSong}
-          onCloseModal={() => setPrevievedSong(null)}
+          onCloseModal={() => setPreviewedSong(null)}
         />
       ) : null}
     </>

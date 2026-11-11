@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-
 import { usePagination, DOTS, useLocalStorage } from "@hooks";
 import { useSearchParams } from "react-router";
+import PageSizeSelect from "./PageSizeSelect";
 
 export interface PaginationProps {
   totalCount?: number;
@@ -15,90 +14,51 @@ const DEFUALT_LOCAL_STORAGE_NAME = "pagination-default";
 export default function Pagination({
   totalCount = 1,
   siblingCount = 1,
-  currentPage = 1,
+  currentPage: defaultPage = 1,
   localStorageName,
   className,
 }: PaginationProps) {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [pageSizeT, setPageSize] = useLocalStorage<number>(
     localStorageName || DEFUALT_LOCAL_STORAGE_NAME,
     15,
   );
-  const [currentPageLoc, setCurrentPageLoc] = useState<number>(currentPage);
-
-  const onPageChangeSearchParam = (value: string) => {
-    setSearchParams((prevState) => {
-      prevState.set("page", value);
-      return prevState;
-    });
-  };
-
-  useEffect(() => {
-    setSearchParams((prevState) => {
-      prevState.set("limit", String(pageSizeT));
-      return prevState;
-    });
-    // Unnecessary rendering
-  }, [pageSizeT]);
-
-  useEffect(() => {
-    const checkIfPageIsTooBigAndSet = () => {
-      if (!paginationRange) return;
-
-      if (currentPageLoc - 1 > paginationRange.length) {
-        setCurrentPageLoc(Number(paginationRange[paginationRange.length - 1]));
-      }
-    };
-
-    checkIfPageIsTooBigAndSet();
-    setSearchParams((prevState) => {
-      prevState.set("page", String(currentPageLoc));
-      return prevState;
-    });
-    // Unnecessary rendering
-  }, [currentPageLoc]);
+  const limit = Number(searchParams.get("limit")) || pageSizeT;
+  const rawPage = Number(searchParams.get("page")) || defaultPage;
 
   const paginationRange = usePagination(
     totalCount,
-    pageSizeT,
+    limit,
     siblingCount,
-    currentPageLoc,
+    rawPage,
   );
 
-  const PageSizeSelect = () => {
-    return (
-      <select
-        name="page-size"
-        className="page-size common-button primary-button"
-        value={pageSizeT}
-        onChange={(e) => {
-          setPageSize(Number(e.target.value));
-        }}
-      >
-        <option value={pageSizeT}>{pageSizeT}</option>
-        <option value={5}>5</option>
-        <option value={20}>20</option>
-        <option value={50}>50</option>
-        <option value={100}>100</option>
-        <option value={500}>500</option>
-      </select>
-    );
+  const maxPage = Number(paginationRange?.[paginationRange.length - 1] ?? 1);
+  const currentPage = Math.min(rawPage, maxPage);
+
+  const updateParams = (updates: Record<string, string>) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      for (const [k, v] of Object.entries(updates)) next.set(k, v);
+      return next;
+    });
   };
 
-  const TotalResults = () => {
-    return (
-      <div className="total-count">
-        Results: <span>{totalCount}</span>
-      </div>
-    );
+  const handlePageChange = (page: number) => {
+    updateParams({ page: String(page) });
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    updateParams({ limit: String(size), page: "1" });
   };
 
   if (!paginationRange) {
     return (
       <div className="pagination-wrapper">
         Page size
-        <PageSizeSelect />
+        <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
       </div>
     );
   }
@@ -106,21 +66,21 @@ export default function Pagination({
   if (currentPage === 0 || paginationRange.length < 2) {
     return (
       <div className="pagination-wrapper">
-        <TotalResults />
+        <TotalResults totalCount={totalCount} />
         <div className="page-size-single">
           <label>Page size</label>
-          <PageSizeSelect />
+          <PageSizeSelect pageSize={pageSizeT} onSetPageSize={setPageSize} />
         </div>
       </div>
     );
   }
 
   const onNext = () => {
-    onPageChangeSearchParam(String(currentPageLoc + 1));
+    handlePageChange(currentPage + 1);
   };
 
   const onPrevious = () => {
-    onPageChangeSearchParam(String(currentPageLoc - 1));
+    handlePageChange(currentPage - 1);
   };
 
   const lastPage = paginationRange[paginationRange.length - 1];
@@ -130,26 +90,26 @@ export default function Pagination({
       <ul className={`pagination-container ${className || ""}`}>
         <li
           className={`pagination-item ${currentPage === 1 ? "disabled" : ""}`}
-          onClick={() => (currentPageLoc > 1 ? onPrevious() : "")}
+          onClick={() => (currentPage > 1 ? onPrevious() : "")}
         >
           <div className="arrow left" />
         </li>
-        {paginationRange.map((pageNumber, index) => {
+        {paginationRange.map((pageNumber) => {
           if (pageNumber === DOTS) {
             return (
-              <li key={pageNumber + index} className="pagination-item dots">
+              <li key={pageNumber} className="pagination-item dots">
                 &#8230;
               </li>
             );
           }
           return (
             <li
-              key={index}
+              key={pageNumber}
               className={`pagination-item ${
                 pageNumber === currentPage ? "selected" : ""
               }`}
               onClick={() => {
-                onPageChangeSearchParam(String(pageNumber));
+                handlePageChange(Number(pageNumber) || 1);
               }}
             >
               {pageNumber}
@@ -161,13 +121,23 @@ export default function Pagination({
           className={`pagination-item ${
             currentPage === lastPage ? "disabled" : ""
           }`}
-          onClick={() => (currentPageLoc < Number(lastPage) ? onNext() : "")}
+          onClick={() => (currentPage < Number(lastPage) ? onNext() : "")}
         >
           <div className="arrow right" />
         </li>
-        <PageSizeSelect />
-        <TotalResults />
+        <PageSizeSelect pageSize={limit} onSetPageSize={handlePageSizeChange} />
+        <TotalResults totalCount={totalCount} />
       </ul>
+    </div>
+  );
+}
+interface TotalResultsProps {
+  totalCount: number;
+}
+function TotalResults({ totalCount }: TotalResultsProps) {
+  return (
+    <div className="total-count">
+      Results: <span>{totalCount}</span>
     </div>
   );
 }

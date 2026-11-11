@@ -2,7 +2,7 @@ import { useSocketContext } from "@socket";
 import { RequestSongData } from "@socketTypes";
 import dayjs from "dayjs";
 import { useState, useRef, useEffect } from "react";
-import { OverlayRequestsStyle } from "src/layout/overlays/types";
+import { OverlayRequestsStyle } from "@layout";
 
 interface RequestSongInfoProps {
   isEditor: boolean;
@@ -20,10 +20,10 @@ export default function RequestSongInfo({
   const [requestedSongs, setRequestedSongs] = useState<RequestSongData[]>([]);
   const [showRequest, setShowRequest] = useState(false);
   const [currentRequest, setCurrentRequest] = useState<RequestSongData | null>(
-    null
+    null,
   );
 
-  const showRequestsTimeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const showRequestsTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const {
     color,
     boxShadow,
@@ -44,7 +44,7 @@ export default function RequestSongInfo({
     const requestInterval = setInterval(() => {
       addRequestedSong(
         `Random song ${dayjs().format("HH:mm:ss")}`,
-        `random username ${dayjs().format("HH:mm:ss")}`
+        `random username ${dayjs().format("HH:mm:ss")}`,
       );
     }, 7000);
     return () => {
@@ -63,9 +63,9 @@ export default function RequestSongInfo({
   }, [socket]);
 
   useEffect(() => {
-    if (showRequestsTimeout.current || requestedSongs.length === 0) return;
+    if (showRequestsTimeoutRef.current || requestedSongs.length === 0) return;
 
-    showRequestsTimeout.current = setInterval(() => {
+    showRequestsTimeoutRef.current = setInterval(() => {
       setRequestedSongs((prevState) => {
         if (prevState.length === 0) return prevState;
 
@@ -76,6 +76,10 @@ export default function RequestSongInfo({
         return prevState.slice(1);
       });
     }, SHOW_REQUEST_MS);
+    return () => {
+      if (showRequestsTimeoutRef.current)
+        clearInterval(showRequestsTimeoutRef.current);
+    };
   }, [requestedSongs]);
 
   useEffect(() => {

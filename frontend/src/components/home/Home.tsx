@@ -7,6 +7,7 @@ import { useGetMessages } from "@services";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Link } from "react-router";
 import SignupButton from "@components/auth";
+import { randomWithMax } from "@utils";
 
 const chatMessages = [
   "WELCOME HOME!",
@@ -20,14 +21,14 @@ const chatMessages = [
 ];
 
 export default function Home() {
-  const homeWrapper = useRef<HTMLDivElement>(null);
+  const homeWrapperRef = useRef<HTMLDivElement>(null);
   const scrollToTop = () =>
-    homeWrapper.current?.scrollTo({
+    homeWrapperRef.current?.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   return (
-    <div ref={homeWrapper} className="home-wrapper">
+    <div ref={homeWrapperRef} className="home-wrapper">
       <CustomTitle title="Home" />
 
       <ChatBackground />
@@ -52,8 +53,8 @@ export default function Home() {
           </section>
 
           <section className="home-navigation">
-            {routes.map((category, categoryIndex) => (
-              <div key={categoryIndex} className="nav-category">
+            {routes.map((category) => (
+              <div key={category.title} className="nav-category">
                 <div className="nav-category-header">
                   <h3 className="nav-category-title">{category.title}</h3>
                   <p className="nav-category-description">
@@ -62,9 +63,9 @@ export default function Home() {
                   <div className="nav-category-bg"></div>
                 </div>
                 <div className="nav-category-grid">
-                  {category.routes.map((route, routeIndex) => (
+                  {category.routes.map((route) => (
                     <Link
-                      key={routeIndex}
+                      key={route.path}
                       to={route.path}
                       className={`nav-card ${
                         route.path === "/" ? "nav-card-disabled" : ""
@@ -114,32 +115,20 @@ export default function Home() {
     </div>
   );
 }
-
+interface HomeMessage {
+  username: string;
+  message: string;
+  id: string;
+}
 function ChatBackground() {
   const { data } = useGetMessages();
-  const [messagesToShow, setMessagesToShow] = useState<
-    { username: string; message: string }[]
-  >(chatMessages.map((message) => ({ username: "chat bot", message })));
 
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
-    if (!data) return;
-    if (data.data.length > chatMessages.length) setMessagesToShow([]);
-
-    data.data.forEach((msg) =>
-      messagesToShow.push({
-        message: msg.message,
-        username: msg.ownerUsername,
-      }),
-    );
-  }, [data]);
-
-  useEffect(() => {
     let chatTimeout: ReturnType<typeof setTimeout>;
     let chatMessageIndex = 1;
-
     const getRandomDelay = () => {
       const min = 500;
       const max = 1000;
@@ -147,8 +136,22 @@ function ChatBackground() {
       return randomDelay;
     };
 
-    const getRandomFromChatMessages = () => {
-      return messagesToShow[Math.floor(Math.random() * messagesToShow.length)];
+    const getRandomFromChatMessages = (): HomeMessage => {
+      if (data?.count) {
+        const messages = data.data;
+        const msg = messages[randomWithMax(messages.length - 1)];
+        return {
+          message: msg.message,
+          username: msg.ownerUsername,
+          id: msg._id,
+        };
+      }
+      const msg = chatMessages[randomWithMax(chatMessages.length - 1)];
+      return {
+        message: msg,
+        username: "chat bot",
+        id: crypto.randomUUID(),
+      };
     };
 
     const timeoutChatMessage = () => {
@@ -172,12 +175,13 @@ function ChatBackground() {
     timeoutChatMessage();
 
     return () => clearTimeout(chatTimeout);
-  }, []);
+  }, [data]);
 
   return (
     <div className="home-chat-bg prevent-select">
       {messages.map((message, index) => {
         return (
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <div key={index} className="typewriter">
             <Message
               date={message.date}

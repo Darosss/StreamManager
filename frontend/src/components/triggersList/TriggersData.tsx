@@ -36,7 +36,7 @@ export default function TriggersData({ data }: TriggersDataProps) {
   const handleDeleteTrigger = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the trigger with ID: ${id}?`
+        `Are you sure you want to delete the trigger with ID: ${id}?`,
       )
     )
       return;
@@ -137,14 +137,15 @@ export default function TriggersData({ data }: TriggersDataProps) {
               </td>
               <td>
                 <TableItemsListWrapper>
-                  {trigger.words.map((word, index) => {
-                    return <div key={index}>{word}</div>;
+                  {trigger.words.map((word) => {
+                    return <div key={word}>{word}</div>;
                   })}
                 </TableItemsListWrapper>
               </td>
               <td>
                 <TableItemsListWrapper>
                   {trigger.messages.map((message, index) => {
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     return <div key={index}>{message}</div>;
                   })}
                 </TableItemsListWrapper>

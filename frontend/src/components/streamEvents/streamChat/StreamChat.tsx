@@ -1,9 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {
-  Message as MessageType,
-  useGetCurrentSessionMessages,
-} from "@services";
+import { useGetCurrentSessionMessages } from "@services";
 import Message from "@components/message";
 import { MessageServerData, useSocketContext } from "@socket";
 import { Button } from "@components/ui/button";
@@ -14,13 +11,16 @@ export default function StreamChat() {
   const { addNotify } = useNotifications();
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const [messagesDB, setMessagesDB] = useState<MessageType[]>([]);
   const [messagesData, setMessagesData] = useState<MessageServerData[]>([]);
 
   const [messageToSend, setMessageToSend] = useState("");
 
   const { data } = useGetCurrentSessionMessages();
 
+  const messagesDB = useMemo(
+    () => (data ? [...data.data].reverse() : []),
+    [data],
+  );
   const chatToBottom = () => {
     setTimeout(() => {
       if (!messagesRef.current) return;
@@ -30,9 +30,6 @@ export default function StreamChat() {
   };
 
   useEffect(() => {
-    if (!data) return;
-    setMessagesDB(data.data.reverse());
-
     chatToBottom();
   }, [data]);
 
@@ -67,9 +64,9 @@ export default function StreamChat() {
     <div id="stream-chat" className="stream-chat">
       <div className="widget-header chat-header">STREAM CHAT</div>
       <div className="stream-chat-messages" ref={messagesRef}>
-        {messagesDB.map((msg, index) => (
+        {messagesDB.map((msg) => (
           <Message
-            key={index}
+            key={msg._id}
             date={msg.date}
             username={msg.ownerUsername}
             message={msg.message}
@@ -77,9 +74,9 @@ export default function StreamChat() {
           />
         ))}
 
-        {messagesData.map(({ messageData, user }, index) => (
+        {messagesData.map(({ messageData, user }) => (
           <Message
-            key={index}
+            key={messageData.id}
             date={messageData.timestamp}
             username={user.username}
             message={messageData.message}

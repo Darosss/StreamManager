@@ -39,14 +39,14 @@ export default function CommandsData({ commands }: CommandsDataProps) {
         ...data,
         tag: data.tag._id,
         mood: data.mood._id,
-      })
+      }),
     );
   };
 
   const handleDeleteCommand = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the command with ID: ${id}?`
+        `Are you sure you want to delete the command with ID: ${id}?`,
       )
     )
       return;
@@ -139,6 +139,7 @@ export default function CommandsData({ commands }: CommandsDataProps) {
               <td>
                 <TableItemsListWrapper>
                   {command.aliases.map((alias, index) => {
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     return <div key={index}>{alias}</div>;
                   })}
                 </TableItemsListWrapper>
@@ -146,6 +147,7 @@ export default function CommandsData({ commands }: CommandsDataProps) {
               <td>
                 <TableItemsListWrapper>
                   {command.messages.map((message, index) => {
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     return <div key={index}>{message}</div>;
                   })}
                 </TableItemsListWrapper>

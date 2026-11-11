@@ -39,7 +39,7 @@ export default function RedemptionsList({ redemptions }: RedemptionsListProps) {
         <ErrorHelper
           error={
             new Error(
-              "Session id must be provided in order to get session redemptions"
+              "Session id must be provided in order to get session redemptions",
             )
           }
         />
@@ -51,7 +51,7 @@ export default function RedemptionsList({ redemptions }: RedemptionsListProps) {
         <ErrorHelper
           error={
             new Error(
-              "User id must be provided in order to get user redemptions"
+              "User id must be provided in order to get user redemptions",
             )
           }
         />
@@ -84,7 +84,7 @@ const RedemptionsSession = ({ sessionId }: RedemptionsSessionProps) => {
   const queryParms = useQueryParams(fetchRedemptionsDefaultParams);
   const { data, isLoading, error } = useGetSessionRedemptions(
     sessionId,
-    queryParms
+    queryParms,
   );
   if (error) return <ErrorHelper error={error} />;
   if (!data || isLoading) return <Loading />;
@@ -124,8 +124,8 @@ const RedemptionsDetails = ({ redemptions }: RedemptionsDetailProps) => (
     </thead>
 
     <tbody>
-      {redemptions.map((redemption, index) => (
-        <tr key={index}>
+      {redemptions.map((redemption) => (
+        <tr key={redemption._id}>
           <td className="redemptions-list-name">{redemption.rewardTitle}</td>
           <td>
             <Link to={`/users/${redemption.userId}`}>

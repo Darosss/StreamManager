@@ -20,7 +20,7 @@ export default function AffixesData({ data }: AffixesDataProps) {
   const handleDeleteAffix = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the affix with ID: ${id}?`
+        `Are you sure you want to delete the affix with ID: ${id}?`,
       )
     )
       return;
@@ -45,14 +45,14 @@ export default function AffixesData({ data }: AffixesDataProps) {
           Create
         </Button>
       </CardboxItem>
-      {data.map((affix, index) => {
+      {data.map((affix) => {
         return (
           <CardboxItem
             title={affix.name}
             onClickX={() => {
               handleDeleteAffix(affix._id);
             }}
-            key={index}
+            key={affix._id}
           >
             <Button
               onClick={() => handleShowModal({ type: "edit", data: affix })}

@@ -48,6 +48,7 @@ export default function SidebarSection({
             : routeContent
               ? content.route.routes.map((innerRoute) => (
                   <NavLink
+                    key={innerRoute.label}
                     to={innerRoute.path}
                     label={innerRoute.label}
                     icon={innerRoute.icon}

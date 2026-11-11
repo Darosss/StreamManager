@@ -13,19 +13,19 @@ export default function StreamSessionEvents({
   return (
     <div id="stream-notifications" className="stream-notifications">
       <div className="widget-header"> Stream notifications </div>
-      {sessionEvents.map((event, index) => (
+      {sessionEvents.map((event) => (
         <div
           className={`user-info ${
             event.name === "Left chat" ? "left-chat" : ""
           } ${
             Math.floor(
               new Date(event.user.createdAt).getTime() / 1000 -
-                new Date(event.createdAt).getTime() / 1000
+                new Date(event.createdAt).getTime() / 1000,
             ) > 1200
               ? "new-user"
               : "usual"
           } `}
-          key={index}
+          key={event._id}
         >
           <div className="user-info-event-data-wrapper">
             <div className="user-info-username">

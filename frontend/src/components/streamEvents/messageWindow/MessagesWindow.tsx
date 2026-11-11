@@ -72,9 +72,9 @@ export default function MessagesWindow() {
       <div className="prepared-messages-window">
         <div className="widget-header"> Prepared Messages </div>
         <div className="message-categories-btn-wrapper">
-          {msgCateg.map((category, index) => {
+          {msgCateg.map((category) => {
             return (
-              <div key={index} className="message-section-btn-wrapper">
+              <div key={category._id} className="message-section-btn-wrapper">
                 <div>
                   <Button
                     variant={category.enabled ? "primary" : "danger"}
@@ -120,6 +120,7 @@ export default function MessagesWindow() {
           {currentMessages.map((message, index) => {
             return (
               <Button
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 key={index}
                 onClick={() => {
                   sendMessage(message);

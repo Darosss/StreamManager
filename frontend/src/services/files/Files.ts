@@ -7,6 +7,7 @@ import {
 } from "../api";
 import { DeleteMp3FileParams } from "./types";
 import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
+import { useCallback } from "react";
 
 const baseEndpointName = BaseEndpointNames.FILES;
 export const queryKeysFiles = {
@@ -28,10 +29,10 @@ export const fetchFoldersList = async (): PromiseBackendData<string[]> => {
   return response.data;
 };
 export const fetchFoldersMp3FilesList = async (
-  folderName: string
+  folderName: string,
 ): PromiseBackendData<string[]> => {
   const response = await customAxios.get(
-    `/${baseEndpointName}/audio/${folderName}`
+    `/${baseEndpointName}/audio/${folderName}`,
   );
   return response.data;
 };
@@ -41,25 +42,25 @@ export const deleteMp3File = async ({
   fileName,
 }: DeleteMp3FileParams): PromiseBackendData<string> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/audio/${folderName}/${fileName}`
+    `/${baseEndpointName}/delete/audio/${folderName}/${fileName}`,
   );
   return response.data;
 };
 
 export const createAudioFolder = async (
-  folderName: string
+  folderName: string,
 ): PromiseBackendData<unknown> => {
   const response = await customAxios.post(
-    `/${baseEndpointName}/create/audio/${folderName}`
+    `/${baseEndpointName}/create/audio/${folderName}`,
   );
   return response.data;
 };
 
 export const deleteAudioFolder = async (
-  folderName: string
+  folderName: string,
 ): PromiseBackendData<unknown> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/folder/audio/${folderName}`
+    `/${baseEndpointName}/delete/folder/audio/${folderName}`,
   );
   return response.data;
 };
@@ -68,15 +69,15 @@ export const fetchAlertSoundsMp3Names = async (): PromiseBackendData<
   string[]
 > => {
   const response = await customAxios.get(
-    `/${baseEndpointName}/audio/alertSounds`
+    `/${baseEndpointName}/audio/alertSounds`,
   );
   return response.data;
 };
 export const deleteAlertSound = async (
-  fileName: string
+  fileName: string,
 ): PromiseBackendData<unknown> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/alertSounds/${fileName}`
+    `/${baseEndpointName}/delete/alertSounds/${fileName}`,
   );
   return response.data;
 };
@@ -107,7 +108,7 @@ export const useDeleteMp3File = () => {
       onSuccess: (_, variables) => {
         refetchFilesData(variables.folderName);
       },
-    }
+    },
   );
 };
 
@@ -121,7 +122,7 @@ export const useCreateAudioFolder = () => {
     },
     {
       onSuccess: refetchFilesData,
-    }
+    },
   );
 };
 
@@ -135,7 +136,7 @@ export const useDeleteAudioFolder = () => {
     },
     {
       onSuccess: refetchFilesData,
-    }
+    },
   );
 };
 
@@ -156,13 +157,13 @@ export const useDeleteAlertSound = () => {
     },
     {
       onSuccess: refetchFilesData,
-    }
+    },
   );
 };
 
 export const useRefetchAllFoldersListDat2a = (
   key: keyof typeof queryKeysFiles,
-  exact = false
+  exact = false,
 ) => {
   const queryClient = useQueryClient();
   return refetchDataFunctionHelper(
@@ -170,7 +171,7 @@ export const useRefetchAllFoldersListDat2a = (
     "allFoldersList",
     queryClient,
     null,
-    exact
+    exact,
   );
 };
 
@@ -181,18 +182,21 @@ export const useRefetchAllFoldersListData = (exact = false) => {
     "allFoldersList",
     queryClient,
     null,
-    exact
+    exact,
   );
 };
 
 export const useRefetchFoldersFilesAudioData = (exact = false) => {
   const queryClient = useQueryClient();
-  return (folderName: string) =>
-    refetchDataFunctionHelper(
-      queryKeysFiles,
-      "folderFilesAudio",
-      queryClient,
-      [folderName],
-      exact
-    );
+  return useCallback(
+    (folderName: string) =>
+      refetchDataFunctionHelper(
+        queryKeysFiles,
+        "folderFilesAudio",
+        queryClient,
+        [folderName],
+        exact,
+      )(),
+    [exact, queryClient],
+  );
 };

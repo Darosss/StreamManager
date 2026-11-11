@@ -35,7 +35,7 @@ export default function MusicPlayer() {
     if (!isEditor || audioData.id) return;
 
     setAudioData(editorTestData);
-  }, [audioData.id, isEditor]);
+  }, [audioData.id, isEditor, setAudioData]);
   const updateProgress = useCallback(
     (value: number) => {
       setProgress((value / audioData.duration) * 100);

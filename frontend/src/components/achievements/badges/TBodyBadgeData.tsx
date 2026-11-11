@@ -24,9 +24,9 @@ export default function TBodyManyBadgesData({
   };
   return (
     <>
-      {badges?.map((badge, index) => {
+      {badges?.map((badge) => {
         return (
-          <tr key={index} className="badges-list-data-tbody">
+          <tr key={badge._id} className="badges-list-data-tbody">
             <td>
               <div className="badge-data-table-actions">
                 <Button

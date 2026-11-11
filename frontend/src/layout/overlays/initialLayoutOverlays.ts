@@ -1,5 +1,5 @@
-import ReactGridLayout from "react-grid-layout";
 import { OverlayKeysType } from "./types";
+import { Overlay } from "@services";
 
 export const overlaysKeys: OverlayKeysType = {
   overlayRedemptions: "overlay-redemptions",
@@ -15,7 +15,7 @@ const defaultsLayoutOpts = {
 };
 
 // prettier-ignore
-export const initialLayoutOverlays: ReactGridLayout.Layouts = {
+export const initialLayoutOverlays: Overlay['layout'] = {
   ulg: [
     { i: overlaysKeys.overlayRedemptions, x: 0, y: 15, w: 20, h: 25, ...defaultsLayoutOpts },
     { i: overlaysKeys.overlayMusicPlayer, x: 6, y: 0, w: 25, h: 5, ...defaultsLayoutOpts },
@@ -54,7 +54,7 @@ export const initialLayoutOverlays: ReactGridLayout.Layouts = {
   ],
 };
 
-export const initialToolboxOverlays: ReactGridLayout.Layouts = {
+export const initialToolboxOverlays: Overlay["toolbox"] = {
   ulg: [],
   lg: [],
   md: [],

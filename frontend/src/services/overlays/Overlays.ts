@@ -15,6 +15,7 @@ import {
 } from "./types";
 import { socketConn } from "@socket";
 import { MutationAction, MutationEntity, useCustomMutation } from "@hooks";
+import { useCallback } from "react";
 
 export const fetchOverlaysDefaultParams: Required<FetchOverlaysParams> = {
   limit: 10,
@@ -34,25 +35,25 @@ export const queryKeysOverlays = {
 };
 
 export const fetchOverlays = async (
-  params?: QueryParams<keyof FetchOverlaysParams>
+  params?: QueryParams<keyof FetchOverlaysParams>,
 ): PromisePaginationData<Overlay> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const fetchOverlayById = async (
-  id: string
+  id: string,
 ): PromiseBackendData<Overlay> => {
   const response = await customAxios.get(`/${baseEndpointName}/${id}`);
   return response.data;
 };
 
 export const createOverlay = async (
-  newOverlays: OverlayCreateData
+  newOverlays: OverlayCreateData,
 ): PromiseBackendData<Overlay> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newOverlays
+    newOverlays,
   );
   return response.data;
 };
@@ -66,29 +67,29 @@ export const editOverlay = async ({
 }): PromiseBackendData<Overlay> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedOverlay
+    updatedOverlay,
   );
   return response.data;
 };
 
 export const duplicateOverlay = async (id: string) => {
   const response = await customAxios.post(
-    `/${baseEndpointName}/duplicate/${id}`
+    `/${baseEndpointName}/duplicate/${id}`,
   );
   return response.data;
 };
 
 export const deleteOverlay = async (
-  id: string
+  id: string,
 ): PromiseBackendData<Overlay> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 
 export const useGetOverlays = (
-  params?: QueryParams<keyof FetchOverlaysParams>
+  params?: QueryParams<keyof FetchOverlaysParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysOverlays.allOverlays(params),
@@ -109,7 +110,7 @@ export const useEditOverlay = () => {
         await refetchOverlays();
         socketConn.emit("refreshOverlayLayout", params.id);
       },
-    }
+    },
   );
 };
 
@@ -123,7 +124,7 @@ export const useDuplicateOverlay = (id: string) => {
     },
     {
       onSuccess: () => refetchOverlays(),
-    }
+    },
   );
 };
 
@@ -137,7 +138,7 @@ export const useCreateOverlay = () => {
     },
     {
       onSuccess: refetchOverlays,
-    }
+    },
   );
 };
 
@@ -151,7 +152,7 @@ export const useDeleteOverlay = () => {
     },
     {
       onSuccess: refetchOverlays,
-    }
+    },
   );
 };
 
@@ -169,18 +170,21 @@ export const useRefetchOverlaysData = (exact = false) => {
     "allOverlays",
     queryClient,
     [],
-    exact
+    exact,
   );
 };
 
 export const useRefetchOverlayById = (exact = false) => {
   const queryClient = useQueryClient();
-  return (id: string) =>
-    refetchDataFunctionHelper(
-      queryKeysOverlays,
-      "overlayById",
-      queryClient,
-      [id],
-      exact
-    );
+  return useCallback(
+    (id: string) =>
+      refetchDataFunctionHelper(
+        queryKeysOverlays,
+        "overlayById",
+        queryClient,
+        [id],
+        exact,
+      )(),
+    [exact, queryClient],
+  );
 };

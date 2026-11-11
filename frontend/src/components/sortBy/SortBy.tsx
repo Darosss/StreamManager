@@ -1,5 +1,4 @@
 import { Button, ButtonProps } from "@components/ui/button";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 export type SortByOptions<T extends string> = Record<T, string>;
 
@@ -12,19 +11,14 @@ export default function SortBy<OptionsKeys extends string>({
   buttonsProps,
 }: SortByProps<OptionsKeys>) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [currentSearch, setCurrentSearch] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<string | null>();
-
-  useEffect(() => {
-    const sortOrderParam = searchParams.get("sortOrder");
-    const sortBy = searchParams.get("sortBy");
-    if (sortOrderParam === "asc") {
-      setCurrentSearch("\u2191");
-    } else if (sortOrderParam === "desc") {
-      setCurrentSearch("\u2193");
-    }
-    setSortBy(sortBy);
-  }, [searchParams]);
+  const sortOrderParam = searchParams.get("sortOrder");
+  const sortBy = searchParams.get("sortBy");
+  const currentSearch =
+    sortOrderParam === "asc"
+      ? "\u2191"
+      : sortOrderParam === "desc"
+        ? "\u2193"
+        : null;
 
   const handleOnClickSortBtn = (sortBy: OptionsKeys) => {
     setSearchParams((prevState) => {
@@ -40,7 +34,6 @@ export default function SortBy<OptionsKeys extends string>({
     if (sortOrder === "asc") {
       return "desc";
     }
-    setCurrentSearch("\u2193");
     return "asc";
   };
 
@@ -50,8 +43,6 @@ export default function SortBy<OptionsKeys extends string>({
       prevState.delete("sortBy");
       return new URLSearchParams(prevState);
     });
-    setSortBy(null);
-    setCurrentSearch(null);
   };
 
   return (
@@ -59,7 +50,7 @@ export default function SortBy<OptionsKeys extends string>({
       <div className="sort-by__content">
         {Object.entries(options).map(([key, value]) => {
           return (
-            <div>
+            <div key={key}>
               <Button
                 {...buttonsProps}
                 className="sort-by__button"

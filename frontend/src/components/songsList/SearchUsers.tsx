@@ -43,9 +43,9 @@ export default function SearchUsers({
           </div>
           <div> Users: </div>
           <div className="users-list">
-            {data?.data?.map((user, index) => (
+            {data?.data?.map((user) => (
               <Button
-                key={index}
+                key={user._id}
                 variant={currentUserId === user._id ? "primary" : "tertiary"}
                 onClick={() => {
                   onClickUser(user);

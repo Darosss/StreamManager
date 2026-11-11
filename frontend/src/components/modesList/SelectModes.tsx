@@ -16,11 +16,11 @@ export default function SelectModes({
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)}>
       {withEmpty && <option value=""></option>}
-      {data?.map((item, index) => {
+      {data?.map((item) => {
         return (
           <option
             style={{ backgroundColor: `${item.enabled ? "green" : "red"}` }}
-            key={index}
+            key={item._id}
             value={item._id}
           >
             {item.name}

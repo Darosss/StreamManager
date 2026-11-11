@@ -40,11 +40,11 @@ export default function BadgeModalData() {
         />
       </div>
       <div className="badges-modal-data-images">
-        {Object.keys(badge.imagesUrls).map((key, index) => {
+        {Object.keys(badge.imagesUrls).map((key) => {
           const keyAsKeyOfBadgeImagesUrlsState =
             key as keyof BadgeModelImagesUrls;
           return (
-            <div key={index}>
+            <div key={key}>
               {key}
               {badge.imagesUrls[keyAsKeyOfBadgeImagesUrlsState] ? (
                 <img
@@ -65,18 +65,17 @@ export default function BadgeModalData() {
             const updatePayloadData: Partial<BadgeModelImagesUrls> = {};
             Object.keys(badge.imagesUrls).forEach((key) => {
               const foundSize = data.availableSizes.find((size) =>
-                key.includes(String(size))
+                key.includes(String(size)),
               );
-              updatePayloadData[
-                key as keyof BadgeModelImagesUrls
-              ] = `${basePath}\\${badgeName}${data.separatorSizes}${foundSize}${badgeExtension}`;
+              updatePayloadData[key as keyof BadgeModelImagesUrls] =
+                `${basePath}\\${badgeName}${data.separatorSizes}${foundSize}${badgeExtension}`;
             });
 
             dispatch(
               setImagesUrls({
                 ...badge.imagesUrls,
                 ...updatePayloadData,
-              })
+              }),
             );
           }}
           currentImgPath={badge.imagesUrls.x128}

@@ -94,7 +94,7 @@ export default function CustomAchievementModalInputs() {
           </>
         );
     }
-  }, [achievement]);
+  }, [achievement.custom, achievement.isTime, dispatch]);
 
   return (
     <>
@@ -120,8 +120,8 @@ export default function CustomAchievementModalInputs() {
             )
           }
         >
-          {Object.values(CustomAchievementAction).map((value, index) => (
-            <option key={index}>{value}</option>
+          {Object.values(CustomAchievementAction).map((value) => (
+            <option key={value}>{value}</option>
           ))}
         </select>
       </div>

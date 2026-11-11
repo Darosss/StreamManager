@@ -24,7 +24,7 @@ interface CategoriesDataProps {
   data: MessageCategory[];
 }
 const getMessageCategoryStateDataHelper = (
-  messageCategory: MessageCategory
+  messageCategory: MessageCategory,
 ): MessageCategoryCreateData => {
   return {
     ...messageCategory,
@@ -41,7 +41,7 @@ export default function CategoriesData({ data }: CategoriesDataProps) {
   const handleDeleteMessageCategory = (id: string) => {
     if (
       !window.confirm(
-        `Are you sure you want to delete the message category with ID: ${id}?`
+        `Are you sure you want to delete the message category with ID: ${id}?`,
       )
     )
       return;
@@ -80,10 +80,10 @@ export default function CategoriesData({ data }: CategoriesDataProps) {
             <th>Messages</th>
           </tr>
         }
-        tbodyChildren={data.map((category, index) => {
+        tbodyChildren={data.map((category) => {
           const { tag, mood } = category;
           return (
-            <tr key={index}>
+            <tr key={category._id}>
               <td>
                 <div>
                   <Button
@@ -128,6 +128,7 @@ export default function CategoriesData({ data }: CategoriesDataProps) {
               <td>
                 <TableItemsListWrapper>
                   {category.messages.map((message, index) => (
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
                     <div key={index}>
                       {message[0]} - uses: {message[1]}
                     </div>

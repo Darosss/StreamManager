@@ -42,14 +42,14 @@ export default function TagsData({ data }: TagsDataProps) {
           Create
         </Button>
       </CardboxItem>
-      {data.map((tag, index) => {
+      {data.map((tag) => {
         return (
           <CardboxItem
             title={tag.name}
             onClickX={() => {
               handleDeleteTag(tag._id);
             }}
-            key={index}
+            key={tag._id}
           >
             <Button
               onClick={() => handleShowModal({ type: "edit", data: tag })}

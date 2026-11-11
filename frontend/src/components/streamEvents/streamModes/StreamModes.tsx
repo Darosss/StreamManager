@@ -26,9 +26,9 @@ export default function StreamModes() {
             <div className="stream-modes-section-name">
               <Button variant="secondary">Tags </Button>
             </div>
-            {tags?.map((tag, index) => {
+            {tags?.map((tag) => {
               return (
-                <div key={index}>
+                <div key={tag._id}>
                   <Button
                     variant={tag.enabled ? "primary" : "danger"}
                     onClick={() => {
@@ -76,9 +76,9 @@ export default function StreamModes() {
               </Button>
             </div>
 
-            {affixes?.map((affix, index) => {
+            {affixes?.map((affix) => {
               return (
-                <div key={index}>
+                <div key={affix._id}>
                   <Button
                     variant={affix.enabled ? "primary" : "danger"}
                     onClick={() => {
@@ -99,9 +99,9 @@ export default function StreamModes() {
               <Button variant="secondary">Moods</Button>
             </div>
 
-            {moods?.map((mood, index) => {
+            {moods?.map((mood) => {
               return (
-                <div key={index}>
+                <div key={mood._id}>
                   <Button
                     variant={mood.enabled ? "primary" : "danger"}
                     onClick={() => {

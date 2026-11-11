@@ -54,8 +54,8 @@ export default function StreamSessionDetail() {
         <div className="detail-section-wrapper-big">
           <div>
             <div className="section-name">Titles</div>
-            {Object.keys(data.sessionTitles).map((timestamp, index) => (
-              <div key={index} className="session-big-data-wrapper">
+            {Object.keys(data.sessionTitles).map((timestamp) => (
+              <div key={timestamp} className="session-big-data-wrapper">
                 <div>
                   <DateTooltip date={Number(timestamp)} />
                 </div>
@@ -67,8 +67,8 @@ export default function StreamSessionDetail() {
         <div className="detail-section-wrapper-big">
           <div>
             <div className="section-name">Categories</div>
-            {Object.keys(data.categories).map((timestamp, index) => (
-              <div key={index} className="session-big-data-wrapper">
+            {Object.keys(data.categories).map((timestamp) => (
+              <div key={timestamp} className="session-big-data-wrapper">
                 <div>
                   <DateTooltip date={Number(timestamp)} />
                 </div>

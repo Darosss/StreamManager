@@ -1,4 +1,4 @@
-import ReactGridLayout from "react-grid-layout";
+import { ResponsiveLayouts } from "react-grid-layout";
 
 const defaultsLayoutOpts = {
   isDraggable: false,
@@ -18,7 +18,7 @@ export const widgetsKeys = {
 };
 
 // prettier-ignore
-export const initialLayoutWidgets: ReactGridLayout.Layouts = {
+export const initialLayoutWidgets: ResponsiveLayouts = {
   ulg: [
     {i: widgetsKeys.streamChat, x: 0, y: 0, w: 15, h: 60, ...defaultsLayoutOpts },
     {i: widgetsKeys.streamChatters, x: 15, y: 0, w: 10, h: 25, ...defaultsLayoutOpts },
@@ -85,7 +85,7 @@ export const initialLayoutWidgets: ReactGridLayout.Layouts = {
   ],
 };
 
-export const initialToolboxWidgets: ReactGridLayout.Layouts = {
+export const initialToolboxWidgets: ResponsiveLayouts = {
   ulg: [],
   lg: [],
   md: [],

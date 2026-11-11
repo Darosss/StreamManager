@@ -73,8 +73,8 @@ export default function StreamSessions() {
             </tr>
           </thead>
           <tbody>
-            {data.map((session, index) => (
-              <tr key={index}>
+            {data.map((session) => (
+              <tr key={session._id}>
                 <td colSpan={3}>
                   <div className="sessions-list-actions">
                     <Link to={`./${session._id}/messages`}>Messages</Link>

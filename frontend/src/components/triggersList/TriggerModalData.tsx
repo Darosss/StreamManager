@@ -23,7 +23,7 @@ export default function TriggerModalData() {
 
   const dispatch = useDispatch();
   const triggerState = useSelector(
-    (state: RootStore) => state.triggers.trigger
+    (state: RootStore) => state.triggers.trigger,
   );
 
   return (
@@ -62,13 +62,13 @@ export default function TriggerModalData() {
           }
         >
           {(["ALL", "STARTS-WITH", "WHOLE-WORD"] as TriggerMode[]).map(
-            (modeTrigger, index) => {
+            (modeTrigger) => {
               return (
-                <option key={index} value={modeTrigger}>
+                <option key={modeTrigger} value={modeTrigger}>
                   {modeTrigger}
                 </option>
               );
-            }
+            },
           )}
         </select>
       </div>

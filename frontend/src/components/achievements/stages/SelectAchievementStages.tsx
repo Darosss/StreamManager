@@ -2,7 +2,7 @@ import { Button } from "@components/ui/button";
 import { Select } from "@components/ui/select";
 import { useDebouncedValue } from "@hooks/useDebouncedValue";
 import { AchievementStage, useGetAchievementStages } from "@services";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router";
 
 interface AchievementStageSelectValue {
@@ -28,25 +28,26 @@ export const SelectAchievementStages = ({
   onChangeSelect,
 }: SelectAchievementStagesProps) => {
   const [searchInput, setSearchInput] = useState("");
-  const [achievementStagesNameFilter, setAchievementStagesNameFilter] =
-    useState("");
+
   const debouncedSearchInput = useDebouncedValue(searchInput, 300);
+  const achievementStagesNameFilter = useMemo(
+    () => debouncedSearchInput,
+    [debouncedSearchInput],
+  );
+
   const { data: achievementStagesResponse, refetch: refetchAchievementStages } =
     useGetAchievementStages({ search_name: achievementStagesNameFilter });
   const options = achievementStagesResponse?.data?.map((value) => ({
     value: value._id,
     label: value.name,
   }));
-  useEffect(() => {
-    setAchievementStagesNameFilter(debouncedSearchInput);
-  }, [debouncedSearchInput]);
 
   const defaultValue =
     "stageId" in params
       ? {
           label:
             achievementStagesResponse?.data.find(
-              (data) => data._id === params.stageId
+              (data) => data._id === params.stageId,
             )?.name || "-",
           value: params.stageId,
         }
