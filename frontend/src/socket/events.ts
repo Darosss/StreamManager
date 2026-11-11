@@ -6,7 +6,7 @@ import {
 } from "./types";
 
 export const getSocketEventsFunctions = (
-  socketConnection: Socket<ServerToClientEvents, ClientToServerEvents>
+  socketConnection: Socket<ServerToClientEvents, ClientToServerEvents>,
 ): SocketContexType["events"] => {
   return {
     sendLoggedUserInfo: {
@@ -36,7 +36,7 @@ export const getSocketEventsFunctions = (
     userJoinTwitchChat: {
       on: (cb) => {
         socketConnection.on("userJoinTwitchChat", (eventAndUser) =>
-          cb(eventAndUser)
+          cb(eventAndUser),
         );
       },
       off: () => {
@@ -46,7 +46,7 @@ export const getSocketEventsFunctions = (
     onRedemption: {
       on: (cb) => {
         socketConnection.on("onRedemption", (data, alertSound) =>
-          cb(data, alertSound)
+          cb(data, alertSound),
         );
       },
       off: () => {
@@ -88,7 +88,7 @@ export const getSocketEventsFunctions = (
     refreshOverlayLayout: {
       on: (cb) => {
         socketConnection.on("refreshOverlayLayout", (overlayId) =>
-          cb(overlayId)
+          cb(overlayId),
         );
       },
       off: () => {

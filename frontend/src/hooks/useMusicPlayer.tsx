@@ -40,7 +40,7 @@ const useMusicPlayer = (socket: Required<SocketContexType>) => {
 
       socket.emits.changeVolume(correctedVolume);
     },
-    [socket]
+    [socket],
   );
 
   useEffect(() => {

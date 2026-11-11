@@ -26,7 +26,7 @@ export default function SongsList() {
 
   const dispatch = useDispatch();
   const { isModalOpen, song, editingId } = useSelector(
-    (state: RootStore) => state.songs
+    (state: RootStore) => state.songs,
   );
 
   const createSongMutation = useCreateSong();

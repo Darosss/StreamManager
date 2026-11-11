@@ -49,8 +49,9 @@ export interface StreamSessionStatistics {
 }
 export type StreamSessionRedemptions = PaginationData<Redemption>;
 
-export interface FetchStreamSessionsParams
-  extends DefaultRequestParams<keyof StreamSession> {
+export interface FetchStreamSessionsParams extends DefaultRequestParams<
+  keyof StreamSession
+> {
   search_name?: string;
   tags?: string;
   categories?: string;

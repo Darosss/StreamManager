@@ -2,11 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 type ButtonSize = "small" | "medium" | "large";
 type SelectVariant =
-  | "primary"
-  | "secondary"
-  | "tertiary"
-  | "danger"
-  | "success";
+  "primary" | "secondary" | "tertiary" | "danger" | "success";
 
 type OptionType = { label: string; value: string };
 
@@ -34,12 +30,12 @@ export default function Select({
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<OptionType | null>(
-    defaultValue || null
+    defaultValue || null,
   );
   const [query, setQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const filteredOptions = options?.filter((option) =>
-    option.label.toLowerCase().includes(query.toLowerCase())
+    option.label.toLowerCase().includes(query.toLowerCase()),
   );
   const handleSelect = (option: OptionType) => {
     onSelect(option);

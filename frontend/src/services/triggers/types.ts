@@ -18,19 +18,19 @@ export interface Trigger extends BaseModelProperties {
   mood: Mood;
 }
 
-export interface TriggerCreateData
-  extends Omit<
-    Trigger,
-    "_id" | "createdAt" | "updatedAt" | "onDelay" | "uses" | "tag" | "mood"
-  > {
+export interface TriggerCreateData extends Omit<
+  Trigger,
+  "_id" | "createdAt" | "updatedAt" | "onDelay" | "uses" | "tag" | "mood"
+> {
   tag: string;
   mood: string;
 }
 
 export interface TriggerUpdateData extends Partial<TriggerCreateData> {}
 
-export interface FetchTriggerParams
-  extends DefaultRequestParams<keyof Trigger> {
+export interface FetchTriggerParams extends DefaultRequestParams<
+  keyof Trigger
+> {
   search_name?: string;
   words?: string;
   messages?: string;

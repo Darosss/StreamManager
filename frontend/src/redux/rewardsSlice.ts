@@ -48,7 +48,7 @@ const rewardsSlice = createSlice({
     },
     setMaxRedemptionsPerUserPerStream(
       state,
-      action: PayloadAction<number | null>
+      action: PayloadAction<number | null>,
     ) {
       state.reward.maxRedemptionsPerUserPerStream = action.payload;
     },

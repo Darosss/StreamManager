@@ -75,7 +75,7 @@ const stageSlice = createSlice({
     },
     setStageData(
       state,
-      action: PayloadAction<StagesSliceType["stage"]["stageData"]>
+      action: PayloadAction<StagesSliceType["stage"]["stageData"]>,
     ) {
       state.stage.stageData = action.payload;
     },
@@ -87,7 +87,7 @@ const stageSlice = createSlice({
     },
     updateStageDataByIndex(
       state,
-      action: PayloadAction<UpdateStageDataByIndexPayload>
+      action: PayloadAction<UpdateStageDataByIndexPayload>,
     ) {
       const newStageData = state.stage.stageData;
 
@@ -97,7 +97,7 @@ const stageSlice = createSlice({
     },
     updateStageDataPropertyByIndex(
       state,
-      action: PayloadAction<StageDataUpdatePayload>
+      action: PayloadAction<StageDataUpdatePayload>,
     ) {
       const { index, keyName, value } = action.payload;
 
@@ -108,7 +108,7 @@ const stageSlice = createSlice({
 
     updateStageStageDataBadgeByIndex(
       state,
-      action: PayloadAction<UpdateStageDataBadgeByIndexPayload>
+      action: PayloadAction<UpdateStageDataBadgeByIndexPayload>,
     ) {
       const newStageData = state.stage.stageData;
 

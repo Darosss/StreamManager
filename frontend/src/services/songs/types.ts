@@ -36,25 +36,23 @@ export interface Song extends BaseModelProperties {
   tags: string;
 }
 
-export interface SongCreateData
-  extends Omit<
-    Song,
-    | "_id"
-    | "createdAt"
-    | "updatedAt"
-    | "uses"
-    | "usersUses"
-    | "botUses"
-    | "songRequestUses"
-    | "whoAdded"
-    | "likes"
-  > {
+export interface SongCreateData extends Omit<
+  Song,
+  | "_id"
+  | "createdAt"
+  | "updatedAt"
+  | "uses"
+  | "usersUses"
+  | "botUses"
+  | "songRequestUses"
+  | "whoAdded"
+  | "likes"
+> {
   whoAdded: string;
 }
 
 export interface SongUpdateData
-  extends Partial<SongCreateData>,
-    Partial<Pick<Song, "enabled">> {}
+  extends Partial<SongCreateData>, Partial<Pick<Song, "enabled">> {}
 
 export interface FetchSongsParams extends DefaultRequestParams<keyof Song> {
   customId?: string;

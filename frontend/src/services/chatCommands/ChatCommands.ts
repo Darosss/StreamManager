@@ -41,7 +41,7 @@ export const fetchChatCommandsDefaultParams: Required<FetchChatCommandParams> =
   };
 
 export const fetchChatCommands = async (
-  params?: QueryParams<keyof FetchChatCommandParams>
+  params?: QueryParams<keyof FetchChatCommandParams>,
 ): PromisePaginationData<ChatCommand> => {
   const response = await customAxios.get(`/${baseEndpointName}`, {
     params,
@@ -50,11 +50,11 @@ export const fetchChatCommands = async (
 };
 
 export const createChatCommand = async (
-  newChatCommand: ChatCommandCreateData
+  newChatCommand: ChatCommandCreateData,
 ): PromiseBackendData<ChatCommand> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newChatCommand
+    newChatCommand,
   );
   return response.data;
 };
@@ -68,22 +68,22 @@ export const editChatCommand = async ({
 }): PromiseBackendData<ChatCommand> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedChatCommand
+    updatedChatCommand,
   );
   return response.data;
 };
 
 export const deleteChatCommand = async (
-  id: string
+  id: string,
 ): PromiseBackendData<ChatCommand> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 
 export const useGetChatCommands = (
-  params?: QueryParams<keyof FetchChatCommandParams>
+  params?: QueryParams<keyof FetchChatCommandParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysChatCommands.allChatCommands(params),
@@ -100,7 +100,7 @@ export const useEditChatCommand = () => {
       onSuccess: () => {
         refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
       },
-    }
+    },
   );
 };
 
@@ -116,7 +116,7 @@ export const useCreateChatCommand = () => {
       onSuccess: () => {
         refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
       },
-    }
+    },
   );
 };
 
@@ -129,7 +129,7 @@ export const useDeleteChatCommand = () => {
       onSuccess: () => {
         refetchChatCommands().then(() => socketConn.emit("refreshCommands"));
       },
-    }
+    },
   );
 };
 
@@ -140,6 +140,6 @@ export const useRefetchChatCommandsData = (exact = false) => {
     "allChatCommands",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

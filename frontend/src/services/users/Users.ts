@@ -42,7 +42,7 @@ export const queryKeysUsers = {
     ["users-messages", id, queryKeysParamsHelper(params)] as [
       string,
       string,
-      string
+      string,
     ],
   userFirstLatestMessages: (id: string) =>
     ["users-messages-latest-eldest", id] as [string, string],
@@ -50,17 +50,17 @@ export const queryKeysUsers = {
     ["get-users-by-ids", id.join(",")] as [string, string],
   userRedemptions: (
     id: string,
-    params?: QueryParams<keyof FetchRedemptionsParams>
+    params?: QueryParams<keyof FetchRedemptionsParams>,
   ) =>
     ["users-redemptions", id, queryKeysParamsHelper(params)] as [
       string,
       string,
-      string
+      string,
     ],
 };
 
 export const fetchUsers = async (
-  params?: QueryParams<keyof FetchUsersParams>
+  params?: QueryParams<keyof FetchUsersParams>,
 ): PromisePaginationData<User> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
@@ -72,39 +72,39 @@ export const fetchUserById = async (id: string): PromiseBackendData<User> => {
 
 export const fetchUserMessages = async (
   id: string,
-  params?: QueryParams<keyof FetchUsersParams>
+  params?: QueryParams<keyof FetchUsersParams>,
 ): PromisePaginationData<Message> => {
   const response = await customAxios.get(
     `/${baseEndpointName}/${id}/messages`,
-    { params }
+    { params },
   );
   return response.data;
 };
 
 export const fetchUserLatestEldestMsgs = async (
-  id: string
+  id: string,
 ): PromiseBackendData<FirstAndLatestMsgs> => {
   const response = await customAxios.get(
-    `/${baseEndpointName}/${id}/messages/latest-eldest`
+    `/${baseEndpointName}/${id}/messages/latest-eldest`,
   );
   return response.data;
 };
 
 export const fetchUserRedemptions = async (
   id: string,
-  params?: QueryParams<keyof FetchUsersParams>
+  params?: QueryParams<keyof FetchUsersParams>,
 ): PromisePaginationData<Redemption> => {
   const response = await customAxios.get(
     `/${baseEndpointName}/${id}/redemptions`,
-    { params }
+    { params },
   );
   return response.data;
 };
 export const fetchUsersByIds = async (
-  ids: string[]
+  ids: string[],
 ): PromisePaginationData<User> => {
   const response = await customAxios.get(
-    `/${baseEndpointName}/users/by-ids/${ids.join(",")}`
+    `/${baseEndpointName}/users/by-ids/${ids.join(",")}`,
   );
   return response.data;
 };
@@ -118,7 +118,7 @@ export const editUser = async ({
 }): PromiseBackendData<User> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedUser
+    updatedUser,
   );
   return response.data;
 };
@@ -145,13 +145,13 @@ export const useEditUser = () => {
       entity: MutationEntity.USER,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchUsers }
+    { onSuccess: refetchUsers },
   );
 };
 
 export const useGetUserMessages = (
   id: string,
-  params?: QueryParams<keyof FetchMessagesParams>
+  params?: QueryParams<keyof FetchMessagesParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysUsers.userMessages(id, params),
@@ -175,7 +175,7 @@ export const useGetUsersByIds = (ids: string[]) => {
 
 export const useGetUserRedemptions = (
   id: string,
-  params?: QueryParams<keyof FetchRedemptionsParams>
+  params?: QueryParams<keyof FetchRedemptionsParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysUsers.userRedemptions(id, params),
@@ -190,6 +190,6 @@ export const useRefetchUsersData = (exact = false) => {
     "allUsers",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

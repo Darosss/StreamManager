@@ -66,15 +66,13 @@ export interface OverlayAchievementsRarities {
 }
 
 interface OverlayAchievementsQueueStyles
-  extends BaseCssStyles,
-    StyleParsedBase {
+  extends BaseCssStyles, StyleParsedBase {
   boxShadow: string;
   borderRadius: string;
 }
 
 export interface OverlayAchievementsStyleParsed
-  extends StyleParsedBase,
-    OverlayAchievementsRarities {
+  extends StyleParsedBase, OverlayAchievementsRarities {
   queue: OverlayAchievementsQueueStyles;
   fontSize: BaseCssStyles["fontSize"];
   badgeSize: string;
@@ -91,8 +89,7 @@ export interface OverlayRedemptionsStyleParsed extends StyleParsedBase {
   boxShadow: string;
 }
 export interface OverlayMusicPlayerStyleParsed
-  extends StyleParsedBase,
-    BaseMusicStyles {
+  extends StyleParsedBase, BaseMusicStyles {
   boxShadow: string;
   borderRadius: string;
   requests: OverlayRequestsStyle;

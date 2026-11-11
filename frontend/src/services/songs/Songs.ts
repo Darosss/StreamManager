@@ -35,18 +35,18 @@ export const queryKeysSongs = {
 };
 
 export const fetchSongs = async (
-  params?: QueryParams<keyof FetchSongsParams>
+  params?: QueryParams<keyof FetchSongsParams>,
 ): PromisePaginationData<Song> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createSong = async (
-  newSong: SongCreateData
+  newSong: SongCreateData,
 ): PromiseBackendData<Song> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newSong
+    newSong,
   );
   return response.data;
 };
@@ -60,14 +60,14 @@ export const editSong = async ({
 }): PromiseBackendData<Song> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedSong
+    updatedSong,
   );
   return response.data;
 };
 
 export const deleteSong = async (id: string): PromiseBackendData<Song> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -87,7 +87,7 @@ export const useCreateSong = () => {
       entity: MutationEntity.SONG,
       action: MutationAction.CREATE,
     },
-    { onSuccess: refetchSongs }
+    { onSuccess: refetchSongs },
   );
 };
 
@@ -99,7 +99,7 @@ export const useEditSong = () => {
       entity: MutationEntity.SONG,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchSongs }
+    { onSuccess: refetchSongs },
   );
 };
 
@@ -111,7 +111,7 @@ export const useDeleteSong = () => {
       entity: MutationEntity.SONG,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchSongs }
+    { onSuccess: refetchSongs },
   );
 };
 
@@ -122,6 +122,6 @@ export const useRefetchSongsData = (exact = false) => {
     "allSongs",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

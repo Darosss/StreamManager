@@ -15,19 +15,19 @@ export interface ChatCommand extends BaseModelProperties {
   mood: Mood;
 }
 
-export interface ChatCommandCreateData
-  extends Omit<
-    ChatCommand,
-    "_id" | "createdAt" | "updatedAt" | "useCount" | "tag" | "mood" | "uses"
-  > {
+export interface ChatCommandCreateData extends Omit<
+  ChatCommand,
+  "_id" | "createdAt" | "updatedAt" | "useCount" | "tag" | "mood" | "uses"
+> {
   tag: string;
   mood: string;
 }
 
 export interface ChatCommandUpdateData extends Partial<ChatCommandCreateData> {}
 
-export interface FetchChatCommandParams
-  extends DefaultRequestParams<keyof ChatCommand> {
+export interface FetchChatCommandParams extends DefaultRequestParams<
+  keyof ChatCommand
+> {
   search_name?: string;
   end_date?: string;
   start_date?: string;

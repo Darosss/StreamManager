@@ -9,8 +9,9 @@ export interface Message {
   ownerUsername: string;
 }
 
-export interface FetchMessagesParams
-  extends DefaultRequestParams<keyof Message> {
+export interface FetchMessagesParams extends DefaultRequestParams<
+  keyof Message
+> {
   search_name?: string;
   owner?: string;
   start_date?: string;

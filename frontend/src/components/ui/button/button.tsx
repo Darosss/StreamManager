@@ -1,10 +1,6 @@
 import React from "react";
 type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "tertiary"
-  | "danger"
-  | "success";
+  "primary" | "secondary" | "tertiary" | "danger" | "success";
 
 type ButtonSize = "small" | "medium" | "large";
 

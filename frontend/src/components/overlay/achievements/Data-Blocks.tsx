@@ -35,7 +35,7 @@ export function AchievementDataBlock({
 
   const obtainedAchievementContentData = useObtainedAchievementContentData(
     achievement,
-    styles
+    styles,
   );
   const progressContentData = useProgressContentData(progress, styles);
 
@@ -62,7 +62,7 @@ export function AchievementDataBlock({
         }}
       >
         {dayjs(
-          achievement?.stage.timestamp || progress?.progressData.timestamp
+          achievement?.stage.timestamp || progress?.progressData.timestamp,
         ).format("HH:mm")}
       </div>
       <div
@@ -119,8 +119,8 @@ export function AchievementDataBlock({
             achievement
               ? ""
               : !progress?.progressData.currentStage
-              ? "obtained-achievements-badge-not-achieved"
-              : ""
+                ? "obtained-achievements-badge-not-achieved"
+                : ""
           }`}
           style={{
             maxWidth: styles.badgeSize,

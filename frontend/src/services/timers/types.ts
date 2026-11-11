@@ -17,11 +17,10 @@ export interface Timer extends BaseModelProperties {
   mood: Mood;
 }
 
-export interface TimerCreateData
-  extends Omit<
-    Timer,
-    "_id" | "createdAt" | "updatedAt" | "points" | "uses" | "tag" | "mood"
-  > {
+export interface TimerCreateData extends Omit<
+  Timer,
+  "_id" | "createdAt" | "updatedAt" | "points" | "uses" | "tag" | "mood"
+> {
   tag: string;
   mood: string;
 }

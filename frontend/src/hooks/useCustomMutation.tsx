@@ -46,7 +46,7 @@ type MutationMeta = {
 export function useCustomMutation<TData, TVariables>(
   mutationFn: (variables: TVariables) => Promise<TData>,
   meta: MutationMeta,
-  options?: UseMutationOptions<TData, unknown, TVariables>
+  options?: UseMutationOptions<TData, unknown, TVariables>,
 ) {
   const { addNotify } = useNotifications();
   const { onSuccess, onError, ...restOptions } = options || {};
@@ -73,7 +73,7 @@ export function useCustomMutation<TData, TVariables>(
 
 export const getNotificationSuccessData = (
   { entity, action }: MutationMeta,
-  customDuration = 8000
+  customDuration = 8000,
 ): NotificationOpts => {
   return {
     title: `${entity} successfully ${action.toLowerCase()}`,
@@ -85,7 +85,7 @@ export const getNotificationSuccessData = (
 export const getNotificationErrorData = (
   error: unknown,
   { entity, action }: MutationMeta,
-  customDuration = 8000
+  customDuration = 8000,
 ): NotificationOpts => {
   const errorData = { message: "", status: 0 };
 

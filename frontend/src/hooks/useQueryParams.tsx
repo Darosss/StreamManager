@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router";
 const getQueryValue = (
   searchParams: URLSearchParams,
   key: string,
-  defaultValue: string | number = ""
+  defaultValue: string | number = "",
 ): string | number => {
   const value = searchParams.get(key);
   if (typeof defaultValue === "number") {
@@ -14,7 +14,7 @@ const getQueryValue = (
 };
 
 export const useQueryParams = <KeyType extends string>(
-  defaults: QueryParams<KeyType>
+  defaults: QueryParams<KeyType>,
 ): QueryParams<KeyType> => {
   const [searchParams] = useSearchParams();
 
@@ -23,11 +23,11 @@ export const useQueryParams = <KeyType extends string>(
       acc[key as KeyType] = getQueryValue(
         searchParams,
         key,
-        defaults[key as KeyType]!
+        defaults[key as KeyType]!,
       );
       return acc;
     },
-    {} as QueryParams<KeyType>
+    {} as QueryParams<KeyType>,
   );
 
   return queryParams;

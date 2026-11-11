@@ -28,7 +28,7 @@ export const editConfig = async ({
 }): PromiseBackendData<Config> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/edit`,
-    updatedConfig
+    updatedConfig,
   );
   return response.data;
 };
@@ -57,7 +57,7 @@ export const useEditConfig = () => {
       onSuccess: () => {
         refetchConfigs().then(() => socketConn.emit("saveConfigs"));
       },
-    }
+    },
   );
 };
 
@@ -73,7 +73,7 @@ export const useResetConfigs = () => {
       onSuccess: () => {
         refetchConfigs().then(() => socketConn.emit("saveConfigs"));
       },
-    }
+    },
   );
 };
 
@@ -84,6 +84,6 @@ export const useRefetchConfigsData = (exact = false) => {
     "allConfigs",
     queryClient,
     null,
-    exact
+    exact,
   );
 };

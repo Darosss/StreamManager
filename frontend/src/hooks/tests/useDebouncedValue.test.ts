@@ -19,7 +19,7 @@ describe("useDebouncedValue", () => {
   it("should not update the value before the delay has passed", () => {
     const { result, rerender } = renderHook(
       ({ value }) => useDebouncedValue(value, 500),
-      { initialProps: { value: "initial" } }
+      { initialProps: { value: "initial" } },
     );
 
     rerender({ value: "updated" });
@@ -34,7 +34,7 @@ describe("useDebouncedValue", () => {
   it("should update the value after the delay has passed", () => {
     const { result, rerender } = renderHook(
       ({ value }) => useDebouncedValue(value, 500),
-      { initialProps: { value: "initial" } }
+      { initialProps: { value: "initial" } },
     );
 
     rerender({ value: "updated" });
@@ -49,7 +49,7 @@ describe("useDebouncedValue", () => {
   it("should reset the timer if the value changes again within the delay", () => {
     const { result, rerender } = renderHook(
       ({ value }) => useDebouncedValue(value, 500),
-      { initialProps: { value: "initial" } }
+      { initialProps: { value: "initial" } },
     );
 
     rerender({ value: "first change" });
