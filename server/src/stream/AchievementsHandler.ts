@@ -34,7 +34,7 @@ import { codeBlock } from "discord.js";
 import { SubscriptionTiers } from "./EventSubHandler";
 import { AchievementsQueueHandler } from "./AchievementsQueueHandler";
 import { ConfigManager } from "./ConfigManager";
-import { Types } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
 // TODO: PERFOMANCE
 // TODO: cache custom achievements names or _ids
 // TODO: cache basic achievements too maybe
@@ -264,7 +264,13 @@ class AchievementsHandler extends AchievementsQueueHandler<
 
     socketHandler.subscribe("addAchievementProgressToUser", async (data, cb) => {
       try {
-        const update = await this.updateAchievementUserProgressAndAddToQueue(data);
+        const { userId, ...restData } = data;
+        if (!isValidObjectId(userId)) throw Error("User id has to be valid object id");
+
+        const update = await this.updateAchievementUserProgressAndAddToQueue({
+          userId: new Types.ObjectId(userId),
+          ...restData
+        });
         if (update.error) throw Error(update.message);
 
         cb(null);

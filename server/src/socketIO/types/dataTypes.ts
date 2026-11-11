@@ -54,7 +54,8 @@ export interface AudioChunkData {
 
 export type MessageServerDataBadgesPathsType = [string, string, string];
 
-export interface AddAchievementProgressToUserData extends UpdateAchievementUserProgressProgressesArgs {
+export interface AddAchievementProgressToUserData extends Omit<UpdateAchievementUserProgressProgressesArgs, "userId"> {
+  userId: string;
   username: string;
 }
 
