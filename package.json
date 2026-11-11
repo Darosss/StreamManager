@@ -20,10 +20,12 @@
   },
   "lint-staged": {
     "frontend/**/*.{js,ts,tsx}": [
-      "npm --prefix frontend run lint"
+      "npm --prefix frontend run lint:staged",
+      "npm --prefix frontend run format:staged"
     ],
     "server/**/*.{js,ts}": [
-      "npm --prefix server run lint"
+      "npm --prefix server run lint:staged",
+      "npm --prefix server run format:staged"
     ]
   }
 }
