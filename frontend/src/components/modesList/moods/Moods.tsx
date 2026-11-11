@@ -9,10 +9,10 @@ import {
   useEditMood,
   Mood,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { closeModal, resetMoodState, setEditingId } from "@redux/moodsSlice";
-import { RootStore } from "@redux/store";
+
 import MoodsData from "./MoodsData";
 import MoodModalData from "./MoodModalData";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -23,12 +23,12 @@ export default function Moods() {
   const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchMoodsDefaultParams);
   const { data: moods, isLoading, error } = useGetMoods(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     mood: moodState,
     editingId,
-  } = useSelector((state: RootStore) => state.moods);
+  } = useAppSelector((state) => state.moods);
 
   const createMoodMutation = useCreateMood();
   const updateMoodMutation = useEditMood();

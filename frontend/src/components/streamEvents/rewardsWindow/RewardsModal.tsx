@@ -3,11 +3,11 @@ import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 import { useFileUpload } from "@hooks";
 import { setCost, setEditingAlertSound, closeModal } from "@redux/rewardsSlice";
 import { setTitle } from "@redux/songsSlice";
-import { RootStore } from "@redux/store";
+
 import { uploadMp3Data } from "@services";
 import { useSocketContext } from "@socket";
 import { useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 
 export function RewardsModal() {
   const socketContext = useSocketContext();
@@ -19,9 +19,9 @@ export function RewardsModal() {
     reward: { title, cost },
     isModalOpen,
     editingId,
-  } = useSelector((state: RootStore) => state.rewards);
+  } = useAppSelector((state) => state.rewards);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const emitEditAlertSoundReward = useCallback(() => {
     const {

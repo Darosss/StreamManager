@@ -3,8 +3,7 @@ import { MessageServerData, useSocketContext } from "@socket";
 import { useEffect } from "react";
 import { getExampleChatData } from "./exampleData";
 import { useLocalStorage } from "@hooks";
-import { useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppSelector } from "@redux";
 
 const MAX_MESSAGES_IN_CACHE = 10;
 
@@ -18,7 +17,7 @@ export default function Chat() {
     baseData: {
       styles: { overlayChat: styles },
     },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const [messagesData, setMessagesData] = useLocalStorage<MessageServerData[]>(
     "chatOverlayMessages",

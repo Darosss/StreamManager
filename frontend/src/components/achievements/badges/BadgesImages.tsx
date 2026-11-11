@@ -9,13 +9,13 @@ import React from "react";
 import { Error, Loading } from "@components/axiosHelper";
 import { OnClickBadgeType } from "./types";
 import { closeModal, openModal } from "@redux/badgesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { Button } from "@components/ui/button";
 
 export default function BadgesImages() {
-  const dispatch = useDispatch();
-  const { isModalOpen } = useSelector((root: RootStore) => root.badges);
+  const dispatch = useAppDispatch();
+  const { isModalOpen } = useAppSelector((state) => state.badges);
 
   const {
     data: badgeImagesResponseData,

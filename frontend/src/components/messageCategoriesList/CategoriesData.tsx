@@ -9,7 +9,7 @@ import {
   useDeleteMessageCategory,
 } from "@services";
 import SortByParamsButton from "@components/SortByParamsButton";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import {
   openModal,
   resetMessageCategoryState,
@@ -35,7 +35,7 @@ const getMessageCategoryStateDataHelper = (
 };
 
 export default function CategoriesData({ data }: CategoriesDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const deleteMsgCategoryMutation = useDeleteMessageCategory();
   const handleDeleteMessageCategory = (id: string) => {

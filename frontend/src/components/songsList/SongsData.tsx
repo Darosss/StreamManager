@@ -10,7 +10,7 @@ import {
   setEditingId,
   setSongState,
 } from "@redux/songsSlice";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import { HandleShowModalParams } from "@components/types";
 import { Button } from "@components/ui/button";
 import { StatusLabel } from "@components/common/StatusLabel";
@@ -20,7 +20,7 @@ interface SongsDataProps {
 }
 
 export default function SongsData({ data }: SongsDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [previewedSong, setPreviewedSong] = useState<Song | null>(null);
 
   const deleteSongMutation = useDeleteSong();

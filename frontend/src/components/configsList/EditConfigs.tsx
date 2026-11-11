@@ -1,20 +1,20 @@
 import { useResetConfigs, useEditConfig, useGetConfigs } from "@services";
 import { Loading } from "@components/axiosHelper";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   setConfigState,
   closeEditMode,
   openEditMode,
 } from "@redux/configsSlice";
-import { RootStore } from "@redux/store";
+
 import Error from "@components/axiosHelper/errors";
 import { Button } from "@components/ui/button";
 
 export default function EditConfigs() {
-  const dispatch = useDispatch();
-  const { isUpdateMode, config: configsState } = useSelector(
-    (state: RootStore) => state.configs,
+  const dispatch = useAppDispatch();
+  const { isUpdateMode, config: configsState } = useAppSelector(
+    (state) => state.configs,
   );
   const { data: configs, isLoading, error } = useGetConfigs();
 

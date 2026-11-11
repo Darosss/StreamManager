@@ -9,9 +9,9 @@ import {
   useEditTag,
   Tag,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
-import { RootStore } from "@redux/store";
+
 import { resetTagState, closeModal, setEditingId } from "@redux/tagsSlice";
 import TagModalData from "./TagModalData";
 import TagsData from "./TagsData";
@@ -23,12 +23,12 @@ export default function Tags() {
   const { addNotify } = useNotifications();
   const queryParams = useQueryParams(fetchTagsDefaultParams);
   const { data: tags, isLoading, error } = useGetTags(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     tag: tagState,
     editingId,
-  } = useSelector((state: RootStore) => state.tags);
+  } = useAppSelector((state) => state.tags);
 
   const createTagMutation = useCreateTag();
   const updateTagMutation = useEditTag();

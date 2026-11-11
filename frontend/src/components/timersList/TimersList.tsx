@@ -10,9 +10,9 @@ import {
 import TimersData from "./TimersData";
 import TimerModalData from "./TimerModalData";
 import { useQueryParams } from "@hooks/useQueryParams";
-import { RootStore } from "@redux/store";
+
 import { closeModal, resetTimerState, setEditingId } from "@redux/timersSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import { Error, Loading } from "@components/axiosHelper";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -23,12 +23,12 @@ export default function TimersList() {
   const queryParams = useQueryParams(fetchTimersDefaultParams);
   const { addNotify } = useNotifications();
   const { data: timers, isLoading, error } = useGetTimers(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     timer: timerState,
     editingId,
-  } = useSelector((state: RootStore) => state.timers);
+  } = useAppSelector((state) => state.timers);
   const createTimerMutation = useCreateTimer();
   const updateTimerMutation = useEditTimer();
 

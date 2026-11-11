@@ -8,22 +8,22 @@ import ActionButtons from "./ActionButtons";
 import AchievementStageTheadData from "./AchievementStageTheadData";
 import AchievementStageEditData from "./AchievementStageEditData";
 import AchievementStageDisplayData from "./AchievementStageDisplayData";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   closeModal,
   openModal,
   updateStageStageDataBadgeByIndex,
 } from "@redux/stagesSlice";
-import { RootStore } from "@redux/store";
+
 import { useGetAchievementStageById } from "@services";
 import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 
 export default function OneAchievementStageData() {
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [editing, setEditing] = useState(false);
-  const { isModalOpen } = useSelector((root: RootStore) => root.stages);
+  const { isModalOpen } = useAppSelector((state) => state.stages);
   const [currentEditingStageData, setCurrentEditingStageData] = useState(-1);
 
   const {

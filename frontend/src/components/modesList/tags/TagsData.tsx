@@ -8,14 +8,14 @@ import {
   setTagState,
 } from "@redux/tagsSlice";
 import { Tag, useDeleteTag } from "@services";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 
 interface TagsDataProps {
   data: Tag[];
 }
 
 export default function TagsData({ data }: TagsDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const deleteTagMutation = useDeleteTag();
   const handleDeleteTag = (id: string) => {
     if (

@@ -1,11 +1,11 @@
 import { viteBackendUrl } from "@configs";
-import { RootStore } from "@redux/store";
+
 import {
   ObtainAchievementDataWithCollectedAchievement,
   ObtainAchievementDataWithProgressOnly,
 } from "@socketTypes";
 import { CSSProperties } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@redux";
 import {
   useObtainedAchievementContentData,
   useProgressContentData,
@@ -27,7 +27,7 @@ export function AchievementDataBlock({
     baseData: {
       styles: { overlayAchievements: styles },
     },
-  } = useSelector((state: RootStore) => state.overlays);
+  } = useAppSelector((state) => state.overlays);
 
   const currentRarity =
     achievement?.stage.data.rarity ||

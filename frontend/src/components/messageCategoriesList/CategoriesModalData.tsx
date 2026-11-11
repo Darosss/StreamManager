@@ -1,7 +1,7 @@
 import ModalDataWrapper from "@components/modalDataWrapper";
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import {
   setMessages,
   setMood,
@@ -15,9 +15,9 @@ import { useGetAllModes } from "@hooks";
 
 export default function CategoriesModalData() {
   const modes = useGetAllModes();
-  const dispatch = useDispatch();
-  const messageCategoryState = useSelector(
-    (state: RootStore) => state.messageCategories.messageCategory,
+  const dispatch = useAppDispatch();
+  const messageCategoryState = useAppSelector(
+    (state) => state.messageCategories.messageCategory,
   );
   const { tags, moods } = modes;
   return (

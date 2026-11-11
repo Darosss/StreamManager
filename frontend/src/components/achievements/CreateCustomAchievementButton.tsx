@@ -1,5 +1,5 @@
 import { CustomAchievementAction } from "@services";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import {
   AchievementSliceDataType,
   ManageAchievementsCurrentAction,
@@ -22,7 +22,7 @@ const initialAchievementData: Required<AchievementSliceDataType> = {
 };
 
 export function CreateCustomAchievementButton() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <div>
       <Button

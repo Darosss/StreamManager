@@ -1,6 +1,6 @@
 import { DateTooltip } from "@components/dateTooltip";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { setName } from "@redux/stagesSlice";
 
 interface BaseDetailsAchievementStageProps {
@@ -9,8 +9,8 @@ interface BaseDetailsAchievementStageProps {
 export default function BaseDetailsAchievementStage({
   editing,
 }: BaseDetailsAchievementStageProps) {
-  const dispatch = useDispatch();
-  const { stage } = useSelector((root: RootStore) => root.stages);
+  const dispatch = useAppDispatch();
+  const { stage } = useAppSelector((state) => state.stages);
 
   return (
     <>

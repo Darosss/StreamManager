@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { CustomRewardData, useSocketContext } from "@socket";
 import { useGetAlertSoundsMp3Names, useDeleteAlertSound } from "@services";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import {
   openModal,
   setEditingAlertSound,
@@ -14,7 +14,7 @@ import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
 export default function MessagesWindow() {
   const socketContext = useSocketContext();
   const { addNotify } = useNotifications();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [alertSounds, setAlertSounds] = useState<CustomRewardData[]>();
 

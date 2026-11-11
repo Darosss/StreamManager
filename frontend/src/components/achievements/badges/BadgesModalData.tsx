@@ -3,8 +3,8 @@ import AvailableBadgeImages from "./AvailableBadgeImages";
 import { BadgeModelImagesUrls, useGetBadgesImages } from "@services";
 import { viteBackendUrl } from "@configs/envVariables";
 import { Error, Loading } from "@components/axiosHelper";
-import { useDispatch, useSelector } from "react-redux";
-import { RootStore } from "@redux/store";
+import { useAppDispatch, useAppSelector } from "@redux";
+
 import { setDescription, setImagesUrls, setName } from "@redux/badgesSlice";
 
 export default function BadgeModalData() {
@@ -13,8 +13,8 @@ export default function BadgeModalData() {
     isLoading,
     error,
   } = useGetBadgesImages();
-  const dispatch = useDispatch();
-  const { badge } = useSelector((root: RootStore) => root.badges);
+  const dispatch = useAppDispatch();
+  const { badge } = useAppSelector((state) => state.badges);
 
   if (error) return <Error error={error} />;
   if (isLoading) return <Loading />;

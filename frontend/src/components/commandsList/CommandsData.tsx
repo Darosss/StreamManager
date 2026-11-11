@@ -6,7 +6,7 @@ import {
 } from "@components/tableWrapper";
 import { ChatCommand, useDeleteChatCommand } from "@services";
 import SortByParamsButton from "@components/SortByParamsButton";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import {
   resetCommandState,
   openModal,
@@ -22,7 +22,7 @@ interface CommandsDataProps {
 }
 
 export default function CommandsData({ commands }: CommandsDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const deleteCommandMutation = useDeleteChatCommand();
 
   const handleShowModal = (params: HandleShowModalParams<ChatCommand>) => {

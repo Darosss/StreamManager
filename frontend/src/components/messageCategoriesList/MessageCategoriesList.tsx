@@ -15,8 +15,8 @@ import {
   resetMessageCategoryState,
   setEditingId,
 } from "@redux/messageCategoriesSlice";
-import { RootStore } from "@redux/store";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useAppDispatch, useAppSelector } from "@redux";
 import { useQueryParams } from "@hooks/useQueryParams";
 import { TableList } from "@components/tableWrapper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -31,12 +31,12 @@ export default function MessageCategoriesList() {
     isLoading,
     error,
   } = useGetMessageCategories(queryParams);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isModalOpen,
     messageCategory: messageCategoryState,
     editingId,
-  } = useSelector((state: RootStore) => state.messageCategories);
+  } = useAppSelector((state) => state.messageCategories);
 
   const createMessageCategoryMutation = useCreateMessageCategory();
   const updateMessageCategoryMutation = useEditMessageCategory();

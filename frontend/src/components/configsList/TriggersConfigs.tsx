@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import ConfigInput from "./ConfigInput";
-import { RootStore } from "@redux/store";
+
 import { setTriggersConfigs } from "@redux/configsSlice";
 
 export default function TriggersConfigsWrapper() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isUpdateMode,
     config: { triggersConfigs },
-  } = useSelector((state: RootStore) => state.configs);
+  } = useAppSelector((state) => state.configs);
 
   return (
     <>

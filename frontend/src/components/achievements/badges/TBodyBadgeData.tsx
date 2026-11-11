@@ -1,6 +1,6 @@
 import { DateTooltip } from "@components/dateTooltip";
 import { viteBackendUrl } from "@configs/envVariables";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 import { openModal, setBadgeState, setEditingId } from "@redux/badgesSlice";
 import { Badge, useDeleteBadge } from "@services";
 import { Button } from "@components/ui/button";
@@ -12,7 +12,7 @@ interface TBodyManyBadgesDataProps {
 export default function TBodyManyBadgesData({
   badges,
 }: TBodyManyBadgesDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const deleteBadgeMutation = useDeleteBadge();
 
   const handleDeleteBadge = (id: string) => {

@@ -1,14 +1,14 @@
 import { setTimersConfigs } from "@redux/configsSlice";
-import { RootStore } from "@redux/store";
+
 import ConfigInput from "./ConfigInput";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 
 export default function TimersConfigsWrapper() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isUpdateMode,
     config: { timersConfigs },
-  } = useSelector((state: RootStore) => state.configs);
+  } = useAppSelector((state) => state.configs);
 
   return (
     <>

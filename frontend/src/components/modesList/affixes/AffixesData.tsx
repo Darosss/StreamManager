@@ -8,14 +8,14 @@ import {
   setEditingId,
 } from "@redux/affixesSlice";
 import { Affix, useDeleteAffix } from "@services";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@redux";
 
 interface AffixesDataProps {
   data: Affix[];
 }
 
 export default function AffixesData({ data }: AffixesDataProps) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const deleteAffixMutation = useDeleteAffix();
   const handleDeleteAffix = (id: string) => {
     if (

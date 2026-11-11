@@ -16,7 +16,7 @@ import {
   useGetOverlayById,
   useRefetchOverlayById,
 } from "@services";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@redux";
 import {
   setId,
   setIsEditor,
@@ -24,7 +24,7 @@ import {
   setOverlayState,
   setToolbox,
 } from "@redux/overlaysSlice";
-import { RootStore } from "@redux/store";
+
 import { useParams } from "react-router";
 import { Error, Loading } from "@components/axiosHelper";
 import { NOTIFICATION_TYPE, useNotifications } from "@contexts";
@@ -44,9 +44,9 @@ export default function Overlay(params: { editor?: boolean }) {
   const {
     events: { refreshOverlayLayout: refreshOverlayLayoutEvent },
   } = useSocketContext();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const overlaysStateRedux = useSelector((state: RootStore) => state.overlays);
+  const overlaysStateRedux = useAppSelector((state) => state.overlays);
   const { isEditor, overlay: overlayState } = overlaysStateRedux;
 
   const [currentBreakpoint, setCurrentBreakpoint] = useState(() =>
