@@ -28,18 +28,18 @@ export const queryKeysTags = {
 };
 
 export const fetchTags = async (
-  params?: QueryParams<keyof FetchTagParams>
+  params?: QueryParams<keyof FetchTagParams>,
 ): PromisePaginationData<Tag> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createTag = async (
-  newTag: TagCreateData
+  newTag: TagCreateData,
 ): PromiseBackendData<Tag> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newTag
+    newTag,
   );
   return response.data;
 };
@@ -53,14 +53,14 @@ export const editTag = async ({
 }): PromiseBackendData<Tag> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedTag
+    updatedTag,
   );
   return response.data;
 };
 
 export const deleteTag = async (id: string): PromiseBackendData<Tag> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -82,7 +82,7 @@ export const useEditTag = () => {
     },
     {
       onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
-    }
+    },
   );
 };
 
@@ -96,7 +96,7 @@ export const useCreateTag = () => {
     },
     {
       onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
-    }
+    },
   );
 };
 
@@ -110,7 +110,7 @@ export const useDeleteTag = () => {
     },
     {
       onSuccess: () => refetchTags().then(() => socketConn.emit("changeModes")),
-    }
+    },
   );
 };
 
@@ -121,6 +121,6 @@ export const useRefetchTagsData = (exact = false) => {
     "allTags",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

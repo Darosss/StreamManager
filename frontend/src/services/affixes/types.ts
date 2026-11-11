@@ -9,18 +9,13 @@ export interface Affix extends BaseModelProperties {
   prefixes: string[];
 }
 
-export interface AffixCreateData
-  extends Pick<
-    Affix,
-    | "name"
-    | "prefixChance"
-    | "suffixChance"
-    | "prefixes"
-    | "suffixes"
-    | "enabled"
-  > {}
+export interface AffixCreateData extends Pick<
+  Affix,
+  "name" | "prefixChance" | "suffixChance" | "prefixes" | "suffixes" | "enabled"
+> {}
 export interface AffixUpdateData
-  extends Partial<AffixCreateData>,
+  extends
+    Partial<AffixCreateData>,
     Partial<
       Pick<
         Affix,

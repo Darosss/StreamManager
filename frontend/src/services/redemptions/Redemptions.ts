@@ -29,14 +29,14 @@ export const queryKeysRedemptions = {
 };
 
 export const fetchRedemptions = async (
-  params?: QueryParams<keyof FetchRedemptionsParams>
+  params?: QueryParams<keyof FetchRedemptionsParams>,
 ): PromisePaginationData<Redemption> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const useGetRedemptions = (
-  params?: QueryParams<keyof FetchRedemptionsParams>
+  params?: QueryParams<keyof FetchRedemptionsParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysRedemptions.allRedemptions(params),

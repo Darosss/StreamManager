@@ -51,7 +51,7 @@ const messageCategorySlice = createSlice({
     },
     setMessageCategoryState(
       state,
-      action: PayloadAction<MessageCategoryCreateData>
+      action: PayloadAction<MessageCategoryCreateData>,
     ) {
       return {
         ...state,

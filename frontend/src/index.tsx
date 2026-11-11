@@ -5,13 +5,13 @@ import reportWebVitals from "./reportWebVitals";
 
 const App = lazy(() => import("./components/app"));
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 reportWebVitals();

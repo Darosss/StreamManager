@@ -39,7 +39,7 @@ export const queryKeysAchievements = {
 };
 
 export const fetchAchievements = async (
-  params?: QueryParams<keyof FetchAchievementsParams>
+  params?: QueryParams<keyof FetchAchievementsParams>,
 ): PromisePaginationData<Achievement> => {
   const response = await customAxios.get(`/${baseEndpointName}/`, {
     params,
@@ -48,11 +48,11 @@ export const fetchAchievements = async (
 };
 
 export const createCustomAchievement = async (
-  newAchievement: CustomAchievementCreateData
+  newAchievement: CustomAchievementCreateData,
 ): PromiseBackendData<Achievement> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/custom/create`,
-    newAchievement
+    newAchievement,
   );
   return response.data;
 };
@@ -66,7 +66,7 @@ export const editAchievement = async ({
 }): PromiseBackendData<Achievement> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedAchievement
+    updatedAchievement,
   );
   return response.data;
 };
@@ -80,21 +80,21 @@ export const editCustomAchievement = async ({
 }): PromiseBackendData<Achievement> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/custom/${id}`,
-    updatedAchievement
+    updatedAchievement,
   );
   return response.data;
 };
 export const deleteCustomAchievement = async (
-  id: string
+  id: string,
 ): PromiseBackendData<Achievement> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/custom/${id}`
+    `/${baseEndpointName}/custom/${id}`,
   );
   return response.data;
 };
 
 export const useGetAchievements = (
-  params?: QueryParams<keyof FetchAchievementsParams>
+  params?: QueryParams<keyof FetchAchievementsParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysAchievements.allAchievements(params),
@@ -110,7 +110,7 @@ export const useEditAchievement = () => {
       entity: MutationEntity.ACHIEVEMENT,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchAchievements }
+    { onSuccess: refetchAchievements },
   );
 };
 
@@ -125,7 +125,7 @@ export const useCreateCustomAchievement = () => {
     },
     {
       onSuccess: refetchAchievements,
-    }
+    },
   );
 };
 
@@ -137,7 +137,7 @@ export const useDeleteCustomAchievement = () => {
       entity: MutationEntity.ACHIEVEMENT,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchAchievements }
+    { onSuccess: refetchAchievements },
   );
 };
 
@@ -150,13 +150,13 @@ export const useUpdateCustomAchievement = () => {
       entity: MutationEntity.ACHIEVEMENT,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchAchievements }
+    { onSuccess: refetchAchievements },
   );
 };
 
 /* PROGRESSES */
 export const fetchProgresses = async (
-  userId: string
+  userId: string,
 ): PromiseBackendData<AchievementUserProgress[]> => {
   const response = await customAxios.get(`/${baseEndpointName}/user/${userId}`);
   return response.data;
@@ -176,6 +176,6 @@ export const useRefetchAchievementsData = (exact = false) => {
     "allAchievements",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

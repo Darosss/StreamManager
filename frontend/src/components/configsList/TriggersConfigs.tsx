@@ -19,7 +19,7 @@ export default function TriggersConfigsWrapper() {
             setTriggersConfigs([
               "randomMessageChance",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={triggersConfigs.randomMessageChance}
@@ -29,7 +29,7 @@ export default function TriggersConfigsWrapper() {
         optionName="Prefix chances"
         setState={(e) =>
           dispatch(
-            setTriggersConfigs(["prefixChance", e.currentTarget.valueAsNumber])
+            setTriggersConfigs(["prefixChance", e.currentTarget.valueAsNumber]),
           )
         }
         value={triggersConfigs.prefixChance}
@@ -39,7 +39,7 @@ export default function TriggersConfigsWrapper() {
         optionName="Sufix chances"
         setState={(e) =>
           dispatch(
-            setTriggersConfigs(["suffixChance", e.currentTarget.valueAsNumber])
+            setTriggersConfigs(["suffixChance", e.currentTarget.valueAsNumber]),
           )
         }
         value={triggersConfigs.suffixChance}

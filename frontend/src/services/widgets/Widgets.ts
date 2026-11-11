@@ -33,25 +33,25 @@ export const fetchWidgetsDefaultParams: Required<FetchWidgetsParams> = {
 };
 
 export const fetchWidgets = async (
-  params?: QueryParams<keyof FetchWidgetsParams>
+  params?: QueryParams<keyof FetchWidgetsParams>,
 ): PromisePaginationData<Widget> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const fetchWidgetById = async (
-  id: string
+  id: string,
 ): PromiseBackendData<Widget> => {
   const response = await customAxios.get(`/${baseEndpointName}/${id}`);
   return response.data;
 };
 
 export const createWidget = async (
-  newWidgets: WidgetCreateData
+  newWidgets: WidgetCreateData,
 ): PromiseBackendData<Widget> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newWidgets
+    newWidgets,
   );
   return response.data;
 };
@@ -65,20 +65,20 @@ export const editWidget = async ({
 }): PromiseBackendData<Widget> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedWidget
+    updatedWidget,
   );
   return response.data;
 };
 
 export const deleteWidget = async (id: string): PromiseBackendData<Widget> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
 
 export const useGetWidgets = (
-  params?: QueryParams<keyof FetchWidgetsParams>
+  params?: QueryParams<keyof FetchWidgetsParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysWidgets.allWidgets(params),
@@ -94,7 +94,7 @@ export const useEditWidget = () => {
       entity: MutationEntity.WIDGET,
       action: MutationAction.EDIT,
     },
-    { onSuccess: refetchWidgets }
+    { onSuccess: refetchWidgets },
   );
 };
 
@@ -106,7 +106,7 @@ export const useCreateWidget = () => {
       entity: MutationEntity.WIDGET,
       action: MutationAction.CREATE,
     },
-    { onSuccess: refetchWidgets }
+    { onSuccess: refetchWidgets },
   );
 };
 
@@ -118,7 +118,7 @@ export const useDeleteWidget = () => {
       entity: MutationEntity.WIDGET,
       action: MutationAction.DELETE,
     },
-    { onSuccess: refetchWidgets }
+    { onSuccess: refetchWidgets },
   );
 };
 
@@ -136,6 +136,6 @@ export const useRefetchWidgetsData = (exact = false) => {
     "allWidgets",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

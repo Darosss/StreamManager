@@ -7,7 +7,7 @@ import {
 } from "./types";
 
 export const getSocketEmitsFunctions = (
-  socketConnection: Socket<ServerToClientEvents, ClientToServerEvents>
+  socketConnection: Socket<ServerToClientEvents, ClientToServerEvents>,
 ): SocketContexType["emits"] => {
   return {
     refreshTriggers: () => {
@@ -77,7 +77,7 @@ export const getSocketEmitsFunctions = (
       socketConnection.emit("getCustomRewards");
     },
     emulateAchievement: (
-      data: ObtainAchievementDataWithCollectedAchievement
+      data: ObtainAchievementDataWithCollectedAchievement,
     ) => {
       socketConnection.emit("emulateAchievement", data);
     },

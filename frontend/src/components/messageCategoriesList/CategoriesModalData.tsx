@@ -17,7 +17,7 @@ export default function CategoriesModalData() {
   const modes = useGetAllModes();
   const dispatch = useDispatch();
   const messageCategoryState = useSelector(
-    (state: RootStore) => state.messageCategories.messageCategory
+    (state: RootStore) => state.messageCategories.messageCategory,
   );
   const { tags, moods } = modes;
   return (

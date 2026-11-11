@@ -20,7 +20,7 @@ enum AvailableWindowsEnum {
 
 export default function MusicPlayer() {
   const [currentWindow, setCurrentWindow] = useState<AvailableWindowsEnum>(
-    AvailableWindowsEnum.YT
+    AvailableWindowsEnum.YT,
   );
   const [audioMonitor, setAudioMonitor] = useState(false);
   const socket = useSocketContext();
@@ -47,7 +47,7 @@ export default function MusicPlayer() {
           {window}
         </Button>
       )),
-    [currentWindow]
+    [currentWindow],
   );
 
   const currentPlayerActions = useCallback(() => {

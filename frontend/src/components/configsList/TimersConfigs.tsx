@@ -19,7 +19,7 @@ export default function TimersConfigsWrapper() {
             setTimersConfigs([
               "timersIntervalDelay",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={timersConfigs.timersIntervalDelay}
@@ -32,7 +32,7 @@ export default function TimersConfigsWrapper() {
             setTimersConfigs([
               "nonFollowTimerPoints",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={timersConfigs.nonFollowTimerPoints}
@@ -45,7 +45,7 @@ export default function TimersConfigsWrapper() {
             setTimersConfigs([
               "nonSubTimerPoints",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={timersConfigs.nonSubTimerPoints}
@@ -56,7 +56,7 @@ export default function TimersConfigsWrapper() {
         optionName="Prefix chances"
         setState={(e) =>
           dispatch(
-            setTimersConfigs(["prefixChance", e.currentTarget.valueAsNumber])
+            setTimersConfigs(["prefixChance", e.currentTarget.valueAsNumber]),
           )
         }
         value={timersConfigs.prefixChance}
@@ -67,7 +67,7 @@ export default function TimersConfigsWrapper() {
         optionName="Sufix chances"
         setState={(e) =>
           dispatch(
-            setTimersConfigs(["suffixChance", e.currentTarget.valueAsNumber])
+            setTimersConfigs(["suffixChance", e.currentTarget.valueAsNumber]),
           )
         }
         value={timersConfigs.suffixChance}

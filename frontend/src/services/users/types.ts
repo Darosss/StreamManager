@@ -50,4 +50,3 @@ export interface FetchUsersParams extends DefaultRequestParams<keyof User> {
   created_start?: string;
   created_end?: string;
 }
-

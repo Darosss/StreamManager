@@ -18,7 +18,9 @@
 
   .tooltip-text {
     opacity: 0;
-    transition: opacity 1s, color 2s;
+    transition:
+      opacity 1s,
+      color 2s;
     height: 0;
     width: 0;
     overflow: hidden;

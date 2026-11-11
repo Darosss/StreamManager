@@ -40,7 +40,7 @@ const simpleStageNames = [
 ];
 
 const generateRandomObtainedAchievementData = (
-  index: number
+  index: number,
 ): ObtainAchievementDataWithCollectedAchievement => {
   return {
     id: Math.random().toString(),
@@ -80,7 +80,7 @@ const generateRandomObtainedAchievementData = (
 };
 
 export const getExampleAchievementsData = (
-  length = 15
+  length = 15,
 ): ObtainAchievementDataWithCollectedAchievement[] => {
   return Array(length)
     .fill(0)

@@ -26,7 +26,7 @@ export default function EditCreateAchievementModal() {
   const dispatch = useDispatch();
 
   const { achievement, isModalOpen, currentAction, editingId } = useSelector(
-    (root: RootStore) => root.achievements
+    (root: RootStore) => root.achievements,
   );
   const { data: tags } = useGetTags();
 

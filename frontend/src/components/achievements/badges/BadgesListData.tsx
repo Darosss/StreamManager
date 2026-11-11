@@ -5,10 +5,10 @@ import TBodyManyBadgesData from "./TBodyBadgeData";
 import { Badge } from "@services";
 
 interface BadgesListDataProps {
-badges:Badge[]
+  badges: Badge[];
 }
 
-export default function BadgesListData({badges}:BadgesListDataProps) {
+export default function BadgesListData({ badges }: BadgesListDataProps) {
   return (
     <div className="badges-list-data-wrapper">
       <TableListWrapper

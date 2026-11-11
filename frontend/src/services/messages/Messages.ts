@@ -27,14 +27,14 @@ export const queryKeysMessages = {
 };
 
 export const fetchMessages = async (
-  params?: QueryParams<keyof FetchMessagesParams>
+  params?: QueryParams<keyof FetchMessagesParams>,
 ): PromisePaginationData<Message> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const useGetMessages = (
-  params?: QueryParams<keyof FetchMessagesParams>
+  params?: QueryParams<keyof FetchMessagesParams>,
 ) => {
   return useQuery({
     queryKey: queryKeysMessages.allMessages(params),

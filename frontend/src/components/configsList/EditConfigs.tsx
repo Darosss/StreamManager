@@ -14,7 +14,7 @@ import { Button } from "@components/ui/button";
 export default function EditConfigs() {
   const dispatch = useDispatch();
   const { isUpdateMode, config: configsState } = useSelector(
-    (state: RootStore) => state.configs
+    (state: RootStore) => state.configs,
   );
   const { data: configs, isLoading, error } = useGetConfigs();
 

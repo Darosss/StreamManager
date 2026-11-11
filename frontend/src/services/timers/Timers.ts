@@ -34,18 +34,18 @@ export const queryKeysTimers = {
 };
 
 export const fetchTimers = async (
-  params?: QueryParams<keyof FetchTimerParams>
+  params?: QueryParams<keyof FetchTimerParams>,
 ): PromisePaginationData<Timer> => {
   const response = await customAxios.get(`/${baseEndpointName}`, { params });
   return response.data;
 };
 
 export const createTimer = async (
-  newTimer: TimerCreateData
+  newTimer: TimerCreateData,
 ): PromiseBackendData<Timer> => {
   const response = await customAxios.post(
     `/${baseEndpointName}/create`,
-    newTimer
+    newTimer,
   );
   return response.data;
 };
@@ -59,14 +59,14 @@ export const editTimer = async ({
 }): PromiseBackendData<Timer> => {
   const response = await customAxios.patch(
     `/${baseEndpointName}/${id}`,
-    updatedTimer
+    updatedTimer,
   );
   return response.data;
 };
 
 export const deleteTimer = async (id: string): PromiseBackendData<Timer> => {
   const response = await customAxios.delete(
-    `/${baseEndpointName}/delete/${id}`
+    `/${baseEndpointName}/delete/${id}`,
   );
   return response.data;
 };
@@ -89,7 +89,7 @@ export const useEditTimer = () => {
     {
       onSuccess: () =>
         refetchTimers().then(() => socketConn.emit("refreshTimers")),
-    }
+    },
   );
 };
 
@@ -104,7 +104,7 @@ export const useCreateTimer = () => {
     {
       onSuccess: () =>
         refetchTimers().then(() => socketConn.emit("refreshTimers")),
-    }
+    },
   );
 };
 
@@ -120,7 +120,7 @@ export const useDeleteTimer = () => {
       onSuccess: () => {
         refetchTimers().then(() => socketConn.emit("refreshTimers"));
       },
-    }
+    },
   );
 };
 export const useRefetchTimersData = (exact = false) => {
@@ -130,6 +130,6 @@ export const useRefetchTimersData = (exact = false) => {
     "allTimers",
     queryClient,
     [],
-    exact
+    exact,
   );
 };

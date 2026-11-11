@@ -66,5 +66,7 @@ export interface Config extends BaseModelProperties {
   headConfigs: HeadConfigs;
 }
 
-export interface ConfigUpdateData
-  extends Omit<Config, "_id" | "createdAt" | "updatedAt"> {}
+export interface ConfigUpdateData extends Omit<
+  Config,
+  "_id" | "createdAt" | "updatedAt"
+> {}

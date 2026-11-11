@@ -19,7 +19,7 @@ export default function LoyaltyConfigsWrapper() {
             setLoyaltyConfigs([
               "intervalCheckChatters",
               e.currentTarget.valueAsNumber,
-            ])
+            ]),
           )
         }
         value={loyaltyConfigs.intervalCheckChatters}
